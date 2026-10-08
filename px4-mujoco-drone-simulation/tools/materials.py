@@ -1,4 +1,4 @@
-"""Per-part material and colour assignment for smartdrone2.
+"""Per-part material and colour assignment for px4-mujoco-drone-simulation.
 
 The FreeCAD document stores no material data at all - it has no saved appearance
 properties and no material mapping - so every entry here is authored.  Rows

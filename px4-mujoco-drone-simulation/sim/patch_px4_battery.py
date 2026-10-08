@@ -9,7 +9,7 @@ import hashlib
 import json
 import subprocess
 from pathlib import Path
-base=Path.home()/'.cache/smartdrone2/PX4-Autopilot'
+base=Path.home()/'.cache/px4-mujoco-drone-simulation/PX4-Autopilot'
 path=base/'src/modules/mavlink/mavlink_receiver.cpp'
 text=path.read_text()
 before='battery_status.temperature = (float)battery_mavlink.temperature;'

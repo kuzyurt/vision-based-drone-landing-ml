@@ -1,6 +1,6 @@
 # Rebuilding the corrected assembly
 
-Run `python tools/build_all.py` from smartdrone2. It uses the Python bundled with the installed FreeCAD 1.1, reads the original document, creates the inventory, exports transformed meshes, and rebuilds the viewer and MuJoCo XML. Set FREECAD_PYTHON if FreeCAD is installed elsewhere. The source is never recomputed or saved.
+Run `python tools/build_all.py` from px4-mujoco-drone-simulation. It uses the Python bundled with the installed FreeCAD 1.1, reads the original document, creates the inventory, exports transformed meshes, and rebuilds the viewer and MuJoCo XML. Set FREECAD_PYTHON if FreeCAD is installed elsewhere. The source is never recomputed or saved.
 
 Run `python -m sim.server`; the inspection viewer is available at http://127.0.0.1:8793/inspection/. Its packed geometry is stored in 8 MiB binary chunks, avoiding one oversized generated JavaScript file.
 

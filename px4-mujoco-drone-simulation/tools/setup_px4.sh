@@ -2,7 +2,7 @@
 # Run in WSL Ubuntu 22.04. Downloads only official PX4 sources.
 set -euo pipefail
 project_dir="$(cd "$(dirname "$0")/.." && pwd)"
-px4_dir="$HOME/.cache/smartdrone2/PX4-Autopilot"
+px4_dir="$HOME/.cache/px4-mujoco-drone-simulation/PX4-Autopilot"
 expected_commit=6ea3539157ca358c70a515878b77077af7d4611d
 if [[ ! -d "$px4_dir/.git" ]]; then
   mkdir -p "$(dirname "$px4_dir")"

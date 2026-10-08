@@ -32,7 +32,7 @@ if args.limits:
         j['range']=values
 def fmt(values):
     return ' '.join(f'{v:.12g}' for v in values)
-model = ET.Element('mujoco',model='smartdrone2_corrected_inspection')
+model = ET.Element('mujoco',model='px4_mujoco_drone_simulation_corrected_inspection')
 ET.SubElement(model,'compiler',angle='radian',meshdir='meshes',texturedir='textures')
 ET.SubElement(model,'option',gravity='0 0 0')
 asset = ET.SubElement(model,'asset')
