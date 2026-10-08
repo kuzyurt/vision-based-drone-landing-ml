@@ -46,4 +46,4 @@ Open **http://127.0.0.1:8793/** and press **Take off**.
 2. `models/` contains the articulated MJCF, render meshes, contact hull definitions and evidence metadata.
 3. `sim/` exchanges sensors and motor commands with PX4; `web/` displays the flight scene, inspection view and camera feed. [Rebuild details →](docs/rebuild.md)
 
-**LLM use:** LLMs assisted with CAD conversion, simulator code, source research and documentation; the supplied FreeCAD assembly provides the geometry, and MuJoCo/PX4 execute runtime physics and flight control without LLM calls.
+
