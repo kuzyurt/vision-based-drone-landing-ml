@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "native_PX4": true,
+  "hover_A": 17.301745489589845,
+  "climb_A": 18.72554002286914,
+  "descent_A": 15.8979223504682,
+  "start_charge_percent": 99.66105542708141,
+  "end_charge_percent": 99.44769639828078,
+  "landed_disarmed": true,
+  "limitation": "Bench-informed model; no measured airframe power calibration"
+}

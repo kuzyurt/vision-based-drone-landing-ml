@@ -1,0 +1,2836 @@
+{
+  "passed": true,
+  "checks": 3668,
+  "failures": [],
+  "mating_interfaces": [
+    [
+      "HullShell",
+      "MainDeck",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "FrameLoadPaths",
+      "Bonded frame perimeter at hull inner surface"
+    ],
+    [
+      "HullShell",
+      "PortSternTube",
+      "Sealed bonded sleeve through bored transom"
+    ],
+    [
+      "HullShell",
+      "PortPropGuard",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "StarboardSternTube",
+      "Sealed bonded sleeve through bored transom"
+    ],
+    [
+      "HullShell",
+      "StarboardPropGuard",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "BilgeMount",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "BilgeDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "HullShell",
+      "CabinPrimaryDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "HullShell",
+      "CabinPrimaryOutlet",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "CabinBackupDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "HullShell",
+      "CabinBackupOutlet",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "HullAccentStripe",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "HullShell",
+      "PortRubRail",
+      "Conformal bonded EPDM rub rail"
+    ],
+    [
+      "HullShell",
+      "StarboardRubRail",
+      "Conformal bonded EPDM rub rail"
+    ],
+    [
+      "MainDeck",
+      "DockTrunk",
+      "Top flange seated in reinforced deck opening"
+    ],
+    [
+      "MainDeck",
+      "AftHatchFrame",
+      "Recessed bonded hatch flange"
+    ],
+    [
+      "MainDeck",
+      "ForeHatchFrame",
+      "Recessed bonded hatch flange"
+    ],
+    [
+      "MainDeck",
+      "LiftTopSupport1",
+      "Upper support seated in trunk flange"
+    ],
+    [
+      "MainDeck",
+      "LiftTopSupport2",
+      "Upper support seated in trunk flange"
+    ],
+    [
+      "MainDeck",
+      "LiftTopSupport3",
+      "Upper support seated in trunk flange"
+    ],
+    [
+      "MainDeck",
+      "LiftTopSupport4",
+      "Upper support seated in trunk flange"
+    ],
+    [
+      "MainDeck",
+      "CameraMastBacking",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "MainDeck",
+      "AftLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "AftLidGland",
+      "Threaded deck gland body"
+    ],
+    [
+      "MainDeck",
+      "ForeLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "ForeLidGland",
+      "Threaded deck gland body"
+    ],
+    [
+      "MainDeck",
+      "DockCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "DockCameraDeckGland",
+      "Deck penetration compression gland"
+    ],
+    [
+      "MainDeck",
+      "NavigationCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "NavigationCameraDeckGland",
+      "Deck penetration compression gland"
+    ],
+    [
+      "MainDeck",
+      "LoRaCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "GNSSCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "EmergencyStopLoop",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "CabinPrimaryDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "CabinBackupDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "PortLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "StarboardLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "SpeedDisplayFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "LidAftClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "LidAftOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "LidForeClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MainDeck",
+      "LidForeOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FrameLoadPaths",
+      "DockTrunk",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "PortPropulsionMotor",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "StarboardPropulsionMotor",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "AftBattery",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "AftBatteryStraps",
+      "Strap feet bolted to battery rack"
+    ],
+    [
+      "FrameLoadPaths",
+      "ForeBattery",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "ForeBatteryStraps",
+      "Strap feet bolted to battery rack"
+    ],
+    [
+      "FrameLoadPaths",
+      "PortESC",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "StarboardESC",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "FusedPowerBus",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "PowerShelf",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "DryElectronicsBox",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "ActuatorDriverMount",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "SeparatedCableTrays",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "ForePositive",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "ForeNegative",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "AuxiliaryPower",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "AftLidHarness",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "ForeLidHarness",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LiftHarness1",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LiftHarness2",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LiftHarness3",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LiftHarness4",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "MCU_ActuatorBackbone",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "DockCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "NavigationCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "GNSSCoax",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "SafetyLoopContactor",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinAftPortPickup",
+      "Machined 25 mm sealed drainage-tail passage in cradle edge"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinPickupValve1",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinAftPortSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinForePortPickup",
+      "Machined 25 mm sealed drainage-tail passage in cradle edge"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinPickupValve2",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinForePortSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinAftStarboardPickup",
+      "Machined 25 mm sealed drainage-tail passage in cradle edge"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinPickupValve3",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinAftStarboardSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinForeStarboardPickup",
+      "Machined 25 mm sealed drainage-tail passage in cradle edge"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinPickupValve4",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinForeStarboardSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinDrainRack",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinPrimaryDischarge",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "CabinBackupDischarge",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LidAftClosedWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LidAftOpenWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LidForeClosedWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "LidForeOpenWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "FrameLoadPaths",
+      "FrameLoadPathsCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftMotor1",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftTopSupport1",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftMotor2",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftTopSupport2",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftMotor3",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftTopSupport3",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftMotor4",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftTopSupport4",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "Guide1FixedSupports",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "Guide2FixedSupports",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "Guide3FixedSupports",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "Guide4FixedSupports",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftHarness1",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftGland1",
+      "Threaded sealed trunk wall penetration"
+    ],
+    [
+      "DockTrunk",
+      "LiftHarness2",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftGland2",
+      "Threaded sealed trunk wall penetration"
+    ],
+    [
+      "DockTrunk",
+      "LiftHarness3",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftGland3",
+      "Threaded sealed trunk wall penetration"
+    ],
+    [
+      "DockTrunk",
+      "LiftHarness4",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftGland4",
+      "Threaded sealed trunk wall penetration"
+    ],
+    [
+      "DockTrunk",
+      "TrunkDrain",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "CabinDrainPan",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "CabinAftPortPickup",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "CabinAftPortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "CabinForePortPickup",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "CabinForePortSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "DockTrunk",
+      "CabinForePortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "CabinAftStarboardPickup",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "CabinAftStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "CabinForeStarboardPickup",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "CabinForeStarboardSuction",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "DockTrunk",
+      "CabinForeStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftLowerLimit",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftLowerLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "LiftUpperLimit",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockTrunk",
+      "LiftUpperLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockTrunk",
+      "DockTrunkCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PerimeterSeal",
+      "AftSlidingLid",
+      "Closed-state perimeter compression seal"
+    ],
+    [
+      "PerimeterSeal",
+      "ForeSlidingLid",
+      "Closed-state perimeter compression seal"
+    ],
+    [
+      "PlatformCarriage",
+      "LiftGuideNuts",
+      "Captive nuts retained in corner blocks"
+    ],
+    [
+      "PlatformCarriage",
+      "Guide1Arm",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PlatformCarriage",
+      "Guide2Arm",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PlatformCarriage",
+      "Guide3Arm",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PlatformCarriage",
+      "Guide4Arm",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PlatformCarriage",
+      "LiftLimitMagnet",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "LiftMotor1",
+      "LiftHarness1",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftMotor1",
+      "CabinDrainPan",
+      "Motor foot seat outside crowned drainage liner"
+    ],
+    [
+      "LiftScrew1",
+      "LiftTopSupport1",
+      "Radial bearing running clearance"
+    ],
+    [
+      "LiftScrew1",
+      "LiftGuideNuts",
+      "Trapezoidal thread engagement; schematic bore"
+    ],
+    [
+      "LiftMotor2",
+      "LiftHarness2",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftMotor2",
+      "CabinDrainPan",
+      "Motor foot seat outside crowned drainage liner"
+    ],
+    [
+      "LiftScrew2",
+      "LiftTopSupport2",
+      "Radial bearing running clearance"
+    ],
+    [
+      "LiftScrew2",
+      "LiftGuideNuts",
+      "Trapezoidal thread engagement; schematic bore"
+    ],
+    [
+      "LiftMotor3",
+      "LiftHarness3",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftMotor3",
+      "CabinDrainPan",
+      "Motor foot seat outside crowned drainage liner"
+    ],
+    [
+      "LiftScrew3",
+      "LiftTopSupport3",
+      "Radial bearing running clearance"
+    ],
+    [
+      "LiftScrew3",
+      "LiftGuideNuts",
+      "Trapezoidal thread engagement; schematic bore"
+    ],
+    [
+      "LiftMotor4",
+      "LiftHarness4",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftMotor4",
+      "CabinDrainPan",
+      "Motor foot seat outside crowned drainage liner"
+    ],
+    [
+      "LiftScrew4",
+      "LiftTopSupport4",
+      "Radial bearing running clearance"
+    ],
+    [
+      "LiftScrew4",
+      "LiftGuideNuts",
+      "Trapezoidal thread engagement; schematic bore"
+    ],
+    [
+      "Guide1FixedSupports",
+      "Guide1Rod",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide1FixedSupports",
+      "CabinDrainPan",
+      "Guide socket seat outside crowned liner"
+    ],
+    [
+      "Guide1Rod",
+      "Guide1Arm",
+      "Bored sliding rod passage"
+    ],
+    [
+      "Guide1Rod",
+      "Guide1Bushing",
+      "Polymer linear bushing running clearance"
+    ],
+    [
+      "Guide1Arm",
+      "Guide1Bushing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide2FixedSupports",
+      "Guide2Rod",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide2FixedSupports",
+      "CabinDrainPan",
+      "Guide socket seat outside crowned liner"
+    ],
+    [
+      "Guide2Rod",
+      "Guide2Arm",
+      "Bored sliding rod passage"
+    ],
+    [
+      "Guide2Rod",
+      "Guide2Bushing",
+      "Polymer linear bushing running clearance"
+    ],
+    [
+      "Guide2Arm",
+      "Guide2Bushing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide3FixedSupports",
+      "Guide3Rod",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide3FixedSupports",
+      "CabinDrainPan",
+      "Guide socket seat outside crowned liner"
+    ],
+    [
+      "Guide3Rod",
+      "Guide3Arm",
+      "Bored sliding rod passage"
+    ],
+    [
+      "Guide3Rod",
+      "Guide3Bushing",
+      "Polymer linear bushing running clearance"
+    ],
+    [
+      "Guide3Arm",
+      "Guide3Bushing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide4FixedSupports",
+      "Guide4Rod",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Guide4FixedSupports",
+      "CabinDrainPan",
+      "Guide socket seat outside crowned liner"
+    ],
+    [
+      "Guide4Rod",
+      "Guide4Arm",
+      "Bored sliding rod passage"
+    ],
+    [
+      "Guide4Rod",
+      "Guide4Bushing",
+      "Polymer linear bushing running clearance"
+    ],
+    [
+      "Guide4Arm",
+      "Guide4Bushing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "LidRails",
+      "AftSlidingLid",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "LidRails",
+      "ForeSlidingLid",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftSlidingLid",
+      "AftLidGraphics",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftSlidingLid",
+      "AftLidScrew",
+      "Traveling nut thread running clearance"
+    ],
+    [
+      "AftSlidingLid",
+      "AftLidLimitMagnet",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftLidScrew",
+      "AftLidEndBearing",
+      "Screw bearing running clearance"
+    ],
+    [
+      "AftLidMotorMount",
+      "AftLidDrive",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftLidMotorMount",
+      "AftLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AftLidDrive",
+      "AftLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeSlidingLid",
+      "ForeLidGraphics",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "ForeSlidingLid",
+      "ForeLidScrew",
+      "Traveling nut thread running clearance"
+    ],
+    [
+      "ForeSlidingLid",
+      "ForeLidLimitMagnet",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "ForeLidScrew",
+      "ForeLidEndBearing",
+      "Screw bearing running clearance"
+    ],
+    [
+      "ForeLidMotorMount",
+      "ForeLidDrive",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "ForeLidMotorMount",
+      "ForeLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeLidDrive",
+      "ForeLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortPropulsionMotor",
+      "PortPhaseU",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortPropulsionMotor",
+      "PortPhaseV",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortPropulsionMotor",
+      "PortPhaseW",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortCoupling",
+      "PortUpperDriveShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortUpperDriveShaft",
+      "PortSternTube",
+      "Journal bearing / lip seal running clearance"
+    ],
+    [
+      "PortSternTube",
+      "PortDropGearbox",
+      "Sealed transom sleeve and gearbox flange"
+    ],
+    [
+      "PortDropGearbox",
+      "PortDropShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortDropGearbox",
+      "PortUpperBevelGear",
+      "Internal gear running envelope"
+    ],
+    [
+      "PortDropGearbox",
+      "PortLowerBevelGear",
+      "Internal gear running envelope"
+    ],
+    [
+      "PortDropGearbox",
+      "PortShaftStrut",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortDropShaft",
+      "PortUpperBevelGear",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortDropShaft",
+      "PortLowerBevelGear",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortLowerBevelGear",
+      "PortPropShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortPropShaft",
+      "PortShaftStrut",
+      "External cutless bearing"
+    ],
+    [
+      "PortPropShaft",
+      "PortPropeller",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "PortShaftStrut",
+      "PortPropGuard",
+      "Nozzle guard bolted to external skeg"
+    ],
+    [
+      "StarboardPropulsionMotor",
+      "StarboardPhaseU",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardPropulsionMotor",
+      "StarboardPhaseV",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardPropulsionMotor",
+      "StarboardPhaseW",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardCoupling",
+      "StarboardUpperDriveShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardUpperDriveShaft",
+      "StarboardSternTube",
+      "Journal bearing / lip seal running clearance"
+    ],
+    [
+      "StarboardSternTube",
+      "StarboardDropGearbox",
+      "Sealed transom sleeve and gearbox flange"
+    ],
+    [
+      "StarboardDropGearbox",
+      "StarboardDropShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardDropGearbox",
+      "StarboardUpperBevelGear",
+      "Internal gear running envelope"
+    ],
+    [
+      "StarboardDropGearbox",
+      "StarboardLowerBevelGear",
+      "Internal gear running envelope"
+    ],
+    [
+      "StarboardDropGearbox",
+      "StarboardShaftStrut",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardDropShaft",
+      "StarboardUpperBevelGear",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardDropShaft",
+      "StarboardLowerBevelGear",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardLowerBevelGear",
+      "StarboardPropShaft",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardPropShaft",
+      "StarboardShaftStrut",
+      "External cutless bearing"
+    ],
+    [
+      "StarboardPropShaft",
+      "StarboardPropeller",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "StarboardShaftStrut",
+      "StarboardPropGuard",
+      "Nozzle guard bolted to external skeg"
+    ],
+    [
+      "AftBattery",
+      "AftBatteryStraps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftBatteryTerminals",
+      "AftPositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AftBatteryTerminals",
+      "AftNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeBattery",
+      "ForeBatteryStraps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "ForeBatteryStraps",
+      "ForePositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeBatteryStraps",
+      "ForeNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeBatteryTerminals",
+      "ForePositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeBatteryTerminals",
+      "ForeNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ForeBatteryTerminals",
+      "CabinDrain48VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortESCPositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortESCNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortPhaseU",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortPhaseV",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortPhaseW",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortESC",
+      "PortESCCommand",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardESCPositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardESCNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardPhaseU",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardPhaseV",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardPhaseW",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardESC",
+      "StarboardESCCommand",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "PowerShelf",
+      "Shelf standoffs beside fused bus, intentional attachment"
+    ],
+    [
+      "FusedPowerBus",
+      "PortESCPositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "PortESCNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "StarboardESCPositive",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "StarboardESCNegative",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "Converter48VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "FusedPowerBus",
+      "SafetyLoopContactor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "IsolatedDCConverters",
+      "PowerShelf",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "IsolatedDCConverters",
+      "Converter48VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "IsolatedDCConverters",
+      "Actuator24VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "IsolatedDCConverters",
+      "AuxiliaryPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "IsolatedDCConverters",
+      "BilgePower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PowerShelf",
+      "SafetyLoopContactor",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "PowerShelf",
+      "PowerShelfCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "KhadasEdge2BasicStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "SX1262RadioStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "PoweredUSBHubStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "MotionMCUStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "MAXM10SCarrierStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "USBSerialBridgeStandoffs",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DryElectronicsBox",
+      "Edge2ThermalStrap",
+      "Bolted heat spreader at enclosure wall"
+    ],
+    [
+      "DryElectronicsBox",
+      "AuxiliaryPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "MCU_ActuatorBackbone",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "DockCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "NavigationCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "LoRaCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "GNSSCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "EmergencyStopLoop",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "SafetyLoopContactor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "CabinDrainCAN",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "PortLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "StarboardLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DryElectronicsBox",
+      "SpeedDisplayFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MotionMCU",
+      "MCU_ActuatorBackbone",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MotionMCU",
+      "SafetyLoopContactor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MotionMCU",
+      "CabinDrainCAN",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MotionMCUComponents",
+      "USB_MotionMCU",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "MAXM10SCarrierComponents",
+      "GNSS_UART",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "USBSerialBridgeComponents",
+      "USB_USBSerialBridge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "USBSerialBridgeComponents",
+      "GNSS_UART",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "Edge2Fan",
+      "Edge2FanCable",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "Actuator24VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "AftLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "ForeLidHarness",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftHarness1",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftHarness2",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftHarness3",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftHarness4",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "MCU_ActuatorBackbone",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "PortESCCommand",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "StarboardESCCommand",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LidAftClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LidAftOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LidForeClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LidForeOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftLowerLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftAndLidDrivers",
+      "LiftUpperLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "ActuatorDriverMount",
+      "LiftHarness2",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "ActuatorDriverMount",
+      "ActuatorDriverMountCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "CameraMast",
+      "DockCameraHousing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "CameraMast",
+      "DockCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "CameraMast",
+      "CameraMastCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "CameraMastBacking",
+      "NavigationCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "CameraMastBacking",
+      "CameraMastBackingCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraHousing",
+      "DockCameraPosts",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraHousing",
+      "DockCameraLens",
+      "Lens passes through bored front wall; gasket surrounds barrel"
+    ],
+    [
+      "DockCameraHousing",
+      "DockCameraWindowGasket",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraHousing",
+      "DockCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "DockCameraHousing",
+      "DockCameraHousingCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraPosts",
+      "DockCameraB0506",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraPosts",
+      "DockCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockCameraB0506",
+      "DockCameraLens",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "DockCameraB0506",
+      "DockCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "DockCameraWindowGasket",
+      "DockCameraWindow",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "NavigationCameraMount",
+      "NavigationCameraHousing",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "NavigationCameraMount",
+      "NavigationCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "NavigationCameraMount",
+      "NavigationCameraMountCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "NavigationCameraHousing",
+      "NavigationCameraPosts",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "NavigationCameraHousing",
+      "NavigationCameraLens",
+      "Lens passes through bored front wall; gasket surrounds barrel"
+    ],
+    [
+      "NavigationCameraHousing",
+      "NavigationCameraUSB",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "NavigationCameraHousing",
+      "NavigationCameraHousingCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "NavigationCameraPosts",
+      "NavigationCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "NavigationCameraB0506",
+      "NavigationCameraUSB",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LoRa868Antenna",
+      "LoRaCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "GNSSAntenna",
+      "GNSSCoax",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "EmergencyStop",
+      "EmergencyStopLoop",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "BilgeMount",
+      "BilgePump",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "BilgePump",
+      "BilgePower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "BilgePump",
+      "TrunkDrain",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "BilgePump",
+      "BilgeDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForePositive",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForeNegative",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "AftLidHarness",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForeLidHarness",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "CabinPrimaryDischarge",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "CabinBackupDischarge",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForePositiveClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForeNegativeClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "AuxiliaryPowerClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "AftLidHarnessClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "ForeLidHarnessClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "MCU_ActuatorBackboneClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "DockCameraUSBClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "GNSSCoaxClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "SafetyLoopContactorClamps",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "SeparatedCableTrays",
+      "LidAftClosedWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "LidForeClosedWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "LidForeOpenWire",
+      "Explicitly cut matching swept bore; retained rubber liner; 0.25 mm radial clearance"
+    ],
+    [
+      "SeparatedCableTrays",
+      "SeparatedCableTraysCableLiners",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "AftPositive",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AftNegative",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForePositive",
+      "ForePositiveClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "ForePositive",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForePositive",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForePositive",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForeNegative",
+      "ForeNegativeClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "ForeNegative",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForeNegative",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForeNegative",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortESCPositive",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortESCNegative",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortPhaseU",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortPhaseV",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortPhaseW",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardESCPositive",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardESCNegative",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardPhaseU",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardPhaseV",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardPhaseW",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_HostHub",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_HostHub",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Edge2FanCable",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Edge2FanCable",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_SX1262Radio",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_SX1262Radio",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_MotionMCU",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_MotionMCU",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_USBSerialBridge",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "USB_USBSerialBridge",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "GNSS_UART",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "GNSS_UART",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Converter48VFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Converter48VFeed",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Actuator24VFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Actuator24VFeed",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Actuator24VFeed",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AuxiliaryPower",
+      "Power_KhadasEdge2Basic",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AuxiliaryPower",
+      "Power_PoweredUSBHub",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AuxiliaryPower",
+      "MotionIO12V",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AuxiliaryPower",
+      "AuxiliaryPowerClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "AuxiliaryPower",
+      "PortLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AuxiliaryPower",
+      "StarboardLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "AuxiliaryPower",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AuxiliaryPower",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Power_KhadasEdge2Basic",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Power_KhadasEdge2Basic",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Power_PoweredUSBHub",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Power_PoweredUSBHub",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "MotionIO12V",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "MotionIO12V",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AftLidHarness",
+      "AftLidGland",
+      "Cable through compression gland bore"
+    ],
+    [
+      "AftLidHarness",
+      "AftLidHarnessClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "AftLidHarness",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AftLidHarness",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "AftLidHarness",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForeLidHarness",
+      "ForeLidGland",
+      "Cable through compression gland bore"
+    ],
+    [
+      "ForeLidHarness",
+      "ForeLidHarnessClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "ForeLidHarness",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "ForeLidHarness",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness1",
+      "LiftGland1",
+      "Motor feed through compression gland"
+    ],
+    [
+      "LiftHarness1",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness1",
+      "ActuatorDriverMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness2",
+      "LiftGland2",
+      "Motor feed through compression gland"
+    ],
+    [
+      "LiftHarness2",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness2",
+      "ActuatorDriverMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness3",
+      "LiftGland3",
+      "Motor feed through compression gland"
+    ],
+    [
+      "LiftHarness3",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness3",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness3",
+      "ActuatorDriverMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness4",
+      "LiftGland4",
+      "Motor feed through compression gland"
+    ],
+    [
+      "LiftHarness4",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftHarness4",
+      "ActuatorDriverMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "MCU_ActuatorBackbone",
+      "MCU_ActuatorBackboneClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "MCU_ActuatorBackbone",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "MCU_ActuatorBackbone",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortESCCommand",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardESCCommand",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "DockCameraUSB",
+      "DockCameraDeckGland",
+      "Gland pass-through"
+    ],
+    [
+      "DockCameraUSB",
+      "DockCameraUSBClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "DockCameraUSB",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "DockCameraUSB",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "DockCameraUSB",
+      "CameraMastCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "DockCameraUSB",
+      "DockCameraHousingCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "NavigationCameraDeckGland",
+      "Gland pass-through"
+    ],
+    [
+      "NavigationCameraUSB",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "CameraMastBackingCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "CameraMastCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "NavigationCameraMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "NavigationCameraUSB",
+      "NavigationCameraHousingCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LoRaCoax",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "GNSSCoax",
+      "GNSSCoaxClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "GNSSCoax",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "GNSSCoax",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "EmergencyStopLoop",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "SafetyLoopContactor",
+      "SafetyLoopContactorClamps",
+      "Rubber-lined retaining saddle around specified harness"
+    ],
+    [
+      "SafetyLoopContactor",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "SafetyLoopContactor",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "SafetyLoopContactor",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "BilgePower",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "BilgePower",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "TrunkDrain",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "BilgeDischarge",
+      "BilgeAntiSiphonVent",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "BilgeDischarge",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "BilgeDischarge",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinDrainPan",
+      "CabinAftPortPickup",
+      "Sealed corner drain aperture"
+    ],
+    [
+      "CabinDrainPan",
+      "CabinForePortPickup",
+      "Sealed corner drain aperture"
+    ],
+    [
+      "CabinDrainPan",
+      "CabinAftStarboardPickup",
+      "Sealed corner drain aperture"
+    ],
+    [
+      "CabinDrainPan",
+      "CabinForeStarboardPickup",
+      "Sealed corner drain aperture"
+    ],
+    [
+      "CabinAftPortPickup",
+      "CabinAftPortSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinAftPortPickup",
+      "CabinAftPortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve1",
+      "CabinAftPortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve1",
+      "CabinWetSelectorManifold",
+      "Sealed valve-to-manifold hose socket"
+    ],
+    [
+      "CabinPickupValve1",
+      "CabinValve1Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinAftPortSuction",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinAftPortSensor",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForePortPickup",
+      "CabinForePortSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinForePortPickup",
+      "CabinForePortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve2",
+      "CabinForePortSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve2",
+      "CabinForePortSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve2",
+      "CabinWetSelectorManifold",
+      "Sealed valve-to-manifold hose socket"
+    ],
+    [
+      "CabinPickupValve2",
+      "CabinValve2Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinForePortSuction",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForePortSuction",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForePortSensor",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForePortSensor",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinAftStarboardPickup",
+      "CabinAftStarboardSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinAftStarboardPickup",
+      "CabinAftStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve3",
+      "CabinAftStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve3",
+      "CabinWetSelectorManifold",
+      "Sealed valve-to-manifold hose socket"
+    ],
+    [
+      "CabinPickupValve3",
+      "CabinValve3Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinAftStarboardSuction",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinAftStarboardSensor",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForeStarboardPickup",
+      "CabinForeStarboardSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinForeStarboardPickup",
+      "CabinForeStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve4",
+      "CabinForeStarboardSuction",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve4",
+      "CabinForeStarboardSensor",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPickupValve4",
+      "CabinWetSelectorManifold",
+      "Sealed valve-to-manifold hose socket"
+    ],
+    [
+      "CabinPickupValve4",
+      "CabinValve4Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinForeStarboardSuction",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForeStarboardSuction",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForeStarboardSensor",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinForeStarboardSensor",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinWetSelectorManifold",
+      "CabinPrimaryPump",
+      "Shared suction manifold with independent pump-head isolation/nonreturn"
+    ],
+    [
+      "CabinWetSelectorManifold",
+      "CabinBackupPump",
+      "Shared suction manifold with independent pump-head isolation/nonreturn"
+    ],
+    [
+      "CabinPrimaryPump",
+      "CabinPrimaryDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPrimaryPump",
+      "CabinPrimaryPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "CabinPrimaryOutlet",
+      "Compression gasket seals the 23 mm OD discharge hose"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "CabinPrimarySiphonVent",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "CabinPrimaryVentGuard",
+      "Rubber-lined loop support apertures"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinPrimaryDischarge",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinPrimaryOutlet",
+      "HullAccentStripe",
+      "Trim machined around sealed compression outlet flange"
+    ],
+    [
+      "CabinPrimarySiphonVent",
+      "CabinPrimaryVentGuard",
+      "Vent guard clearance envelope"
+    ],
+    [
+      "CabinBackupPump",
+      "CabinBackupDischarge",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinBackupPump",
+      "CabinBackupPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinBackupDischarge",
+      "CabinBackupOutlet",
+      "Compression gasket seals the 23 mm OD discharge hose"
+    ],
+    [
+      "CabinBackupDischarge",
+      "CabinBackupSiphonVent",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "CabinBackupDischarge",
+      "CabinBackupVentGuard",
+      "Rubber-lined loop support apertures"
+    ],
+    [
+      "CabinBackupDischarge",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinBackupDischarge",
+      "DockTrunkCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinBackupDischarge",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinBackupDischarge",
+      "ActuatorDriverMountCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinBackupOutlet",
+      "HullAccentStripe",
+      "Trim machined around sealed compression outlet flange"
+    ],
+    [
+      "CabinBackupSiphonVent",
+      "CabinBackupVentGuard",
+      "Vent guard clearance envelope"
+    ],
+    [
+      "CabinDrainConverter",
+      "CabinDrain48VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainConverter",
+      "CabinPrimaryPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainConverter",
+      "CabinBackupPower",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinDrain48VFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinDrainCAN",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinValve1Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinValve2Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinValve3Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrainController",
+      "CabinValve4Control",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "CabinDrain48VFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinPrimaryPower",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinBackupPower",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinDrainCAN",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinValve1Control",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinValve2Control",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinValve3Control",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "CabinValve4Control",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortNavigationLight",
+      "PortLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "PortLightFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "PortLightFeed",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardNavigationLight",
+      "StarboardLightFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "StarboardLightFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardLightFeed",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardLightFeed",
+      "CameraMastBackingCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "StarboardLightFeed",
+      "CameraMastCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "Speedometer",
+      "SpeedometerTicks",
+      "Declared assembly mounting / connector interface"
+    ],
+    [
+      "Speedometer",
+      "SpeedDisplayFeed",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "SpeedDisplayFeed",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidAftClosed",
+      "LidAftClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LidAftClosedWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidAftClosedWire",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidAftClosedWire",
+      "PowerShelfCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidAftOpen",
+      "LidAftOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LidAftOpenWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidAftOpenWire",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidForeClosed",
+      "LidForeClosedWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LidForeClosedWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidForeClosedWire",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidForeOpen",
+      "LidForeOpenWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LidForeOpenWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LidForeOpenWire",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftLowerLimit",
+      "LiftLowerLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftLowerLimitWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftUpperLimit",
+      "LiftUpperLimitWire",
+      "Connector/gland endpoint or specified retaining clip"
+    ],
+    [
+      "LiftUpperLimitWire",
+      "FrameLoadPathsCableLiners",
+      "Cable through drilled rubber liner"
+    ],
+    [
+      "LiftUpperLimitWire",
+      "SeparatedCableTraysCableLiners",
+      "Cable through drilled rubber liner"
+    ]
+  ],
+  "motion_sweeps": true,
+  "scope": "CAD solids, physical support, linear motion, camera angular coverage",
+  "cached_unchanged_checks": 1,
+  "changed_geometry_rechecked": true,
+  "surface_finish": {
+    "passed": true,
+    "same_facing_overlaps": 0,
+    "candidate_surface_pairs": 527,
+    "changed_parts": [
+      "CabinPrimaryPump",
+      "CabinBackupPump"
+    ],
+    "verification": "Valid solid subsets; pump feet/manifold support retained; removing material cannot create new collisions or motion obstructions."
+  }
+}

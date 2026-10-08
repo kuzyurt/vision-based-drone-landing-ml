@@ -1,0 +1,12 @@
+# Runtime state and generated full-resolution exports
+build/
+models/meshes/
+.venv/
+__pycache__/
+*.py[cod]
+*.FCBak
+*.ulg
+.pytest_cache/
+*.egg-info/
+.DS_Store
+Thumbs.db

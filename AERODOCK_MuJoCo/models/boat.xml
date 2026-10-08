@@ -1,0 +1,1350 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="AERODOCK complete CAD boat">
+  <compiler angle="radian" meshdir="../assets/meshes" texturedir="../assets/textures" inertiafromgeom="false" autolimits="true" />
+  <option timestep=".005" gravity="0 0 -9.81" integrator="implicitfast" density="0" viscosity="0" iterations="30" />
+  <statistic extent="3" center="0 0 0" />
+  <visual>
+    <global offwidth="960" offheight="540" />
+    <map znear=".000166667" zfar="200" fogstart="90" fogend="160" />
+    <quality shadowsize="1024" offsamples="2" />
+    <rgba fog=".62 .75 .82 1" />
+  </visual>
+  <asset>
+    <texture name="sky" type="skybox" builtin="gradient" rgb1=".32 .56 .76" rgb2=".86 .92 .94" width="512" height="3072" />
+    <texture name="tex_paint" type="2d" file="paint.png" />
+    <texture name="tex_grip" type="2d" file="grip.png" />
+    <texture name="tex_rubber" type="2d" file="rubber.png" />
+    <texture name="tex_metal" type="2d" file="metal.png" />
+    <texture name="tex_water" type="2d" file="water.png" />
+    <texture name="tex_wake" type="2d" file="wake.png" nchannel="4" />
+    <material name="wake_mat" texture="tex_wake" texuniform="false" rgba="1 1 1 .7" specular="0" shininess="0" emission=".15" />
+    <material name="water_mat" texture="tex_water" texuniform="true" texrepeat=".045 .045" rgba=".55 .7 .78 1" specular=".18" shininess=".6" reflectance="0" />
+    <mesh name="HullShell_plain" file="HullShell_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="HullShell_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="HullShell_textured" file="HullShell_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="HullShell_textured_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="MainDeck_plain" file="MainDeck_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MainDeck_plain_mat" rgba="0.19 0.24 0.28 1" specular=".25" shininess=".2" />
+    <mesh name="MainDeck_textured" file="MainDeck_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MainDeck_textured_mat" rgba="0.19 0.24 0.28 1" specular=".25" shininess=".2" texture="tex_grip" texrepeat="1 1" texuniform="false" />
+    <mesh name="FrameLoadPaths_plain" file="FrameLoadPaths_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="FrameLoadPaths_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="DockTrunk_plain" file="DockTrunk_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockTrunk_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="BayCoaming_plain" file="BayCoaming_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BayCoaming_plain_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" />
+    <mesh name="PerimeterSeal_plain" file="PerimeterSeal_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PerimeterSeal_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AftHatchFrame_plain" file="AftHatchFrame_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftHatchFrame_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="AftHatchSeal_plain" file="AftHatchSeal_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftHatchSeal_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AftServiceHatch_textured" file="AftServiceHatch_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftServiceHatch_textured_mat" rgba="0.19 0.24 0.28 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="ForeHatchFrame_plain" file="ForeHatchFrame_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeHatchFrame_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="ForeHatchSeal_plain" file="ForeHatchSeal_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeHatchSeal_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeServiceHatch_textured" file="ForeServiceHatch_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeServiceHatch_textured_mat" rgba="0.19 0.24 0.28 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="LandingPlatform_plain" file="LandingPlatform_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LandingPlatform_plain_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" />
+    <mesh name="LandingPlatform_textured" file="LandingPlatform_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LandingPlatform_textured_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" texture="tex_grip" texrepeat="1 1" texuniform="false" />
+    <mesh name="PlatformCarriage_plain" file="PlatformCarriage_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PlatformCarriage_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftMotor1_plain" file="LiftMotor1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftMotor1_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftScrew1_plain" file="LiftScrew1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftScrew1_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftTopSupport1_plain" file="LiftTopSupport1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftTopSupport1_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftMotor2_plain" file="LiftMotor2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftMotor2_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftScrew2_plain" file="LiftScrew2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftScrew2_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftTopSupport2_plain" file="LiftTopSupport2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftTopSupport2_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftMotor3_plain" file="LiftMotor3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftMotor3_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftScrew3_plain" file="LiftScrew3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftScrew3_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftTopSupport3_plain" file="LiftTopSupport3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftTopSupport3_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftMotor4_plain" file="LiftMotor4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftMotor4_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftScrew4_plain" file="LiftScrew4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftScrew4_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftTopSupport4_plain" file="LiftTopSupport4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftTopSupport4_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftGuideNuts_plain" file="LiftGuideNuts_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftGuideNuts_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="Guide1FixedSupports_plain" file="Guide1FixedSupports_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide1FixedSupports_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide1Rod_plain" file="Guide1Rod_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide1Rod_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide1Arm_plain" file="Guide1Arm_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide1Arm_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide1Bushing_plain" file="Guide1Bushing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide1Bushing_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="Guide2FixedSupports_plain" file="Guide2FixedSupports_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide2FixedSupports_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide2Rod_plain" file="Guide2Rod_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide2Rod_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide2Arm_plain" file="Guide2Arm_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide2Arm_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide2Bushing_plain" file="Guide2Bushing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide2Bushing_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="Guide3FixedSupports_plain" file="Guide3FixedSupports_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide3FixedSupports_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide3Rod_plain" file="Guide3Rod_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide3Rod_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide3Arm_plain" file="Guide3Arm_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide3Arm_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide3Bushing_plain" file="Guide3Bushing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide3Bushing_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="Guide4FixedSupports_plain" file="Guide4FixedSupports_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide4FixedSupports_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide4Rod_plain" file="Guide4Rod_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide4Rod_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide4Arm_plain" file="Guide4Arm_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide4Arm_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Guide4Bushing_plain" file="Guide4Bushing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Guide4Bushing_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LandingGrip_plain" file="LandingGrip_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LandingGrip_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LandingGrip_textured" file="LandingGrip_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LandingGrip_textured_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" texture="tex_grip" texrepeat="1 1" texuniform="false" />
+    <mesh name="LandingTarget_plain" file="LandingTarget_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LandingTarget_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="UAVEnvelope_plain" file="UAVEnvelope_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="UAVEnvelope_plain_mat" rgba="0.02 0.75 0.7 0" specular=".25" shininess=".2" />
+    <mesh name="LidRails_textured" file="LidRails_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidRails_textured_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" texture="tex_metal" texrepeat="1 1" texuniform="false" />
+    <mesh name="AftSlidingLid_textured" file="AftSlidingLid_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftSlidingLid_textured_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="AftLidGraphics_plain" file="AftLidGraphics_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidGraphics_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidScrew_plain" file="AftLidScrew_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidScrew_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidMotorMount_plain" file="AftLidMotorMount_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidMotorMount_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidDrive_plain" file="AftLidDrive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidDrive_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidEndBearing_plain" file="AftLidEndBearing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidEndBearing_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="ForeSlidingLid_textured" file="ForeSlidingLid_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeSlidingLid_textured_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="ForeLidGraphics_plain" file="ForeLidGraphics_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidGraphics_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidScrew_plain" file="ForeLidScrew_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidScrew_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidMotorMount_plain" file="ForeLidMotorMount_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidMotorMount_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidDrive_plain" file="ForeLidDrive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidDrive_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidEndBearing_plain" file="ForeLidEndBearing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidEndBearing_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortPropulsionMotor_plain" file="PortPropulsionMotor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPropulsionMotor_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PortCoupling_plain" file="PortCoupling_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortCoupling_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortUpperDriveShaft_plain" file="PortUpperDriveShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortUpperDriveShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortSternTube_plain" file="PortSternTube_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortSternTube_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortDropGearbox_plain" file="PortDropGearbox_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortDropGearbox_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="PortDropShaft_plain" file="PortDropShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortDropShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortUpperBevelGear_plain" file="PortUpperBevelGear_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortUpperBevelGear_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="PortLowerBevelGear_plain" file="PortLowerBevelGear_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortLowerBevelGear_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="PortPropShaft_plain" file="PortPropShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPropShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortShaftStrut_plain" file="PortShaftStrut_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortShaftStrut_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="PortPropeller_plain" file="PortPropeller_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPropeller_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="PortPropGuard_plain" file="PortPropGuard_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPropGuard_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPropulsionMotor_plain" file="StarboardPropulsionMotor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPropulsionMotor_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardCoupling_plain" file="StarboardCoupling_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardCoupling_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardUpperDriveShaft_plain" file="StarboardUpperDriveShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardUpperDriveShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardSternTube_plain" file="StarboardSternTube_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardSternTube_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardDropGearbox_plain" file="StarboardDropGearbox_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardDropGearbox_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardDropShaft_plain" file="StarboardDropShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardDropShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardUpperBevelGear_plain" file="StarboardUpperBevelGear_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardUpperBevelGear_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardLowerBevelGear_plain" file="StarboardLowerBevelGear_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardLowerBevelGear_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPropShaft_plain" file="StarboardPropShaft_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPropShaft_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardShaftStrut_plain" file="StarboardShaftStrut_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardShaftStrut_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPropeller_plain" file="StarboardPropeller_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPropeller_plain_mat" rgba="0.72 0.51 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPropGuard_plain" file="StarboardPropGuard_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPropGuard_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="AftBattery_plain" file="AftBattery_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftBattery_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AftBatteryStraps_plain" file="AftBatteryStraps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftBatteryStraps_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="AftBatteryTerminals_plain" file="AftBatteryTerminals_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftBatteryTerminals_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="ForeBattery_plain" file="ForeBattery_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeBattery_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeBatteryStraps_plain" file="ForeBatteryStraps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeBatteryStraps_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="ForeBatteryTerminals_plain" file="ForeBatteryTerminals_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeBatteryTerminals_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="PortESC_plain" file="PortESC_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortESC_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardESC_plain" file="StarboardESC_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardESC_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="FusedPowerBus_plain" file="FusedPowerBus_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="FusedPowerBus_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="IsolatedDCConverters_plain" file="IsolatedDCConverters_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="IsolatedDCConverters_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PowerShelf_plain" file="PowerShelf_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PowerShelf_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="DryElectronicsBox_plain" file="DryElectronicsBox_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DryElectronicsBox_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="ElectronicsBoxLid_plain" file="ElectronicsBoxLid_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ElectronicsBoxLid_plain_mat" rgba="0.19 0.24 0.28 1" specular=".25" shininess=".2" />
+    <mesh name="KhadasEdge2BasicStandoffs_plain" file="KhadasEdge2BasicStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="KhadasEdge2BasicStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="KhadasEdge2Basic_plain" file="KhadasEdge2Basic_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="KhadasEdge2Basic_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="KhadasEdge2BasicComponents_plain" file="KhadasEdge2BasicComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="KhadasEdge2BasicComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="SX1262RadioStandoffs_plain" file="SX1262RadioStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SX1262RadioStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="SX1262Radio_plain" file="SX1262Radio_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SX1262Radio_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="SX1262RadioComponents_plain" file="SX1262RadioComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SX1262RadioComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PoweredUSBHubStandoffs_plain" file="PoweredUSBHubStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PoweredUSBHubStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="PoweredUSBHub_plain" file="PoweredUSBHub_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PoweredUSBHub_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="PoweredUSBHubComponents_plain" file="PoweredUSBHubComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PoweredUSBHubComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="MotionMCUStandoffs_plain" file="MotionMCUStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MotionMCUStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="MotionMCU_plain" file="MotionMCU_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MotionMCU_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="MotionMCUComponents_plain" file="MotionMCUComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MotionMCUComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="MAXM10SCarrierStandoffs_plain" file="MAXM10SCarrierStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MAXM10SCarrierStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="MAXM10SCarrier_plain" file="MAXM10SCarrier_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MAXM10SCarrier_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="MAXM10SCarrierComponents_plain" file="MAXM10SCarrierComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MAXM10SCarrierComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="USBSerialBridgeStandoffs_plain" file="USBSerialBridgeStandoffs_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USBSerialBridgeStandoffs_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="USBSerialBridge_plain" file="USBSerialBridge_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USBSerialBridge_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="USBSerialBridgeComponents_plain" file="USBSerialBridgeComponents_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USBSerialBridgeComponents_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="Edge2Cooling_plain" file="Edge2Cooling_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Edge2Cooling_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="Edge2Fan_plain" file="Edge2Fan_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Edge2Fan_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="Edge2ThermalStrap_plain" file="Edge2ThermalStrap_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Edge2ThermalStrap_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="LiftAndLidDrivers_plain" file="LiftAndLidDrivers_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftAndLidDrivers_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ActuatorDriverMount_plain" file="ActuatorDriverMount_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ActuatorDriverMount_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="CameraMast_textured" file="CameraMast_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CameraMast_textured_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" texture="tex_metal" texrepeat="1 1" texuniform="false" />
+    <mesh name="CameraMastBacking_plain" file="CameraMastBacking_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CameraMastBacking_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraHousing_plain" file="DockCameraHousing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraHousing_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraHousing_textured" file="DockCameraHousing_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraHousing_textured_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="DockCameraPosts_plain" file="DockCameraPosts_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraPosts_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraB0506_plain" file="DockCameraB0506_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraB0506_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraLens_plain" file="DockCameraLens_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraLens_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraWindowGasket_plain" file="DockCameraWindowGasket_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraWindowGasket_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraWindow_plain" file="DockCameraWindow_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraWindow_plain_mat" rgba="0.15 0.46 0.95 0.45" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraMount_textured" file="NavigationCameraMount_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraMount_textured_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" texture="tex_metal" texrepeat="1 1" texuniform="false" />
+    <mesh name="NavigationCameraHousing_plain" file="NavigationCameraHousing_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraHousing_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraHousing_textured" file="NavigationCameraHousing_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraHousing_textured_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" texture="tex_paint" texrepeat="1 1" texuniform="false" />
+    <mesh name="NavigationCameraPosts_plain" file="NavigationCameraPosts_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraPosts_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraB0506_plain" file="NavigationCameraB0506_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraB0506_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraLens_plain" file="NavigationCameraLens_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraLens_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraWindowGasket_plain" file="NavigationCameraWindowGasket_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraWindowGasket_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraWindow_plain" file="NavigationCameraWindow_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraWindow_plain_mat" rgba="0.15 0.46 0.95 0.45" specular=".25" shininess=".2" />
+    <mesh name="LoRa868Antenna_plain" file="LoRa868Antenna_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LoRa868Antenna_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="GNSSAntenna_plain" file="GNSSAntenna_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="GNSSAntenna_plain_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" />
+    <mesh name="EmergencyStop_plain" file="EmergencyStop_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="EmergencyStop_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="BilgeMount_plain" file="BilgeMount_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BilgeMount_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="BilgePump_plain" file="BilgePump_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BilgePump_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="SeparatedCableTrays_plain" file="SeparatedCableTrays_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SeparatedCableTrays_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="AftPositive_plain" file="AftPositive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftPositive_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="AftNegative_plain" file="AftNegative_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftNegative_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForePositive_plain" file="ForePositive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForePositive_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="ForeNegative_plain" file="ForeNegative_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeNegative_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PortESCPositive_plain" file="PortESCPositive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortESCPositive_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="PortESCNegative_plain" file="PortESCNegative_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortESCNegative_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PortPhaseU_plain" file="PortPhaseU_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPhaseU_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="PortPhaseV_plain" file="PortPhaseV_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPhaseV_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="PortPhaseW_plain" file="PortPhaseW_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortPhaseW_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardESCPositive_plain" file="StarboardESCPositive_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardESCPositive_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardESCNegative_plain" file="StarboardESCNegative_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardESCNegative_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPhaseU_plain" file="StarboardPhaseU_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPhaseU_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPhaseV_plain" file="StarboardPhaseV_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPhaseV_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardPhaseW_plain" file="StarboardPhaseW_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardPhaseW_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="USB_HostHub_plain" file="USB_HostHub_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USB_HostHub_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="Edge2FanCable_plain" file="Edge2FanCable_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Edge2FanCable_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="USB_SX1262Radio_plain" file="USB_SX1262Radio_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USB_SX1262Radio_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="USB_MotionMCU_plain" file="USB_MotionMCU_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USB_MotionMCU_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="USB_USBSerialBridge_plain" file="USB_USBSerialBridge_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="USB_USBSerialBridge_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="GNSS_UART_plain" file="GNSS_UART_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="GNSS_UART_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="Converter48VFeed_plain" file="Converter48VFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Converter48VFeed_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="Actuator24VFeed_plain" file="Actuator24VFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Actuator24VFeed_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="AuxiliaryPower_plain" file="AuxiliaryPower_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AuxiliaryPower_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="Power_KhadasEdge2Basic_plain" file="Power_KhadasEdge2Basic_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Power_KhadasEdge2Basic_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="Power_PoweredUSBHub_plain" file="Power_PoweredUSBHub_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Power_PoweredUSBHub_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="MotionIO12V_plain" file="MotionIO12V_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MotionIO12V_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidHarness_plain" file="AftLidHarness_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidHarness_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidGland_plain" file="AftLidGland_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidGland_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidHarness_plain" file="ForeLidHarness_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidHarness_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidGland_plain" file="ForeLidGland_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidGland_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftHarness1_plain" file="LiftHarness1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftHarness1_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="LiftGland1_plain" file="LiftGland1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftGland1_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftHarness2_plain" file="LiftHarness2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftHarness2_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="LiftGland2_plain" file="LiftGland2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftGland2_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftHarness3_plain" file="LiftHarness3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftHarness3_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="LiftGland3_plain" file="LiftGland3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftGland3_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftHarness4_plain" file="LiftHarness4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftHarness4_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="LiftGland4_plain" file="LiftGland4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftGland4_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="MCU_ActuatorBackbone_plain" file="MCU_ActuatorBackbone_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MCU_ActuatorBackbone_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="PortESCCommand_plain" file="PortESCCommand_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortESCCommand_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardESCCommand_plain" file="StarboardESCCommand_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardESCCommand_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraUSB_plain" file="DockCameraUSB_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraUSB_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraDeckGland_plain" file="DockCameraDeckGland_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraDeckGland_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraUSB_plain" file="NavigationCameraUSB_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraUSB_plain_mat" rgba="0.15 0.46 0.95 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraDeckGland_plain" file="NavigationCameraDeckGland_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraDeckGland_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LoRaCoax_plain" file="LoRaCoax_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LoRaCoax_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="GNSSCoax_plain" file="GNSSCoax_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="GNSSCoax_plain_mat" rgba="0.92 0.72 0.23 1" specular=".25" shininess=".2" />
+    <mesh name="EmergencyStopLoop_plain" file="EmergencyStopLoop_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="EmergencyStopLoop_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="SafetyLoopContactor_plain" file="SafetyLoopContactor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SafetyLoopContactor_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="BilgePower_plain" file="BilgePower_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BilgePower_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="TrunkDrain_plain" file="TrunkDrain_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="TrunkDrain_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="BilgeDischarge_plain" file="BilgeDischarge_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BilgeDischarge_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="BilgeAntiSiphonVent_plain" file="BilgeAntiSiphonVent_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="BilgeAntiSiphonVent_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrainPan_plain" file="CabinDrainPan_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrainPan_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftPortPickup_plain" file="CabinAftPortPickup_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftPortPickup_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPickupValve1_plain" file="CabinPickupValve1_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPickupValve1_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftPortSuction_plain" file="CabinAftPortSuction_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftPortSuction_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftPortSensor_plain" file="CabinAftPortSensor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftPortSensor_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForePortPickup_plain" file="CabinForePortPickup_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForePortPickup_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPickupValve2_plain" file="CabinPickupValve2_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPickupValve2_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForePortSuction_plain" file="CabinForePortSuction_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForePortSuction_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForePortSensor_plain" file="CabinForePortSensor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForePortSensor_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftStarboardPickup_plain" file="CabinAftStarboardPickup_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftStarboardPickup_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPickupValve3_plain" file="CabinPickupValve3_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPickupValve3_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftStarboardSuction_plain" file="CabinAftStarboardSuction_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftStarboardSuction_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinAftStarboardSensor_plain" file="CabinAftStarboardSensor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinAftStarboardSensor_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForeStarboardPickup_plain" file="CabinForeStarboardPickup_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForeStarboardPickup_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPickupValve4_plain" file="CabinPickupValve4_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPickupValve4_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForeStarboardSuction_plain" file="CabinForeStarboardSuction_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForeStarboardSuction_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinForeStarboardSensor_plain" file="CabinForeStarboardSensor_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinForeStarboardSensor_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrainRack_plain" file="CabinDrainRack_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrainRack_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="CabinWetSelectorManifold_plain" file="CabinWetSelectorManifold_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinWetSelectorManifold_plain_mat" rgba="0.72 0.77 0.8 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimaryPump_plain" file="CabinPrimaryPump_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimaryPump_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimaryDischarge_plain" file="CabinPrimaryDischarge_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimaryDischarge_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimaryOutlet_plain" file="CabinPrimaryOutlet_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimaryOutlet_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimarySiphonVent_plain" file="CabinPrimarySiphonVent_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimarySiphonVent_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimaryVentGuard_plain" file="CabinPrimaryVentGuard_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimaryVentGuard_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupPump_plain" file="CabinBackupPump_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupPump_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupDischarge_plain" file="CabinBackupDischarge_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupDischarge_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupOutlet_plain" file="CabinBackupOutlet_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupOutlet_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupSiphonVent_plain" file="CabinBackupSiphonVent_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupSiphonVent_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupVentGuard_plain" file="CabinBackupVentGuard_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupVentGuard_plain_mat" rgba="0.065 0.11 0.16 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrainConverter_plain" file="CabinDrainConverter_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrainConverter_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrainController_plain" file="CabinDrainController_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrainController_plain_mat" rgba="0.06 0.38 0.24 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrain48VFeed_plain" file="CabinDrain48VFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrain48VFeed_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="CabinPrimaryPower_plain" file="CabinPrimaryPower_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinPrimaryPower_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="CabinBackupPower_plain" file="CabinBackupPower_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinBackupPower_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="CabinDrainCAN_plain" file="CabinDrainCAN_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinDrainCAN_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinValve1Control_plain" file="CabinValve1Control_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinValve1Control_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinValve2Control_plain" file="CabinValve2Control_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinValve2Control_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinValve3Control_plain" file="CabinValve3Control_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinValve3Control_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="CabinValve4Control_plain" file="CabinValve4Control_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CabinValve4Control_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="ForePositiveClamps_plain" file="ForePositiveClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForePositiveClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeNegativeClamps_plain" file="ForeNegativeClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeNegativeClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AuxiliaryPowerClamps_plain" file="AuxiliaryPowerClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AuxiliaryPowerClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidHarnessClamps_plain" file="AftLidHarnessClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidHarnessClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidHarnessClamps_plain" file="ForeLidHarnessClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidHarnessClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="MCU_ActuatorBackboneClamps_plain" file="MCU_ActuatorBackboneClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="MCU_ActuatorBackboneClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraUSBClamps_plain" file="DockCameraUSBClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraUSBClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="GNSSCoaxClamps_plain" file="GNSSCoaxClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="GNSSCoaxClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="SafetyLoopContactorClamps_plain" file="SafetyLoopContactorClamps_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SafetyLoopContactorClamps_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="HullAccentStripe_plain" file="HullAccentStripe_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="HullAccentStripe_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="PortRubRail_textured" file="PortRubRail_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortRubRail_textured_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" texture="tex_rubber" texrepeat="1 1" texuniform="false" />
+    <mesh name="PortDeckGrip_plain" file="PortDeckGrip_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortDeckGrip_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PortDeckGrip_textured" file="PortDeckGrip_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortDeckGrip_textured_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" texture="tex_grip" texrepeat="1 1" texuniform="false" />
+    <mesh name="PortAccentStripe_plain" file="PortAccentStripe_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortAccentStripe_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="PortNavigationLight_plain" file="PortNavigationLight_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortNavigationLight_plain_mat" rgba="0.87 0.12 0.12 1" specular=".25" shininess=".2" />
+    <mesh name="PortLightFeed_plain" file="PortLightFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PortLightFeed_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardRubRail_textured" file="StarboardRubRail_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardRubRail_textured_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" texture="tex_rubber" texrepeat="1 1" texuniform="false" />
+    <mesh name="StarboardDeckGrip_plain" file="StarboardDeckGrip_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardDeckGrip_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardDeckGrip_textured" file="StarboardDeckGrip_textured.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardDeckGrip_textured_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" texture="tex_grip" texrepeat="1 1" texuniform="false" />
+    <mesh name="StarboardAccentStripe_plain" file="StarboardAccentStripe_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardAccentStripe_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardNavigationLight_plain" file="StarboardNavigationLight_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardNavigationLight_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="StarboardLightFeed_plain" file="StarboardLightFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="StarboardLightFeed_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="Speedometer_plain" file="Speedometer_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="Speedometer_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="SpeedometerTicks_plain" file="SpeedometerTicks_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SpeedometerTicks_plain_mat" rgba="0.88 0.92 0.94 1" specular=".25" shininess=".2" />
+    <mesh name="SpeedNeedle_plain" file="SpeedNeedle_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SpeedNeedle_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="SpeedDisplayFeed_plain" file="SpeedDisplayFeed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SpeedDisplayFeed_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="AftLidLimitMagnet_plain" file="AftLidLimitMagnet_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="AftLidLimitMagnet_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="ForeLidLimitMagnet_plain" file="ForeLidLimitMagnet_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ForeLidLimitMagnet_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="LidAftClosed_plain" file="LidAftClosed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidAftClosed_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LidAftClosedWire_plain" file="LidAftClosedWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidAftClosedWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LidAftOpen_plain" file="LidAftOpen_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidAftOpen_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LidAftOpenWire_plain" file="LidAftOpenWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidAftOpenWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LidForeClosed_plain" file="LidForeClosed_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidForeClosed_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LidForeClosedWire_plain" file="LidForeClosedWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidForeClosedWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LidForeOpen_plain" file="LidForeOpen_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidForeOpen_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LidForeOpenWire_plain" file="LidForeOpenWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LidForeOpenWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LiftLowerLimit_plain" file="LiftLowerLimit_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftLowerLimit_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftLowerLimitWire_plain" file="LiftLowerLimitWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftLowerLimitWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LiftUpperLimit_plain" file="LiftUpperLimit_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftUpperLimit_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="LiftUpperLimitWire_plain" file="LiftUpperLimitWire_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftUpperLimitWire_plain_mat" rgba="0.02 0.75 0.7 1" specular=".25" shininess=".2" />
+    <mesh name="LiftLimitMagnet_plain" file="LiftLimitMagnet_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="LiftLimitMagnet_plain_mat" rgba="1 0.43 0.08 1" specular=".25" shininess=".2" />
+    <mesh name="FrameLoadPathsCableLiners_plain" file="FrameLoadPathsCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="FrameLoadPathsCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="DockTrunkCableLiners_plain" file="DockTrunkCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockTrunkCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="SeparatedCableTraysCableLiners_plain" file="SeparatedCableTraysCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="SeparatedCableTraysCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="PowerShelfCableLiners_plain" file="PowerShelfCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="PowerShelfCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="ActuatorDriverMountCableLiners_plain" file="ActuatorDriverMountCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="ActuatorDriverMountCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CameraMastBackingCableLiners_plain" file="CameraMastBackingCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CameraMastBackingCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="CameraMastCableLiners_plain" file="CameraMastCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="CameraMastCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraMountCableLiners_plain" file="NavigationCameraMountCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraMountCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="DockCameraHousingCableLiners_plain" file="DockCameraHousingCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="DockCameraHousingCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="NavigationCameraHousingCableLiners_plain" file="NavigationCameraHousingCableLiners_plain.obj" smoothnormal="false" inertia="shell" maxhullvert="32" />
+    <material name="NavigationCameraHousingCableLiners_plain_mat" rgba="0.035 0.045 0.055 1" specular=".25" shininess=".2" />
+    <mesh name="hull_collision" file="hull_collision.obj" maxhullvert="64" />
+    <texture name="tex_terrain_sand" type="2d" file="terrain_sand.png" />
+    <material name="terrain_sand" texture="tex_terrain_sand" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_grass" type="2d" file="terrain_grass.png" />
+    <material name="terrain_grass" texture="tex_terrain_grass" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_gravel" type="2d" file="terrain_gravel.png" />
+    <material name="terrain_gravel" texture="tex_terrain_gravel" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_rock" type="2d" file="terrain_rock.png" />
+    <material name="terrain_rock" texture="tex_terrain_rock" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_concrete" type="2d" file="terrain_concrete.png" />
+    <material name="terrain_concrete" texture="tex_terrain_concrete" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_asphalt" type="2d" file="terrain_asphalt.png" />
+    <material name="terrain_asphalt" texture="tex_terrain_asphalt" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_facade" type="2d" file="harbor_facade.png" />
+    <material name="terrain_facade" texture="tex_terrain_facade" texuniform="true" texrepeat="1 1" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <mesh name="scenery_buffer_0" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_1" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_2" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_3" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_4" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_5" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_6" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_7" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_8" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_9" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_10" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_11" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_12" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_13" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_14" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_15" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_16" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_17" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_18" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_19" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_20" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_21" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_22" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_23" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_24" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_25" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_26" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_27" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_28" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_29" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_30" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_31" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_32" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_33" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_34" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_35" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_36" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_37" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_38" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_39" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_40" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_41" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_42" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_43" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_44" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_45" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_46" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_47" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_48" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_49" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_50" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_51" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_52" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_53" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_54" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_55" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_56" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_57" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_58" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_59" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_60" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_61" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_62" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_63" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_64" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_65" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_66" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_67" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_68" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_69" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_70" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_71" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_72" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_73" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_74" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_75" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_76" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_77" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_78" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_79" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_80" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_81" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_82" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_83" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_84" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_85" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_86" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_87" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_88" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_89" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_90" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_91" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_92" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_93" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_94" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_95" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_96" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_97" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_98" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_99" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_100" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_101" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_102" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_103" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_104" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_105" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_106" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_107" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_108" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_109" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_110" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_111" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_112" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_113" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_114" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_115" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_116" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_117" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_118" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_119" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_120" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_121" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_122" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_123" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_124" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_125" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_126" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_127" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <texture name="tex_terrain_wet_sand" type="2d" file="terrain_wet_sand.png" />
+    <material name="terrain_wet_sand" texture="tex_terrain_wet_sand" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_grass_macro" type="2d" file="terrain_grass_macro.png" />
+    <material name="terrain_grass_macro" texture="tex_terrain_grass_macro" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_foliage" type="2d" file="terrain_foliage.png" />
+    <material name="terrain_foliage" texture="tex_terrain_foliage" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_roof" type="2d" file="terrain_roof.png" />
+    <material name="terrain_roof" texture="tex_terrain_roof" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_pavers" type="2d" file="terrain_pavers.png" />
+    <material name="terrain_pavers" texture="tex_terrain_pavers" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_quay" type="2d" file="terrain_quay.png" />
+    <material name="terrain_quay" texture="tex_terrain_quay" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_facade_brick" type="2d" file="terrain_facade_brick.png" />
+    <material name="terrain_facade_brick" texture="tex_terrain_facade_brick" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_facade_modern" type="2d" file="terrain_facade_modern.png" />
+    <material name="terrain_facade_modern" texture="tex_terrain_facade_modern" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <mesh name="scenery_buffer_128" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_129" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_130" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_131" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_132" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_133" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_134" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_135" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_136" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_137" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_138" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_139" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_140" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_141" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_142" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_143" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_144" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_145" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_146" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_147" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_148" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_149" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_150" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_151" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_152" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_153" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_154" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_155" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_156" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_157" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_158" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_159" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_160" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_161" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_162" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_163" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_164" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_165" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_166" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_167" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_168" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_169" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_170" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_171" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_172" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_173" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_174" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_175" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_176" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_177" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_178" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_179" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_180" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_181" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_182" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_183" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_184" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_185" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_186" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_187" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_188" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_189" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_190" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_191" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_192" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_193" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_194" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_195" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_196" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_197" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_198" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_199" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_200" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_201" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_202" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_203" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_204" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_205" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_206" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_207" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_208" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_209" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_210" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_211" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_212" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_213" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_214" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_215" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_216" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_217" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_218" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_219" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_220" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_221" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_222" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_223" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_224" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_225" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_226" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_227" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_228" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_229" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_230" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_231" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_232" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_233" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_234" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_235" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_236" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_237" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_238" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_239" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_240" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_241" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_242" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_243" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_244" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_245" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_246" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_247" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_248" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_249" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_250" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_251" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_252" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_253" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_254" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <mesh name="scenery_buffer_255" file="scenery_buffer.obj" inertia="shell" maxhullvert="4" />
+    <texture name="tex_terrain_rock_cliff" type="2d" file="rock_cliff_photo.png" />
+    <material name="terrain_rock_cliff" texture="tex_terrain_rock_cliff" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <texture name="tex_terrain_rock_wet" type="2d" file="terrain_rock_wet.png" />
+    <material name="terrain_rock_wet" texture="tex_terrain_rock_wet" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+    <material name="terrain_rock_boulder" texture="tex_terrain_rock" texuniform="true" texrepeat="2 2" rgba="1 1 1 1" specular=".03" shininess=".05" />
+  </asset>
+  <worldbody>
+    <light name="sun" directional="true" pos="-4 -3 8" dir=".25 .2 -1" diffuse=".78 .8 .8" ambient=".3 .32 .35" castshadow="true" />
+    <light name="fill" directional="true" pos="2 5 5" dir="-.2 -.4 -1" diffuse=".22 .26 .3" castshadow="false" />
+    <geom name="water_surface" type="plane" pos="0 0 0" size="100 100 .01" material="water_mat" contype="0" conaffinity="0" group="1" />
+    <geom name="seabed" type="plane" pos="0 0 -8" size="100 100 .1" rgba=".18 .24 .23 1" group="5" />
+    <body name="port_wake" mocap="true" pos="0 0 .001">
+      <geom name="port_wake_surface" type="box" size=".8 .18 .00008" material="wake_mat" rgba="1 1 1 0" contype="0" conaffinity="0" group="1" />
+    </body>
+    <body name="starboard_wake" mocap="true" pos="0 0 .001">
+      <geom name="starboard_wake_surface" type="box" size=".8 .18 .00008" material="wake_mat" rgba="1 1 1 0" contype="0" conaffinity="0" group="1" />
+    </body>
+    <body name="boat" pos="0 0 -.22">
+      <freejoint name="boat_free" />
+      <inertial pos="-.025 0 .32" mass="182.6" diaginertia="24.6 89 98" />
+      <body name="cabin_water" pos="-.04 0 .134">
+        <inertial pos="0 0 0" mass=".000001" diaginertia=".000000001 .000000001 .000000001" />
+      </body>
+      <geom name="hull_contact" type="mesh" mesh="hull_collision" rgba="0 0 0 0" group="5" friction=".4 .01 .001" />
+      <body name="platform" pos="-0.04 0 0.2">
+        <inertial pos="0 0 .025" mass="22" diaginertia=".82 .82 1.35" />
+        <joint name="platform_slide" type="slide" axis="0 0 1" range="0 .4" damping="80" />
+        <geom name="LandingPlatform_plain" type="mesh" mesh="LandingPlatform_plain" material="LandingPlatform_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="LandingPlatform_textured" type="mesh" mesh="LandingPlatform_textured" material="LandingPlatform_textured_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="PlatformCarriage_plain" type="mesh" mesh="PlatformCarriage_plain" material="PlatformCarriage_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="LiftGuideNuts_plain" type="mesh" mesh="LiftGuideNuts_plain" material="LiftGuideNuts_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide1Arm_plain" type="mesh" mesh="Guide1Arm_plain" material="Guide1Arm_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide1Bushing_plain" type="mesh" mesh="Guide1Bushing_plain" material="Guide1Bushing_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide2Arm_plain" type="mesh" mesh="Guide2Arm_plain" material="Guide2Arm_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide2Bushing_plain" type="mesh" mesh="Guide2Bushing_plain" material="Guide2Bushing_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide3Arm_plain" type="mesh" mesh="Guide3Arm_plain" material="Guide3Arm_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide3Bushing_plain" type="mesh" mesh="Guide3Bushing_plain" material="Guide3Bushing_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide4Arm_plain" type="mesh" mesh="Guide4Arm_plain" material="Guide4Arm_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="Guide4Bushing_plain" type="mesh" mesh="Guide4Bushing_plain" material="Guide4Bushing_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="LandingGrip_plain" type="mesh" mesh="LandingGrip_plain" material="LandingGrip_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="LandingGrip_textured" type="mesh" mesh="LandingGrip_textured" material="LandingGrip_textured_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="LandingTarget_plain" type="mesh" mesh="LandingTarget_plain" material="LandingTarget_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="UAVEnvelope_plain" type="mesh" mesh="UAVEnvelope_plain" material="UAVEnvelope_plain_mat" contype="0" conaffinity="0" group="4" />
+        <geom name="LiftLimitMagnet_plain" type="mesh" mesh="LiftLimitMagnet_plain" material="LiftLimitMagnet_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="UAVEnvelope_edge_0_1" type="capsule" fromto="-0.2 -0.2 0 0.2 -0.2 0" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_0_2" type="capsule" fromto="-0.2 -0.2 0 -0.2 0.2 0" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_0_4" type="capsule" fromto="-0.2 -0.2 0 -0.2 -0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_1_3" type="capsule" fromto="0.2 -0.2 0 0.2 0.2 0" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_1_5" type="capsule" fromto="0.2 -0.2 0 0.2 -0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_2_3" type="capsule" fromto="-0.2 0.2 0 0.2 0.2 0" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_2_6" type="capsule" fromto="-0.2 0.2 0 -0.2 0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_3_7" type="capsule" fromto="0.2 0.2 0 0.2 0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_4_5" type="capsule" fromto="-0.2 -0.2 0.35 0.2 -0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_4_6" type="capsule" fromto="-0.2 -0.2 0.35 -0.2 0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_5_7" type="capsule" fromto="0.2 -0.2 0.35 0.2 0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+        <geom name="UAVEnvelope_edge_6_7" type="capsule" fromto="-0.2 0.2 0.35 0.2 0.2 0.35" size=".001" rgba=".02 .75 .7 .7" contype="0" conaffinity="0" group="4" />
+      </body>
+      <body name="aft_lid" pos="0 0 0">
+        <inertial pos="-0.25 0 0.63" mass="4.5" diaginertia=".27 .075 .33" />
+        <joint name="aft_lid_slide" type="slide" axis="-1 0 0" range="0 .46" damping="35" />
+        <geom name="AftSlidingLid_textured" type="mesh" mesh="AftSlidingLid_textured" material="AftSlidingLid_textured_mat" contype="0" conaffinity="0" group="2" />
+        <geom name="AftLidGraphics_plain" type="mesh" mesh="AftLidGraphics_plain" material="AftLidGraphics_plain_mat" contype="0" conaffinity="0" group="2" />
+        <geom name="AftLidLimitMagnet_plain" type="mesh" mesh="AftLidLimitMagnet_plain" material="AftLidLimitMagnet_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="fore_lid" pos="0 0 0">
+        <inertial pos="0.17 0 0.63" mass="4.5" diaginertia=".27 .075 .33" />
+        <joint name="fore_lid_slide" type="slide" axis="1 0 0" range="0 .46" damping="35" />
+        <geom name="ForeSlidingLid_textured" type="mesh" mesh="ForeSlidingLid_textured" material="ForeSlidingLid_textured_mat" contype="0" conaffinity="0" group="2" />
+        <geom name="ForeLidGraphics_plain" type="mesh" mesh="ForeLidGraphics_plain" material="ForeLidGraphics_plain_mat" contype="0" conaffinity="0" group="2" />
+        <geom name="ForeLidLimitMagnet_plain" type="mesh" mesh="ForeLidLimitMagnet_plain" material="ForeLidLimitMagnet_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="port_prop" pos="-1.358 -0.205 0.06">
+        <inertial pos=".04 0 0" mass="1.0" diaginertia=".00055 .011 .011" />
+        <joint name="port_prop_spin" type="hinge" axis="1 0 0" damping=".001" />
+        <geom name="PortPropShaft_plain" type="mesh" mesh="PortPropShaft_plain" material="PortPropShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="PortPropeller_plain" type="mesh" mesh="PortPropeller_plain" material="PortPropeller_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="starboard_prop" pos="-1.358 0.205 0.06">
+        <inertial pos=".04 0 0" mass="1.0" diaginertia=".00055 .011 .011" />
+        <joint name="starboard_prop_spin" type="hinge" axis="1 0 0" damping=".001" />
+        <geom name="StarboardPropShaft_plain" type="mesh" mesh="StarboardPropShaft_plain" material="StarboardPropShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="StarboardPropeller_plain" type="mesh" mesh="StarboardPropeller_plain" material="StarboardPropeller_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="port_upper_drive" pos="-1.237 -0.205 0.23">
+        <inertial pos=".12 0 0" mass=".35" diaginertia=".001 .001 .001" />
+        <joint name="port_upper_drive_spin" type="hinge" axis="1 0 0" damping=".00001" />
+        <geom name="PortCoupling_plain" type="mesh" mesh="PortCoupling_plain" material="PortCoupling_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="PortUpperDriveShaft_plain" type="mesh" mesh="PortUpperDriveShaft_plain" material="PortUpperDriveShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="starboard_upper_drive" pos="-1.237 0.205 0.23">
+        <inertial pos=".12 0 0" mass=".35" diaginertia=".001 .001 .001" />
+        <joint name="starboard_upper_drive_spin" type="hinge" axis="1 0 0" damping=".00001" />
+        <geom name="StarboardCoupling_plain" type="mesh" mesh="StarboardCoupling_plain" material="StarboardCoupling_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="StarboardUpperDriveShaft_plain" type="mesh" mesh="StarboardUpperDriveShaft_plain" material="StarboardUpperDriveShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="port_vertical_drive" pos="-1.255 -0.205 0.06">
+        <inertial pos="0 0 .085" mass=".35" diaginertia=".001 .001 .001" />
+        <joint name="port_vertical_drive_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="PortDropShaft_plain" type="mesh" mesh="PortDropShaft_plain" material="PortDropShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="PortUpperBevelGear_plain" type="mesh" mesh="PortUpperBevelGear_plain" material="PortUpperBevelGear_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="PortLowerBevelGear_plain" type="mesh" mesh="PortLowerBevelGear_plain" material="PortLowerBevelGear_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="starboard_vertical_drive" pos="-1.255 0.205 0.06">
+        <inertial pos="0 0 .085" mass=".35" diaginertia=".001 .001 .001" />
+        <joint name="starboard_vertical_drive_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="StarboardDropShaft_plain" type="mesh" mesh="StarboardDropShaft_plain" material="StarboardDropShaft_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="StarboardUpperBevelGear_plain" type="mesh" mesh="StarboardUpperBevelGear_plain" material="StarboardUpperBevelGear_plain_mat" contype="0" conaffinity="0" group="0" />
+        <geom name="StarboardLowerBevelGear_plain" type="mesh" mesh="StarboardLowerBevelGear_plain" material="StarboardLowerBevelGear_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="speed_needle" pos="0.855 -0.21 0.611">
+        <inertial pos="0 .01 0" mass=".005" diaginertia=".000001 .000001 .000001" />
+        <joint name="speed_needle_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="SpeedNeedle_plain" type="mesh" mesh="SpeedNeedle_plain" material="SpeedNeedle_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="lift_screw_1" pos="-0.37 -0.33 0.172">
+        <inertial pos="0 0 .22" mass=".35" diaginertia=".006 .006 .000012" />
+        <joint name="lift_screw_1_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="LiftScrew1_plain" type="mesh" mesh="LiftScrew1_plain" material="LiftScrew1_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="lift_screw_2" pos="-0.37 0.33 0.172">
+        <inertial pos="0 0 .22" mass=".35" diaginertia=".006 .006 .000012" />
+        <joint name="lift_screw_2_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="LiftScrew2_plain" type="mesh" mesh="LiftScrew2_plain" material="LiftScrew2_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="lift_screw_3" pos="0.29 -0.33 0.172">
+        <inertial pos="0 0 .22" mass=".35" diaginertia=".006 .006 .000012" />
+        <joint name="lift_screw_3_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="LiftScrew3_plain" type="mesh" mesh="LiftScrew3_plain" material="LiftScrew3_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="lift_screw_4" pos="0.29 0.33 0.172">
+        <inertial pos="0 0 .22" mass=".35" diaginertia=".006 .006 .000012" />
+        <joint name="lift_screw_4_spin" type="hinge" axis="0 0 1" damping=".00001" />
+        <geom name="LiftScrew4_plain" type="mesh" mesh="LiftScrew4_plain" material="LiftScrew4_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="aft_lid_screw" pos="-0.945 -0.475 0.636">
+        <inertial pos=".46 0 0" mass=".28" diaginertia=".000006 .021 .021" />
+        <joint name="aft_lid_screw_spin" type="hinge" axis="1 0 0" damping=".00001" />
+        <geom name="AftLidScrew_plain" type="mesh" mesh="AftLidScrew_plain" material="AftLidScrew_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <body name="fore_lid_screw" pos="-0.06 0.475 0.636">
+        <inertial pos=".46 0 0" mass=".28" diaginertia=".000006 .021 .021" />
+        <joint name="fore_lid_screw_spin" type="hinge" axis="1 0 0" damping=".00001" />
+        <geom name="ForeLidScrew_plain" type="mesh" mesh="ForeLidScrew_plain" material="ForeLidScrew_plain_mat" contype="0" conaffinity="0" group="0" />
+      </body>
+      <geom name="HullShell_plain" type="mesh" mesh="HullShell_plain" material="HullShell_plain_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="HullShell_textured" type="mesh" mesh="HullShell_textured" material="HullShell_textured_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="MainDeck_plain" type="mesh" mesh="MainDeck_plain" material="MainDeck_plain_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="MainDeck_textured" type="mesh" mesh="MainDeck_textured" material="MainDeck_textured_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="FrameLoadPaths_plain" type="mesh" mesh="FrameLoadPaths_plain" material="FrameLoadPaths_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockTrunk_plain" type="mesh" mesh="DockTrunk_plain" material="DockTrunk_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BayCoaming_plain" type="mesh" mesh="BayCoaming_plain" material="BayCoaming_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PerimeterSeal_plain" type="mesh" mesh="PerimeterSeal_plain" material="PerimeterSeal_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftHatchFrame_plain" type="mesh" mesh="AftHatchFrame_plain" material="AftHatchFrame_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftHatchSeal_plain" type="mesh" mesh="AftHatchSeal_plain" material="AftHatchSeal_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftServiceHatch_textured" type="mesh" mesh="AftServiceHatch_textured" material="AftServiceHatch_textured_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="ForeHatchFrame_plain" type="mesh" mesh="ForeHatchFrame_plain" material="ForeHatchFrame_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeHatchSeal_plain" type="mesh" mesh="ForeHatchSeal_plain" material="ForeHatchSeal_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeServiceHatch_textured" type="mesh" mesh="ForeServiceHatch_textured" material="ForeServiceHatch_textured_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="LiftMotor1_plain" type="mesh" mesh="LiftMotor1_plain" material="LiftMotor1_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftTopSupport1_plain" type="mesh" mesh="LiftTopSupport1_plain" material="LiftTopSupport1_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftMotor2_plain" type="mesh" mesh="LiftMotor2_plain" material="LiftMotor2_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftTopSupport2_plain" type="mesh" mesh="LiftTopSupport2_plain" material="LiftTopSupport2_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftMotor3_plain" type="mesh" mesh="LiftMotor3_plain" material="LiftMotor3_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftTopSupport3_plain" type="mesh" mesh="LiftTopSupport3_plain" material="LiftTopSupport3_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftMotor4_plain" type="mesh" mesh="LiftMotor4_plain" material="LiftMotor4_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftTopSupport4_plain" type="mesh" mesh="LiftTopSupport4_plain" material="LiftTopSupport4_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide1FixedSupports_plain" type="mesh" mesh="Guide1FixedSupports_plain" material="Guide1FixedSupports_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide1Rod_plain" type="mesh" mesh="Guide1Rod_plain" material="Guide1Rod_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide2FixedSupports_plain" type="mesh" mesh="Guide2FixedSupports_plain" material="Guide2FixedSupports_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide2Rod_plain" type="mesh" mesh="Guide2Rod_plain" material="Guide2Rod_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide3FixedSupports_plain" type="mesh" mesh="Guide3FixedSupports_plain" material="Guide3FixedSupports_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide3Rod_plain" type="mesh" mesh="Guide3Rod_plain" material="Guide3Rod_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide4FixedSupports_plain" type="mesh" mesh="Guide4FixedSupports_plain" material="Guide4FixedSupports_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Guide4Rod_plain" type="mesh" mesh="Guide4Rod_plain" material="Guide4Rod_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidRails_textured" type="mesh" mesh="LidRails_textured" material="LidRails_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidMotorMount_plain" type="mesh" mesh="AftLidMotorMount_plain" material="AftLidMotorMount_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidDrive_plain" type="mesh" mesh="AftLidDrive_plain" material="AftLidDrive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidEndBearing_plain" type="mesh" mesh="AftLidEndBearing_plain" material="AftLidEndBearing_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidMotorMount_plain" type="mesh" mesh="ForeLidMotorMount_plain" material="ForeLidMotorMount_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidDrive_plain" type="mesh" mesh="ForeLidDrive_plain" material="ForeLidDrive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidEndBearing_plain" type="mesh" mesh="ForeLidEndBearing_plain" material="ForeLidEndBearing_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortPropulsionMotor_plain" type="mesh" mesh="PortPropulsionMotor_plain" material="PortPropulsionMotor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortSternTube_plain" type="mesh" mesh="PortSternTube_plain" material="PortSternTube_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortDropGearbox_plain" type="mesh" mesh="PortDropGearbox_plain" material="PortDropGearbox_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortShaftStrut_plain" type="mesh" mesh="PortShaftStrut_plain" material="PortShaftStrut_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortPropGuard_plain" type="mesh" mesh="PortPropGuard_plain" material="PortPropGuard_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardPropulsionMotor_plain" type="mesh" mesh="StarboardPropulsionMotor_plain" material="StarboardPropulsionMotor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardSternTube_plain" type="mesh" mesh="StarboardSternTube_plain" material="StarboardSternTube_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardDropGearbox_plain" type="mesh" mesh="StarboardDropGearbox_plain" material="StarboardDropGearbox_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardShaftStrut_plain" type="mesh" mesh="StarboardShaftStrut_plain" material="StarboardShaftStrut_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardPropGuard_plain" type="mesh" mesh="StarboardPropGuard_plain" material="StarboardPropGuard_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftBattery_plain" type="mesh" mesh="AftBattery_plain" material="AftBattery_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftBatteryStraps_plain" type="mesh" mesh="AftBatteryStraps_plain" material="AftBatteryStraps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftBatteryTerminals_plain" type="mesh" mesh="AftBatteryTerminals_plain" material="AftBatteryTerminals_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeBattery_plain" type="mesh" mesh="ForeBattery_plain" material="ForeBattery_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeBatteryStraps_plain" type="mesh" mesh="ForeBatteryStraps_plain" material="ForeBatteryStraps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeBatteryTerminals_plain" type="mesh" mesh="ForeBatteryTerminals_plain" material="ForeBatteryTerminals_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortESC_plain" type="mesh" mesh="PortESC_plain" material="PortESC_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardESC_plain" type="mesh" mesh="StarboardESC_plain" material="StarboardESC_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="FusedPowerBus_plain" type="mesh" mesh="FusedPowerBus_plain" material="FusedPowerBus_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="IsolatedDCConverters_plain" type="mesh" mesh="IsolatedDCConverters_plain" material="IsolatedDCConverters_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PowerShelf_plain" type="mesh" mesh="PowerShelf_plain" material="PowerShelf_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DryElectronicsBox_plain" type="mesh" mesh="DryElectronicsBox_plain" material="DryElectronicsBox_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ElectronicsBoxLid_plain" type="mesh" mesh="ElectronicsBoxLid_plain" material="ElectronicsBoxLid_plain_mat" contype="0" conaffinity="0" group="2" />
+      <geom name="KhadasEdge2BasicStandoffs_plain" type="mesh" mesh="KhadasEdge2BasicStandoffs_plain" material="KhadasEdge2BasicStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="KhadasEdge2Basic_plain" type="mesh" mesh="KhadasEdge2Basic_plain" material="KhadasEdge2Basic_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="KhadasEdge2BasicComponents_plain" type="mesh" mesh="KhadasEdge2BasicComponents_plain" material="KhadasEdge2BasicComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SX1262RadioStandoffs_plain" type="mesh" mesh="SX1262RadioStandoffs_plain" material="SX1262RadioStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SX1262Radio_plain" type="mesh" mesh="SX1262Radio_plain" material="SX1262Radio_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SX1262RadioComponents_plain" type="mesh" mesh="SX1262RadioComponents_plain" material="SX1262RadioComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PoweredUSBHubStandoffs_plain" type="mesh" mesh="PoweredUSBHubStandoffs_plain" material="PoweredUSBHubStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PoweredUSBHub_plain" type="mesh" mesh="PoweredUSBHub_plain" material="PoweredUSBHub_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PoweredUSBHubComponents_plain" type="mesh" mesh="PoweredUSBHubComponents_plain" material="PoweredUSBHubComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MotionMCUStandoffs_plain" type="mesh" mesh="MotionMCUStandoffs_plain" material="MotionMCUStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MotionMCU_plain" type="mesh" mesh="MotionMCU_plain" material="MotionMCU_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MotionMCUComponents_plain" type="mesh" mesh="MotionMCUComponents_plain" material="MotionMCUComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MAXM10SCarrierStandoffs_plain" type="mesh" mesh="MAXM10SCarrierStandoffs_plain" material="MAXM10SCarrierStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MAXM10SCarrier_plain" type="mesh" mesh="MAXM10SCarrier_plain" material="MAXM10SCarrier_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MAXM10SCarrierComponents_plain" type="mesh" mesh="MAXM10SCarrierComponents_plain" material="MAXM10SCarrierComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USBSerialBridgeStandoffs_plain" type="mesh" mesh="USBSerialBridgeStandoffs_plain" material="USBSerialBridgeStandoffs_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USBSerialBridge_plain" type="mesh" mesh="USBSerialBridge_plain" material="USBSerialBridge_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USBSerialBridgeComponents_plain" type="mesh" mesh="USBSerialBridgeComponents_plain" material="USBSerialBridgeComponents_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Edge2Cooling_plain" type="mesh" mesh="Edge2Cooling_plain" material="Edge2Cooling_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Edge2Fan_plain" type="mesh" mesh="Edge2Fan_plain" material="Edge2Fan_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Edge2ThermalStrap_plain" type="mesh" mesh="Edge2ThermalStrap_plain" material="Edge2ThermalStrap_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftAndLidDrivers_plain" type="mesh" mesh="LiftAndLidDrivers_plain" material="LiftAndLidDrivers_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ActuatorDriverMount_plain" type="mesh" mesh="ActuatorDriverMount_plain" material="ActuatorDriverMount_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CameraMast_textured" type="mesh" mesh="CameraMast_textured" material="CameraMast_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CameraMastBacking_plain" type="mesh" mesh="CameraMastBacking_plain" material="CameraMastBacking_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraHousing_plain" type="mesh" mesh="DockCameraHousing_plain" material="DockCameraHousing_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraHousing_textured" type="mesh" mesh="DockCameraHousing_textured" material="DockCameraHousing_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraPosts_plain" type="mesh" mesh="DockCameraPosts_plain" material="DockCameraPosts_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraB0506_plain" type="mesh" mesh="DockCameraB0506_plain" material="DockCameraB0506_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraLens_plain" type="mesh" mesh="DockCameraLens_plain" material="DockCameraLens_plain_mat" contype="0" conaffinity="0" group="3" />
+      <geom name="DockCameraWindowGasket_plain" type="mesh" mesh="DockCameraWindowGasket_plain" material="DockCameraWindowGasket_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraWindow_plain" type="mesh" mesh="DockCameraWindow_plain" material="DockCameraWindow_plain_mat" contype="0" conaffinity="0" group="3" />
+      <geom name="NavigationCameraMount_textured" type="mesh" mesh="NavigationCameraMount_textured" material="NavigationCameraMount_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraHousing_plain" type="mesh" mesh="NavigationCameraHousing_plain" material="NavigationCameraHousing_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraHousing_textured" type="mesh" mesh="NavigationCameraHousing_textured" material="NavigationCameraHousing_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraPosts_plain" type="mesh" mesh="NavigationCameraPosts_plain" material="NavigationCameraPosts_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraB0506_plain" type="mesh" mesh="NavigationCameraB0506_plain" material="NavigationCameraB0506_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraLens_plain" type="mesh" mesh="NavigationCameraLens_plain" material="NavigationCameraLens_plain_mat" contype="0" conaffinity="0" group="3" />
+      <geom name="NavigationCameraWindowGasket_plain" type="mesh" mesh="NavigationCameraWindowGasket_plain" material="NavigationCameraWindowGasket_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraWindow_plain" type="mesh" mesh="NavigationCameraWindow_plain" material="NavigationCameraWindow_plain_mat" contype="0" conaffinity="0" group="3" />
+      <geom name="LoRa868Antenna_plain" type="mesh" mesh="LoRa868Antenna_plain" material="LoRa868Antenna_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="GNSSAntenna_plain" type="mesh" mesh="GNSSAntenna_plain" material="GNSSAntenna_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="EmergencyStop_plain" type="mesh" mesh="EmergencyStop_plain" material="EmergencyStop_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BilgeMount_plain" type="mesh" mesh="BilgeMount_plain" material="BilgeMount_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BilgePump_plain" type="mesh" mesh="BilgePump_plain" material="BilgePump_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SeparatedCableTrays_plain" type="mesh" mesh="SeparatedCableTrays_plain" material="SeparatedCableTrays_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftPositive_plain" type="mesh" mesh="AftPositive_plain" material="AftPositive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftNegative_plain" type="mesh" mesh="AftNegative_plain" material="AftNegative_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForePositive_plain" type="mesh" mesh="ForePositive_plain" material="ForePositive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeNegative_plain" type="mesh" mesh="ForeNegative_plain" material="ForeNegative_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortESCPositive_plain" type="mesh" mesh="PortESCPositive_plain" material="PortESCPositive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortESCNegative_plain" type="mesh" mesh="PortESCNegative_plain" material="PortESCNegative_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortPhaseU_plain" type="mesh" mesh="PortPhaseU_plain" material="PortPhaseU_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortPhaseV_plain" type="mesh" mesh="PortPhaseV_plain" material="PortPhaseV_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortPhaseW_plain" type="mesh" mesh="PortPhaseW_plain" material="PortPhaseW_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardESCPositive_plain" type="mesh" mesh="StarboardESCPositive_plain" material="StarboardESCPositive_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardESCNegative_plain" type="mesh" mesh="StarboardESCNegative_plain" material="StarboardESCNegative_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardPhaseU_plain" type="mesh" mesh="StarboardPhaseU_plain" material="StarboardPhaseU_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardPhaseV_plain" type="mesh" mesh="StarboardPhaseV_plain" material="StarboardPhaseV_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardPhaseW_plain" type="mesh" mesh="StarboardPhaseW_plain" material="StarboardPhaseW_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USB_HostHub_plain" type="mesh" mesh="USB_HostHub_plain" material="USB_HostHub_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Edge2FanCable_plain" type="mesh" mesh="Edge2FanCable_plain" material="Edge2FanCable_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USB_SX1262Radio_plain" type="mesh" mesh="USB_SX1262Radio_plain" material="USB_SX1262Radio_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USB_MotionMCU_plain" type="mesh" mesh="USB_MotionMCU_plain" material="USB_MotionMCU_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="USB_USBSerialBridge_plain" type="mesh" mesh="USB_USBSerialBridge_plain" material="USB_USBSerialBridge_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="GNSS_UART_plain" type="mesh" mesh="GNSS_UART_plain" material="GNSS_UART_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Converter48VFeed_plain" type="mesh" mesh="Converter48VFeed_plain" material="Converter48VFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Actuator24VFeed_plain" type="mesh" mesh="Actuator24VFeed_plain" material="Actuator24VFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AuxiliaryPower_plain" type="mesh" mesh="AuxiliaryPower_plain" material="AuxiliaryPower_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Power_KhadasEdge2Basic_plain" type="mesh" mesh="Power_KhadasEdge2Basic_plain" material="Power_KhadasEdge2Basic_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Power_PoweredUSBHub_plain" type="mesh" mesh="Power_PoweredUSBHub_plain" material="Power_PoweredUSBHub_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MotionIO12V_plain" type="mesh" mesh="MotionIO12V_plain" material="MotionIO12V_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidHarness_plain" type="mesh" mesh="AftLidHarness_plain" material="AftLidHarness_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidGland_plain" type="mesh" mesh="AftLidGland_plain" material="AftLidGland_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidHarness_plain" type="mesh" mesh="ForeLidHarness_plain" material="ForeLidHarness_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidGland_plain" type="mesh" mesh="ForeLidGland_plain" material="ForeLidGland_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftHarness1_plain" type="mesh" mesh="LiftHarness1_plain" material="LiftHarness1_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftGland1_plain" type="mesh" mesh="LiftGland1_plain" material="LiftGland1_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftHarness2_plain" type="mesh" mesh="LiftHarness2_plain" material="LiftHarness2_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftGland2_plain" type="mesh" mesh="LiftGland2_plain" material="LiftGland2_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftHarness3_plain" type="mesh" mesh="LiftHarness3_plain" material="LiftHarness3_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftGland3_plain" type="mesh" mesh="LiftGland3_plain" material="LiftGland3_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftHarness4_plain" type="mesh" mesh="LiftHarness4_plain" material="LiftHarness4_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftGland4_plain" type="mesh" mesh="LiftGland4_plain" material="LiftGland4_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MCU_ActuatorBackbone_plain" type="mesh" mesh="MCU_ActuatorBackbone_plain" material="MCU_ActuatorBackbone_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortESCCommand_plain" type="mesh" mesh="PortESCCommand_plain" material="PortESCCommand_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardESCCommand_plain" type="mesh" mesh="StarboardESCCommand_plain" material="StarboardESCCommand_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraUSB_plain" type="mesh" mesh="DockCameraUSB_plain" material="DockCameraUSB_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraDeckGland_plain" type="mesh" mesh="DockCameraDeckGland_plain" material="DockCameraDeckGland_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraUSB_plain" type="mesh" mesh="NavigationCameraUSB_plain" material="NavigationCameraUSB_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraDeckGland_plain" type="mesh" mesh="NavigationCameraDeckGland_plain" material="NavigationCameraDeckGland_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LoRaCoax_plain" type="mesh" mesh="LoRaCoax_plain" material="LoRaCoax_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="GNSSCoax_plain" type="mesh" mesh="GNSSCoax_plain" material="GNSSCoax_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="EmergencyStopLoop_plain" type="mesh" mesh="EmergencyStopLoop_plain" material="EmergencyStopLoop_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SafetyLoopContactor_plain" type="mesh" mesh="SafetyLoopContactor_plain" material="SafetyLoopContactor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BilgePower_plain" type="mesh" mesh="BilgePower_plain" material="BilgePower_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="TrunkDrain_plain" type="mesh" mesh="TrunkDrain_plain" material="TrunkDrain_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BilgeDischarge_plain" type="mesh" mesh="BilgeDischarge_plain" material="BilgeDischarge_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="BilgeAntiSiphonVent_plain" type="mesh" mesh="BilgeAntiSiphonVent_plain" material="BilgeAntiSiphonVent_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrainPan_plain" type="mesh" mesh="CabinDrainPan_plain" material="CabinDrainPan_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftPortPickup_plain" type="mesh" mesh="CabinAftPortPickup_plain" material="CabinAftPortPickup_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPickupValve1_plain" type="mesh" mesh="CabinPickupValve1_plain" material="CabinPickupValve1_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftPortSuction_plain" type="mesh" mesh="CabinAftPortSuction_plain" material="CabinAftPortSuction_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftPortSensor_plain" type="mesh" mesh="CabinAftPortSensor_plain" material="CabinAftPortSensor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForePortPickup_plain" type="mesh" mesh="CabinForePortPickup_plain" material="CabinForePortPickup_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPickupValve2_plain" type="mesh" mesh="CabinPickupValve2_plain" material="CabinPickupValve2_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForePortSuction_plain" type="mesh" mesh="CabinForePortSuction_plain" material="CabinForePortSuction_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForePortSensor_plain" type="mesh" mesh="CabinForePortSensor_plain" material="CabinForePortSensor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftStarboardPickup_plain" type="mesh" mesh="CabinAftStarboardPickup_plain" material="CabinAftStarboardPickup_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPickupValve3_plain" type="mesh" mesh="CabinPickupValve3_plain" material="CabinPickupValve3_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftStarboardSuction_plain" type="mesh" mesh="CabinAftStarboardSuction_plain" material="CabinAftStarboardSuction_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinAftStarboardSensor_plain" type="mesh" mesh="CabinAftStarboardSensor_plain" material="CabinAftStarboardSensor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForeStarboardPickup_plain" type="mesh" mesh="CabinForeStarboardPickup_plain" material="CabinForeStarboardPickup_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPickupValve4_plain" type="mesh" mesh="CabinPickupValve4_plain" material="CabinPickupValve4_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForeStarboardSuction_plain" type="mesh" mesh="CabinForeStarboardSuction_plain" material="CabinForeStarboardSuction_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinForeStarboardSensor_plain" type="mesh" mesh="CabinForeStarboardSensor_plain" material="CabinForeStarboardSensor_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrainRack_plain" type="mesh" mesh="CabinDrainRack_plain" material="CabinDrainRack_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinWetSelectorManifold_plain" type="mesh" mesh="CabinWetSelectorManifold_plain" material="CabinWetSelectorManifold_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimaryPump_plain" type="mesh" mesh="CabinPrimaryPump_plain" material="CabinPrimaryPump_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimaryDischarge_plain" type="mesh" mesh="CabinPrimaryDischarge_plain" material="CabinPrimaryDischarge_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimaryOutlet_plain" type="mesh" mesh="CabinPrimaryOutlet_plain" material="CabinPrimaryOutlet_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimarySiphonVent_plain" type="mesh" mesh="CabinPrimarySiphonVent_plain" material="CabinPrimarySiphonVent_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimaryVentGuard_plain" type="mesh" mesh="CabinPrimaryVentGuard_plain" material="CabinPrimaryVentGuard_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupPump_plain" type="mesh" mesh="CabinBackupPump_plain" material="CabinBackupPump_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupDischarge_plain" type="mesh" mesh="CabinBackupDischarge_plain" material="CabinBackupDischarge_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupOutlet_plain" type="mesh" mesh="CabinBackupOutlet_plain" material="CabinBackupOutlet_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupSiphonVent_plain" type="mesh" mesh="CabinBackupSiphonVent_plain" material="CabinBackupSiphonVent_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupVentGuard_plain" type="mesh" mesh="CabinBackupVentGuard_plain" material="CabinBackupVentGuard_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrainConverter_plain" type="mesh" mesh="CabinDrainConverter_plain" material="CabinDrainConverter_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrainController_plain" type="mesh" mesh="CabinDrainController_plain" material="CabinDrainController_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrain48VFeed_plain" type="mesh" mesh="CabinDrain48VFeed_plain" material="CabinDrain48VFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinPrimaryPower_plain" type="mesh" mesh="CabinPrimaryPower_plain" material="CabinPrimaryPower_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinBackupPower_plain" type="mesh" mesh="CabinBackupPower_plain" material="CabinBackupPower_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinDrainCAN_plain" type="mesh" mesh="CabinDrainCAN_plain" material="CabinDrainCAN_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinValve1Control_plain" type="mesh" mesh="CabinValve1Control_plain" material="CabinValve1Control_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinValve2Control_plain" type="mesh" mesh="CabinValve2Control_plain" material="CabinValve2Control_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinValve3Control_plain" type="mesh" mesh="CabinValve3Control_plain" material="CabinValve3Control_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CabinValve4Control_plain" type="mesh" mesh="CabinValve4Control_plain" material="CabinValve4Control_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForePositiveClamps_plain" type="mesh" mesh="ForePositiveClamps_plain" material="ForePositiveClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeNegativeClamps_plain" type="mesh" mesh="ForeNegativeClamps_plain" material="ForeNegativeClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AuxiliaryPowerClamps_plain" type="mesh" mesh="AuxiliaryPowerClamps_plain" material="AuxiliaryPowerClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="AftLidHarnessClamps_plain" type="mesh" mesh="AftLidHarnessClamps_plain" material="AftLidHarnessClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ForeLidHarnessClamps_plain" type="mesh" mesh="ForeLidHarnessClamps_plain" material="ForeLidHarnessClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="MCU_ActuatorBackboneClamps_plain" type="mesh" mesh="MCU_ActuatorBackboneClamps_plain" material="MCU_ActuatorBackboneClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraUSBClamps_plain" type="mesh" mesh="DockCameraUSBClamps_plain" material="DockCameraUSBClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="GNSSCoaxClamps_plain" type="mesh" mesh="GNSSCoaxClamps_plain" material="GNSSCoaxClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SafetyLoopContactorClamps_plain" type="mesh" mesh="SafetyLoopContactorClamps_plain" material="SafetyLoopContactorClamps_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="HullAccentStripe_plain" type="mesh" mesh="HullAccentStripe_plain" material="HullAccentStripe_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortRubRail_textured" type="mesh" mesh="PortRubRail_textured" material="PortRubRail_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortDeckGrip_plain" type="mesh" mesh="PortDeckGrip_plain" material="PortDeckGrip_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortDeckGrip_textured" type="mesh" mesh="PortDeckGrip_textured" material="PortDeckGrip_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortAccentStripe_plain" type="mesh" mesh="PortAccentStripe_plain" material="PortAccentStripe_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortNavigationLight_plain" type="mesh" mesh="PortNavigationLight_plain" material="PortNavigationLight_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PortLightFeed_plain" type="mesh" mesh="PortLightFeed_plain" material="PortLightFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardRubRail_textured" type="mesh" mesh="StarboardRubRail_textured" material="StarboardRubRail_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardDeckGrip_plain" type="mesh" mesh="StarboardDeckGrip_plain" material="StarboardDeckGrip_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardDeckGrip_textured" type="mesh" mesh="StarboardDeckGrip_textured" material="StarboardDeckGrip_textured_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardAccentStripe_plain" type="mesh" mesh="StarboardAccentStripe_plain" material="StarboardAccentStripe_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardNavigationLight_plain" type="mesh" mesh="StarboardNavigationLight_plain" material="StarboardNavigationLight_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="StarboardLightFeed_plain" type="mesh" mesh="StarboardLightFeed_plain" material="StarboardLightFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="Speedometer_plain" type="mesh" mesh="Speedometer_plain" material="Speedometer_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SpeedometerTicks_plain" type="mesh" mesh="SpeedometerTicks_plain" material="SpeedometerTicks_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SpeedDisplayFeed_plain" type="mesh" mesh="SpeedDisplayFeed_plain" material="SpeedDisplayFeed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidAftClosed_plain" type="mesh" mesh="LidAftClosed_plain" material="LidAftClosed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidAftClosedWire_plain" type="mesh" mesh="LidAftClosedWire_plain" material="LidAftClosedWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidAftOpen_plain" type="mesh" mesh="LidAftOpen_plain" material="LidAftOpen_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidAftOpenWire_plain" type="mesh" mesh="LidAftOpenWire_plain" material="LidAftOpenWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidForeClosed_plain" type="mesh" mesh="LidForeClosed_plain" material="LidForeClosed_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidForeClosedWire_plain" type="mesh" mesh="LidForeClosedWire_plain" material="LidForeClosedWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidForeOpen_plain" type="mesh" mesh="LidForeOpen_plain" material="LidForeOpen_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LidForeOpenWire_plain" type="mesh" mesh="LidForeOpenWire_plain" material="LidForeOpenWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftLowerLimit_plain" type="mesh" mesh="LiftLowerLimit_plain" material="LiftLowerLimit_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftLowerLimitWire_plain" type="mesh" mesh="LiftLowerLimitWire_plain" material="LiftLowerLimitWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftUpperLimit_plain" type="mesh" mesh="LiftUpperLimit_plain" material="LiftUpperLimit_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="LiftUpperLimitWire_plain" type="mesh" mesh="LiftUpperLimitWire_plain" material="LiftUpperLimitWire_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="FrameLoadPathsCableLiners_plain" type="mesh" mesh="FrameLoadPathsCableLiners_plain" material="FrameLoadPathsCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockTrunkCableLiners_plain" type="mesh" mesh="DockTrunkCableLiners_plain" material="DockTrunkCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="SeparatedCableTraysCableLiners_plain" type="mesh" mesh="SeparatedCableTraysCableLiners_plain" material="SeparatedCableTraysCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="PowerShelfCableLiners_plain" type="mesh" mesh="PowerShelfCableLiners_plain" material="PowerShelfCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="ActuatorDriverMountCableLiners_plain" type="mesh" mesh="ActuatorDriverMountCableLiners_plain" material="ActuatorDriverMountCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CameraMastBackingCableLiners_plain" type="mesh" mesh="CameraMastBackingCableLiners_plain" material="CameraMastBackingCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="CameraMastCableLiners_plain" type="mesh" mesh="CameraMastCableLiners_plain" material="CameraMastCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraMountCableLiners_plain" type="mesh" mesh="NavigationCameraMountCableLiners_plain" material="NavigationCameraMountCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="DockCameraHousingCableLiners_plain" type="mesh" mesh="DockCameraHousingCableLiners_plain" material="DockCameraHousingCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <geom name="NavigationCameraHousingCableLiners_plain" type="mesh" mesh="NavigationCameraHousingCableLiners_plain" material="NavigationCameraHousingCableLiners_plain_mat" contype="0" conaffinity="0" group="0" />
+      <camera name="DockCamera" pos="0.89 0 1.15" xyaxes="0 1 -0 -0.343364283 0 0.939202305" fovy="67.7" />
+      <camera name="NavigationCamera" pos="1.06 0 0.666" xyaxes="0 -1 0 -0 0 1" fovy="67.7" />
+      <site name="port_thrust" pos="-1.358 -0.205 0.06" size=".012" rgba="0 0 0 0" group="5" />
+      <site name="starboard_thrust" pos="-1.358 0.205 0.06" size=".012" rgba="0 0 0 0" group="5" />
+    </body>
+    <body name="shore_proxy_0" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_0" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_1" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_1" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_2" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_2" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_3" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_3" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_4" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_4" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_5" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_5" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_6" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_6" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_7" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_7" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_8" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_8" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_9" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_9" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_10" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_10" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_11" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_11" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_12" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_12" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_13" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_13" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_14" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_14" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+    <body name="shore_proxy_15" mocap="true" pos="0 0 -50">
+      <geom name="shore_contact_15" type="box" size="2 1 5" rgba="0 0 0 0" group="5" contype="0" conaffinity="0" friction=".5 .01 .001" solref=".03 1" />
+    </body>
+  </worldbody>
+  <actuator>
+    <position name="lift_position" joint="platform_slide" kp="18000" kv="1100" ctrlrange="0 .4" forcerange="-1600 1600" />
+    <position name="aft_lid_position" joint="aft_lid_slide" kp="10000" kv="450" ctrlrange="0 .46" forcerange="-600 600" />
+    <position name="fore_lid_position" joint="fore_lid_slide" kp="10000" kv="450" ctrlrange="0 .46" forcerange="-600 600" />
+    <velocity name="port_prop_velocity" joint="port_prop_spin" kv=".08" ctrlrange="-450 450" forcerange="-8 8" />
+    <velocity name="starboard_prop_velocity" joint="starboard_prop_spin" kv=".08" ctrlrange="-450 450" forcerange="-8 8" />
+    <position name="speed_needle_position" joint="speed_needle_spin" kp=".002" kv=".00008" ctrlrange="-3.2 3.2" />
+  </actuator>
+  <equality>
+    <joint name="port_upper_drive_ratio" joint1="port_upper_drive_spin" joint2="port_prop_spin" polycoef="0 1 0 0 0" solref=".015 1" />
+    <joint name="starboard_upper_drive_ratio" joint1="starboard_upper_drive_spin" joint2="starboard_prop_spin" polycoef="0 1 0 0 0" solref=".015 1" />
+    <joint name="port_vertical_drive_ratio" joint1="port_vertical_drive_spin" joint2="port_prop_spin" polycoef="0 1 0 0 0" solref=".015 1" />
+    <joint name="starboard_vertical_drive_ratio" joint1="starboard_vertical_drive_spin" joint2="starboard_prop_spin" polycoef="0 1 0 0 0" solref=".015 1" />
+    <joint name="lift_screw_1_pitch" joint1="lift_screw_1_spin" joint2="platform_slide" polycoef="0 1570.7963267948965 0 0 0" solref=".015 1" />
+    <joint name="lift_screw_2_pitch" joint1="lift_screw_2_spin" joint2="platform_slide" polycoef="0 1570.7963267948965 0 0 0" solref=".015 1" />
+    <joint name="lift_screw_3_pitch" joint1="lift_screw_3_spin" joint2="platform_slide" polycoef="0 1570.7963267948965 0 0 0" solref=".015 1" />
+    <joint name="lift_screw_4_pitch" joint1="lift_screw_4_spin" joint2="platform_slide" polycoef="0 1570.7963267948965 0 0 0" solref=".015 1" />
+    <joint name="aft_lid_screw_pitch" joint1="aft_lid_screw_spin" joint2="aft_lid_slide" polycoef="0 -1570.7963267948965 0 0 0" solref=".015 1" />
+    <joint name="fore_lid_screw_pitch" joint1="fore_lid_screw_spin" joint2="fore_lid_slide" polycoef="0 1570.7963267948965 0 0 0" solref=".015 1" />
+  </equality>
+</mujoco>

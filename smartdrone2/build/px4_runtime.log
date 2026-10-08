@@ -1,0 +1,56 @@
+
+______  __   __    ___ 
+| ___ \ \ \ / /   /   |
+| |_/ /  \ V /   / /| |
+|  __/   /   \  / /_| |
+| |     / /^\ \ \___  |
+\_|     \/   \/     |_/
+
+px4 starting.
+
+INFO  [px4] startup script: /bin/sh /mnt/d/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/smartdrone2/sim/px4_rcS.sh 0
+env SYS_AUTOSTART: 10016
+INFO  [param] selected parameter default file parameters.bson
+INFO  [param] importing from 'parameters.bson'
+INFO  [parameters] BSON document size 1342 bytes, decoded 1342 bytes (INT32:22, FLOAT:40)
+INFO  [param] selected parameter backup file parameters_backup.bson
+INFO  [dataman] data manager file './dataman' size is 1208528 bytes
+INFO  [init] PX4_SIM_HOSTNAME: 192.168.16.1
+INFO  [simulator_mavlink] using TCP on remote host 192.168.16.1 port 4560
+WARN  [simulator_mavlink] Please ensure port 4560 is not blocked by a firewall.
+INFO  [simulator_mavlink] Waiting for simulator to accept connection on TCP port 4560
+INFO  [simulator_mavlink] Simulator connected on TCP port 4560.
+INFO  [lockstep_scheduler] setting initial absolute time to 1516000 us
+INFO  [commander] LED: open /dev/led0 failed (22)
+INFO  [uxrce_dds_client] init UDP agent IP:127.0.0.1, port:8888
+INFO  [mavlink] mode: Normal, data rate: 4000000 B/s on udp port 18570 remote port 14550
+INFO  [mavlink] mode: Onboard, data rate: 4000000 B/s on udp port 14580 remote port 14540
+INFO  [mavlink] mode: Onboard, data rate: 4000 B/s on udp port 14280 remote port 14030
+INFO  [mavlink] mode: Gimbal, data rate: 400000 B/s on udp port 13030 remote port 13280
+INFO  [logger] logger started (mode=all)
+INFO  [logger] Start file log (type: full)
+INFO  [logger] [logger] ./log/2026-10-06/18_10_29.ulg	
+INFO  [logger] Opened full log file: ./log/2026-10-06/18_10_29.ulg
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [mavlink] MAVLink only on localhost (set param MAV_{i}_BROADCAST = 1 to enable network)
+INFO  [mavlink] mode: Onboard, data rate: 150000 B/s on udp port 14581 remote port 14541
+INFO  [px4] Startup script returned successfully
+INFO  [tone_alarm] home set
+INFO  [commander] [32mReady for takeoff![0m
+INFO  [commander] Armed by external command	
+INFO  [tone_alarm] arming warning
+INFO  [commander] Takeoff detected	
+INFO  [commander] Landing at current position	
+INFO  [commander] Landing detected	
+INFO  [commander] Disarmed by external command	
+INFO  [tone_alarm] notify neutral
+INFO  [logger] closed logfile, bytes written: 135679722
+INFO  [commander] Armed by external command	
+INFO  [tone_alarm] arming warning
+INFO  [logger] Start file log (type: full)
+INFO  [logger] [logger] ./log/2026-10-06/18_25_13.ulg	
+INFO  [logger] Opened full log file: ./log/2026-10-06/18_25_13.ulg
+INFO  [commander] Takeoff detected	
+WARN  [health_and_arming_checks] Preflight Fail: Attitude failure (roll)
+WARN  [failsafe] Failsafe activated	
+ERROR [simulator_mavlink] poll timeout 0, 25

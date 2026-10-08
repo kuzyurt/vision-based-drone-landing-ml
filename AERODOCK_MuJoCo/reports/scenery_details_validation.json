@@ -1,0 +1,132 @@
+{
+  "passed": true,
+  "visible_grounded_trunks_checked": 93,
+  "world_render_cases": [
+    {
+      "kind": "island",
+      "seed": 42,
+      "scenery_geoms": 340,
+      "visible_chunks": 22,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "island",
+      "seed": 17,
+      "scenery_geoms": 350,
+      "visible_chunks": 23,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "island",
+      "seed": 2026,
+      "scenery_geoms": 308,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "beach",
+      "seed": 42,
+      "scenery_geoms": 320,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "beach",
+      "seed": 17,
+      "scenery_geoms": 320,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "beach",
+      "seed": 2026,
+      "scenery_geoms": 320,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "gravel",
+      "seed": 42,
+      "scenery_geoms": 350,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "gravel",
+      "seed": 17,
+      "scenery_geoms": 350,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "gravel",
+      "seed": 2026,
+      "scenery_geoms": 350,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "city",
+      "seed": 42,
+      "scenery_geoms": 402,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "city",
+      "seed": 17,
+      "scenery_geoms": 404,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "city",
+      "seed": 2026,
+      "scenery_geoms": 402,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "rock",
+      "seed": 42,
+      "scenery_geoms": 80,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "rock",
+      "seed": 17,
+      "scenery_geoms": 80,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    },
+    {
+      "kind": "rock",
+      "seed": 2026,
+      "scenery_geoms": 80,
+      "visible_chunks": 20,
+      "render_radius_m": 380.0,
+      "scenery_budget_exceeded": false
+    }
+  ],
+  "checks": [
+    "Full-height stems attach to terrain and overlap crowns at both detail levels",
+    "Three seeds per family render without losing built-in shape resources",
+    "Rock coast has steep cliffs and nine angular boulders per near chunk",
+    "All scenery stays within its scene/cache budget"
+  ]
+}

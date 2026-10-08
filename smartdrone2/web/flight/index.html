@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>X500 · Flight lab</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,Segoe UI,system-ui,sans-serif;background:#0b1015;color:#dfe7ef}
+    *{box-sizing:border-box}body{margin:0}header{height:72px;border-bottom:1px solid #27343e;display:flex;align-items:center;justify-content:space-between;padding:0 30px}
+    h1{font-size:21px;letter-spacing:-.4px;margin:0;font-weight:600}h1 span{font-size:12px;color:#7d939f;font-weight:400;margin-left:18px}
+    .status{font-size:13px;color:#85c5bb;display:flex;align-items:center;gap:10px}.dot{width:7px;height:7px;background:#77bcb0;border-radius:50%}
+    main{max-width:1600px;margin:auto;padding:26px 30px}.views{display:grid;grid-template-columns:1.3fr 1fr;gap:20px}
+    .panel{border:1px solid #26353f;border-radius:9px;background:#111a22;overflow:hidden}.panel-title{display:flex;justify-content:space-between;padding:15px 18px;font-size:13px;color:#d5e1e9;letter-spacing:.3px}.panel-title span{color:#718895;font-size:11px}
+    .picture{width:100%;aspect-ratio:16/9;background:#070c11;display:block;object-fit:contain}#world{cursor:zoom-in}
+    .metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:20px 0}.metric{background:#111a22;border:1px solid #26353f;border-radius:7px;padding:15px 18px}.metric label{font-size:11px;color:#7c919f;display:block;margin-bottom:7px}.metric strong{font-size:21px;font-weight:500}.metric strong small{font-size:12px;color:#8095a3;margin-left:5px}
+    .controls{display:flex;align-items:center;gap:10px;margin:24px 0 18px;flex-wrap:wrap}
+    button,a.btn,select,input{background:#17242e;border:1px solid #344653;border-radius:5px;color:#cedde7;padding:10px 14px;font-size:12px;text-decoration:none}button,a.btn,select{cursor:pointer}
+    button.primary{background:#9acfc4;color:#112d28;border-color:#9acfc4;font-weight:600}button:disabled{opacity:.35;cursor:wait}button:hover:not(:disabled){filter:brightness(1.15)}a.btn{margin-left:auto}
+    .environment{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:#111a22;border:1px solid #26353f;border-radius:7px;padding:14px 18px;margin-bottom:22px;font-size:12px}
+    .environment label{display:flex;align-items:center;gap:9px;color:#8ba1af}.environment input{width:96px}.environment select{max-width:180px}.wind-readout{color:#9acfc4;margin-left:auto}.hint{font-size:11px;color:#718895}
+    kbd{border:1px solid #3a4c59;border-bottom-width:2px;border-radius:4px;background:#1c2a35;padding:3px 7px;font-size:11px;color:#b8cbd7}
+    .guide{display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:12px;color:#899daa;line-height:2.1}.guide b{display:block;color:#c2d5e0;font-size:12px;font-weight:500;margin-bottom:6px}
+    .note{font-size:11px;color:#91a0a9;line-height:1.7;border-top:1px solid #26353f;padding-top:16px;margin-top:25px}.note a{color:#9acfc4}
+    details{margin-top:14px;color:#728a99;font-size:11px}pre{white-space:pre-wrap;line-height:1.6;padding:12px;background:#080f15}.focus{font-size:12px;color:#9acfc4}.strike{color:#f0b88c;font-size:12px;margin:0 0 18px;min-height:16px}
+    @media(max-width:950px){.views{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}header,main{padding-left:16px;padding-right:16px}h1 span{display:none}.guide{grid-template-columns:1fr}.wind-readout{margin-left:0}}
+  </style>
+</head>
+<body>
+<header><h1>X500 <span>FREECAD ASSEMBLY · PX4 / MUJOCO</span></h1><div class="status"><i class="dot"></i><span id="status">Connecting to flight simulator</span></div></header>
+<main>
+  <section class="views">
+    <div class="panel"><div class="panel-title">Flight scene <span>SCROLL TO ZOOM</span></div><img id="world" class="picture" alt="Live MuJoCo view of the assembled drone. Scroll to zoom."></div>
+    <div class="panel"><div class="panel-title">Onboard camera <span>LIVE · PAN / TILT</span></div><img id="camera" class="picture" alt="Live video from the camera cover center"></div>
+  </section>
+  <div class="metrics">
+    <div class="metric"><label>Height</label><strong id="height">—</strong></div><div class="metric"><label>Ground speed</label><strong id="speed">—</strong></div>
+    <div class="metric"><label>Pan / tilt</label><strong id="angles">—</strong></div><div class="metric"><label>Battery / current</label><strong id="power">—</strong></div><div class="metric"><label>Aircraft mass</label><strong id="mass">—</strong></div>
+  </div>
+  <div class="controls">
+    <button class="primary" id="takeoff" disabled>Take off · 1.5 m</button><button data-action="land">Land</button><button data-action="hover">Hover</button>
+    <button id="reset">Reset scene</button><button data-action="camera_reset">Center camera</button><button id="keyboard">Enable keyboard</button><span id="focus" class="focus">Keyboard inactive</span>
+    <a class="btn" href="/inspection/" target="_blank">Inspect assembly ↗</a>
+  </div>
+  <div class="environment">
+    <label>Wind <select id="wind" aria-label="Wind scenario"><option value="calm">Calm</option><option value="steady2">Steady · 2 m/s</option><option value="steady6">Steady · 6 m/s</option><option value="steady8">Steady · 8 m/s</option><option value="steady10">Steady · 10 m/s</option><option value="breeze">Breeze · 2 m/s + gusts</option><option value="gusty">Gusty · 4 m/s + gusts</option></select></label>
+    <label>Toward <select id="direction" aria-label="Wind direction"><option value="0">East</option><option value="90">North</option><option value="180">West</option><option value="270">South</option></select></label>
+    <label>Seed <input id="seed" type="number" min="0" max="4294967295" value="714" step="1" aria-label="Wind seed"></label>
+    <span class="hint">Reset repeats the selected wind sequence.</span><span class="wind-readout" id="windSpeed">0.0 m/s</span>
+  </div>
+  <p id="strike" class="strike" hidden></p>
+  <div class="guide">
+    <div><b>Aircraft controls</b><kbd>W</kbd> forward · <kbd>S</kbd> back · <kbd>A</kbd> left · <kbd>D</kbd> right<br><kbd>R</kbd> ascend · <kbd>F</kbd> descend · <kbd>Q</kbd> / <kbd>E</kbd> aircraft yaw<br><kbd>Space</kbd> hover · <kbd>Esc</kbd> release keyboard</div>
+    <div><b>Camera controls</b><kbd>←</kbd> / <kbd>→</kbd> continuous pan through 360°<br><kbd>↑</kbd> / <kbd>↓</kbd> tilt from −61° to +140°<br>Mouse wheel over the flight scene zooms the external view.</div>
+  </div>
+  <div class="note">CAD-derived geometry · manufacturer-informed propulsion · seeded wind disturbances. Aerodynamic coefficients and failure behavior are configurable simulation choices. <a href="/docs/environment.md" target="_blank">Physics details</a> · <a href="/docs/hardware.md" target="_blank">Parts and cost</a></div>
+  <details><summary>Controller messages</summary><pre id="messages">Waiting for PX4…</pre></details>
+</main>
+<script>
+let ws,keys=new Set(),keyboard=false;
+const $=id=>document.getElementById(id);
+const valid=new Set(['KeyW','KeyA','KeyS','KeyD','KeyQ','KeyE','KeyR','KeyF','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space','Escape']);
+function send(action,cameraStep,extra={}){if(ws?.readyState===1)ws.send(JSON.stringify({keys:[...keys],action:action||null,camera_step:cameraStep||null,...extra}));}
+function focusKeyboard(enabled){keyboard=enabled;keys.clear();$('focus').textContent=enabled?'Keyboard active':'Keyboard inactive';$('keyboard').textContent=enabled?'Release keyboard':'Enable keyboard';send();}
+$('keyboard').onclick=()=>focusKeyboard(!keyboard);
+$('takeoff').onclick=()=>{send('takeoff');focusKeyboard(true);};
+$('reset').onclick=()=>{focusKeyboard(false);$('reset').disabled=true;send('reset');};
+document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>{if(b.dataset.action==='hover')keys.clear();send(b.dataset.action);});
+function changeWind(){const seed=Number($('seed').value);if(!Number.isInteger(seed)||seed<0||seed>=4294967296){$('seed').reportValidity();return;}send(null,null,{environment:{profile:$('wind').value,seed,direction_deg:Number($('direction').value)}});}
+for(const id of ['wind','direction','seed'])$(id).addEventListener('change',changeWind);
+$('world').addEventListener('wheel',event=>{event.preventDefault();const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?450:1);send(null,null,{zoom:Math.max(-500,Math.min(500,delta))});},{passive:false});
+window.addEventListener('keydown',e=>{if(!keyboard||!valid.has(e.code))return;e.preventDefault();if(e.code==='Escape'){focusKeyboard(false);return;}if(e.code==='Space'){keys.clear();send('hover');return;}keys.add(e.code);const step=e.repeat?null:({ArrowLeft:[1,0],ArrowRight:[-1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.code]||null);send(null,step);});
+window.addEventListener('keyup',e=>{if(valid.has(e.code)){keys.delete(e.code);if(keyboard)e.preventDefault();send();}});
+window.addEventListener('blur',()=>{keys.clear();send();});
+function connect(){
+  ws=new WebSocket(`${location.protocol==='https:'?'wss':'ws'}://${location.host}/ws`);
+  ws.onclose=()=>{keys.clear();$('status').textContent='Disconnected — reconnecting';setTimeout(connect,1500);};
+  ws.onmessage=event=>{
+    const p=JSON.parse(event.data),t=p.telemetry;
+    $('status').textContent=t.status;$('takeoff').disabled=!t.ready||t.armed;$('reset').disabled=t.status.startsWith('Resetting');
+    for(const [id,img] of Object.entries(p.images||{}))$(id).src='data:image/jpeg;base64,'+img;
+    if(t.mass_kg){
+      $('height').innerHTML=t.height_m.toFixed(2)+'<small>m</small>';$('speed').innerHTML=Math.hypot(...t.velocity_m_s.slice(0,2)).toFixed(2)+'<small>m/s</small>';
+      $('angles').textContent=t.pan_deg.toFixed(0)+'° / '+t.tilt_deg.toFixed(0)+'°';$('power').innerHTML=t.battery_V.toFixed(1)+'<small>V · '+t.current_A.toFixed(1)+' A · '+t.battery_percent.toFixed(1)+'%'+(t.power_limited?' · limited':'')+'</small>';
+      $('mass').innerHTML=t.mass_kg.toFixed(3)+'<small>kg</small>';
+    }
+    if(t.environment){
+      $('windSpeed').textContent=Math.hypot(...t.environment.velocity_m_s).toFixed(1)+' m/s';
+      if(document.activeElement!==$('wind'))$('wind').value=t.environment.profile;
+      if(document.activeElement!==$('seed'))$('seed').value=t.environment.seed;
+      const direction=String(t.environment.direction_deg);
+      if(![...$('direction').options].some(o=>o.value===direction))$('direction').add(new Option(direction+'°',direction));
+      if(document.activeElement!==$('direction'))$('direction').value=direction;
+    }
+    const strikes=(t.failed_rotors||[]).flatMap((failed,i)=>failed?[i+1]:[]);$('strike').hidden=!strikes.length;$('strike').textContent='Propeller strike · rotor '+strikes.join(', ')+' disabled. Reset scene to restore flight.';
+    $('messages').textContent=(t.messages||[]).join('\n');
+  };
+}
+setInterval(()=>send(),100);connect();
+</script>
+</body></html>

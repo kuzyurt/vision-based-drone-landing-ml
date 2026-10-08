@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "seed_reproducible": true,
+  "reset_repeats_wind": true,
+  "quadratic_dissipative_drag": true,
+  "collision_geoms": 303,
+  "obstacle_contact_parts_tested": [
+    "CombinedShell",
+    "Shell003",
+    "Body004",
+    "Body005",
+    "LinkGroup005__Solid003",
+    "LinkGroup005__LinkGroup__Solid012",
+    "LinkGroup005__LinkGroup__Solid022",
+    "Solid051",
+    "Solid052",
+    "Solid053",
+    "Solid054"
+  ],
+  "mass_unchanged_kg": 2.066217510819889,
+  "scope": "integration_and_physical_invariants_not_airframe_validation"
+}

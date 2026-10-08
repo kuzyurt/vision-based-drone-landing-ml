@@ -1,0 +1,84 @@
+{
+  "items": [
+    {
+      "component": "Holybro X500 V2 PX4 development kit, Pixhawk 6C / M10",
+      "quantity": 1,
+      "source_price": "609.00",
+      "source_currency": "USD",
+      "source": "https://holybro.com/products/px4-development-kit-x500-v2",
+      "tax": "checkout taxes/import charges excluded",
+      "status": "listed_manufacturer_offer",
+      "unit_eur": "543.56",
+      "checked_on": "2026-10-05"
+    },
+    {
+      "component": "ALLXF D-80Pro 40x-4K spherical gimbal camera",
+      "quantity": 1,
+      "source_price": "860.00",
+      "source_currency": "USD",
+      "source": "https://allxf.com/product/d-80pro-40x-4k-spherical-gimbal-camera/",
+      "tax": "checkout taxes/import charges excluded; GCU inclusion unresolved",
+      "status": "listed_manufacturer_offer",
+      "unit_eur": "767.58",
+      "checked_on": "2026-10-05"
+    },
+    {
+      "component": "Khadas Edge2 Basic Maker Kit KEG2-B-001",
+      "quantity": 1,
+      "source_price": "239.95",
+      "source_currency": "EUR",
+      "source": "https://www.soundimports.eu/en/khadas-keg2-b-001.html",
+      "tax": "retailer VAT included",
+      "status": "listed_exact_variant_retailer_offer",
+      "unit_eur": "239.95",
+      "checked_on": "2026-10-05"
+    },
+    {
+      "component": "XIAO ESP32S3 with SX1262 module",
+      "quantity": 1,
+      "source_price": "9.00",
+      "source_currency": "EUR",
+      "source": null,
+      "tax": "not specified",
+      "status": "approximate_user_supplied_price",
+      "unit_eur": "9.00",
+      "checked_on": "2026-10-05"
+    },
+    {
+      "component": "Lumenier NAV 12000mAh 4S 21700 Amprius XT60",
+      "quantity": 1,
+      "source_price": "218.99",
+      "source_currency": "USD",
+      "source": "https://www.lumenier.com/products/lumenier-nav-12000mah-4s-21700-amprius-lithium-ion-battery-xt60",
+      "tax": "checkout taxes/import charges excluded",
+      "status": "listed_manufacturer_offer_out_of_stock",
+      "unit_eur": "195.46",
+      "checked_on": "2026-10-05"
+    }
+  ],
+  "eur_subtotal": "1755.55",
+  "date": "2026-10-05",
+  "usd_per_eur": "1.1204",
+  "exchange_source": "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html",
+  "basis": "mixed_tax_reference_parts_subtotal_not_delivered_or_complete_build_cost",
+  "kit_includes": [
+    "frame",
+    "Pixhawk6C",
+    "PM02V3",
+    "M10GPS",
+    "SiKtelemetry",
+    "4 KV920 motors",
+    "4 ESCs",
+    "PDB",
+    "6 propellers (4 installed,2 spares)",
+    "retainers"
+  ],
+  "exclusions": [
+    "shipping",
+    "import taxes/duties and conversion fees where not already included",
+    "custom mounts and wiring",
+    "charger",
+    "unknown GCU supply/inclusion",
+    "CAD PM06 versus included kit PM02 difference"
+  ]
+}

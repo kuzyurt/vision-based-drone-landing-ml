@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "world_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    17,
+    42,
+    2026
+  ],
+  "stones_checked": 2085,
+  "floating_stones": 0,
+  "highest_stone_bottom_above_surface_m": -0.09000206653548393,
+  "scenery": {
+    "scenery_geoms": 350,
+    "visible_chunks": 20,
+    "render_radius_m": 380.0,
+    "scenery_budget_exceeded": false
+  }
+}

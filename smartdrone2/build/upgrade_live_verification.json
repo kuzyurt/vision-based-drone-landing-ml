@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "wind_seed_preserved_on_reset": true,
+  "physics_and_PX4_reset": true,
+  "zoom_changes_camera_only": true,
+  "windy_hover_max_horizontal_offset_m": 0.1657683542192689,
+  "wind_speed_observed_max_m_s": 3.354097588271883,
+  "failed_rotors_at_obstacle": [
+    true,
+    true,
+    false,
+    false
+  ],
+  "strike_position_m": [
+    3.5490915901088305,
+    0.06470623940641819,
+    1.4929270944711597
+  ],
+  "reset_cleared_rotor_failures": true,
+  "final_position_m": [
+    2.665648772709814e-07,
+    -2.314909252789985e-06,
+    0.21523203395285193
+  ],
+  "scope": "native_PX4_software_integration_not_hardware_validation"
+}

@@ -1,0 +1,19 @@
+{
+  "cover_center_source_m": [
+    0.0235,
+    0.100939178,
+    -1.734723475976807e-18
+  ],
+  "optical_center_source_m": [
+    0.025,
+    0.100939178,
+    -1.734723475976807e-18
+  ],
+  "optical_forward_zero_pose": [
+    1,
+    0,
+    0
+  ],
+  "fovy_deg": 36.1,
+  "lens_calibration_status": "manufacturer_ALLXF_D80Pro_wide_vertical_FOV_lens_center_from_CAD"
+}

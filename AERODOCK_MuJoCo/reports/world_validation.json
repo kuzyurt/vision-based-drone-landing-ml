@@ -1,0 +1,87 @@
+{
+  "passed": true,
+  "checks": [
+    "island: 5 map seeds, repeatability, route variance, all mission sequences, offshore clearance and variable speed",
+    "beach: 5 map seeds, repeatability, route variance, all mission sequences, offshore clearance and variable speed",
+    "city: 5 map seeds, repeatability, route variance, all mission sequences, offshore clearance and variable speed",
+    "gravel: 5 map seeds, repeatability, route variance, all mission sequences, offshore clearance and variable speed",
+    "rock: 5 map seeds, repeatability, route variance, all mission sequences, offshore clearance and variable speed",
+    "island: local chunk rendering, GPU ground patches and bounded geometry; complete green core",
+    "island: physical motor-driven route following with waves",
+    "beach: local chunk rendering, GPU ground patches and bounded geometry",
+    "beach: physical motor-driven route following with waves",
+    "city: local chunk rendering, GPU ground patches and bounded geometry",
+    "city: physical motor-driven route following with waves",
+    "gravel: local chunk rendering, GPU ground patches and bounded geometry",
+    "gravel: physical motor-driven route following with waves",
+    "rock: local chunk rendering, GPU ground patches and bounded geometry",
+    "rock: physical motor-driven route following with waves",
+    "Actual motor-driven departure, open-sea and approach segments",
+    "New path preserves map; manual motor override, resumption and emergency stop",
+    "Shoreline contacts active at shore and absent in open water, independent of rendered chunks",
+    "All 281 CAD boat parts retained"
+  ],
+  "families": [
+    {
+      "kind": "island",
+      "coastline_m": 2172.541503255736,
+      "max_route_error_m": 0.016,
+      "minimum_boat_clearance_m": 18.28,
+      "scenery": {
+        "scenery_geoms": 290,
+        "visible_chunks": 20,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "beach",
+      "coastline_m": 2136.430019820139,
+      "max_route_error_m": 0.032,
+      "minimum_boat_clearance_m": 11.92,
+      "scenery": {
+        "scenery_geoms": 283,
+        "visible_chunks": 19,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "city",
+      "coastline_m": 2082.1873805316022,
+      "max_route_error_m": 0.031,
+      "minimum_boat_clearance_m": 11.97,
+      "scenery": {
+        "scenery_geoms": 363,
+        "visible_chunks": 18,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "gravel",
+      "coastline_m": 2136.430019820139,
+      "max_route_error_m": 0.032,
+      "minimum_boat_clearance_m": 11.92,
+      "scenery": {
+        "scenery_geoms": 314,
+        "visible_chunks": 19,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "rock",
+      "coastline_m": 2136.430019820139,
+      "max_route_error_m": 0.032,
+      "minimum_boat_clearance_m": 11.92,
+      "scenery": {
+        "scenery_geoms": 125,
+        "visible_chunks": 19,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    }
+  ],
+  "wall_seconds": 86.83285070000056
+}
