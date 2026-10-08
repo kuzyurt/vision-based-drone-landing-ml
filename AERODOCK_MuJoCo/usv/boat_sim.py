@@ -33,17 +33,22 @@ def quaternion(roll,pitch,yaw=0.):
 
 
 class BoatSim:
-    def __init__(self,config=None):
+    def __init__(self,config=None,*,model=None,data=None):
         self.config=json.loads((ROOT/'config.json').read_text())
         if config: self.config.update(config)
         self.manifest=json.loads((ROOT/'models/manifest.json').read_text())
-        self.model=mujoco.MjModel.from_xml_path(str(ROOT/'models/boat.xml'))
+        self.model=model if model is not None else mujoco.MjModel.from_xml_path(str(ROOT/'models/boat.xml'))
         # A single larger flat plane covers kilometre-scale worlds at the same
         # draw cost; metric water tiling remains unchanged.
         self.model.geom_size[self.model.geom('water_surface').id,:2]=5000
-        self.data=mujoco.MjData(self.model)
+        self.data=data if data is not None else mujoco.MjData(self.model)
         self.boat=self.model.body('boat').id
-        self.mass=float(self.model.body_mass.sum())
+        self.free_qadr=int(self.model.jnt_qposadr[self.model.joint('boat_free').id])
+        self.free_vadr=int(self.model.jnt_dofadr[self.model.joint('boat_free').id])
+        self.boat_bodies=np.array([i for i in range(self.model.nbody) if self._in_boat_subtree(i)])
+        self.gravity=float(-self.model.opt.gravity[2])
+        self.refresh_mass()
+        self.wave_phases=np.array([0.,1.3,2.1,.7])
         cells=self.manifest['buoyancy_cells']
         self.xy=np.array([[c['x'],c['y']] for c in cells])
         self.bottom=np.array([c['bottom'] for c in cells])
@@ -69,6 +74,15 @@ class BoatSim:
         self.drainage=CabinDrainage(self)
         self.navigation=Navigation(self)
 
+    def _in_boat_subtree(self,index):
+        while index:
+            if index==self.boat:return True
+            index=int(self.model.body_parentid[index])
+        return False
+
+    def refresh_mass(self):
+        self.mass=float(self.model.body_mass[self.boat_bodies].sum())
+
     def reset(self):
         mujoco.mj_resetData(self.model,self.data)
         self.power[:]=0; self.rps[:]=0; self.targets[:]=0; self.servos[:]=0
@@ -78,13 +92,13 @@ class BoatSim:
         # Solve initial hydrostatic draft AND trim against total articulated COM.
         pose=np.array([-.22,0.,0.])
         def residual(values):
-            self.data.qpos[2]=values[0]
-            self.data.qpos[3:7]=quaternion(values[1],values[2])
+            self.data.qpos[self.free_qadr+2]=values[0]
+            self.data.qpos[self.free_qadr+3:self.free_qadr+7]=quaternion(values[1],values[2])
             mujoco.mj_forward(self.model,self.data)
             _,positions,volumes=self.submergence(calm=True)
-            forces=np.column_stack((np.zeros(len(volumes)),np.zeros(len(volumes)),volumes*self.config['water_density']*9.81))
+            forces=np.column_stack((np.zeros(len(volumes)),np.zeros(len(volumes)),volumes*self.config['water_density']*self.gravity))
             torque=np.cross(positions-self.data.subtree_com[self.boat],forces).sum(axis=0)
-            return np.array([forces[:,2].sum()-self.mass*9.81,torque[0],torque[1]])
+            return np.array([forces[:,2].sum()-self.mass*self.gravity,torque[0],torque[1]])
         for _ in range(15):
             f=residual(pose)
             if np.linalg.norm(f)<.01: break
@@ -100,9 +114,9 @@ class BoatSim:
         if nav:
             nav.manual();nav.progress=0.;nav.next_update=0.;nav.complete=False
             if nav.world:
-                route=nav.world.route;self.data.qpos[:2]=route.points[0]
+                route=nav.world.route;self.data.qpos[self.free_qadr:self.free_qadr+2]=route.points[0]
                 d=route.points[1]-route.points[0]
-                self.data.qpos[3:7]=quaternion(pose[1],pose[2],math.atan2(d[1],d[0]))
+                self.data.qpos[self.free_qadr+3:self.free_qadr+7]=quaternion(pose[1],pose[2],math.atan2(d[1],d[0]))
             nav.update_contacts(force=True)
             mujoco.mj_forward(self.model,self.data)
         return self.status()
@@ -116,9 +130,9 @@ class BoatSim:
         directions=base+np.array([0.,.38,-.52,.9])
         vectors=np.column_stack((np.cos(directions),np.sin(directions)))
         periods=self.wave_period*np.array([1.,.72,1.31,.52])
-        omega=2*np.pi/periods; k=omega*omega/9.81
+        omega=2*np.pi/periods; k=omega*omega/self.gravity
         amplitudes=self.wave_height*.5*np.array([.55,.23,.15,.07])
-        phase=(xy@vectors.T)*k-self.data.time*omega+np.array([0.,1.3,2.1,.7])
+        phase=(xy@vectors.T)*k-self.data.time*omega+self.wave_phases
         height=(np.cos(phase)*amplitudes).sum(axis=1)
         depth=np.minimum(np.zeros(len(xy)) if z is None else np.asarray(z),0.)
         attenuation=np.exp(depth[:,None]*k)
@@ -150,7 +164,7 @@ class BoatSim:
         volume=wet*self.area
         return R,positions,volume
 
-    def apply_water(self):
+    def apply_water(self,clear_forces=True):
         R,points,volumes=self.submergence()
         density=self.config['water_density']
         total_volume=float(volumes.sum())
@@ -166,7 +180,7 @@ class BoatSim:
                     np.asarray(self.config['drag_quadratic'])*np.abs(body_v)*body_v)*weights[:,None]
         forces=drag_body@R.T
         drag_power=float(np.sum(forces*relative))
-        forces[:,2]+=density*9.81*volumes
+        forces[:,2]+=density*self.gravity*volumes
         force=forces.sum(axis=0)
         torque=np.cross(points-center,forces).sum(axis=0)
         body_omega=R.T@omega
@@ -185,12 +199,12 @@ class BoatSim:
             thrust=density*n*n*D**4*kt*immersion
             f=R[:,0]*thrust; force+=f; torque+=np.cross(p-center,f)
             thrusts.append(float(thrust))
-        self.data.qfrc_applied[:]=0
+        if clear_forces:self.data.qfrc_applied[:]=0
         mujoco.mj_applyFT(self.model,self.data,force,torque,center,self.boat,self.data.qfrc_applied)
         # Internal lift load compensation: does not remove payload gravity from
         # the boat's free joint or alter physical mass as body gravcomp would.
         dof=int(self.model.jnt_dofadr[self.joints['platform_slide']])
-        self.data.qfrc_applied[dof]+=self.model.body('platform').mass[0]*9.81*R[2,2]
+        self.data.qfrc_applied[dof]+=self.model.body('platform').mass[0]*self.gravity*R[2,2]
         self.last_water={'displaced_volume':total_volume,'drag_power':drag_power,'thrust_n':thrusts}
 
     def _positions(self):

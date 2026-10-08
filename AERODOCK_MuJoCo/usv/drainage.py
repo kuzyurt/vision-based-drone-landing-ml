@@ -51,7 +51,7 @@ class CabinDrainage:
         diameter=.019;area=math.pi*diameter**2/4;q=.0002
         for _ in range(10):
             velocity=q/area
-            loss=(.03*length/diameter+24)*velocity**2/(2*9.81)
+            loss=(.03*length/diameter+24)*velocity**2/(2*self.sim.gravity)
             total=max(0,head)+loss
             curve=np.interp(total,[0,1,2,7],[.23,.215,.19,0])/1000
             q=(q+curve)/2
@@ -67,7 +67,7 @@ class CabinDrainage:
         incoming+=.003*s.get_speed('m/s')**2*opened
         rims=self.rims@R.T+origin;eta,_=s.waves(rims[:,:2])
         overtopping=np.maximum(0,eta-rims[:,2])
-        incoming+=float((.6*(2/3)*math.sqrt(2*9.81)*.78*overtopping**1.5).sum()*1000)*opened
+        incoming+=float((.6*(2/3)*math.sqrt(2*s.gravity)*.78*overtopping**1.5).sum()*1000)*opened
         self.litres+=incoming*dt;self.total_ingress+=incoming*dt
         level,depth,com,R=self.geometry()
         pickup_world=self.pickups@R.T+origin;pickup_depth=level-pickup_world[:,2]
@@ -105,7 +105,7 @@ class CabinDrainage:
         s.model.stat.extent=extent;s.model.stat.center[:]=center
         mujoco.mj_setState(s.model,s.data,saved,spec)
         mujoco.mj_forward(s.model,s.data)
-        self.last_mass=mass;self.last_com=com.copy();s.mass=float(s.model.body_mass.sum())
+        self.last_mass=mass;self.last_com=com.copy();s.refresh_mass()
 
     def add(self,litres):
         litres=float(litres)

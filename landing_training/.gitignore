@@ -1,0 +1,10 @@
+.vendor/
+.venv/
+build/
+outputs/
+datasets/
+checkpoints/
+__pycache__/
+*.pyc
+*.ulg
+*.log
