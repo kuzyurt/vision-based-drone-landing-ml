@@ -1,0 +1,20 @@
+{
+  "schema": "aerodock.landing.collection.v1",
+  "policy_hz": 25,
+  "image_width": 640,
+  "image_height": 360,
+  "episode_duration_max_s": 180,
+  "initial_episodes": 1200,
+  "pilot_episodes": 60,
+  "splits": {"training": 960, "validation": 120, "test": 120},
+  "map_families": ["island", "beach", "city", "gravel", "rock"],
+  "distance_bands_m": [[0, 5], [5, 20], [20, 60]],
+  "clearance_m": [2, 8],
+  "boat_speed_m_s": [0, 1],
+  "wave_height_parameter_m": [0, 0.15],
+  "wave_period_s": [2, 5],
+  "wind_profiles": ["calm", "steady2", "breeze", "gusty"],
+  "dock": {"lids_always_open": true, "platform_always_raised": true},
+  "training": {"sequence_steps": 64, "effective_batch_sequences": 8, "learning_rate": 0.0001, "gru_hidden": 128},
+  "hardware_pending": ["live camera latency", "gimbal interface", "radio interoperability and timing", "physical calibration"]
+}
