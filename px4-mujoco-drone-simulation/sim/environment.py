@@ -23,6 +23,7 @@ class Wind:
     seed: int = 714
     direction_deg: float = 0.
     density: float = 1.225
+    mean_speed_m_s: float | None = None
 
     def __post_init__(self): self.reset()
 
@@ -39,13 +40,14 @@ class Wind:
         phase = simulation_time % p['period']
         gust = p['gust'] * math.sin(math.pi * phase / p['duration'])**2 if phase < p['duration'] else 0.
         angle = math.radians(self.direction_deg)
-        self.velocity = np.array([math.cos(angle), math.sin(angle), 0.]) * (p['speed'] + gust) + self.fluctuation
+        speed=p['speed'] if self.mean_speed_m_s is None else self.mean_speed_m_s
+        self.velocity = np.array([math.cos(angle), math.sin(angle), 0.]) * (speed + gust) + self.fluctuation
         return self.velocity
 
     def description(self):
         return {'profile': self.profile, 'seed': self.seed, 'direction_deg': self.direction_deg,
                 'velocity_m_s': self.velocity.tolist(), 'density_kg_m3': self.density,
-                'parameters': PROFILES[self.profile], 'method': 'uniform_mean_smooth_gust_seeded_OU',
+                'parameters': {**PROFILES[self.profile], 'speed':PROFILES[self.profile]['speed'] if self.mean_speed_m_s is None else self.mean_speed_m_s}, 'method': 'uniform_mean_smooth_gust_seeded_OU',
                 'provenance': 'authored_scenarios_not_measured_weather'}
 
 
