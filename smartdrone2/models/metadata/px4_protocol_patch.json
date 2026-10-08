@@ -1,0 +1,8 @@
+{
+  "base_release": "v1.16.0",
+  "base_commit": "6ea3539157ca358c70a515878b77077af7d4611d",
+  "patch_sha256": "a2b08cb3ed530a290b7ff798909dd27109ecd9dd27456e84d63c1fe20f34be65",
+  "modified_file": "src/modules/mavlink/mavlink_receiver.cpp",
+  "scope": "battery protocol units and unknown remaining-time handling",
+  "control_estimator_and_failsafe_algorithms_modified": false
+}

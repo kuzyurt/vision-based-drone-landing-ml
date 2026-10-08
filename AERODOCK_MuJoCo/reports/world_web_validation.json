@@ -1,0 +1,58 @@
+{
+  "passed": true,
+  "checks": [
+    "All five family choices create seeded kilometre-scale worlds and routes, rendered without errors",
+    "New path button preserves map, changes path and starts automatic control",
+    "Manual button, motor sliders and Follow path button switch control correctly",
+    "Emergency stop cancels route driving",
+    "World panel/minimap/seed controls render on desktop and 390 px mobile without overflow"
+  ],
+  "browser_errors": [],
+  "world_renders": [
+    {
+      "kind": "island",
+      "scenery": {
+        "scenery_geoms": 350,
+        "visible_chunks": 23,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "beach",
+      "scenery": {
+        "scenery_geoms": 226,
+        "visible_chunks": 13,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "city",
+      "scenery": {
+        "scenery_geoms": 286,
+        "visible_chunks": 13,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "gravel",
+      "scenery": {
+        "scenery_geoms": 253,
+        "visible_chunks": 13,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    },
+    {
+      "kind": "rock",
+      "scenery": {
+        "scenery_geoms": 52,
+        "visible_chunks": 13,
+        "render_radius_m": 380.0,
+        "scenery_budget_exceeded": false
+      }
+    }
+  ]
+}

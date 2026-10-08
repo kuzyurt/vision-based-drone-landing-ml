@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "mass_kg": 2.066217510819889,
+  "visual_meshes": 303,
+  "max_source_bounds_error_mm": 0.12308570330615831,
+  "pan_continuous": true,
+  "tilt_range_deg": [
+    -61,
+    140
+  ],
+  "camera_optics_verified": true,
+  "rotor_allocation_signs_verified": true,
+  "stationary_specific_force_FRD_m_s2": [
+    -0.0003268188394893439,
+    -0.0001663979399769656,
+    -9.806659000256035
+  ],
+  "gravity_in_actual_IMU_frame_m_s2": [
+    -4.866641287385343e-07,
+    -0.00010421927133925354,
+    -9.806649999442394
+  ],
+  "rest_sensor_average_seconds": 1.0,
+  "pack_current_limit_A": 29.999924000433055,
+  "source_unchanged": true,
+  "calibration_status": "PROVISIONAL_NOT_VALIDATED_FOR_REAL_FLIGHT_TRANSFER"
+}

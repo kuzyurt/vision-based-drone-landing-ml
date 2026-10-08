@@ -1,0 +1,5287 @@
+{
+  "palette": {
+    "carbon_fibre_plate": {
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "inferred": true,
+      "note": "X500 class airframes are carbon plate; the source file states no material"
+    },
+    "carbon_fibre_tube": {
+      "rgb": [
+        0.045,
+        0.048,
+        0.055
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.38,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "inferred": false,
+      "note": "named CARBON-FIBER-TUBE in the model"
+    },
+    "aluminium": {
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "inferred": true,
+      "note": ""
+    },
+    "aluminium_matte": {
+      "rgb": [
+        0.52,
+        0.53,
+        0.55
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.52,
+      "metallic": 0.75,
+      "density_gcm3": 2.7,
+      "inferred": true,
+      "note": ""
+    },
+    "steel": {
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "inferred": false,
+      "note": ""
+    },
+    "stainless": {
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "inferred": false,
+      "note": ""
+    },
+    "nylon": {
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "inferred": true,
+      "note": ""
+    },
+    "eva_foam": {
+      "rgb": [
+        0.09,
+        0.09,
+        0.1
+      ],
+      "texture": null,
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "density_gcm3": 0.25,
+      "inferred": true,
+      "note": "JIAO-EVA: EVA foam gasket between frame plates"
+    },
+    "tpu": {
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "inferred": false,
+      "note": "TP_1R5 is 1.5 mm TPU"
+    },
+    "copper": {
+      "rgb": [
+        0.72,
+        0.45,
+        0.2
+      ],
+      "texture": null,
+      "roughness": 0.25,
+      "metallic": 0.95,
+      "density_gcm3": 8.96,
+      "inferred": false,
+      "note": ""
+    },
+    "pcb": {
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "inferred": true,
+      "note": ""
+    },
+    "electronics": {
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "inferred": true,
+      "note": ""
+    },
+    "battery_blue": {
+      "rgb": [
+        0.1,
+        0.28,
+        0.56
+      ],
+      "texture": null,
+      "roughness": 0.68,
+      "metallic": 0.02,
+      "density_gcm3": 2.1,
+      "inferred": false,
+      "note": "blue colour stated in the part's own label"
+    },
+    "sx1262_black": {
+      "rgb": [
+        0.035,
+        0.035,
+        0.038
+      ],
+      "texture": null,
+      "roughness": 0.7,
+      "metallic": 0.05,
+      "density_gcm3": 2.2,
+      "inferred": false,
+      "note": "Xiao ESP32-S3 board, specified black"
+    },
+    "camera_grey": {
+      "rgb": [
+        0.42,
+        0.43,
+        0.44
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.48,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "inferred": false,
+      "note": "y-axis camera, specified grey"
+    },
+    "camera_grey_bright": {
+      "rgb": [
+        0.62,
+        0.63,
+        0.64
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.44,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "inferred": false,
+      "note": "x-axis camera, specified a brighter grey"
+    },
+    "cover_black": {
+      "rgb": [
+        0.025,
+        0.025,
+        0.028
+      ],
+      "texture": null,
+      "roughness": 0.62,
+      "metallic": 0.05,
+      "density_gcm3": 1.2,
+      "inferred": false,
+      "note": "camera cover, specified black; belongs to the y-axis camera"
+    },
+    "prop_black": {
+      "rgb": [
+        0.06,
+        0.06,
+        0.07
+      ],
+      "texture": null,
+      "roughness": 0.4,
+      "metallic": 0.1,
+      "density_gcm3": 1.55,
+      "inferred": false,
+      "note": "10x4.5R propeller, one per body with its own tint"
+    }
+  },
+  "prop_tints": {
+    "prop_1": [
+      0.85,
+      0.28,
+      0.24
+    ],
+    "prop_2": [
+      0.28,
+      0.5,
+      0.9
+    ],
+    "prop_3": [
+      0.3,
+      0.78,
+      0.4
+    ],
+    "prop_4": [
+      0.92,
+      0.78,
+      0.25
+    ]
+  },
+  "assignments": {
+    "LinkGroup005__Solid": {
+      "label": "BOTTOM-PLATE-X500-V5",
+      "body": "base_link",
+      "material": "carbon_fibre_plate",
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid001": {
+      "label": "TOP-PLATE-X500-V5",
+      "body": "base_link",
+      "material": "carbon_fibre_plate",
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid002": {
+      "label": "JIA-LIANJIE",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid003": {
+      "label": "GUAN-CHENG",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid004": {
+      "label": "JIAO-LIANJIE",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid005": {
+      "label": "CARBON-FIBER-TUBE",
+      "body": "base_link",
+      "material": "carbon_fibre_tube",
+      "rgb": [
+        0.045,
+        0.048,
+        0.055
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.38,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid006": {
+      "label": "JIAO-EVA",
+      "body": "base_link",
+      "material": "eva_foam",
+      "rgb": [
+        0.09,
+        0.09,
+        0.1
+      ],
+      "texture": null,
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "density_gcm3": 0.25,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link": {
+      "label": "JIAO-EVA001",
+      "body": "base_link",
+      "material": "eva_foam",
+      "rgb": [
+        0.09,
+        0.09,
+        0.1
+      ],
+      "texture": null,
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "density_gcm3": 0.25,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid007": {
+      "label": "MAO-JIAO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link001": {
+      "label": "MAO-JIAO001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid008": {
+      "label": "GB70-M3-25-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid009": {
+      "label": "LM-M3-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid010": {
+      "label": "GB70-M3-8-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link002": {
+      "label": "GB70-M3-8-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link003": {
+      "label": "LM-M3-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link004": {
+      "label": "LM-M3-DING002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link005": {
+      "label": "LM-M3-DING003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid011": {
+      "label": "GB70-M3-21-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link006": {
+      "label": "JIA-LIANJIE001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link007": {
+      "label": "GUAN-CHENG001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link008": {
+      "label": "JIAO-LIANJIE001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link009": {
+      "label": "CARBON-FIBER-TUBE001",
+      "body": "base_link",
+      "material": "carbon_fibre_tube",
+      "rgb": [
+        0.045,
+        0.048,
+        0.055
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.38,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link010": {
+      "label": "JIAO-EVA002",
+      "body": "base_link",
+      "material": "eva_foam",
+      "rgb": [
+        0.09,
+        0.09,
+        0.1
+      ],
+      "texture": null,
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "density_gcm3": 0.25,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link011": {
+      "label": "JIAO-EVA003",
+      "body": "base_link",
+      "material": "eva_foam",
+      "rgb": [
+        0.09,
+        0.09,
+        0.1
+      ],
+      "texture": null,
+      "roughness": 0.9,
+      "metallic": 0.0,
+      "density_gcm3": 0.25,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link012": {
+      "label": "MAO-JIAO002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link013": {
+      "label": "MAO-JIAO003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link014": {
+      "label": "LM-M3-DING004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link015": {
+      "label": "LM-M3-DING005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link016": {
+      "label": "LM-M3-DING006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link017": {
+      "label": "GB70-M3-8-DING002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link018": {
+      "label": "GB70-M3-8-DING003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link019": {
+      "label": "GB70-M3-21-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link020": {
+      "label": "GB70-M3-25-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link021": {
+      "label": "LM-M3-DING007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid012": {
+      "label": "HMX5V-GUAN-DINGWEI",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid013": {
+      "label": "HMX5V-ZUO-DJ-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid014": {
+      "label": "HMX5V-JIBI-JIA-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link022": {
+      "label": "HMX5V-JIBI-JIA-MUJU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid015": {
+      "label": "HMX5V-DIGAI-DIANJIZUO-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid016": {
+      "label": "BAN-DJ-DIAN-F2",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid017": {
+      "label": "GB70-M25-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link023": {
+      "label": "GB70-M25-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link024": {
+      "label": "GB70-M25-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link025": {
+      "label": "GB70-M25-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid018": {
+      "label": "GB70-M3-38",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link026": {
+      "label": "GB70-M3-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link027": {
+      "label": "GB70-M3-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link028": {
+      "label": "GB70-M3-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid019": {
+      "label": "GB70-M25-12",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link029": {
+      "label": "GB70-M25-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid020": {
+      "label": "GB70-M25-10",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link030": {
+      "label": "GB70-M25-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid021": {
+      "label": "ZSLM-M3-FALAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link031": {
+      "label": "ZSLM-M3-FALAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link032": {
+      "label": "ZSLM-M3-FALAN002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link033": {
+      "label": "ZSLM-M3-FALAN003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid022": {
+      "label": "DJ-2216-KV880",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Solid023": {
+      "label": "GB70-M3-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link034": {
+      "label": "GB70-M3-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link035": {
+      "label": "GB70-M3-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup__Link036": {
+      "label": "GB70-M3-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid012": {
+      "label": "HMX5V-GUAN-DINGWEI",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid013": {
+      "label": "HMX5V-ZUO-DJ-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid014": {
+      "label": "HMX5V-JIBI-JIA-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link022": {
+      "label": "HMX5V-JIBI-JIA-MUJU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid015": {
+      "label": "HMX5V-DIGAI-DIANJIZUO-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid016": {
+      "label": "BAN-DJ-DIAN-F2",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid017": {
+      "label": "GB70-M25-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link023": {
+      "label": "GB70-M25-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link024": {
+      "label": "GB70-M25-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link025": {
+      "label": "GB70-M25-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid018": {
+      "label": "GB70-M3-38",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link026": {
+      "label": "GB70-M3-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link027": {
+      "label": "GB70-M3-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link028": {
+      "label": "GB70-M3-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid019": {
+      "label": "GB70-M25-12",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link029": {
+      "label": "GB70-M25-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid020": {
+      "label": "GB70-M25-10",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link030": {
+      "label": "GB70-M25-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid021": {
+      "label": "ZSLM-M3-FALAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link031": {
+      "label": "ZSLM-M3-FALAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link032": {
+      "label": "ZSLM-M3-FALAN002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link033": {
+      "label": "ZSLM-M3-FALAN003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid022": {
+      "label": "DJ-2216-KV880",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Solid023": {
+      "label": "GB70-M3-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link034": {
+      "label": "GB70-M3-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link035": {
+      "label": "GB70-M3-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link037__Link036": {
+      "label": "GB70-M3-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid012": {
+      "label": "HMX5V-GUAN-DINGWEI",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid013": {
+      "label": "HMX5V-ZUO-DJ-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid014": {
+      "label": "HMX5V-JIBI-JIA-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link022": {
+      "label": "HMX5V-JIBI-JIA-MUJU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid015": {
+      "label": "HMX5V-DIGAI-DIANJIZUO-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid016": {
+      "label": "BAN-DJ-DIAN-F2",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid017": {
+      "label": "GB70-M25-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link023": {
+      "label": "GB70-M25-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link024": {
+      "label": "GB70-M25-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link025": {
+      "label": "GB70-M25-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid018": {
+      "label": "GB70-M3-38",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link026": {
+      "label": "GB70-M3-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link027": {
+      "label": "GB70-M3-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link028": {
+      "label": "GB70-M3-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid019": {
+      "label": "GB70-M25-12",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link029": {
+      "label": "GB70-M25-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid020": {
+      "label": "GB70-M25-10",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link030": {
+      "label": "GB70-M25-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid021": {
+      "label": "ZSLM-M3-FALAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link031": {
+      "label": "ZSLM-M3-FALAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link032": {
+      "label": "ZSLM-M3-FALAN002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link033": {
+      "label": "ZSLM-M3-FALAN003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid022": {
+      "label": "DJ-2216-KV880",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Solid023": {
+      "label": "GB70-M3-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link034": {
+      "label": "GB70-M3-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link035": {
+      "label": "GB70-M3-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link038__Link036": {
+      "label": "GB70-M3-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid012": {
+      "label": "HMX5V-GUAN-DINGWEI",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid013": {
+      "label": "HMX5V-ZUO-DJ-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid014": {
+      "label": "HMX5V-JIBI-JIA-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link022": {
+      "label": "HMX5V-JIBI-JIA-MUJU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid015": {
+      "label": "HMX5V-DIGAI-DIANJIZUO-MUJU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid016": {
+      "label": "BAN-DJ-DIAN-F2",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid017": {
+      "label": "GB70-M25-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link023": {
+      "label": "GB70-M25-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link024": {
+      "label": "GB70-M25-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link025": {
+      "label": "GB70-M25-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid018": {
+      "label": "GB70-M3-38",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link026": {
+      "label": "GB70-M3-001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link027": {
+      "label": "GB70-M3-002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link028": {
+      "label": "GB70-M3-003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid019": {
+      "label": "GB70-M25-12",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link029": {
+      "label": "GB70-M25-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid020": {
+      "label": "GB70-M25-10",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link030": {
+      "label": "GB70-M25-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid021": {
+      "label": "ZSLM-M3-FALAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link031": {
+      "label": "ZSLM-M3-FALAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link032": {
+      "label": "ZSLM-M3-FALAN002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link033": {
+      "label": "ZSLM-M3-FALAN003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid022": {
+      "label": "DJ-2216-KV880",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Solid023": {
+      "label": "GB70-M3-6",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link034": {
+      "label": "GB70-M3-004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link035": {
+      "label": "GB70-M3-005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link039__Link036": {
+      "label": "GB70-M3-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup001__Solid024": {
+      "label": "JIA-GUAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup001__Solid025": {
+      "label": "HUAN-GUIJIAO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup001__Link040": {
+      "label": "GB70-M25-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup001__Link041": {
+      "label": "GB70-M25-007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link042__Solid024": {
+      "label": "JIA-GUAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link042__Solid025": {
+      "label": "HUAN-GUIJIAO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link042__Link040": {
+      "label": "GB70-M25-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link042__Link041": {
+      "label": "GB70-M25-007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link043__Solid024": {
+      "label": "JIA-GUAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link043__Solid025": {
+      "label": "HUAN-GUIJIAO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link043__Link040": {
+      "label": "GB70-M25-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link043__Link041": {
+      "label": "GB70-M25-007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link044__Solid024": {
+      "label": "JIA-GUAN",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link044__Solid025": {
+      "label": "HUAN-GUIJIAO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link044__Link040": {
+      "label": "GB70-M25-006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link044__Link041": {
+      "label": "GB70-M25-007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid026": {
+      "label": "CARBON-FIBER-TUBE300",
+      "body": "base_link",
+      "material": "carbon_fibre_tube",
+      "rgb": [
+        0.045,
+        0.048,
+        0.055
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.38,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link045": {
+      "label": "CARBON-FIBER-TUBE301",
+      "body": "base_link",
+      "material": "carbon_fibre_tube",
+      "rgb": [
+        0.045,
+        0.048,
+        0.055
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.38,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup002__Link046": {
+      "label": "JIA-GUAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup002__Link047": {
+      "label": "HUAN-GUIJIAO001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup002__Solid027": {
+      "label": "M25-6-CHEN-LIU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup002__Link048": {
+      "label": "M25-6-CHEN-LIU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link049__Link046": {
+      "label": "JIA-GUAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link049__Link047": {
+      "label": "HUAN-GUIJIAO001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link049__Solid027": {
+      "label": "M25-6-CHEN-LIU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link049__Link048": {
+      "label": "M25-6-CHEN-LIU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link050__Link046": {
+      "label": "JIA-GUAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link050__Link047": {
+      "label": "HUAN-GUIJIAO001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link050__Solid027": {
+      "label": "M25-6-CHEN-LIU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link050__Link048": {
+      "label": "M25-6-CHEN-LIU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link051__Link046": {
+      "label": "JIA-GUAN001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link051__Link047": {
+      "label": "HUAN-GUIJIAO001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link051__Solid027": {
+      "label": "M25-6-CHEN-LIU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link051__Link048": {
+      "label": "M25-6-CHEN-LIU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid028": {
+      "label": "PYLONS-X500",
+      "body": "base_link",
+      "material": "carbon_fibre_plate",
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link052": {
+      "label": "PYLONS-X501",
+      "body": "base_link",
+      "material": "carbon_fibre_plate",
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link053": {
+      "label": "GB70-M3-8-DING004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link054": {
+      "label": "GB70-M3-8-DING005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link055": {
+      "label": "GB70-M3-8-DING006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link056": {
+      "label": "GB70-M3-8-DING007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link057": {
+      "label": "GB70-M3-8-DING008",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link058": {
+      "label": "GB70-M3-8-DING009",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link059": {
+      "label": "GB70-M3-8-DING010",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link060": {
+      "label": "GB70-M3-8-DING011",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link061": {
+      "label": "DJ-2216-KV881",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link062": {
+      "label": "DJ-2216-KV882",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link063": {
+      "label": "DJ-2216-KV883",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link064": {
+      "label": "DJ-2216-KV884",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link065": {
+      "label": "M25-6-CHEN-LIU002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link066": {
+      "label": "M25-6-CHEN-LIU003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link067": {
+      "label": "M25-6-CHEN-LIU004",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link068": {
+      "label": "M25-6-CHEN-LIU005",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid031": {
+      "label": "PLATFORM-PLAT-X500",
+      "body": "base_link",
+      "material": "carbon_fibre_plate",
+      "rgb": [
+        0.055,
+        0.058,
+        0.065
+      ],
+      "texture": "carbon_weave",
+      "roughness": 0.42,
+      "metallic": 0.15,
+      "density_gcm3": 1.55,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup003__Solid032": {
+      "label": "GPS-ZHIJIA-ZUO",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup003__Solid033": {
+      "label": "GPS-ZHIJIA-ZHUANJIETOU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup003__Solid034": {
+      "label": "GAN-GPSV5-ZHIJIA",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup003__Solid035": {
+      "label": "GPSV5-ZHIJIA-LUOMAO",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup003__Solid036": {
+      "label": "GPSV5-ZHIJIA-TUOPAN",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid037": {
+      "label": "ZHIJIA-CAMERA-INTEL",
+      "body": "base_link",
+      "material": "camera_grey",
+      "rgb": [
+        0.42,
+        0.43,
+        0.44
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.48,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid038": {
+      "label": "GAI-GUANGLIU",
+      "body": "base_link",
+      "material": "camera_grey",
+      "rgb": [
+        0.42,
+        0.43,
+        0.44
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.48,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid039": {
+      "label": "M3-16-CHEN-LIU",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link069": {
+      "label": "M3-16-CHEN-LIU001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid040": {
+      "label": "X500-TAO-XT60",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid041": {
+      "label": "LM-M3-NILONG",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link070": {
+      "label": "LM-M3-NILONG001",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid042": {
+      "label": "TOU-XT60H-M-14AWG",
+      "body": "base_link",
+      "material": "copper",
+      "rgb": [
+        0.72,
+        0.45,
+        0.2
+      ],
+      "texture": null,
+      "roughness": 0.25,
+      "metallic": 0.95,
+      "density_gcm3": 8.96,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup004__Solid043": {
+      "label": "PCB-PM06",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__LinkGroup004__Solid044": {
+      "label": "BM06B-WO",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid045": {
+      "label": "NILONGZHU-M3-5",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link071": {
+      "label": "NILONGZHU-M3-001",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link072": {
+      "label": "NILONGZHU-M3-002",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link073": {
+      "label": "NILONGZHU-M3-003",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid046": {
+      "label": "M3-14-PAN",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link074": {
+      "label": "M3-14-PAN001",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link075": {
+      "label": "M3-14-PAN002",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link076": {
+      "label": "M3-14-PAN003",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid047": {
+      "label": "ZSLM-M3-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link077": {
+      "label": "ZSLM-M3-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link078": {
+      "label": "ZSLM-M3-DING002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link079": {
+      "label": "ZSLM-M3-DING003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid048": {
+      "label": "M3-10-PAN-DING",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link080": {
+      "label": "M3-10-PAN-DING001",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link081": {
+      "label": "M3-10-PAN-DING002",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link082": {
+      "label": "M3-10-PAN-DING003",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link083": {
+      "label": "ZSLM-M3-DING004",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link084": {
+      "label": "ZSLM-M3-DING005",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link085": {
+      "label": "ZSLM-M3-DING006",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link086": {
+      "label": "ZSLM-M3-DING007",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link087": {
+      "label": "GB70-M25-008",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link088": {
+      "label": "GB70-M25-009",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link089": {
+      "label": "GB70-M25-010",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link090": {
+      "label": "GB70-M25-011",
+      "body": "base_link",
+      "material": "steel",
+      "rgb": [
+        0.45,
+        0.46,
+        0.48
+      ],
+      "texture": null,
+      "roughness": 0.22,
+      "metallic": 0.95,
+      "density_gcm3": 7.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid049": {
+      "label": "NILONGZHU-M25-5",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link091": {
+      "label": "NILONGZHU-M25-001",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link092": {
+      "label": "NILONGZHU-M25-002",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link093": {
+      "label": "NILONGZHU-M25-003",
+      "body": "base_link",
+      "material": "nylon",
+      "rgb": [
+        0.86,
+        0.85,
+        0.8
+      ],
+      "texture": null,
+      "roughness": 0.65,
+      "metallic": 0.0,
+      "density_gcm3": 1.14,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Solid050": {
+      "label": "ZSLM-M25",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link094": {
+      "label": "ZSLM-M001",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link095": {
+      "label": "ZSLM-M002",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup005__Link096": {
+      "label": "ZSLM-M003",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "CombinedShell": {
+      "label": "camera-x-axis",
+      "body": "cam_x_pan",
+      "material": "camera_grey_bright",
+      "rgb": [
+        0.62,
+        0.63,
+        0.64
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.44,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup006__Compound001": {
+      "label": "Compound001",
+      "body": "camera_mount",
+      "material": "camera_grey_bright",
+      "rgb": [
+        0.62,
+        0.63,
+        0.64
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.44,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "Shell003": {
+      "label": "camera-y-axis",
+      "body": "cam_y_tilt",
+      "material": "camera_grey",
+      "rgb": [
+        0.42,
+        0.43,
+        0.44
+      ],
+      "texture": "grey_matte",
+      "roughness": 0.48,
+      "metallic": 0.35,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "Body002": {
+      "label": "camera-halte-platte-static-to-drone",
+      "body": "camera_mount",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "Solid051": {
+      "label": "10x4.5R-front-right",
+      "body": "prop_1",
+      "material": "prop_black",
+      "rgb": [
+        0.06,
+        0.06,
+        0.07
+      ],
+      "texture": null,
+      "roughness": 0.4,
+      "metallic": 0.1,
+      "density_gcm3": 1.55,
+      "tint": [
+        0.85,
+        0.28,
+        0.24
+      ],
+      "remote": false
+    },
+    "Solid052": {
+      "label": "10x4.5R-front-left",
+      "body": "prop_2",
+      "material": "prop_black",
+      "rgb": [
+        0.06,
+        0.06,
+        0.07
+      ],
+      "texture": null,
+      "roughness": 0.4,
+      "metallic": 0.1,
+      "density_gcm3": 1.55,
+      "tint": [
+        0.28,
+        0.5,
+        0.9
+      ],
+      "remote": false
+    },
+    "Solid053": {
+      "label": "10x4.5R-back-left",
+      "body": "prop_3",
+      "material": "prop_black",
+      "rgb": [
+        0.06,
+        0.06,
+        0.07
+      ],
+      "texture": null,
+      "roughness": 0.4,
+      "metallic": 0.1,
+      "density_gcm3": 1.55,
+      "tint": [
+        0.3,
+        0.78,
+        0.4
+      ],
+      "remote": false
+    },
+    "Solid054": {
+      "label": "10x4.5R-back-right",
+      "body": "prop_4",
+      "material": "prop_black",
+      "rgb": [
+        0.06,
+        0.06,
+        0.07
+      ],
+      "texture": null,
+      "roughness": 0.4,
+      "metallic": 0.1,
+      "density_gcm3": 1.55,
+      "tint": [
+        0.92,
+        0.78,
+        0.25
+      ],
+      "remote": false
+    },
+    "Body004": {
+      "label": "camera-yaxis-camera-cover-black-first-combine-this-with-yaxis-camera,make",
+      "body": "cam_y_tilt",
+      "material": "cover_black",
+      "rgb": [
+        0.025,
+        0.025,
+        0.028
+      ],
+      "texture": null,
+      "roughness": 0.62,
+      "metallic": 0.05,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "Body005": {
+      "label": "Lumenier-NAV-12,000-mAh-4S-Amprius-Li-ion-pack-0.465kg-blue-color-static-to-drone",
+      "body": "base_link",
+      "material": "battery_blue",
+      "rgb": [
+        0.1,
+        0.28,
+        0.56
+      ],
+      "texture": null,
+      "roughness": 0.68,
+      "metallic": 0.02,
+      "density_gcm3": 2.1,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup007__Solid055": {
+      "label": "Solid055",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup007__Compound": {
+      "label": "Compound",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Solid056": {
+      "label": "TP_1R5",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link097": {
+      "label": "TP_1R001",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link098": {
+      "label": "TP_1R002",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link099": {
+      "label": "TP_1R003",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link100": {
+      "label": "TP_1R004",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link101": {
+      "label": "TP_1R005",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link102": {
+      "label": "TP_1R006",
+      "body": "base_link",
+      "material": "tpu",
+      "rgb": [
+        0.16,
+        0.17,
+        0.19
+      ],
+      "texture": null,
+      "roughness": 0.82,
+      "metallic": 0.0,
+      "density_gcm3": 1.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup008__Solid057": {
+      "label": "Solid057",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup008__Compound002": {
+      "label": "Compound002",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Solid058": {
+      "label": "BGA1253_17R00X17R00X1R10_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Solid059": {
+      "label": "XPWR_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Solid060": {
+      "label": "BDGAR6S1_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link103": {
+      "label": "BDGAR6S1_001",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup009__Solid061": {
+      "label": "Solid061",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup009__Compound003": {
+      "label": "Compound003",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link104__Solid061": {
+      "label": "Solid061",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link104__Compound003": {
+      "label": "Compound003",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid062": {
+      "label": "TS-B017_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid063": {
+      "label": "TS-B017_2",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid064": {
+      "label": "TS-B017_3",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid065": {
+      "label": "TS-B017_4",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid066": {
+      "label": "TS-B017_5",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__LinkGroup010__Solid067": {
+      "label": "TS-B017_6",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid062": {
+      "label": "TS-B017_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid063": {
+      "label": "TS-B017_2",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid064": {
+      "label": "TS-B017_3",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid065": {
+      "label": "TS-B017_4",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid066": {
+      "label": "TS-B017_5",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link105__Solid067": {
+      "label": "TS-B017_6",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid062": {
+      "label": "TS-B017_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid063": {
+      "label": "TS-B017_2",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid064": {
+      "label": "TS-B017_3",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid065": {
+      "label": "TS-B017_4",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid066": {
+      "label": "TS-B017_5",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup011__Link106__Solid067": {
+      "label": "TS-B017_6",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid068": {
+      "label": "USB_A_00",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link107": {
+      "label": "USB_A_001",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup012__Solid069": {
+      "label": "Solid069",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup012__Solid070": {
+      "label": "Solid070",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup012__Solid071": {
+      "label": "Solid071",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid072": {
+      "label": "WI-FI",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid073": {
+      "label": "BM04B-SURS-TF",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid074": {
+      "label": "TYPE_C_24PSMT_020001",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link108": {
+      "label": "TYPE_C_24PSMT_020002",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup013__Compound004": {
+      "label": "_231",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Compound005": {
+      "label": "E2-XIN",
+      "body": "base_link",
+      "material": "pcb",
+      "rgb": [
+        0.045,
+        0.15,
+        0.085
+      ],
+      "texture": null,
+      "roughness": 0.6,
+      "metallic": 0.0,
+      "density_gcm3": 1.85,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid075": {
+      "label": "FH34SRJ-40S-0_5SH",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid076": {
+      "label": "FH34SRJ-30S-0_5SH",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link109": {
+      "label": "FH34SRJ-30S-0_5SH001",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link110": {
+      "label": "FH34SRJ-30S-0_5SH002",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link111": {
+      "label": "FH34SRJ-30S-0_5SH003",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link112": {
+      "label": "FH34SRJ-30S-0_5SH004",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link113": {
+      "label": "FH34SRJ-30S-0_5SH005",
+      "body": "base_link",
+      "material": "stainless",
+      "rgb": [
+        0.62,
+        0.63,
+        0.65
+      ],
+      "texture": null,
+      "roughness": 0.18,
+      "metallic": 0.95,
+      "density_gcm3": 7.8,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__LinkGroup014__Solid077": {
+      "label": "ECT818000500_1_09_22",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link114__Solid077": {
+      "label": "ECT818000500_1_09_22",
+      "body": "base_link",
+      "material": "aluminium",
+      "rgb": [
+        0.72,
+        0.73,
+        0.75
+      ],
+      "texture": "brushed_grey",
+      "roughness": 0.28,
+      "metallic": 0.9,
+      "density_gcm3": 2.7,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid078": {
+      "label": "BGA169_INAND_1",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Solid079": {
+      "label": "BGA200_15R00X10R00X0R90",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "LinkGroup015__Link115": {
+      "label": "BGA200_15R00X10R00X0R001",
+      "body": "base_link",
+      "material": "electronics",
+      "rgb": [
+        0.1,
+        0.11,
+        0.13
+      ],
+      "texture": null,
+      "roughness": 0.5,
+      "metallic": 0.2,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    },
+    "xiao_esp32s3_v3_with_pins": {
+      "label": "xiao-esp32s3-v3-with-pins-static-to-drone",
+      "body": "base_link",
+      "material": "sx1262_black",
+      "rgb": [
+        0.035,
+        0.035,
+        0.038
+      ],
+      "texture": null,
+      "roughness": 0.7,
+      "metallic": 0.05,
+      "density_gcm3": 2.2,
+      "tint": null,
+      "remote": false
+    }
+  },
+  "unused_keys": []
+}

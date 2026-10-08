@@ -1,0 +1,62 @@
+{
+  "cad_images": {
+    "resolution": [
+      2560,
+      1600
+    ],
+    "cad_parts": 281,
+    "cad_meshes": 289,
+    "renderer": "Blender Cycles",
+    "materials": "painted composite, satin metal, rubber, brass and optical glass; metric procedural exterior textures",
+    "cutaway_hides": [
+      "AftHatchFrame",
+      "AftHatchSeal",
+      "AftLidGraphics",
+      "AftServiceHatch",
+      "AftSlidingLid",
+      "ElectronicsBoxLid",
+      "ForeHatchFrame",
+      "ForeHatchSeal",
+      "ForeLidGraphics",
+      "ForeServiceHatch",
+      "ForeSlidingLid",
+      "HullAccentStripe",
+      "HullShell",
+      "MainDeck",
+      "PortAccentStripe",
+      "PortRubRail",
+      "StarboardAccentStripe",
+      "StarboardRubRail"
+    ]
+  },
+  "island_run": {
+    "frames": 120,
+    "fps": 10,
+    "wave_height_m": 0.11,
+    "both_motors_percent": 100,
+    "world_seed": 42,
+    "path_seed": 43,
+    "leg": "straight coastal segment, equal full-power propulsion",
+    "distance_to_coast_m": [
+      18.04,
+      21.66
+    ],
+    "speed_kmh": [
+      9.249761063181783,
+      10.765535500816224
+    ],
+    "max_cross_track_m": 0.06705442238472456,
+    "travel_m": 34.77469901989288
+  },
+  "dock_sequence": {
+    "frames": 210,
+    "fps": 10,
+    "camera": "DockCamera",
+    "near_m": 0.0005,
+    "motors_percent": 0,
+    "wave_height_m": 0,
+    "platform_final": 1.0,
+    "horizontal_drift_m": 0.0007586126473694191,
+    "sequence": "stationary float, sliding lids open, platform rises"
+  }
+}

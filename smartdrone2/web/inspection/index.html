@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>smartdrone2 - camera angle editor</title>
+<style>
+  :root { color-scheme: dark; }
+  html, body { margin:0; height:100%; background:#14161a; overflow:hidden;
+               font:13px/1.45 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
+               color:#e6e8ec; }
+  canvas { display:block; }
+  .panel { position:fixed; background:rgba(20,22,26,.90); border:1px solid #2b2f37;
+           z-index:2;
+           border-radius:10px; padding:12px 14px; backdrop-filter:blur(8px);
+           max-height:calc(100% - 28px); overflow:auto; }
+  #left  { top:14px; left:14px; width:270px; }
+  #right { top:14px; right:14px; width:180px; }
+  summary { cursor:pointer; color:#b9c0cc; }
+  #validation { color:#6ee7a8; font-size:11px; margin-top:8px; }
+  h1 { font-size:14px; margin:0 0 2px; letter-spacing:.02em; }
+  h2 { font-size:11px; text-transform:uppercase; letter-spacing:.09em;
+       color:#8d94a3; margin:14px 0 6px; font-weight:600; }
+  .sub { color:#8d94a3; font-size:11px; }
+  .jrow { margin:10px 0; border-bottom:1px solid #23262d; padding-bottom:8px; }
+  .jrow:last-child { border-bottom:0; }
+  .jname { font-weight:600; font-size:12px; display:flex;
+           justify-content:space-between; gap:8px; }
+  .jname span { color:#5aa9ff; font-variant-numeric:tabular-nums; }
+  .limits { display:flex; gap:6px; margin:5px 0 2px; align-items:center; }
+  .limits input { width:74px; background:#1b1e24; color:#e6e8ec;
+                  border:1px solid #39404b; border-radius:5px; padding:3px 5px;
+                  font:inherit; font-size:11px; }
+  .limits label { color:#8d94a3; font-size:10px; display:block;
+                  text-transform:uppercase; letter-spacing:.06em; }
+  input[type=range] { width:100%; accent-color:#5aa9ff; }
+  button { background:#232830; color:#e6e8ec; border:1px solid #39404b;
+           border-radius:6px; padding:6px 10px; font:inherit; font-size:11px;
+           cursor:pointer; }
+  button:hover { background:#2c333d; }
+  button.primary { background:#1d4ed8; border-color:#2563eb; }
+  table { width:100%; border-collapse:collapse; font-size:11px; }
+  td { padding:2px 0; color:#b9c0cc; }
+  td:last-child { text-align:right; color:#e6e8ec;
+                 font-variant-numeric:tabular-nums; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:3px;
+         margin-right:6px; vertical-align:-1px;
+         border:1px solid rgba(255,255,255,.18); }
+  label.row { display:flex; align-items:center; gap:8px; margin:4px 0;
+              cursor:pointer; font-size:12px; }
+  .warn { color:#ff8080; }
+  .ok { color:#6ee7a8; }
+  #note { position:fixed; bottom:12px; left:14px; color:#6f7787; font-size:11px;
+          max-width:44%; }
+  #toast { position:fixed; left:50%; top:18px; transform:translateX(-50%);
+           background:#1d4ed8; color:#fff; padding:7px 14px; border-radius:8px;
+           font-size:12px; display:none; z-index:5; }
+</style>
+</head>
+<body>
+<script type="importmap">
+{"imports": {"three": "./vendor/three.module.js"}}
+</script>
+
+<div class="panel" id="left">
+  <h1>smartdrone2 &mdash; camera angle editor</h1>
+  <div class="sub" id="sub"></div>
+
+  <h2>Joint limits &mdash; edit, then download</h2>
+  <div class="sub">Two camera motors: xaxis pans left/right; yaxis tilts up/down.
+    Mount and plate stay fixed. xaxis pans continuously; yaxis tilts from &minus;61&deg; to +140&deg;;
+    propellers rotate continuously.</div>
+  <div id="joints"></div>
+  <div style="margin-top:10px">
+    <button class="primary" onclick="downloadLimits()">Download limits</button>
+    <button onclick="copyLimits()">Copy JSON</button>
+    <button onclick="resetLimits()">Reset</button>
+  </div>
+  <div class="sub" id="limitHint" style="margin-top:6px"></div>
+
+  <h2>View</h2>
+  <label class="row"><input type="checkbox" id="optAxes" checked> joint axes</label>
+  <label class="row"><input type="checkbox" id="optSpin"> auto-rotate view</label>
+  <label class="row"><input type="checkbox" id="optWire"> wireframe</label>
+  <label class="row"><input type="checkbox" id="optTexture" checked> textures</label>
+  <div style="margin:8px 0 2px">colour by
+    <select id="colMode" style="width:100%;background:#232830;color:#e6e8ec;
+            border:1px solid #39404b;border-radius:6px;padding:4px;font:inherit;
+            font-size:11px">
+      <option value="material">material</option>
+      <option value="body">body</option>
+      <option value="part">part (every one unique)</option>
+    </select></div>
+  <h2>Camera</h2>
+  <button onclick="fitAll()">Fit all</button>
+  <button onclick="setView('iso')">Iso</button>
+  <button onclick="setView('top')">Top</button>
+  <button onclick="setView('front')">Front</button>
+  <button onclick="setView('side')">Side</button>
+  <button onclick="focusCamera()">Camera close-up</button>
+  <p class="sub"><a href="../docs/assembly_positions.md" style="color:#5aa9ff">Original assembly inventory</a></p>
+  <p class="sub"><a href="http://127.0.0.1:8793/" target="_blank" style="color:#9acfc4">Fly in MuJoCo · PX4 + camera feed ↗</a></p>
+</div>
+
+<div class="panel" id="right">
+  <details><summary>Bodies &amp; materials</summary>
+  <h2>Bodies</h2>
+  <table id="bodies"></table>
+  <h2>Materials</h2>
+  <table id="materials"></table>
+  </details>
+  <div id="validation">Checking source alignment...</div>
+  <h2>Model warnings</h2>
+  <div class="sub warn" id="warnBox"></div>
+</div>
+
+<div id="note"></div>
+<div id="toast"></div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "./vendor/OrbitControls.js";
+
+const DATA = await (await fetch('./data/model.json')).json();
+const MM = 0.001;                       // the model is millimetres, three.js is metres
+const UP = DATA.upAxis === "Y" ? 1 : 2; // measured: up is +Y for this model
+
+/* ------------------------------------------------------------ geometry */
+const geometryChunks = await Promise.all(DATA.geometry_chunks.map(async name => new Uint8Array(await (await fetch('./data/'+name)).arrayBuffer())));
+const geomBytes = new Uint8Array(DATA.geometry_bytes);
+let chunkOffset = 0;
+for (const chunk of geometryChunks) {geomBytes.set(chunk,chunkOffset);chunkOffset+=chunk.length;}
+
+/* Procedural textures: a 2x2 twill carbon weave, a matte grey and a brushed
+   grey.  Drawing them on a canvas keeps the viewer free of image files, so it
+   works offline and there is nothing to go missing. */
+function canvasTexture(draw, repeat = 1) {
+  const c = document.createElement("canvas");
+  c.width = c.height = 256;
+  draw(c.getContext("2d"));
+  const t = new THREE.CanvasTexture(c);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(repeat, repeat);
+  t.anisotropy = 8;
+  return t;
+}
+
+function carbonWeave(ctx) {
+  ctx.fillStyle = "#0b0c0e"; ctx.fillRect(0, 0, 256, 256);
+  const cell = 32;
+  for (let row = 0; row < 8; row++) {
+    for (let col = 0; col < 8; col++) {
+      const over = ((row + col) % 4) < 2;           // 2x2 twill
+      const x = col * cell, y = row * cell;
+      const g = over ? ctx.createLinearGradient(x, y, x + cell, y + cell)
+                     : ctx.createLinearGradient(x, y, x, y + cell);
+      g.addColorStop(0, "#2a2d33");
+      g.addColorStop(0.5, "#4a4f58");
+      g.addColorStop(1, "#22252a");
+      ctx.fillStyle = g; ctx.fillRect(x, y, cell, cell);
+      ctx.strokeStyle = "rgba(0,0,0,.55)"; ctx.lineWidth = 1.5;
+      ctx.strokeRect(x + .5, y + .5, cell - 1, cell - 1);
+    }
+  }
+}
+
+function brushed(ctx) {
+  ctx.fillStyle = "#9aa0a6"; ctx.fillRect(0, 0, 256, 256);
+  for (let i = 0; i < 900; i++) {
+    const y = Math.random() * 256, w = 20 + Math.random() * 120;
+    ctx.strokeStyle = `rgba(255,255,255,${Math.random() * .07})`;
+    ctx.beginPath(); ctx.moveTo(Math.random() * 256, y);
+    ctx.lineTo(Math.random() * 256 + w, y + (Math.random() - .5) * 2);
+    ctx.stroke();
+  }
+}
+
+function batteryWrap(ctx) {
+  const g = ctx.createLinearGradient(0, 0, 256, 256);
+  g.addColorStop(0, "#264b79"); g.addColorStop(.48, "#1d3b63"); g.addColorStop(1, "#183353");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+  for (let y = 0; y < 256; y += 4) {
+    ctx.fillStyle = y % 8 ? "rgba(255,255,255,.018)" : "rgba(5,15,27,.025)";
+    ctx.fillRect(0, y, 256, 1);
+  }
+  ctx.fillStyle = "rgba(9,20,34,.44)"; ctx.fillRect(8, 8, 240, 8); ctx.fillRect(8, 240, 240, 8);
+  ctx.fillStyle = "#dce5ee"; ctx.fillRect(42, 77, 172, 98);
+  ctx.fillStyle = "#24496f"; ctx.fillRect(42, 77, 172, 10);
+  ctx.fillStyle = "#17324f"; ctx.font = "bold 30px ui-sans-serif,system-ui,sans-serif";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText("4S  LI-ION", 128, 119);
+  ctx.fillStyle = "#52677b"; ctx.font = "13px ui-sans-serif,system-ui,sans-serif";
+  ctx.fillText("12 000 mAh", 128, 148);
+  ctx.fillStyle = "#ecaf3b"; ctx.fillRect(56, 183, 144, 5);
+}
+
+const TEXTURES = {
+  carbon_weave: canvasTexture(carbonWeave, 6),
+  brushed_grey: canvasTexture(brushed, 2),
+  grey_matte: canvasTexture(brushed, 1),
+  battery_wrap: canvasTexture(batteryWrap, 1),
+};
+
+/* Rebuild float positions from the 16-bit quantisation frame. */
+function buildGeometry(part) {
+  // pos_bytes is the padded position-block length sent by the packer, so the
+  // Uint32Array view of the indices is guaranteed 4-byte aligned.
+  const posBytes = part.pos_bytes;
+  const base = geomBytes.byteOffset + part.offset;
+  const q = new Uint16Array(geomBytes.buffer, base, posBytes / 2);
+  const idx = new Uint32Array(geomBytes.buffer, base + posBytes,
+                              (part.byteLength - posBytes) / 4);
+  const { lo, hi, vertices } = part;
+  const sx = (hi[0] - lo[0]) / 65535, sy = (hi[1] - lo[1]) / 65535,
+        sz = (hi[2] - lo[2]) / 65535;
+  const pos = new Float32Array(vertices * 3);
+  for (let i = 0; i < vertices; i++) {
+    pos[i * 3]     = lo[0] + q[i * 3] * sx;
+    pos[i * 3 + 1] = lo[1] + q[i * 3 + 1] * sy;
+    pos[i * 3 + 2] = lo[2] + q[i * 3 + 2] * sz;
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  g.setIndex(new THREE.BufferAttribute(idx, 1));
+  g.computeVertexNormals();
+  return g;
+}
+
+/* Box-projected UVs from the part's own bounding box, so a texture lands at a
+   consistent physical scale on every part instead of stretching per face. */
+function boxUVs(geometry, part) {
+  const pos = geometry.attributes.position;
+  const size = [part.hi[0] - part.lo[0], part.hi[1] - part.lo[1],
+                part.hi[2] - part.lo[2]];
+  const dominant = size.indexOf(Math.max(...size));
+  const uv = new Float32Array(pos.count * 2);
+  const per = part.texture === "battery_wrap" ? 90 : 12; // mm per repeat
+  for (let i = 0; i < pos.count; i++) {
+    const a = (dominant + 1) % 3, b = (dominant + 2) % 3;
+    uv[i * 2]     = pos.array[i * 3 + a] / per;
+    uv[i * 2 + 1] = pos.array[i * 3 + b] / per;
+  }
+  geometry.setAttribute("uv", new THREE.BufferAttribute(uv, 2));
+}
+
+/* ------------------------------------------------------------ scene */
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x14161a);
+const viewportWidth = () => Math.max(160, innerWidth - 328);
+const camera = new THREE.PerspectiveCamera(45, viewportWidth() / innerHeight, 0.001, 200);
+camera.up.set(0, 0, 1);
+camera.position.set(1.1, 0.8, 1.1);
+const renderer = new THREE.WebGLRenderer({ antialias: true,
+                                           preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(viewportWidth(), innerHeight);
+renderer.domElement.style.position = 'fixed';
+renderer.domElement.style.left = '328px';
+document.body.appendChild(renderer.domElement);
+
+scene.add(new THREE.HemisphereLight(0xbfd4e8, 0x14161a, 1.5));
+const key = new THREE.DirectionalLight(0xffffff, 2.1); key.position.set(1, -1.4, 2);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0x88aaff, 0.7); fill.position.set(-1, 0.4, -1);
+scene.add(fill);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+const nodes = {};
+const partMeshes = {};
+let colMode = "material";
+let texturesOn = true;
+
+const bodyPalette = ["#e6e8ec", "#ff6b6b", "#5aa9ff", "#6ee7a8", "#fbbf24",
+                     "#c084fc", "#38bdf8", "#f472b6", "#a3e635", "#fb923c",
+                     "#818cf8"];
+
+function partColour(part) {
+  if (colMode === "body") return new THREE.Color(bodyPalette[
+      DATA.bodies.findIndex(b => b.name === part.body) % bodyPalette.length]);
+  if (colMode === "part") {
+    let h = 2166136261;
+    for (let i = 0; i < part.name.length; i++) {
+      h ^= part.name.charCodeAt(i); h = Math.imul(h, 16777619);
+    }
+    return new THREE.Color().setHSL(((h >>> 0) / 4294967296), .55, .58);
+  }
+  return new THREE.Color(...part.rgb);
+}
+
+for (const part of DATA.parts) {
+  const g = buildGeometry(part);
+  boxUVs(g, part);
+  const tex = texturesOn && part.texture ? TEXTURES[part.texture] : null;
+  const m = new THREE.MeshStandardMaterial({
+    color: partColour(part),
+    roughness: part.roughness,
+    metalness: part.metallic,
+    map: tex,
+    wireframe: false,
+    side: THREE.DoubleSide,
+  });
+  if (part.tint && colMode === "material") m.color.lerp(new THREE.Color(...part.tint), .45);
+  const mesh = new THREE.Mesh(g, m);
+  mesh.userData.part = part;
+  mesh.scale.setScalar(MM);
+  if (!nodes[part.body]) nodes[part.body] = new THREE.Group();
+  nodes[part.body].add(mesh);
+  partMeshes[part.name] = mesh;
+}
+for (const b of DATA.bodies) if (!nodes[b.name]) nodes[b.name] = new THREE.Group();
+
+/* Rebuild the hierarchy: bodies nest by parent, joints become Object3Ds. */
+for (const b of DATA.bodies) {
+  const pivot = new THREE.Object3D();
+  pivot.name = b.name;
+  const parent = DATA.bodies.find(p => p.name === b.parent);
+  const parentOrigin = parent ? parent.origin : [0, 0, 0];
+  pivot.position.set(...b.origin.map((v, i) => (v - parentOrigin[i]) * MM));
+  if (b.joint) {
+    pivot.userData.joint = b.joint;
+  }
+  // Exported vertices are already body-local. Each pivot translation is the
+  // difference between this body's world origin and its parent's world origin.
+  const holder = nodes[b.name];
+  if (holder && holder !== pivot) {
+    pivot.add(holder);
+  }
+  if (b.parent && nodes[b.parent]) nodes[b.parent].add(pivot);
+  else scene.add(pivot);
+  nodes[b.name] = pivot;
+}
+
+/* ------------------------------------------------------------ joints */
+const DEG = 180 / Math.PI;
+const jointState = {};
+for (const b of DATA.bodies) {
+  if (!b.joint) continue;
+  jointState[b.joint.name] = {
+    body: b.name, node: nodes[b.name],
+    type: b.joint.type, axis: b.joint.axis,
+    limited: b.joint.limited,
+    description: b.joint.description,
+    range: (b.joint.range || [-Math.PI, Math.PI]).slice(),
+    current: 0, defaultRange: (b.joint.range || [-Math.PI, Math.PI]).slice(),
+    damping: b.joint.damping, armature: b.joint.armature,
+  };
+}
+
+function buildJointUI() {
+  const host = document.getElementById("joints");
+  host.innerHTML = "";
+  for (const [name, j] of Object.entries(jointState)) {
+    j.current = Math.min(Math.max(j.current, j.range[0]), j.range[1]);
+    const row = document.createElement("div");
+    row.className = "jrow";
+    row.innerHTML = `<div class="jname">${j.description || name}<span id="v_${name}">${(j.current * DEG).toFixed(1)}&deg;</span></div>`;
+    const limits = document.createElement("div");
+    limits.className = "limits";
+    limits.innerHTML =
+      `<div><label>min &deg;</label><input id="lo_${name}" type="number" step="1" value="${(j.range[0]*DEG).toFixed(0)}"></div>` +
+      `<div><label>max &deg;</label><input id="hi_${name}" type="number" step="1" value="${(j.range[1]*DEG).toFixed(0)}"></div>`;
+    const slider = document.createElement("input");
+    slider.type = "range";
+    slider.min = j.range[0]; slider.max = j.range[1];
+    slider.step = 'any'; slider.value = j.current;
+    slider.addEventListener("input", () => {
+      j.current = parseFloat(slider.value);
+      document.getElementById("v_" + name).textContent = (j.current * DEG).toFixed(1) + "\u00B0";
+    });
+    row.appendChild(limits); row.appendChild(slider); host.appendChild(row);
+
+    for (const [id, idx] of [["lo_" + name, 0], ["hi_" + name, 1]]) {
+      document.getElementById(id).addEventListener("change", (e) => {
+        const deg = parseFloat(e.target.value);
+        if (!Number.isFinite(deg)) return;
+        j.range[idx] = deg / DEG;
+        if (j.range[0] >= j.range[1]) {
+          j.range[idx] = idx === 0 ? j.range[1] - 0.01 : j.range[0] + 0.01;
+          e.target.value = (j.range[idx] * DEG).toFixed(0);
+        }
+        slider.min = j.range[0]; slider.max = j.range[1];
+        j.current = Math.min(Math.max(j.current, j.range[0]), j.range[1]);
+        slider.value = j.current;
+        document.getElementById("v_" + name).textContent = (j.current * DEG).toFixed(1) + "\u00B0";
+      });
+    }
+  }
+  document.getElementById("limitHint").innerHTML =
+    Object.keys(jointState).length + " joints. Limits are exported as " +
+    "<code>joint_limits.json</code> in radians.";
+}
+
+function limitsJSON() {
+  const out = { model: "smartdrone2", generated_by: "viewer/index.html", joints: {} };
+  for (const [name, j] of Object.entries(jointState)) {
+    out.joints[name] = {
+      body: j.body, type: j.type, axis: j.axis,
+      range_deg: [+(j.range[0] * DEG).toFixed(3), +(j.range[1] * DEG).toFixed(3)],
+      range_rad: j.limited ? [+j.range[0].toFixed(6), +j.range[1].toFixed(6)] : null,
+      limited: j.limited,
+      damping: j.damping, armature: j.armature,
+    };
+  }
+  return JSON.stringify(out, null, 2);
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 2200);
+}
+
+function downloadLimits() {
+  const blob = new Blob([limitsJSON()], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "joint_limits.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("joint_limits.json downloaded");
+}
+
+async function copyLimits() {
+  try { await navigator.clipboard.writeText(limitsJSON()); toast("JSON copied"); }
+  catch { downloadLimits(); }
+}
+
+function resetLimits() {
+  for (const j of Object.values(jointState)) {
+    j.range = j.defaultRange.slice(); j.current = 0;
+  }
+  buildJointUI(); toast("limits reset");
+}
+
+/* ------------------------------------------------------------ chrome */
+/* Bounding box of the aircraft, mesh by mesh.
+   Box3.expandByObject() cannot be used here: it expands a node together with
+   everything under it, so skipping a remote part inside a traverse callback has
+   no effect - the parent expansion already pulled it in.  Sixteen source solids
+   are parked about a metre from the drone in the CAD file, and including them
+   would shrink the aircraft to a speck. */
+function modelBox() {
+  scene.updateMatrixWorld(true);
+  const box = new THREE.Box3();
+  for (const name in nodes) {
+    nodes[name].traverse((o) => {
+      if (!o.isMesh || !o.geometry) return;
+      if (o.userData.part && o.userData.part.remote) return;
+      if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
+      box.union(o.geometry.boundingBox.clone().applyMatrix4(o.matrixWorld));
+    });
+  }
+  return box;
+}
+
+function fitAll() {
+  const box = modelBox();
+  if (box.isEmpty()) return;
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  controls.target.copy(sphere.center);
+  camera.position.copy(sphere.center).add(
+    new THREE.Vector3(1, -1, .8).normalize().multiplyScalar(fitDistance(sphere.radius)));
+  controls.update();
+}
+
+function setView(which) {
+  const box = modelBox();
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  controls.target.copy(sphere.center);
+  const r = fitDistance(sphere.radius);
+  const dirs = { iso: [1, -1, .8], top: [.001, 0, 1], front: [1, 0, .001], side: [0, -1, .001] };
+  const d = dirs[which] || dirs.iso;
+  camera.position.copy(sphere.center)
+    .add(new THREE.Vector3(...d).normalize().multiplyScalar(r));
+  controls.update();
+}
+
+function fitDistance(radius) {
+  const vertical = THREE.MathUtils.degToRad(camera.fov / 2);
+  const horizontal = Math.atan(Math.tan(vertical) * camera.aspect);
+  return radius / Math.sin(Math.min(vertical, horizontal)) * 1.3;
+}
+
+function focusCamera() {
+  scene.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(nodes.camera_mount);
+  const sphere = box.getBoundingSphere(new THREE.Sphere());
+  controls.target.copy(sphere.center);
+  camera.position.copy(sphere.center).add(new THREE.Vector3(1, 0, -.25).normalize().multiplyScalar(fitDistance(sphere.radius)));
+  controls.update();
+}
+
+document.getElementById("optAxes").addEventListener("change", e => opt.axes = e.target.checked);
+document.getElementById("optSpin").addEventListener("change", e => opt.spin = e.target.checked);
+document.getElementById("optWire").addEventListener("change", e => {
+  opt.wire = e.target.checked;
+  for (const name in partMeshes) partMeshes[name].material.wireframe = opt.wire;
+});
+document.getElementById("optTexture").addEventListener("change", e => {
+  texturesOn = e.target.checked;
+  for (const part of DATA.parts) {
+    const mesh = partMeshes[part.name]; if (!mesh) continue;
+    mesh.material.map = texturesOn && part.texture ? TEXTURES[part.texture] : null;
+    mesh.material.needsUpdate = true;
+  }
+});
+document.getElementById("colMode").addEventListener("change", e => {
+  colMode = e.target.value;
+  for (const part of DATA.parts) {
+    const mesh = partMeshes[part.name]; if (!mesh) continue;
+    mesh.material.color = partColour(part);
+    if (part.tint && colMode === "material")
+      mesh.material.color.lerp(new THREE.Color(...part.tint), .45);
+    mesh.material.needsUpdate = true;
+  }
+  renderLegends();
+});
+
+const opt = { axes: true, spin: false, wire: false };
+
+/* Joint axes, drawn in the joint's own frame so they follow the articulation. */
+const axesGroup = new THREE.Group();
+scene.add(axesGroup);
+function buildAxes() {
+  // Each axis helper is parented to its own joint node so it rotates with the
+  // joint; drawing them in a separate scene-level group would either not follow
+  // the articulation or require re-parenting every frame.
+  for (const j of Object.values(jointState)) {
+    const line = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(...j.axis).multiplyScalar(0.06)]),
+      new THREE.LineBasicMaterial({ color: 0xffd166, depthTest: false }));
+    const dot = new THREE.Mesh(
+      new THREE.SphereGeometry(0.004, 10, 10),
+      new THREE.MeshBasicMaterial({ color: 0xff6b6b, depthTest: false }));
+    j.axes = new THREE.Group();
+    j.axes.add(line); j.axes.add(dot);
+    j.node.add(j.axes);
+  }
+}
+
+function renderLegends() {
+  const bodyTable = document.getElementById("bodies");
+  bodyTable.innerHTML = DATA.bodies.map(b => {
+    const c = bodyPalette[DATA.bodies.indexOf(b) % bodyPalette.length];
+    const n = DATA.parts.filter(p => p.body === b.name).length;
+    return `<tr><td><span class="dot" style="background:${c}"></span>${b.name}</td>` +
+           `<td>${n}p</td></tr>`;
+  }).join("");
+
+  const seen = new Map();
+  for (const p of DATA.parts) {
+    const key = p.rgb.join(",") + (p.texture || "");
+    if (!seen.has(key)) seen.set(key, { rgb: p.rgb, texture: p.texture, n: 0 });
+    seen.get(key).n++;
+  }
+  document.getElementById("materials").innerHTML = [...seen.values()].map(v => {
+    const c = v.rgb.map(x => Math.round(Math.pow(x, 1 / 2.2) * 255)).join(",");
+    return `<tr><td><span class="dot" style="background:rgb(${c})"></span>` +
+           `${v.texture ? v.texture : "flat"}</td><td>${v.n}p</td></tr>`;
+  }).join("");
+
+  document.getElementById("warnBox").innerHTML =
+    (DATA.warnings || []).map(w => "&bull; " + w).join("<br>") ||
+    "none";
+}
+
+document.getElementById("sub").textContent =
+  `${DATA.bodies.length} bodies \u00B7 ${DATA.parts.length} parts \u00B7 ` +
+  `${DATA.triangles.toLocaleString()} triangles \u00B7 up axis +${DATA.upAxis}`;
+
+buildJointUI();
+buildAxes();
+renderLegends();
+fitAll();
+
+/* Compare all rendered bounds to the source inventory, and exercise both
+   camera motors and all propellers against scalar rotation formulas. */
+function validateAssembly() {
+  const failures = [];
+  const check = (ok, message) => { if (!ok) failures.push(message); };
+  // Compare the imported CAD pose before settling the gimbal at its limit.
+  jointState.cam_x_pan.current = 0;
+  jointState.cam_y_tilt.current = 0;
+  nodes.cam_x_pan.quaternion.identity();
+  nodes.cam_y_tilt.quaternion.identity();
+  scene.updateMatrixWorld(true);
+  let maxRestErrorMM = 0;
+  const samples = {};
+  for (const p of DATA.parts) {
+    const mesh = partMeshes[p.name];
+    const box = mesh.geometry.boundingBox.clone().applyMatrix4(mesh.matrixWorld);
+    const bounds = [...box.min.toArray(), ...box.max.toArray()].map(v => v / MM);
+    if (p.source_bbox_mm) {
+      const error = Math.max(...bounds.map((v,i) => Math.abs(v - p.source_bbox_mm[i])));
+      maxRestErrorMM = Math.max(maxRestErrorMM, error);
+      check(error < .05, p.name + ': source placement differs by ' + error + ' mm');
+    }
+    samples[p.name] = new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position, 0).applyMatrix4(mesh.matrixWorld).multiplyScalar(1 / MM).toArray();
+  }
+  const pan = DATA.bodies.find(b => b.name === 'cam_x_pan').origin;
+  const tilt = DATA.bodies.find(b => b.name === 'cam_y_tilt').origin;
+  function rotate(point, origin, axis, angle) {
+    const [x,y,z] = point.map((v,i) => v-origin[i]), c=Math.cos(angle),s=Math.sin(angle);
+    const v=axis==='Z'?[c*x-s*y,s*x+c*y,z]:[c*x+s*z,y,-s*x+c*z];
+    return v.map((n,i)=>n+origin[i]);
+  }
+  let maxMotionErrorMM = 0;
+  for (const [panAngle, tiltAngle, propAngle] of [[.7,-.4,1.57],[-1.2,.6,-2.1]]) {
+    for (const [name,j] of Object.entries(jointState)) {
+      const angle = name==='cam_x_pan'?panAngle:name==='cam_y_tilt'?tiltAngle:propAngle;
+      j.node.quaternion.setFromAxisAngle(new THREE.Vector3(...j.axis),angle);
+    }
+    scene.updateMatrixWorld(true);
+    for (const p of DATA.parts) {
+      let expected=samples[p.name];
+      if (p.body==='cam_y_tilt') expected=rotate(expected,tilt,'Y',tiltAngle);
+      if (p.body==='cam_y_tilt'||p.body==='cam_x_pan') expected=rotate(expected,pan,'Z',panAngle);
+      if (p.body.startsWith('prop_')) expected=rotate(expected,DATA.bodies.find(b=>b.name===p.body).origin,'Z',propAngle);
+      const mesh=partMeshes[p.name];
+      const actual=new THREE.Vector3().fromBufferAttribute(mesh.geometry.attributes.position,0).applyMatrix4(mesh.matrixWorld).multiplyScalar(1/MM).toArray();
+      const err=Math.max(...actual.map((v,i)=>Math.abs(v-expected[i])));
+      maxMotionErrorMM=Math.max(maxMotionErrorMM,err);
+      check(err<.00001,p.name+': articulated position mismatch');
+    }
+    for (const b of DATA.bodies.filter(b=>b.name.startsWith('prop_'))) {
+      const actual=nodes[b.name].getWorldPosition(new THREE.Vector3()).multiplyScalar(1/MM).toArray();
+      check(actual.every((v,i)=>Math.abs(v-b.origin[i])<.00001),b.name+': hub moved during rotation');
+    }
+  }
+  for (const j of Object.values(jointState)) j.node.quaternion.identity();
+  jointState.cam_x_pan.current = 0;
+  jointState.cam_y_tilt.current = Math.min(Math.max(0, jointState.cam_y_tilt.range[0]), jointState.cam_y_tilt.range[1]);
+  scene.updateMatrixWorld(true);
+  check(nodes.cam_x_pan.parent===nodes.camera_mount,'pan is not mounted to camera base');
+  check(nodes.cam_y_tilt.parent===nodes.cam_x_pan,'tilt is not a child of pan');
+  const result={passed:failures.length===0,parts:DATA.parts.length,joints:Object.keys(jointState).length,maxRestErrorMM,maxMotionErrorMM,failures};
+  document.getElementById('validation').textContent=result.passed?'Source positions & joint motion verified':'Assembly verification failed';
+  const report=document.createElement('script');report.id='validation-report';report.type='application/json';report.textContent=JSON.stringify(result);document.body.appendChild(report);
+  return result;
+}
+validateAssembly();
+
+/* Debug handle: the scene is module-scoped, so without this there is no way to
+   inspect it from the console or from an automated check. */
+Object.assign(window, { downloadLimits, copyLimits, resetLimits, fitAll, setView, focusCamera });
+window.__dbg = { THREE, scene, camera, renderer, controls, nodes, partMeshes, jointState,
+                 DATA, fitAll, setView,
+                 box: modelBox };
+
+/* ------------------------------------------------------------ loop */
+const clock = new THREE.Clock();
+function frame() {
+  requestAnimationFrame(frame);
+  controls.autoRotate = !!opt.spin;
+  controls.autoRotateSpeed = 0.6;
+
+  for (const j of Object.values(jointState)) {
+    j.node.quaternion.setFromAxisAngle(new THREE.Vector3(...j.axis).normalize(), j.current);
+  }
+  if (opt.axes) {
+    for (const j of Object.values(jointState)) if (j.axes) j.axes.visible = true;
+  } else {
+    for (const j of Object.values(jointState)) if (j.axes) j.axes.visible = false;
+  }
+
+  controls.update();
+  renderer.render(scene, camera);
+  document.getElementById("note").textContent =
+    `${DATA.triangles.toLocaleString()} triangles \u00B7 ` +
+    `drag orbit \u00B7 wheel zoom \u00B7 F fit`;
+}
+addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  const k = e.key.toLowerCase();
+  if (k === "f") fitAll();
+  if (k === "1") setView("iso");
+  if (k === "2") setView("top");
+  if (k === "3") setView("front");
+  if (k === "4") setView("side");
+});
+addEventListener("resize", () => {
+  camera.aspect = viewportWidth() / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(viewportWidth(), innerHeight);
+});
+frame();
+</script>
+</body>
+</html>

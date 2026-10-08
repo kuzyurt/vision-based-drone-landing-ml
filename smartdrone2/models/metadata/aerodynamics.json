@@ -1,0 +1,157 @@
+{
+  "method": "768_pixel_union_silhouette_per_body_axis",
+  "source_sha256": "ec033c1fe230e5b7499c5350c3b8b6143f8a4317d1df383274c7a4acb0af10c0",
+  "elements": [
+    {
+      "body": "base_link",
+      "axis": 0,
+      "area_m2": 0.0254497012619474,
+      "center_local_m": [
+        -3.469446951953614e-18,
+        -0.00010291738885062629,
+        -0.022319153621041282
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "base_link",
+      "axis": 1,
+      "area_m2": 0.027121184727279778,
+      "center_local_m": [
+        0.003851643584917668,
+        0.0,
+        -0.034165023513872905
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "base_link",
+      "axis": 2,
+      "area_m2": 0.05283529070582097,
+      "center_local_m": [
+        0.004824964721942198,
+        -1.2172121766074184e-06,
+        -0.054138200000000004
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "camera_mount",
+      "axis": 0,
+      "area_m2": 0.0019203007880316844,
+      "center_local_m": [
+        -0.020000000000000004,
+        0.10007974875249567,
+        0.06917614176629183
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "camera_mount",
+      "axis": 1,
+      "area_m2": 0.001664462619357639,
+      "center_local_m": [
+        -0.01985466387061069,
+        0.1,
+        0.06941667447590265
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "camera_mount",
+      "axis": 2,
+      "area_m2": 0.008551957594129776,
+      "center_local_m": [
+        -0.0199757646904207,
+        0.10105000454702973,
+        0.06918145515
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_x_pan",
+      "axis": 0,
+      "area_m2": 0.003867653397053063,
+      "center_local_m": [
+        -0.006444558199999999,
+        -7.996480206654e-05,
+        -0.040182387105030214
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_x_pan",
+      "axis": 1,
+      "area_m2": 0.004481966403758787,
+      "center_local_m": [
+        -0.004330862440806077,
+        -8.450000000000124e-05,
+        -0.04939714789955292
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_x_pan",
+      "axis": 2,
+      "area_m2": 0.004096230272204231,
+      "center_local_m": [
+        -0.008945904748948436,
+        -7.290540110124061e-05,
+        -0.04886233449999999
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_y_tilt",
+      "axis": 0,
+      "area_m2": 0.004252617209782895,
+      "center_local_m": [
+        -0.002294881149999997,
+        0.029983306468044004,
+        -2.1801363154355657e-06
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_y_tilt",
+      "axis": 1,
+      "area_m2": 0.004870381396262412,
+      "center_local_m": [
+        -0.0001774083927626388,
+        0.0299997722,
+        -0.0005333538523226503
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    },
+    {
+      "body": "cam_y_tilt",
+      "axis": 2,
+      "area_m2": 0.004247823820849791,
+      "center_local_m": [
+        -0.00068009337691987,
+        0.03002151731260179,
+        2.511049999997378e-06
+      ],
+      "coefficient": 1.0,
+      "coefficient_evidence": "authored_unit_reference_coefficient_not_identified_for_airframe"
+    }
+  ],
+  "rotors_excluded": true,
+  "limitations": [
+    "LOD/raster silhouette approximation",
+    "one pressure centroid per projected plane",
+    "no inter-body shielding, rotor inflow or CFD",
+    "drag coefficient 1 is a configurable reference scenario, not a measured X500 value"
+  ]
+}

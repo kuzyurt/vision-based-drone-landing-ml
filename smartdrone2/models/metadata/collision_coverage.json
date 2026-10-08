@@ -1,0 +1,1836 @@
+{
+  "coverage": [
+    {
+      "geom": "contact__LinkGroup005__Solid",
+      "part": "LinkGroup005__Solid",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid001",
+      "part": "LinkGroup005__Solid001",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid002",
+      "part": "LinkGroup005__Solid002",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid003",
+      "part": "LinkGroup005__Solid003",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid004",
+      "part": "LinkGroup005__Solid004",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid005",
+      "part": "LinkGroup005__Solid005",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid006",
+      "part": "LinkGroup005__Solid006",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link",
+      "part": "LinkGroup005__Link",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid007",
+      "part": "LinkGroup005__Solid007",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link001",
+      "part": "LinkGroup005__Link001",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid008",
+      "part": "LinkGroup005__Solid008",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid009",
+      "part": "LinkGroup005__Solid009",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid010",
+      "part": "LinkGroup005__Solid010",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link002",
+      "part": "LinkGroup005__Link002",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link003",
+      "part": "LinkGroup005__Link003",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link004",
+      "part": "LinkGroup005__Link004",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link005",
+      "part": "LinkGroup005__Link005",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid011",
+      "part": "LinkGroup005__Solid011",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link006",
+      "part": "LinkGroup005__Link006",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link007",
+      "part": "LinkGroup005__Link007",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link008",
+      "part": "LinkGroup005__Link008",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link009",
+      "part": "LinkGroup005__Link009",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link010",
+      "part": "LinkGroup005__Link010",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link011",
+      "part": "LinkGroup005__Link011",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link012",
+      "part": "LinkGroup005__Link012",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link013",
+      "part": "LinkGroup005__Link013",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link014",
+      "part": "LinkGroup005__Link014",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link015",
+      "part": "LinkGroup005__Link015",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link016",
+      "part": "LinkGroup005__Link016",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link017",
+      "part": "LinkGroup005__Link017",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link018",
+      "part": "LinkGroup005__Link018",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link019",
+      "part": "LinkGroup005__Link019",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link020",
+      "part": "LinkGroup005__Link020",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link021",
+      "part": "LinkGroup005__Link021",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid012",
+      "part": "LinkGroup005__LinkGroup__Solid012",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid013",
+      "part": "LinkGroup005__LinkGroup__Solid013",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid014",
+      "part": "LinkGroup005__LinkGroup__Solid014",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link022",
+      "part": "LinkGroup005__LinkGroup__Link022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid015",
+      "part": "LinkGroup005__LinkGroup__Solid015",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid016",
+      "part": "LinkGroup005__LinkGroup__Solid016",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid017",
+      "part": "LinkGroup005__LinkGroup__Solid017",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link023",
+      "part": "LinkGroup005__LinkGroup__Link023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link024",
+      "part": "LinkGroup005__LinkGroup__Link024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link025",
+      "part": "LinkGroup005__LinkGroup__Link025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid018",
+      "part": "LinkGroup005__LinkGroup__Solid018",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link026",
+      "part": "LinkGroup005__LinkGroup__Link026",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link027",
+      "part": "LinkGroup005__LinkGroup__Link027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link028",
+      "part": "LinkGroup005__LinkGroup__Link028",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid019",
+      "part": "LinkGroup005__LinkGroup__Solid019",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link029",
+      "part": "LinkGroup005__LinkGroup__Link029",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid020",
+      "part": "LinkGroup005__LinkGroup__Solid020",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link030",
+      "part": "LinkGroup005__LinkGroup__Link030",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid021",
+      "part": "LinkGroup005__LinkGroup__Solid021",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link031",
+      "part": "LinkGroup005__LinkGroup__Link031",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link032",
+      "part": "LinkGroup005__LinkGroup__Link032",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link033",
+      "part": "LinkGroup005__LinkGroup__Link033",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid022",
+      "part": "LinkGroup005__LinkGroup__Solid022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Solid023",
+      "part": "LinkGroup005__LinkGroup__Solid023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link034",
+      "part": "LinkGroup005__LinkGroup__Link034",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link035",
+      "part": "LinkGroup005__LinkGroup__Link035",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup__Link036",
+      "part": "LinkGroup005__LinkGroup__Link036",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid012",
+      "part": "LinkGroup005__Link037__Solid012",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid013",
+      "part": "LinkGroup005__Link037__Solid013",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid014",
+      "part": "LinkGroup005__Link037__Solid014",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link022",
+      "part": "LinkGroup005__Link037__Link022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid015",
+      "part": "LinkGroup005__Link037__Solid015",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid016",
+      "part": "LinkGroup005__Link037__Solid016",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid017",
+      "part": "LinkGroup005__Link037__Solid017",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link023",
+      "part": "LinkGroup005__Link037__Link023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link024",
+      "part": "LinkGroup005__Link037__Link024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link025",
+      "part": "LinkGroup005__Link037__Link025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid018",
+      "part": "LinkGroup005__Link037__Solid018",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link026",
+      "part": "LinkGroup005__Link037__Link026",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link027",
+      "part": "LinkGroup005__Link037__Link027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link028",
+      "part": "LinkGroup005__Link037__Link028",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid019",
+      "part": "LinkGroup005__Link037__Solid019",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link029",
+      "part": "LinkGroup005__Link037__Link029",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid020",
+      "part": "LinkGroup005__Link037__Solid020",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link030",
+      "part": "LinkGroup005__Link037__Link030",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid021",
+      "part": "LinkGroup005__Link037__Solid021",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link031",
+      "part": "LinkGroup005__Link037__Link031",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link032",
+      "part": "LinkGroup005__Link037__Link032",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link033",
+      "part": "LinkGroup005__Link037__Link033",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid022",
+      "part": "LinkGroup005__Link037__Solid022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Solid023",
+      "part": "LinkGroup005__Link037__Solid023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link034",
+      "part": "LinkGroup005__Link037__Link034",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link035",
+      "part": "LinkGroup005__Link037__Link035",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link037__Link036",
+      "part": "LinkGroup005__Link037__Link036",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid012",
+      "part": "LinkGroup005__Link038__Solid012",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid013",
+      "part": "LinkGroup005__Link038__Solid013",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid014",
+      "part": "LinkGroup005__Link038__Solid014",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link022",
+      "part": "LinkGroup005__Link038__Link022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid015",
+      "part": "LinkGroup005__Link038__Solid015",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid016",
+      "part": "LinkGroup005__Link038__Solid016",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid017",
+      "part": "LinkGroup005__Link038__Solid017",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link023",
+      "part": "LinkGroup005__Link038__Link023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link024",
+      "part": "LinkGroup005__Link038__Link024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link025",
+      "part": "LinkGroup005__Link038__Link025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid018",
+      "part": "LinkGroup005__Link038__Solid018",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link026",
+      "part": "LinkGroup005__Link038__Link026",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link027",
+      "part": "LinkGroup005__Link038__Link027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link028",
+      "part": "LinkGroup005__Link038__Link028",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid019",
+      "part": "LinkGroup005__Link038__Solid019",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link029",
+      "part": "LinkGroup005__Link038__Link029",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid020",
+      "part": "LinkGroup005__Link038__Solid020",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link030",
+      "part": "LinkGroup005__Link038__Link030",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid021",
+      "part": "LinkGroup005__Link038__Solid021",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link031",
+      "part": "LinkGroup005__Link038__Link031",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link032",
+      "part": "LinkGroup005__Link038__Link032",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link033",
+      "part": "LinkGroup005__Link038__Link033",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid022",
+      "part": "LinkGroup005__Link038__Solid022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Solid023",
+      "part": "LinkGroup005__Link038__Solid023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link034",
+      "part": "LinkGroup005__Link038__Link034",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link035",
+      "part": "LinkGroup005__Link038__Link035",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link038__Link036",
+      "part": "LinkGroup005__Link038__Link036",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid012",
+      "part": "LinkGroup005__Link039__Solid012",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid013",
+      "part": "LinkGroup005__Link039__Solid013",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid014",
+      "part": "LinkGroup005__Link039__Solid014",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link022",
+      "part": "LinkGroup005__Link039__Link022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid015",
+      "part": "LinkGroup005__Link039__Solid015",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid016",
+      "part": "LinkGroup005__Link039__Solid016",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid017",
+      "part": "LinkGroup005__Link039__Solid017",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link023",
+      "part": "LinkGroup005__Link039__Link023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link024",
+      "part": "LinkGroup005__Link039__Link024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link025",
+      "part": "LinkGroup005__Link039__Link025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid018",
+      "part": "LinkGroup005__Link039__Solid018",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link026",
+      "part": "LinkGroup005__Link039__Link026",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link027",
+      "part": "LinkGroup005__Link039__Link027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link028",
+      "part": "LinkGroup005__Link039__Link028",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid019",
+      "part": "LinkGroup005__Link039__Solid019",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link029",
+      "part": "LinkGroup005__Link039__Link029",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid020",
+      "part": "LinkGroup005__Link039__Solid020",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link030",
+      "part": "LinkGroup005__Link039__Link030",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid021",
+      "part": "LinkGroup005__Link039__Solid021",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link031",
+      "part": "LinkGroup005__Link039__Link031",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link032",
+      "part": "LinkGroup005__Link039__Link032",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link033",
+      "part": "LinkGroup005__Link039__Link033",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid022",
+      "part": "LinkGroup005__Link039__Solid022",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Solid023",
+      "part": "LinkGroup005__Link039__Solid023",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link034",
+      "part": "LinkGroup005__Link039__Link034",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link035",
+      "part": "LinkGroup005__Link039__Link035",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link039__Link036",
+      "part": "LinkGroup005__Link039__Link036",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup001__Solid024",
+      "part": "LinkGroup005__LinkGroup001__Solid024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup001__Solid025",
+      "part": "LinkGroup005__LinkGroup001__Solid025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup001__Link040",
+      "part": "LinkGroup005__LinkGroup001__Link040",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup001__Link041",
+      "part": "LinkGroup005__LinkGroup001__Link041",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link042__Solid024",
+      "part": "LinkGroup005__Link042__Solid024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link042__Solid025",
+      "part": "LinkGroup005__Link042__Solid025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link042__Link040",
+      "part": "LinkGroup005__Link042__Link040",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link042__Link041",
+      "part": "LinkGroup005__Link042__Link041",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link043__Solid024",
+      "part": "LinkGroup005__Link043__Solid024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link043__Solid025",
+      "part": "LinkGroup005__Link043__Solid025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link043__Link040",
+      "part": "LinkGroup005__Link043__Link040",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link043__Link041",
+      "part": "LinkGroup005__Link043__Link041",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link044__Solid024",
+      "part": "LinkGroup005__Link044__Solid024",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link044__Solid025",
+      "part": "LinkGroup005__Link044__Solid025",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link044__Link040",
+      "part": "LinkGroup005__Link044__Link040",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link044__Link041",
+      "part": "LinkGroup005__Link044__Link041",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid026",
+      "part": "LinkGroup005__Solid026",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link045",
+      "part": "LinkGroup005__Link045",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup002__Link046",
+      "part": "LinkGroup005__LinkGroup002__Link046",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup002__Link047",
+      "part": "LinkGroup005__LinkGroup002__Link047",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup002__Solid027",
+      "part": "LinkGroup005__LinkGroup002__Solid027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup002__Link048",
+      "part": "LinkGroup005__LinkGroup002__Link048",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link049__Link046",
+      "part": "LinkGroup005__Link049__Link046",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link049__Link047",
+      "part": "LinkGroup005__Link049__Link047",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link049__Solid027",
+      "part": "LinkGroup005__Link049__Solid027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link049__Link048",
+      "part": "LinkGroup005__Link049__Link048",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link050__Link046",
+      "part": "LinkGroup005__Link050__Link046",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link050__Link047",
+      "part": "LinkGroup005__Link050__Link047",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link050__Solid027",
+      "part": "LinkGroup005__Link050__Solid027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link050__Link048",
+      "part": "LinkGroup005__Link050__Link048",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link051__Link046",
+      "part": "LinkGroup005__Link051__Link046",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link051__Link047",
+      "part": "LinkGroup005__Link051__Link047",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link051__Solid027",
+      "part": "LinkGroup005__Link051__Solid027",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link051__Link048",
+      "part": "LinkGroup005__Link051__Link048",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid028",
+      "part": "LinkGroup005__Solid028",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link052",
+      "part": "LinkGroup005__Link052",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link053",
+      "part": "LinkGroup005__Link053",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link054",
+      "part": "LinkGroup005__Link054",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link055",
+      "part": "LinkGroup005__Link055",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link056",
+      "part": "LinkGroup005__Link056",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link057",
+      "part": "LinkGroup005__Link057",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link058",
+      "part": "LinkGroup005__Link058",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link059",
+      "part": "LinkGroup005__Link059",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link060",
+      "part": "LinkGroup005__Link060",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link065",
+      "part": "LinkGroup005__Link065",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link066",
+      "part": "LinkGroup005__Link066",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link067",
+      "part": "LinkGroup005__Link067",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link068",
+      "part": "LinkGroup005__Link068",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid031",
+      "part": "LinkGroup005__Solid031",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup003__Solid032",
+      "part": "LinkGroup005__LinkGroup003__Solid032",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup003__Solid033",
+      "part": "LinkGroup005__LinkGroup003__Solid033",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup003__Solid034",
+      "part": "LinkGroup005__LinkGroup003__Solid034",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup003__Solid035",
+      "part": "LinkGroup005__LinkGroup003__Solid035",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup003__Solid036",
+      "part": "LinkGroup005__LinkGroup003__Solid036",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid037",
+      "part": "LinkGroup005__Solid037",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid038",
+      "part": "LinkGroup005__Solid038",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid039",
+      "part": "LinkGroup005__Solid039",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link069",
+      "part": "LinkGroup005__Link069",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid040",
+      "part": "LinkGroup005__Solid040",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid041",
+      "part": "LinkGroup005__Solid041",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link070",
+      "part": "LinkGroup005__Link070",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid042",
+      "part": "LinkGroup005__Solid042",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup004__Solid043",
+      "part": "LinkGroup005__LinkGroup004__Solid043",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__LinkGroup004__Solid044",
+      "part": "LinkGroup005__LinkGroup004__Solid044",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid045",
+      "part": "LinkGroup005__Solid045",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link071",
+      "part": "LinkGroup005__Link071",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link072",
+      "part": "LinkGroup005__Link072",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link073",
+      "part": "LinkGroup005__Link073",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid046",
+      "part": "LinkGroup005__Solid046",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link074",
+      "part": "LinkGroup005__Link074",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link075",
+      "part": "LinkGroup005__Link075",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link076",
+      "part": "LinkGroup005__Link076",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid047",
+      "part": "LinkGroup005__Solid047",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link077",
+      "part": "LinkGroup005__Link077",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link078",
+      "part": "LinkGroup005__Link078",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link079",
+      "part": "LinkGroup005__Link079",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid048",
+      "part": "LinkGroup005__Solid048",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link080",
+      "part": "LinkGroup005__Link080",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link081",
+      "part": "LinkGroup005__Link081",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link082",
+      "part": "LinkGroup005__Link082",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link083",
+      "part": "LinkGroup005__Link083",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link084",
+      "part": "LinkGroup005__Link084",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link085",
+      "part": "LinkGroup005__Link085",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link086",
+      "part": "LinkGroup005__Link086",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link087",
+      "part": "LinkGroup005__Link087",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link088",
+      "part": "LinkGroup005__Link088",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link089",
+      "part": "LinkGroup005__Link089",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link090",
+      "part": "LinkGroup005__Link090",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid049",
+      "part": "LinkGroup005__Solid049",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link091",
+      "part": "LinkGroup005__Link091",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link092",
+      "part": "LinkGroup005__Link092",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link093",
+      "part": "LinkGroup005__Link093",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Solid050",
+      "part": "LinkGroup005__Solid050",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link094",
+      "part": "LinkGroup005__Link094",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link095",
+      "part": "LinkGroup005__Link095",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup005__Link096",
+      "part": "LinkGroup005__Link096",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__Body005",
+      "part": "Body005",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup007__Solid055",
+      "part": "LinkGroup015__LinkGroup007__Solid055",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Solid056",
+      "part": "LinkGroup015__LinkGroup011__Solid056",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link097",
+      "part": "LinkGroup015__LinkGroup011__Link097",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link098",
+      "part": "LinkGroup015__LinkGroup011__Link098",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link099",
+      "part": "LinkGroup015__LinkGroup011__Link099",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link100",
+      "part": "LinkGroup015__LinkGroup011__Link100",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link101",
+      "part": "LinkGroup015__LinkGroup011__Link101",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link102",
+      "part": "LinkGroup015__LinkGroup011__Link102",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup008__Solid057",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup008__Solid057",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Solid058",
+      "part": "LinkGroup015__LinkGroup011__Solid058",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Solid059",
+      "part": "LinkGroup015__LinkGroup011__Solid059",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Solid060",
+      "part": "LinkGroup015__LinkGroup011__Solid060",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link103",
+      "part": "LinkGroup015__LinkGroup011__Link103",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup009__Solid061",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup009__Solid061",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link104__Solid061",
+      "part": "LinkGroup015__LinkGroup011__Link104__Solid061",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid062",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid062",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid063",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid063",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid064",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid064",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid065",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid065",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid066",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid066",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid067",
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid067",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid062",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid062",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid063",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid063",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid064",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid064",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid065",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid065",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid066",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid066",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link105__Solid067",
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid067",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid062",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid062",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid063",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid063",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid064",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid064",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid065",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid065",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid066",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid066",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup011__Link106__Solid067",
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid067",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid068",
+      "part": "LinkGroup015__Solid068",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link107",
+      "part": "LinkGroup015__Link107",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup012__Solid069",
+      "part": "LinkGroup015__LinkGroup012__Solid069",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup012__Solid070",
+      "part": "LinkGroup015__LinkGroup012__Solid070",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup012__Solid071",
+      "part": "LinkGroup015__LinkGroup012__Solid071",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid072",
+      "part": "LinkGroup015__Solid072",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid073",
+      "part": "LinkGroup015__Solid073",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid074",
+      "part": "LinkGroup015__Solid074",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link108",
+      "part": "LinkGroup015__Link108",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid075",
+      "part": "LinkGroup015__Solid075",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid076",
+      "part": "LinkGroup015__Solid076",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link109",
+      "part": "LinkGroup015__Link109",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link110",
+      "part": "LinkGroup015__Link110",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link111",
+      "part": "LinkGroup015__Link111",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link112",
+      "part": "LinkGroup015__Link112",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link113",
+      "part": "LinkGroup015__Link113",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__LinkGroup014__Solid077",
+      "part": "LinkGroup015__LinkGroup014__Solid077",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link114__Solid077",
+      "part": "LinkGroup015__Link114__Solid077",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid078",
+      "part": "LinkGroup015__Solid078",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Solid079",
+      "part": "LinkGroup015__Solid079",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup015__Link115",
+      "part": "LinkGroup015__Link115",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__xiao_esp32s3_v3_with_pins",
+      "part": "xiao_esp32s3_v3_with_pins",
+      "body": "base_link",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__LinkGroup006__Compound001",
+      "part": "LinkGroup006__Compound001",
+      "body": "camera_mount",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__Body002",
+      "part": "Body002",
+      "body": "camera_mount",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__CombinedShell",
+      "part": "CombinedShell",
+      "body": "cam_x_pan",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__Shell003",
+      "part": "Shell003",
+      "body": "cam_y_tilt",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "contact__Body004",
+      "part": "Body004",
+      "body": "cam_y_tilt",
+      "method": "per_part_CAD_LOD_convex_hull"
+    },
+    {
+      "geom": "rotor_envelope_prop_1",
+      "part": "Solid051",
+      "body": "base_link",
+      "radius_m": 0.12742434471335262,
+      "half_height_m": 0.00438086624460253,
+      "method": "conservative_nonspinning_rotor_swept_envelope"
+    },
+    {
+      "geom": "rotor_envelope_prop_2",
+      "part": "Solid052",
+      "body": "base_link",
+      "radius_m": 0.12742434471335262,
+      "half_height_m": 0.00438086624460253,
+      "method": "conservative_nonspinning_rotor_swept_envelope"
+    },
+    {
+      "geom": "rotor_envelope_prop_3",
+      "part": "Solid053",
+      "body": "base_link",
+      "radius_m": 0.12742434471335262,
+      "half_height_m": 0.00438086624460253,
+      "method": "conservative_nonspinning_rotor_swept_envelope"
+    },
+    {
+      "geom": "rotor_envelope_prop_4",
+      "part": "Solid054",
+      "body": "base_link",
+      "radius_m": 0.12742434471335262,
+      "half_height_m": 0.00438086624460253,
+      "method": "conservative_nonspinning_rotor_swept_envelope"
+    }
+  ],
+  "mass_added_kg": 0,
+  "self_contacts": false,
+  "limitations": [
+    "Per-part convex hulls fill concavities.",
+    "Rotor disk contacts represent a conservative strike/failure scenario, not blade fracture."
+  ]
+}

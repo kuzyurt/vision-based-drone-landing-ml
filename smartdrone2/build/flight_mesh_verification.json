@@ -1,0 +1,2130 @@
+{
+  "max_accepted_bbox_deviation_mm": 0.12313460912782048,
+  "source_faces": 5251288,
+  "flight_faces": 1009594,
+  "parts": [
+    {
+      "part": "LinkGroup005__Solid",
+      "source_faces": 33236,
+      "flight_faces": 32522,
+      "candidate_bbox_error_mm": 3.922195901395753e-12,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid001",
+      "source_faces": 21988,
+      "flight_faces": 21662,
+      "candidate_bbox_error_mm": 4.547473508864641e-13,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid002",
+      "source_faces": 6082,
+      "flight_faces": 4234,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid003",
+      "source_faces": 2084,
+      "flight_faces": 1102,
+      "candidate_bbox_error_mm": 0.06845918251359073,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid004",
+      "source_faces": 7838,
+      "flight_faces": 5944,
+      "candidate_bbox_error_mm": 0.08764952412280991,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid005",
+      "source_faces": 1008,
+      "flight_faces": 960,
+      "candidate_bbox_error_mm": 2.2737367544323206e-12,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid006",
+      "source_faces": 25098,
+      "flight_faces": 5018,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link",
+      "source_faces": 25098,
+      "flight_faces": 5018,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid007",
+      "source_faces": 2270,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.06828454429859221,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link001",
+      "source_faces": 2270,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.06828456457702714,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid008",
+      "source_faces": 34550,
+      "flight_faces": 3454,
+      "candidate_bbox_error_mm": 0.017000737458673143,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid009",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0027940529378298606,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid010",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.01573092292310463,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link002",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.015730922923081536,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link003",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0059434660284125584,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link004",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.005945112418658027,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link005",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0137408016967413,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid011",
+      "source_faces": 29324,
+      "flight_faces": 2932,
+      "candidate_bbox_error_mm": 0.01564085486750244,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link006",
+      "source_faces": 6082,
+      "flight_faces": 4234,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link007",
+      "source_faces": 2084,
+      "flight_faces": 1100,
+      "candidate_bbox_error_mm": 0.0684591825135783,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link008",
+      "source_faces": 7838,
+      "flight_faces": 5944,
+      "candidate_bbox_error_mm": 0.08764952405321802,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link009",
+      "source_faces": 1008,
+      "flight_faces": 960,
+      "candidate_bbox_error_mm": 1.3841372492606752e-11,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link010",
+      "source_faces": 25098,
+      "flight_faces": 5018,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link011",
+      "source_faces": 25098,
+      "flight_faces": 5018,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link012",
+      "source_faces": 2270,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.06828456457700938,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link013",
+      "source_faces": 2270,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.06828454429852648,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link014",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.003549024055715222,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link015",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.005945112418558551,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link016",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.002674160566744632,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link017",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.01573807162288432,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link018",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.015738071622896754,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link019",
+      "source_faces": 29324,
+      "flight_faces": 2932,
+      "candidate_bbox_error_mm": 0.01816485466378026,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link020",
+      "source_faces": 34550,
+      "flight_faces": 3454,
+      "candidate_bbox_error_mm": 0.017000744671733514,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link021",
+      "source_faces": 5276,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.002200304392966146,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid012",
+      "source_faces": 2628,
+      "flight_faces": 1832,
+      "candidate_bbox_error_mm": 0.05429408274237346,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid013",
+      "source_faces": 25898,
+      "flight_faces": 11662,
+      "candidate_bbox_error_mm": 0.11584625877483745,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid014",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.0058274569841358925,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link022",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984206947,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid015",
+      "source_faces": 21506,
+      "flight_faces": 8600,
+      "candidate_bbox_error_mm": 0.0011117427896465415,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid016",
+      "source_faces": 8200,
+      "flight_faces": 5562,
+      "candidate_bbox_error_mm": 7.673861546209082e-13,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid017",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824150221,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link023",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824093378,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link024",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824064956,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link025",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824008113,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid018",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.01633202049815452,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link026",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016331730853480053,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link027",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.02192104352258184,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link028",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.0163320269094811,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid019",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.01124759143783649,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link029",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247842399541241,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid020",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023541098,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link030",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023512676,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid021",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665188848,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link031",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.0202627499929946,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link032",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020263005973291115,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link033",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665188848,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid022",
+      "source_faces": 29812,
+      "flight_faces": 8264,
+      "candidate_bbox_error_mm": 0.09405576719686337,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Solid023",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032761646,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link034",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link035",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup__Link036",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid012",
+      "source_faces": 2628,
+      "flight_faces": 1832,
+      "candidate_bbox_error_mm": 0.054294082741932925,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid013",
+      "source_faces": 25898,
+      "flight_faces": 11662,
+      "candidate_bbox_error_mm": 0.11584625877483745,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid014",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984103918,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link022",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984107471,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid015",
+      "source_faces": 21506,
+      "flight_faces": 8600,
+      "candidate_bbox_error_mm": 0.0011117427813474023,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid016",
+      "source_faces": 8200,
+      "flight_faces": 5562,
+      "candidate_bbox_error_mm": 4.405364961712621e-12,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid017",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.0136882208241218,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link023",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.0136882208241218,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link024",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824093378,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link025",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824150221,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid018",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016332020498147415,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link026",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016331730853458737,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link027",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.021921043522524997,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link028",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016332026909473996,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid019",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247591437808069,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link029",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247842399541241,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid020",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023484254,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link030",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023512676,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid021",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665195953,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link031",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262749992998152,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link032",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.02026300597329822,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link033",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665181742,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid022",
+      "source_faces": 29812,
+      "flight_faces": 8264,
+      "candidate_bbox_error_mm": 0.09405576719668574,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Solid023",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032719013,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link034",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link035",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032719013,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link037__Link036",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032719013,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid012",
+      "source_faces": 2628,
+      "flight_faces": 1832,
+      "candidate_bbox_error_mm": 0.05429408274200398,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid013",
+      "source_faces": 25898,
+      "flight_faces": 11662,
+      "candidate_bbox_error_mm": 0.11584625877483745,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid014",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984114576,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link022",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984100365,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid015",
+      "source_faces": 21506,
+      "flight_faces": 8600,
+      "candidate_bbox_error_mm": 0.001111742782740066,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid016",
+      "source_faces": 8200,
+      "flight_faces": 5562,
+      "candidate_bbox_error_mm": 6.224354365258478e-12,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid017",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.0136882208241218,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link023",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824150221,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link024",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.0136882208241218,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link025",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824107589,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid018",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.01633202049815452,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link026",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016331730853455184,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link027",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.02192104352258184,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link028",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.0163320269094811,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid019",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247591437829385,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link029",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247842399498609,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid020",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023462938,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link030",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023462938,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid021",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.02026274466520306,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link031",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262749992987494,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link032",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.02026300597329822,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link033",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665195953,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid022",
+      "source_faces": 29812,
+      "flight_faces": 8264,
+      "candidate_bbox_error_mm": 0.09405576719652231,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Solid023",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link034",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032761646,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link035",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032790068,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link038__Link036",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032733224,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid012",
+      "source_faces": 2628,
+      "flight_faces": 1832,
+      "candidate_bbox_error_mm": 0.054294082742075034,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid013",
+      "source_faces": 25898,
+      "flight_faces": 11660,
+      "candidate_bbox_error_mm": 0.1158462587748943,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid014",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984121682,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link022",
+      "source_faces": 22498,
+      "flight_faces": 8996,
+      "candidate_bbox_error_mm": 0.005827456984079049,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid015",
+      "source_faces": 21506,
+      "flight_faces": 8600,
+      "candidate_bbox_error_mm": 0.0011117427900728671,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid016",
+      "source_faces": 8200,
+      "flight_faces": 5562,
+      "candidate_bbox_error_mm": 1.5660361896152608e-11,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid017",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824008113,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link023",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824064956,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link024",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824064956,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link025",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.013688220824178643,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid018",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.016332020498111888,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link026",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.01633173085343742,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link027",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.021921043522574735,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link028",
+      "source_faces": 56616,
+      "flight_faces": 5660,
+      "candidate_bbox_error_mm": 0.0163320269094811,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid019",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247591437779647,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link029",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.011247842399484398,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid020",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023498465,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link030",
+      "source_faces": 19700,
+      "flight_faces": 1970,
+      "candidate_bbox_error_mm": 0.011274780023498465,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid021",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020262744665188848,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link031",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.02026274999300881,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link032",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.020263005973333748,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link033",
+      "source_faces": 11426,
+      "flight_faces": 1142,
+      "candidate_bbox_error_mm": 0.02026274466521727,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid022",
+      "source_faces": 29812,
+      "flight_faces": 8264,
+      "candidate_bbox_error_mm": 0.09405576719672126,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Solid023",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032647959,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link034",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032761646,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link035",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032647959,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link039__Link036",
+      "source_faces": 13692,
+      "flight_faces": 1368,
+      "candidate_bbox_error_mm": 0.013649744032704803,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup001__Solid024",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.4061314641749476,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__LinkGroup001__Solid025",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.01159661311831428,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup001__Link040",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.01416043861034666,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup001__Link041",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.014160438610332449,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link042__Solid024",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417489077,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link042__Solid025",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.011596613118342702,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link042__Link040",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.01416043861036087,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link042__Link041",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.014160438610332449,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link043__Solid024",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.4061314641749476,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link043__Solid025",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.01159661311831428,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link043__Link040",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.014160438610318238,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link043__Link041",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.014160438610318238,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link044__Solid024",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417489077,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link044__Solid025",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.01159661311831428,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link044__Link040",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.014160438610318238,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link044__Link041",
+      "source_faces": 13954,
+      "flight_faces": 1394,
+      "candidate_bbox_error_mm": 0.01416043861036087,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid026",
+      "source_faces": 1008,
+      "flight_faces": 980,
+      "candidate_bbox_error_mm": 9.29389898374211e-12,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link045",
+      "source_faces": 1008,
+      "flight_faces": 980,
+      "candidate_bbox_error_mm": 1.6484591469634324e-11,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup002__Link046",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417501866,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__LinkGroup002__Link047",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.011590768979772292,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup002__Solid027",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.026323309638684123,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup002__Link048",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.026323309638698333,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link049__Link046",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417510393,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link049__Link047",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.011590768979829136,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link049__Solid027",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.0263233096386557,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link049__Link048",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.026323309638684123,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link050__Link046",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417501866,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link050__Link047",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.01159076897980782,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link050__Solid027",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.0263233096386557,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link050__Link048",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.02632330963864149,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link051__Link046",
+      "source_faces": 2276,
+      "flight_faces": 2276,
+      "candidate_bbox_error_mm": 0.40613146417510393,
+      "full_resolution_fallback": true
+    },
+    {
+      "part": "LinkGroup005__Link051__Link047",
+      "source_faces": 18144,
+      "flight_faces": 1814,
+      "candidate_bbox_error_mm": 0.011590768979829136,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link051__Solid027",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.0263233096386557,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link051__Link048",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.026323309638684123,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid028",
+      "source_faces": 4828,
+      "flight_faces": 4812,
+      "candidate_bbox_error_mm": 7.069900220812997e-13,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link052",
+      "source_faces": 4828,
+      "flight_faces": 4812,
+      "candidate_bbox_error_mm": 5.044853423896711e-13,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link053",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182687586,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link054",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182689362,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link055",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.01706404818267515,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link056",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182684033,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link057",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182689362,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link058",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.01706404818269114,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link059",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182687586,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link060",
+      "source_faces": 16538,
+      "flight_faces": 1652,
+      "candidate_bbox_error_mm": 0.017064048182696467,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link065",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.025121351638759393,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link066",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.025121351638759393,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link067",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.02512135163871676,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link068",
+      "source_faces": 13516,
+      "flight_faces": 1350,
+      "candidate_bbox_error_mm": 0.02512135163870255,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid031",
+      "source_faces": 23464,
+      "flight_faces": 15404,
+      "candidate_bbox_error_mm": 9.590068813736252e-06,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup003__Solid032",
+      "source_faces": 18092,
+      "flight_faces": 5282,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup003__Solid033",
+      "source_faces": 2530,
+      "flight_faces": 2386,
+      "candidate_bbox_error_mm": 0.00487940121348629,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup003__Solid034",
+      "source_faces": 512,
+      "flight_faces": 512,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup003__Solid035",
+      "source_faces": 66872,
+      "flight_faces": 6686,
+      "candidate_bbox_error_mm": 0.03831784502328617,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup003__Solid036",
+      "source_faces": 2638,
+      "flight_faces": 1200,
+      "candidate_bbox_error_mm": 0.04939451941238815,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid037",
+      "source_faces": 16930,
+      "flight_faces": 10768,
+      "candidate_bbox_error_mm": 0.0066778804198150965,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid038",
+      "source_faces": 4056,
+      "flight_faces": 2090,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid039",
+      "source_faces": 34464,
+      "flight_faces": 3446,
+      "candidate_bbox_error_mm": 0.016472262752103006,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link069",
+      "source_faces": 34464,
+      "flight_faces": 3446,
+      "candidate_bbox_error_mm": 0.01647226275218827,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid040",
+      "source_faces": 2618,
+      "flight_faces": 2400,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid041",
+      "source_faces": 4784,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0022055634092907894,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link070",
+      "source_faces": 4784,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0022055634092907894,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid042",
+      "source_faces": 18454,
+      "flight_faces": 14760,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup004__Solid043",
+      "source_faces": 12700,
+      "flight_faces": 4988,
+      "candidate_bbox_error_mm": 5.684341886080802e-14,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__LinkGroup004__Solid044",
+      "source_faces": 420,
+      "flight_faces": 420,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid045",
+      "source_faces": 7270,
+      "flight_faces": 726,
+      "candidate_bbox_error_mm": 0.0012123213728756355,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link071",
+      "source_faces": 7270,
+      "flight_faces": 726,
+      "candidate_bbox_error_mm": 0.0012123213727903703,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link072",
+      "source_faces": 7270,
+      "flight_faces": 726,
+      "candidate_bbox_error_mm": 0.0012123213727619486,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link073",
+      "source_faces": 7270,
+      "flight_faces": 726,
+      "candidate_bbox_error_mm": 0.001212321372818792,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid046",
+      "source_faces": 23742,
+      "flight_faces": 2374,
+      "candidate_bbox_error_mm": 0.02432050614523007,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link074",
+      "source_faces": 23742,
+      "flight_faces": 2374,
+      "candidate_bbox_error_mm": 0.024320506145173226,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link075",
+      "source_faces": 23742,
+      "flight_faces": 2374,
+      "candidate_bbox_error_mm": 0.024320506145187437,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link076",
+      "source_faces": 23742,
+      "flight_faces": 2374,
+      "candidate_bbox_error_mm": 0.02432050614521586,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid047",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0025532927659526194,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link077",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0025532927658389326,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link078",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.002553292765909987,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link079",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0025532927659241977,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid048",
+      "source_faces": 16056,
+      "flight_faces": 1604,
+      "candidate_bbox_error_mm": 0.02813127537868354,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link080",
+      "source_faces": 16056,
+      "flight_faces": 1604,
+      "candidate_bbox_error_mm": 0.02813127537868354,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link081",
+      "source_faces": 16056,
+      "flight_faces": 1604,
+      "candidate_bbox_error_mm": 0.02813127537869775,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link082",
+      "source_faces": 16056,
+      "flight_faces": 1604,
+      "candidate_bbox_error_mm": 0.02813127537868354,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link083",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0025532927659526194,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link084",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0025532927659668303,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link085",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.0026271824798271837,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link086",
+      "source_faces": 9498,
+      "flight_faces": 948,
+      "candidate_bbox_error_mm": 0.002627182479812973,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link087",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.015430986699115579,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link088",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.015430986699229265,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link089",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.015430986699229265,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link090",
+      "source_faces": 22734,
+      "flight_faces": 2272,
+      "candidate_bbox_error_mm": 0.015430986699158211,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid049",
+      "source_faces": 6948,
+      "flight_faces": 694,
+      "candidate_bbox_error_mm": 3.70231745705496e-06,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link091",
+      "source_faces": 6948,
+      "flight_faces": 694,
+      "candidate_bbox_error_mm": 3.7023147285708546e-06,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link092",
+      "source_faces": 6948,
+      "flight_faces": 694,
+      "candidate_bbox_error_mm": 3.702318394971371e-06,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link093",
+      "source_faces": 6948,
+      "flight_faces": 694,
+      "candidate_bbox_error_mm": 3.7023179402240203e-06,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Solid050",
+      "source_faces": 9040,
+      "flight_faces": 904,
+      "candidate_bbox_error_mm": 0.0012644213211032707,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link094",
+      "source_faces": 9040,
+      "flight_faces": 904,
+      "candidate_bbox_error_mm": 0.0012644213209966892,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link095",
+      "source_faces": 9040,
+      "flight_faces": 904,
+      "candidate_bbox_error_mm": 0.0012644213210535327,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup005__Link096",
+      "source_faces": 9040,
+      "flight_faces": 904,
+      "candidate_bbox_error_mm": 0.001264421321060638,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "CombinedShell",
+      "source_faces": 46100,
+      "flight_faces": 9220,
+      "candidate_bbox_error_mm": 0.028961088206514773,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup006__Compound001",
+      "source_faces": 278484,
+      "flight_faces": 64000,
+      "candidate_bbox_error_mm": 0.0014416355867723496,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Shell003",
+      "source_faces": 13298,
+      "flight_faces": 1328,
+      "candidate_bbox_error_mm": 0.05086381760458636,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Body002",
+      "source_faces": 2084,
+      "flight_faces": 2084,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Solid051",
+      "source_faces": 150220,
+      "flight_faces": 32000,
+      "candidate_bbox_error_mm": 0.0004010849164561847,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Solid052",
+      "source_faces": 150216,
+      "flight_faces": 32000,
+      "candidate_bbox_error_mm": 0.0004010849164561847,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Solid053",
+      "source_faces": 150214,
+      "flight_faces": 32000,
+      "candidate_bbox_error_mm": 0.0004010849164561847,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Solid054",
+      "source_faces": 150208,
+      "flight_faces": 32000,
+      "candidate_bbox_error_mm": 0.0004010849164561847,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Body004",
+      "source_faces": 6296,
+      "flight_faces": 2328,
+      "candidate_bbox_error_mm": 0.12313460912782048,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "Body005",
+      "source_faces": 12,
+      "flight_faces": 12,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup007__Solid055",
+      "source_faces": 9842,
+      "flight_faces": 6398,
+      "candidate_bbox_error_mm": 1.4740744489927238e-05,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Solid056",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link097",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link098",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link099",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link100",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link101",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link102",
+      "source_faces": 500,
+      "flight_faces": 500,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup008__Solid057",
+      "source_faces": 18174,
+      "flight_faces": 1816,
+      "candidate_bbox_error_mm": 0.009122584680248735,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Solid058",
+      "source_faces": 3088,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 4.003172810485012e-05,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Solid059",
+      "source_faces": 12,
+      "flight_faces": 12,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Solid060",
+      "source_faces": 12,
+      "flight_faces": 12,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link103",
+      "source_faces": 12,
+      "flight_faces": 12,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup009__Solid061",
+      "source_faces": 232,
+      "flight_faces": 232,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link104__Solid061",
+      "source_faces": 232,
+      "flight_faces": 232,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid062",
+      "source_faces": 1434,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.00328578616940689,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid063",
+      "source_faces": 1742,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0011351732046023244,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid064",
+      "source_faces": 1150,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.009270748932806328,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid065",
+      "source_faces": 1446,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0009306194483400532,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid066",
+      "source_faces": 68,
+      "flight_faces": 68,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__LinkGroup010__Solid067",
+      "source_faces": 2508,
+      "flight_faces": 652,
+      "candidate_bbox_error_mm": 0.031486822133985015,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid062",
+      "source_faces": 1434,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0032857861694139956,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid063",
+      "source_faces": 1742,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0011351732045881135,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid064",
+      "source_faces": 1150,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.009270748932806328,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid065",
+      "source_faces": 1446,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0009306194483400532,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid066",
+      "source_faces": 68,
+      "flight_faces": 68,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link105__Solid067",
+      "source_faces": 2508,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.030665968647525688,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid062",
+      "source_faces": 1434,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0032857861694139956,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid063",
+      "source_faces": 1742,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0011351732046165353,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid064",
+      "source_faces": 1150,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.009270748932806328,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid065",
+      "source_faces": 1446,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0013614353675137636,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid066",
+      "source_faces": 68,
+      "flight_faces": 68,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup011__Link106__Solid067",
+      "source_faces": 2508,
+      "flight_faces": 612,
+      "candidate_bbox_error_mm": 0.031486822133985015,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid068",
+      "source_faces": 12318,
+      "flight_faces": 4924,
+      "candidate_bbox_error_mm": 0.032702089358501496,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link107",
+      "source_faces": 12318,
+      "flight_faces": 4924,
+      "candidate_bbox_error_mm": 0.032702089358501496,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup012__Solid069",
+      "source_faces": 16722,
+      "flight_faces": 6688,
+      "candidate_bbox_error_mm": 0.08166490748805444,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup012__Solid070",
+      "source_faces": 656,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup012__Solid071",
+      "source_faces": 252,
+      "flight_faces": 252,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid072",
+      "source_faces": 9040,
+      "flight_faces": 904,
+      "candidate_bbox_error_mm": 0.0697669991722023,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid073",
+      "source_faces": 300,
+      "flight_faces": 300,
+      "candidate_bbox_error_mm": 0.0,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid074",
+      "source_faces": 22580,
+      "flight_faces": 5462,
+      "candidate_bbox_error_mm": 0.0846611115297975,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link108",
+      "source_faces": 22580,
+      "flight_faces": 5462,
+      "candidate_bbox_error_mm": 0.0846611115298117,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid075",
+      "source_faces": 3312,
+      "flight_faces": 1000,
+      "candidate_bbox_error_mm": 0.12132265255682873,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid076",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.12125033804647245,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link109",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.121250338046476,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link110",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.12125033804647245,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link111",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.1213035461866312,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link112",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.121250338046476,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link113",
+      "source_faces": 2592,
+      "flight_faces": 758,
+      "candidate_bbox_error_mm": 0.12130354618663919,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__LinkGroup014__Solid077",
+      "source_faces": 4394,
+      "flight_faces": 848,
+      "candidate_bbox_error_mm": 0.11472656039502027,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link114__Solid077",
+      "source_faces": 4394,
+      "flight_faces": 808,
+      "candidate_bbox_error_mm": 0.11472656039501317,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid078",
+      "source_faces": 804,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 2.3345382800243897e-05,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Solid079",
+      "source_faces": 1164,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 8.587694432549142e-05,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "LinkGroup015__Link115",
+      "source_faces": 1164,
+      "flight_faces": 600,
+      "candidate_bbox_error_mm": 8.587694460970852e-05,
+      "full_resolution_fallback": false
+    },
+    {
+      "part": "xiao_esp32s3_v3_with_pins",
+      "source_faces": 30904,
+      "flight_faces": 12360,
+      "candidate_bbox_error_mm": 0.0012632817592503898,
+      "full_resolution_fallback": false
+    }
+  ],
+  "physics_uses_original_CAD_solids": true,
+  "caution": "Bounds verification alone is not a full surface error metric; LOD is visual only."
+}

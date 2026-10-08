@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "checks": [
+    "Web controls open both lids and raise the platform",
+    "Web controls lower platform and close lids",
+    "Separate motor sliders drive the simulated boat",
+    "Emergency stop is visible and latched in the page",
+    "Mobile layout fits 390 px without horizontal overflow"
+  ],
+  "browser_errors": []
+}

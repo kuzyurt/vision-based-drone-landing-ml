@@ -1,0 +1,1024 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="X500_V2_PX4_MuJoCo">
+  <compiler angle="radian" meshdir="flight_meshes" texturedir="textures" inertiafromgeom="false" />
+  <option gravity="0 0 -9.80665" timestep=".001" integrator="implicitfast" iterations="80" cone="elliptic" />
+  <asset>
+    <texture name="carbon_weave" type="2d" file="carbon_weave.png" />
+    <texture name="brushed_grey" type="2d" file="brushed_grey.png" />
+    <texture name="grey_matte" type="2d" file="grey_matte.png" />
+    <texture name="battery_wrap" type="2d" file="battery_wrap.png" />
+    <material name="carbon_fibre_plate" rgba="0.055 0.058 0.065 1" specular="0.075" shininess="0.5800000000000001" texture="carbon_weave" texrepeat="6 6" texuniform="true" />
+    <material name="carbon_fibre_tube" rgba="0.045 0.048 0.055 1" specular="0.075" shininess="0.62" texture="carbon_weave" texrepeat="6 6" texuniform="true" />
+    <material name="aluminium" rgba="0.72 0.73 0.75 1" specular="0.45" shininess="0.72" texture="brushed_grey" texrepeat="2 2" texuniform="true" />
+    <material name="aluminium_matte" rgba="0.52 0.53 0.55 1" specular="0.375" shininess="0.48" texture="brushed_grey" texrepeat="2 2" texuniform="true" />
+    <material name="steel" rgba="0.45 0.46 0.48 1" specular="0.475" shininess="0.78" />
+    <material name="stainless" rgba="0.62 0.63 0.65 1" specular="0.475" shininess="0.8200000000000001" />
+    <material name="nylon" rgba="0.86 0.85 0.8 1" specular="0.0" shininess="0.35" />
+    <material name="eva_foam" rgba="0.09 0.09 0.1 1" specular="0.0" shininess="0.09999999999999998" />
+    <material name="tpu" rgba="0.16 0.17 0.19 1" specular="0.0" shininess="0.18000000000000005" />
+    <material name="copper" rgba="0.72 0.45 0.2 1" specular="0.475" shininess="0.75" />
+    <material name="pcb" rgba="0.045 0.15 0.085 1" specular="0.0" shininess="0.4" />
+    <material name="electronics" rgba="0.1 0.11 0.13 1" specular="0.1" shininess="0.5" />
+    <material name="battery_blue" rgba="0.1 0.28 0.56 1" specular="0.01" shininess="0.31999999999999995" />
+    <material name="sx1262_black" rgba="0.035 0.035 0.038 1" specular="0.025" shininess="0.30000000000000004" />
+    <material name="camera_grey" rgba="0.42 0.43 0.44 1" specular="0.175" shininess="0.52" texture="grey_matte" texrepeat="2 2" texuniform="true" />
+    <material name="camera_grey_bright" rgba="0.62 0.63 0.64 1" specular="0.175" shininess="0.56" texture="grey_matte" texrepeat="2 2" texuniform="true" />
+    <material name="cover_black" rgba="0.025 0.025 0.028 1" specular="0.025" shininess="0.38" />
+    <material name="prop_black" rgba="0.06 0.06 0.07 1" specular="0.05" shininess="0.6" />
+    <mesh name="LinkGroup005__Solid" file="LinkGroup005__Solid.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid001" file="LinkGroup005__Solid001.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid002" file="LinkGroup005__Solid002.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid003" file="LinkGroup005__Solid003.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid004" file="LinkGroup005__Solid004.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid005" file="LinkGroup005__Solid005.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid006" file="LinkGroup005__Solid006.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link" file="LinkGroup005__Link.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid007" file="LinkGroup005__Solid007.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link001" file="LinkGroup005__Link001.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid008" file="LinkGroup005__Solid008.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid009" file="LinkGroup005__Solid009.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid010" file="LinkGroup005__Solid010.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link002" file="LinkGroup005__Link002.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link003" file="LinkGroup005__Link003.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link004" file="LinkGroup005__Link004.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link005" file="LinkGroup005__Link005.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid011" file="LinkGroup005__Solid011.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link006" file="LinkGroup005__Link006.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link007" file="LinkGroup005__Link007.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link008" file="LinkGroup005__Link008.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link009" file="LinkGroup005__Link009.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link010" file="LinkGroup005__Link010.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link011" file="LinkGroup005__Link011.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link012" file="LinkGroup005__Link012.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link013" file="LinkGroup005__Link013.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link014" file="LinkGroup005__Link014.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link015" file="LinkGroup005__Link015.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link016" file="LinkGroup005__Link016.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link017" file="LinkGroup005__Link017.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link018" file="LinkGroup005__Link018.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link019" file="LinkGroup005__Link019.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link020" file="LinkGroup005__Link020.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link021" file="LinkGroup005__Link021.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid012" file="LinkGroup005__LinkGroup__Solid012.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid013" file="LinkGroup005__LinkGroup__Solid013.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid014" file="LinkGroup005__LinkGroup__Solid014.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link022" file="LinkGroup005__LinkGroup__Link022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid015" file="LinkGroup005__LinkGroup__Solid015.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid016" file="LinkGroup005__LinkGroup__Solid016.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid017" file="LinkGroup005__LinkGroup__Solid017.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link023" file="LinkGroup005__LinkGroup__Link023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link024" file="LinkGroup005__LinkGroup__Link024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link025" file="LinkGroup005__LinkGroup__Link025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid018" file="LinkGroup005__LinkGroup__Solid018.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link026" file="LinkGroup005__LinkGroup__Link026.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link027" file="LinkGroup005__LinkGroup__Link027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link028" file="LinkGroup005__LinkGroup__Link028.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid019" file="LinkGroup005__LinkGroup__Solid019.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link029" file="LinkGroup005__LinkGroup__Link029.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid020" file="LinkGroup005__LinkGroup__Solid020.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link030" file="LinkGroup005__LinkGroup__Link030.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid021" file="LinkGroup005__LinkGroup__Solid021.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link031" file="LinkGroup005__LinkGroup__Link031.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link032" file="LinkGroup005__LinkGroup__Link032.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link033" file="LinkGroup005__LinkGroup__Link033.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid022" file="LinkGroup005__LinkGroup__Solid022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Solid023" file="LinkGroup005__LinkGroup__Solid023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link034" file="LinkGroup005__LinkGroup__Link034.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link035" file="LinkGroup005__LinkGroup__Link035.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup__Link036" file="LinkGroup005__LinkGroup__Link036.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid012" file="LinkGroup005__Link037__Solid012.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid013" file="LinkGroup005__Link037__Solid013.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid014" file="LinkGroup005__Link037__Solid014.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link022" file="LinkGroup005__Link037__Link022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid015" file="LinkGroup005__Link037__Solid015.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid016" file="LinkGroup005__Link037__Solid016.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid017" file="LinkGroup005__Link037__Solid017.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link023" file="LinkGroup005__Link037__Link023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link024" file="LinkGroup005__Link037__Link024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link025" file="LinkGroup005__Link037__Link025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid018" file="LinkGroup005__Link037__Solid018.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link026" file="LinkGroup005__Link037__Link026.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link027" file="LinkGroup005__Link037__Link027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link028" file="LinkGroup005__Link037__Link028.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid019" file="LinkGroup005__Link037__Solid019.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link029" file="LinkGroup005__Link037__Link029.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid020" file="LinkGroup005__Link037__Solid020.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link030" file="LinkGroup005__Link037__Link030.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid021" file="LinkGroup005__Link037__Solid021.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link031" file="LinkGroup005__Link037__Link031.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link032" file="LinkGroup005__Link037__Link032.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link033" file="LinkGroup005__Link037__Link033.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid022" file="LinkGroup005__Link037__Solid022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Solid023" file="LinkGroup005__Link037__Solid023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link034" file="LinkGroup005__Link037__Link034.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link035" file="LinkGroup005__Link037__Link035.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link037__Link036" file="LinkGroup005__Link037__Link036.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid012" file="LinkGroup005__Link038__Solid012.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid013" file="LinkGroup005__Link038__Solid013.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid014" file="LinkGroup005__Link038__Solid014.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link022" file="LinkGroup005__Link038__Link022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid015" file="LinkGroup005__Link038__Solid015.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid016" file="LinkGroup005__Link038__Solid016.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid017" file="LinkGroup005__Link038__Solid017.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link023" file="LinkGroup005__Link038__Link023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link024" file="LinkGroup005__Link038__Link024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link025" file="LinkGroup005__Link038__Link025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid018" file="LinkGroup005__Link038__Solid018.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link026" file="LinkGroup005__Link038__Link026.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link027" file="LinkGroup005__Link038__Link027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link028" file="LinkGroup005__Link038__Link028.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid019" file="LinkGroup005__Link038__Solid019.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link029" file="LinkGroup005__Link038__Link029.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid020" file="LinkGroup005__Link038__Solid020.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link030" file="LinkGroup005__Link038__Link030.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid021" file="LinkGroup005__Link038__Solid021.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link031" file="LinkGroup005__Link038__Link031.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link032" file="LinkGroup005__Link038__Link032.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link033" file="LinkGroup005__Link038__Link033.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid022" file="LinkGroup005__Link038__Solid022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Solid023" file="LinkGroup005__Link038__Solid023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link034" file="LinkGroup005__Link038__Link034.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link035" file="LinkGroup005__Link038__Link035.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link038__Link036" file="LinkGroup005__Link038__Link036.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid012" file="LinkGroup005__Link039__Solid012.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid013" file="LinkGroup005__Link039__Solid013.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid014" file="LinkGroup005__Link039__Solid014.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link022" file="LinkGroup005__Link039__Link022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid015" file="LinkGroup005__Link039__Solid015.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid016" file="LinkGroup005__Link039__Solid016.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid017" file="LinkGroup005__Link039__Solid017.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link023" file="LinkGroup005__Link039__Link023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link024" file="LinkGroup005__Link039__Link024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link025" file="LinkGroup005__Link039__Link025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid018" file="LinkGroup005__Link039__Solid018.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link026" file="LinkGroup005__Link039__Link026.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link027" file="LinkGroup005__Link039__Link027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link028" file="LinkGroup005__Link039__Link028.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid019" file="LinkGroup005__Link039__Solid019.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link029" file="LinkGroup005__Link039__Link029.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid020" file="LinkGroup005__Link039__Solid020.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link030" file="LinkGroup005__Link039__Link030.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid021" file="LinkGroup005__Link039__Solid021.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link031" file="LinkGroup005__Link039__Link031.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link032" file="LinkGroup005__Link039__Link032.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link033" file="LinkGroup005__Link039__Link033.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid022" file="LinkGroup005__Link039__Solid022.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Solid023" file="LinkGroup005__Link039__Solid023.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link034" file="LinkGroup005__Link039__Link034.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link035" file="LinkGroup005__Link039__Link035.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link039__Link036" file="LinkGroup005__Link039__Link036.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup001__Solid024" file="LinkGroup005__LinkGroup001__Solid024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup001__Solid025" file="LinkGroup005__LinkGroup001__Solid025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup001__Link040" file="LinkGroup005__LinkGroup001__Link040.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup001__Link041" file="LinkGroup005__LinkGroup001__Link041.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link042__Solid024" file="LinkGroup005__Link042__Solid024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link042__Solid025" file="LinkGroup005__Link042__Solid025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link042__Link040" file="LinkGroup005__Link042__Link040.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link042__Link041" file="LinkGroup005__Link042__Link041.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link043__Solid024" file="LinkGroup005__Link043__Solid024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link043__Solid025" file="LinkGroup005__Link043__Solid025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link043__Link040" file="LinkGroup005__Link043__Link040.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link043__Link041" file="LinkGroup005__Link043__Link041.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link044__Solid024" file="LinkGroup005__Link044__Solid024.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link044__Solid025" file="LinkGroup005__Link044__Solid025.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link044__Link040" file="LinkGroup005__Link044__Link040.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link044__Link041" file="LinkGroup005__Link044__Link041.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid026" file="LinkGroup005__Solid026.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link045" file="LinkGroup005__Link045.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup002__Link046" file="LinkGroup005__LinkGroup002__Link046.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup002__Link047" file="LinkGroup005__LinkGroup002__Link047.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup002__Solid027" file="LinkGroup005__LinkGroup002__Solid027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup002__Link048" file="LinkGroup005__LinkGroup002__Link048.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link049__Link046" file="LinkGroup005__Link049__Link046.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link049__Link047" file="LinkGroup005__Link049__Link047.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link049__Solid027" file="LinkGroup005__Link049__Solid027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link049__Link048" file="LinkGroup005__Link049__Link048.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link050__Link046" file="LinkGroup005__Link050__Link046.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link050__Link047" file="LinkGroup005__Link050__Link047.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link050__Solid027" file="LinkGroup005__Link050__Solid027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link050__Link048" file="LinkGroup005__Link050__Link048.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link051__Link046" file="LinkGroup005__Link051__Link046.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link051__Link047" file="LinkGroup005__Link051__Link047.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link051__Solid027" file="LinkGroup005__Link051__Solid027.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link051__Link048" file="LinkGroup005__Link051__Link048.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid028" file="LinkGroup005__Solid028.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link052" file="LinkGroup005__Link052.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link053" file="LinkGroup005__Link053.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link054" file="LinkGroup005__Link054.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link055" file="LinkGroup005__Link055.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link056" file="LinkGroup005__Link056.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link057" file="LinkGroup005__Link057.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link058" file="LinkGroup005__Link058.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link059" file="LinkGroup005__Link059.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link060" file="LinkGroup005__Link060.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link065" file="LinkGroup005__Link065.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link066" file="LinkGroup005__Link066.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link067" file="LinkGroup005__Link067.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link068" file="LinkGroup005__Link068.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid031" file="LinkGroup005__Solid031.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup003__Solid032" file="LinkGroup005__LinkGroup003__Solid032.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup003__Solid033" file="LinkGroup005__LinkGroup003__Solid033.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup003__Solid034" file="LinkGroup005__LinkGroup003__Solid034.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup003__Solid035" file="LinkGroup005__LinkGroup003__Solid035.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup003__Solid036" file="LinkGroup005__LinkGroup003__Solid036.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid037" file="LinkGroup005__Solid037.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid038" file="LinkGroup005__Solid038.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid039" file="LinkGroup005__Solid039.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link069" file="LinkGroup005__Link069.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid040" file="LinkGroup005__Solid040.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid041" file="LinkGroup005__Solid041.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link070" file="LinkGroup005__Link070.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid042" file="LinkGroup005__Solid042.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup004__Solid043" file="LinkGroup005__LinkGroup004__Solid043.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__LinkGroup004__Solid044" file="LinkGroup005__LinkGroup004__Solid044.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid045" file="LinkGroup005__Solid045.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link071" file="LinkGroup005__Link071.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link072" file="LinkGroup005__Link072.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link073" file="LinkGroup005__Link073.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid046" file="LinkGroup005__Solid046.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link074" file="LinkGroup005__Link074.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link075" file="LinkGroup005__Link075.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link076" file="LinkGroup005__Link076.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid047" file="LinkGroup005__Solid047.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link077" file="LinkGroup005__Link077.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link078" file="LinkGroup005__Link078.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link079" file="LinkGroup005__Link079.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid048" file="LinkGroup005__Solid048.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link080" file="LinkGroup005__Link080.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link081" file="LinkGroup005__Link081.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link082" file="LinkGroup005__Link082.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link083" file="LinkGroup005__Link083.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link084" file="LinkGroup005__Link084.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link085" file="LinkGroup005__Link085.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link086" file="LinkGroup005__Link086.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link087" file="LinkGroup005__Link087.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link088" file="LinkGroup005__Link088.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link089" file="LinkGroup005__Link089.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link090" file="LinkGroup005__Link090.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid049" file="LinkGroup005__Solid049.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link091" file="LinkGroup005__Link091.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link092" file="LinkGroup005__Link092.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link093" file="LinkGroup005__Link093.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Solid050" file="LinkGroup005__Solid050.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link094" file="LinkGroup005__Link094.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link095" file="LinkGroup005__Link095.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup005__Link096" file="LinkGroup005__Link096.obj" scale=".001 .001 .001" />
+    <mesh name="CombinedShell" file="CombinedShell.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup006__Compound001" file="LinkGroup006__Compound001.obj" scale=".001 .001 .001" />
+    <mesh name="Shell003" file="Shell003.obj" scale=".001 .001 .001" />
+    <mesh name="Body002" file="Body002.obj" scale=".001 .001 .001" />
+    <mesh name="Solid051" file="Solid051.obj" scale=".001 .001 .001" />
+    <mesh name="Solid052" file="Solid052.obj" scale=".001 .001 .001" />
+    <mesh name="Solid053" file="Solid053.obj" scale=".001 .001 .001" />
+    <mesh name="Solid054" file="Solid054.obj" scale=".001 .001 .001" />
+    <mesh name="Body004" file="Body004.obj" scale=".001 .001 .001" />
+    <mesh name="Body005" file="Body005.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup007__Solid055" file="LinkGroup015__LinkGroup007__Solid055.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Solid056" file="LinkGroup015__LinkGroup011__Solid056.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link097" file="LinkGroup015__LinkGroup011__Link097.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link098" file="LinkGroup015__LinkGroup011__Link098.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link099" file="LinkGroup015__LinkGroup011__Link099.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link100" file="LinkGroup015__LinkGroup011__Link100.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link101" file="LinkGroup015__LinkGroup011__Link101.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link102" file="LinkGroup015__LinkGroup011__Link102.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup008__Solid057" file="LinkGroup015__LinkGroup011__LinkGroup008__Solid057.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Solid058" file="LinkGroup015__LinkGroup011__Solid058.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Solid059" file="LinkGroup015__LinkGroup011__Solid059.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Solid060" file="LinkGroup015__LinkGroup011__Solid060.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link103" file="LinkGroup015__LinkGroup011__Link103.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup009__Solid061" file="LinkGroup015__LinkGroup011__LinkGroup009__Solid061.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link104__Solid061" file="LinkGroup015__LinkGroup011__Link104__Solid061.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid062" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid062.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid063" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid063.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid064" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid064.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid065" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid065.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid066" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid066.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__LinkGroup010__Solid067" file="LinkGroup015__LinkGroup011__LinkGroup010__Solid067.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid062" file="LinkGroup015__LinkGroup011__Link105__Solid062.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid063" file="LinkGroup015__LinkGroup011__Link105__Solid063.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid064" file="LinkGroup015__LinkGroup011__Link105__Solid064.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid065" file="LinkGroup015__LinkGroup011__Link105__Solid065.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid066" file="LinkGroup015__LinkGroup011__Link105__Solid066.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link105__Solid067" file="LinkGroup015__LinkGroup011__Link105__Solid067.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid062" file="LinkGroup015__LinkGroup011__Link106__Solid062.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid063" file="LinkGroup015__LinkGroup011__Link106__Solid063.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid064" file="LinkGroup015__LinkGroup011__Link106__Solid064.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid065" file="LinkGroup015__LinkGroup011__Link106__Solid065.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid066" file="LinkGroup015__LinkGroup011__Link106__Solid066.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup011__Link106__Solid067" file="LinkGroup015__LinkGroup011__Link106__Solid067.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid068" file="LinkGroup015__Solid068.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link107" file="LinkGroup015__Link107.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup012__Solid069" file="LinkGroup015__LinkGroup012__Solid069.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup012__Solid070" file="LinkGroup015__LinkGroup012__Solid070.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup012__Solid071" file="LinkGroup015__LinkGroup012__Solid071.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid072" file="LinkGroup015__Solid072.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid073" file="LinkGroup015__Solid073.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid074" file="LinkGroup015__Solid074.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link108" file="LinkGroup015__Link108.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid075" file="LinkGroup015__Solid075.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid076" file="LinkGroup015__Solid076.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link109" file="LinkGroup015__Link109.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link110" file="LinkGroup015__Link110.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link111" file="LinkGroup015__Link111.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link112" file="LinkGroup015__Link112.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link113" file="LinkGroup015__Link113.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__LinkGroup014__Solid077" file="LinkGroup015__LinkGroup014__Solid077.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link114__Solid077" file="LinkGroup015__Link114__Solid077.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid078" file="LinkGroup015__Solid078.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Solid079" file="LinkGroup015__Solid079.obj" scale=".001 .001 .001" />
+    <mesh name="LinkGroup015__Link115" file="LinkGroup015__Link115.obj" scale=".001 .001 .001" />
+    <mesh name="xiao_esp32s3_v3_with_pins" file="xiao_esp32s3_v3_with_pins.obj" scale=".001 .001 .001" />
+    <texture name="sky" type="skybox" builtin="gradient" width="512" height="3072" rgb1=".12 .22 .34" rgb2=".56 .71 .83" />
+    <texture name="ground_tex" type="2d" builtin="checker" width="512" height="512" rgb1=".16 .21 .25" rgb2=".23 .29 .32" />
+    <material name="ground_mat" texture="ground_tex" texrepeat="12 12" reflectance=".04" />
+  </asset>
+  <worldbody>
+    <light pos="0 -1 2" dir="0 1 -2" directional="true" castshadow="false" />
+    <body name="base_link" pos="0 0 .225">
+      <body name="camera_mount" pos="0.0195 -0.1 -0.115">
+        <body name="cam_x_pan" pos="-0.019598976 0.100084488 0.0705">
+          <joint name="cam_x_pan" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="0.002" armature="0" />
+          <body name="cam_y_tilt" pos="0.007604736 -0.030084488 -0.0705">
+            <joint name="cam_y_tilt" type="hinge" axis="0 1 0" pos="0 0 0" limited="true" damping="0.002" armature="0" range="-1.064650844 2.443460953" />
+            <geom name="Shell003" type="mesh" mesh="Shell003" material="camera_grey" contype="0" conaffinity="0" density="0" group="2" />
+            <geom name="Body004" type="mesh" mesh="Body004" material="cover_black" contype="0" conaffinity="0" density="0" group="2" />
+            <inertial mass="0.14" pos="-0.002641343783 0.03000168424 -1.544888764e-10" fullinertia="0.0001151069421 0.0001415538803 0.0001075685957 -1.00794651e-08 -1.660987319e-15 -4.083451196e-17" />
+            <geom name="contact__Shell003" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="Shell003" />
+            <geom name="contact__Body004" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="Body004" />
+            <site name="aero_9" pos="-0.00229488115 0.02998330647 -2.180136315e-06" size=".001" rgba="0 0 0 0" />
+            <site name="aero_10" pos="-0.0001774083928 0.0299997722 -0.0005333538523" size=".001" rgba="0 0 0 0" />
+            <site name="aero_11" pos="-0.0006800933769 0.03002151731 2.51105e-06" size=".001" rgba="0 0 0 0" />
+            <camera name="onboard" pos="0.03699424 0.030939178 -1.734723476e-18" quat="0.5 0.5 -0.5 -0.5" fovy="36.1" />
+            <site name="optical_center" pos="0.03699424 0.030939178 -1.734723476e-18" size=".002" rgba="0 0 0 0" />
+          </body>
+          <geom name="CombinedShell" type="mesh" mesh="CombinedShell" material="camera_grey_bright" contype="0" conaffinity="0" density="0" group="2" />
+          <inertial mass="0.17999999999999997" pos="-0.006456534688 -8.4488e-05 -0.04885476622" fullinertia="0.0002380626255 0.0002406820149 0.0001946193944 0 0 0" />
+          <geom name="contact__CombinedShell" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="CombinedShell" />
+          <site name="aero_6" pos="-0.0064445582 -7.996480207e-05 -0.04018238711" size=".001" rgba="0 0 0 0" />
+          <site name="aero_7" pos="-0.004330862441 -8.45e-05 -0.0493971479" size=".001" rgba="0 0 0 0" />
+          <site name="aero_8" pos="-0.008945904749 -7.29054011e-05 -0.0488623345" size=".001" rgba="0 0 0 0" />
+        </body>
+        <geom name="LinkGroup006__Compound001" type="mesh" mesh="LinkGroup006__Compound001" material="camera_grey_bright" contype="0" conaffinity="0" density="0" group="2" />
+        <geom name="Body002" type="mesh" mesh="Body002" material="aluminium" contype="0" conaffinity="0" density="0" group="2" />
+        <inertial mass="0.08" pos="-0.01953500722 0.1005034132 0.07060658364" fullinertia="6.321359361e-05 4.200540182e-05 9.854253514e-05 6.75670851e-08 -1.142425281e-07 9.204770898e-08" />
+        <geom name="contact__LinkGroup006__Compound001" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup006__Compound001" />
+        <geom name="contact__Body002" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="Body002" />
+        <site name="aero_3" pos="-0.02 0.1000797488 0.06917614177" size=".001" rgba="0 0 0 0" />
+        <site name="aero_4" pos="-0.01985466387 0.1 0.06941667448" size=".001" rgba="0 0 0 0" />
+        <site name="aero_5" pos="-0.01997576469 0.1010500045 0.06918145515" size=".001" rgba="0 0 0 0" />
+      </body>
+      <body name="prop_1" pos="0.177 -0.177 0.0585">
+        <joint name="prop_1" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="0" armature="0" />
+        <geom name="Solid051" type="mesh" mesh="Solid051" material="prop_black" contype="0" conaffinity="0" density="0" group="2" />
+        <inertial mass="0.0125" pos="-1.308277327e-06 -2.343414547e-07 0.001052446774" fullinertia="2.997802842e-07 4.776766752e-05 4.800270911e-05 -1.589412774e-06 1.570808265e-12 4.946487742e-13" />
+        <site name="hub_prop_1" pos="0 0 0" size=".005" rgba="0 0 0 0" />
+      </body>
+      <body name="prop_2" pos="0.177 0.1765 0.0585">
+        <joint name="prop_2" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="0" armature="0" />
+        <geom name="Solid052" type="mesh" mesh="Solid052" material="prop_black" contype="0" conaffinity="0" density="0" group="2" />
+        <inertial mass="0.0125" pos="-1.308277327e-06 -2.343414549e-07 0.001052446774" fullinertia="2.997802842e-07 4.776766752e-05 4.800270911e-05 -1.589412774e-06 1.570808265e-12 4.946487745e-13" />
+        <site name="hub_prop_2" pos="0 0 0" size=".005" rgba="0 0 0 0" />
+      </body>
+      <body name="prop_3" pos="-0.1765 0.1765 0.0585">
+        <joint name="prop_3" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="0" armature="0" />
+        <geom name="Solid053" type="mesh" mesh="Solid053" material="prop_black" contype="0" conaffinity="0" density="0" group="2" />
+        <inertial mass="0.0125" pos="-1.308277327e-06 -2.343414549e-07 0.001052446774" fullinertia="2.997802842e-07 4.776766752e-05 4.800270911e-05 -1.589412774e-06 1.570808265e-12 4.946487745e-13" />
+        <site name="hub_prop_3" pos="0 0 0" size=".005" rgba="0 0 0 0" />
+      </body>
+      <body name="prop_4" pos="-0.1765 -0.177 0.0585">
+        <joint name="prop_4" type="hinge" axis="0 0 1" pos="0 0 0" limited="false" damping="0" armature="0" />
+        <geom name="Solid054" type="mesh" mesh="Solid054" material="prop_black" contype="0" conaffinity="0" density="0" group="2" />
+        <inertial mass="0.0125" pos="-1.308277327e-06 -2.343414547e-07 0.001052446774" fullinertia="2.997802842e-07 4.776766752e-05 4.800270911e-05 -1.589412774e-06 1.570808265e-12 4.946487743e-13" />
+        <site name="hub_prop_4" pos="0 0 0" size=".005" rgba="0 0 0 0" />
+      </body>
+      <geom name="LinkGroup005__Solid" type="mesh" mesh="LinkGroup005__Solid" material="carbon_fibre_plate" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid001" type="mesh" mesh="LinkGroup005__Solid001" material="carbon_fibre_plate" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid002" type="mesh" mesh="LinkGroup005__Solid002" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid003" type="mesh" mesh="LinkGroup005__Solid003" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid004" type="mesh" mesh="LinkGroup005__Solid004" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid005" type="mesh" mesh="LinkGroup005__Solid005" material="carbon_fibre_tube" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid006" type="mesh" mesh="LinkGroup005__Solid006" material="eva_foam" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link" type="mesh" mesh="LinkGroup005__Link" material="eva_foam" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid007" type="mesh" mesh="LinkGroup005__Solid007" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link001" type="mesh" mesh="LinkGroup005__Link001" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid008" type="mesh" mesh="LinkGroup005__Solid008" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid009" type="mesh" mesh="LinkGroup005__Solid009" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid010" type="mesh" mesh="LinkGroup005__Solid010" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link002" type="mesh" mesh="LinkGroup005__Link002" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link003" type="mesh" mesh="LinkGroup005__Link003" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link004" type="mesh" mesh="LinkGroup005__Link004" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link005" type="mesh" mesh="LinkGroup005__Link005" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid011" type="mesh" mesh="LinkGroup005__Solid011" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link006" type="mesh" mesh="LinkGroup005__Link006" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link007" type="mesh" mesh="LinkGroup005__Link007" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link008" type="mesh" mesh="LinkGroup005__Link008" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link009" type="mesh" mesh="LinkGroup005__Link009" material="carbon_fibre_tube" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link010" type="mesh" mesh="LinkGroup005__Link010" material="eva_foam" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link011" type="mesh" mesh="LinkGroup005__Link011" material="eva_foam" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link012" type="mesh" mesh="LinkGroup005__Link012" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link013" type="mesh" mesh="LinkGroup005__Link013" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link014" type="mesh" mesh="LinkGroup005__Link014" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link015" type="mesh" mesh="LinkGroup005__Link015" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link016" type="mesh" mesh="LinkGroup005__Link016" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link017" type="mesh" mesh="LinkGroup005__Link017" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link018" type="mesh" mesh="LinkGroup005__Link018" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link019" type="mesh" mesh="LinkGroup005__Link019" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link020" type="mesh" mesh="LinkGroup005__Link020" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link021" type="mesh" mesh="LinkGroup005__Link021" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid012" type="mesh" mesh="LinkGroup005__LinkGroup__Solid012" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid013" type="mesh" mesh="LinkGroup005__LinkGroup__Solid013" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid014" type="mesh" mesh="LinkGroup005__LinkGroup__Solid014" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link022" type="mesh" mesh="LinkGroup005__LinkGroup__Link022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid015" type="mesh" mesh="LinkGroup005__LinkGroup__Solid015" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid016" type="mesh" mesh="LinkGroup005__LinkGroup__Solid016" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid017" type="mesh" mesh="LinkGroup005__LinkGroup__Solid017" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link023" type="mesh" mesh="LinkGroup005__LinkGroup__Link023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link024" type="mesh" mesh="LinkGroup005__LinkGroup__Link024" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link025" type="mesh" mesh="LinkGroup005__LinkGroup__Link025" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid018" type="mesh" mesh="LinkGroup005__LinkGroup__Solid018" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link026" type="mesh" mesh="LinkGroup005__LinkGroup__Link026" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link027" type="mesh" mesh="LinkGroup005__LinkGroup__Link027" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link028" type="mesh" mesh="LinkGroup005__LinkGroup__Link028" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid019" type="mesh" mesh="LinkGroup005__LinkGroup__Solid019" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link029" type="mesh" mesh="LinkGroup005__LinkGroup__Link029" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid020" type="mesh" mesh="LinkGroup005__LinkGroup__Solid020" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link030" type="mesh" mesh="LinkGroup005__LinkGroup__Link030" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid021" type="mesh" mesh="LinkGroup005__LinkGroup__Solid021" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link031" type="mesh" mesh="LinkGroup005__LinkGroup__Link031" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link032" type="mesh" mesh="LinkGroup005__LinkGroup__Link032" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link033" type="mesh" mesh="LinkGroup005__LinkGroup__Link033" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid022" type="mesh" mesh="LinkGroup005__LinkGroup__Solid022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Solid023" type="mesh" mesh="LinkGroup005__LinkGroup__Solid023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link034" type="mesh" mesh="LinkGroup005__LinkGroup__Link034" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link035" type="mesh" mesh="LinkGroup005__LinkGroup__Link035" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup__Link036" type="mesh" mesh="LinkGroup005__LinkGroup__Link036" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid012" type="mesh" mesh="LinkGroup005__Link037__Solid012" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid013" type="mesh" mesh="LinkGroup005__Link037__Solid013" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid014" type="mesh" mesh="LinkGroup005__Link037__Solid014" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link022" type="mesh" mesh="LinkGroup005__Link037__Link022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid015" type="mesh" mesh="LinkGroup005__Link037__Solid015" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid016" type="mesh" mesh="LinkGroup005__Link037__Solid016" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid017" type="mesh" mesh="LinkGroup005__Link037__Solid017" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link023" type="mesh" mesh="LinkGroup005__Link037__Link023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link024" type="mesh" mesh="LinkGroup005__Link037__Link024" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link025" type="mesh" mesh="LinkGroup005__Link037__Link025" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid018" type="mesh" mesh="LinkGroup005__Link037__Solid018" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link026" type="mesh" mesh="LinkGroup005__Link037__Link026" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link027" type="mesh" mesh="LinkGroup005__Link037__Link027" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link028" type="mesh" mesh="LinkGroup005__Link037__Link028" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid019" type="mesh" mesh="LinkGroup005__Link037__Solid019" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link029" type="mesh" mesh="LinkGroup005__Link037__Link029" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid020" type="mesh" mesh="LinkGroup005__Link037__Solid020" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link030" type="mesh" mesh="LinkGroup005__Link037__Link030" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid021" type="mesh" mesh="LinkGroup005__Link037__Solid021" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link031" type="mesh" mesh="LinkGroup005__Link037__Link031" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link032" type="mesh" mesh="LinkGroup005__Link037__Link032" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link033" type="mesh" mesh="LinkGroup005__Link037__Link033" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid022" type="mesh" mesh="LinkGroup005__Link037__Solid022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Solid023" type="mesh" mesh="LinkGroup005__Link037__Solid023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link034" type="mesh" mesh="LinkGroup005__Link037__Link034" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link035" type="mesh" mesh="LinkGroup005__Link037__Link035" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link037__Link036" type="mesh" mesh="LinkGroup005__Link037__Link036" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid012" type="mesh" mesh="LinkGroup005__Link038__Solid012" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid013" type="mesh" mesh="LinkGroup005__Link038__Solid013" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid014" type="mesh" mesh="LinkGroup005__Link038__Solid014" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link022" type="mesh" mesh="LinkGroup005__Link038__Link022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid015" type="mesh" mesh="LinkGroup005__Link038__Solid015" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid016" type="mesh" mesh="LinkGroup005__Link038__Solid016" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid017" type="mesh" mesh="LinkGroup005__Link038__Solid017" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link023" type="mesh" mesh="LinkGroup005__Link038__Link023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link024" type="mesh" mesh="LinkGroup005__Link038__Link024" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link025" type="mesh" mesh="LinkGroup005__Link038__Link025" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid018" type="mesh" mesh="LinkGroup005__Link038__Solid018" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link026" type="mesh" mesh="LinkGroup005__Link038__Link026" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link027" type="mesh" mesh="LinkGroup005__Link038__Link027" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link028" type="mesh" mesh="LinkGroup005__Link038__Link028" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid019" type="mesh" mesh="LinkGroup005__Link038__Solid019" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link029" type="mesh" mesh="LinkGroup005__Link038__Link029" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid020" type="mesh" mesh="LinkGroup005__Link038__Solid020" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link030" type="mesh" mesh="LinkGroup005__Link038__Link030" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid021" type="mesh" mesh="LinkGroup005__Link038__Solid021" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link031" type="mesh" mesh="LinkGroup005__Link038__Link031" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link032" type="mesh" mesh="LinkGroup005__Link038__Link032" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link033" type="mesh" mesh="LinkGroup005__Link038__Link033" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid022" type="mesh" mesh="LinkGroup005__Link038__Solid022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Solid023" type="mesh" mesh="LinkGroup005__Link038__Solid023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link034" type="mesh" mesh="LinkGroup005__Link038__Link034" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link035" type="mesh" mesh="LinkGroup005__Link038__Link035" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link038__Link036" type="mesh" mesh="LinkGroup005__Link038__Link036" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid012" type="mesh" mesh="LinkGroup005__Link039__Solid012" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid013" type="mesh" mesh="LinkGroup005__Link039__Solid013" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid014" type="mesh" mesh="LinkGroup005__Link039__Solid014" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link022" type="mesh" mesh="LinkGroup005__Link039__Link022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid015" type="mesh" mesh="LinkGroup005__Link039__Solid015" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid016" type="mesh" mesh="LinkGroup005__Link039__Solid016" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid017" type="mesh" mesh="LinkGroup005__Link039__Solid017" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link023" type="mesh" mesh="LinkGroup005__Link039__Link023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link024" type="mesh" mesh="LinkGroup005__Link039__Link024" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link025" type="mesh" mesh="LinkGroup005__Link039__Link025" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid018" type="mesh" mesh="LinkGroup005__Link039__Solid018" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link026" type="mesh" mesh="LinkGroup005__Link039__Link026" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link027" type="mesh" mesh="LinkGroup005__Link039__Link027" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link028" type="mesh" mesh="LinkGroup005__Link039__Link028" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid019" type="mesh" mesh="LinkGroup005__Link039__Solid019" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link029" type="mesh" mesh="LinkGroup005__Link039__Link029" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid020" type="mesh" mesh="LinkGroup005__Link039__Solid020" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link030" type="mesh" mesh="LinkGroup005__Link039__Link030" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid021" type="mesh" mesh="LinkGroup005__Link039__Solid021" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link031" type="mesh" mesh="LinkGroup005__Link039__Link031" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link032" type="mesh" mesh="LinkGroup005__Link039__Link032" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link033" type="mesh" mesh="LinkGroup005__Link039__Link033" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid022" type="mesh" mesh="LinkGroup005__Link039__Solid022" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Solid023" type="mesh" mesh="LinkGroup005__Link039__Solid023" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link034" type="mesh" mesh="LinkGroup005__Link039__Link034" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link035" type="mesh" mesh="LinkGroup005__Link039__Link035" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link039__Link036" type="mesh" mesh="LinkGroup005__Link039__Link036" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup001__Solid024" type="mesh" mesh="LinkGroup005__LinkGroup001__Solid024" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup001__Solid025" type="mesh" mesh="LinkGroup005__LinkGroup001__Solid025" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup001__Link040" type="mesh" mesh="LinkGroup005__LinkGroup001__Link040" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup001__Link041" type="mesh" mesh="LinkGroup005__LinkGroup001__Link041" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link042__Solid024" type="mesh" mesh="LinkGroup005__Link042__Solid024" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link042__Solid025" type="mesh" mesh="LinkGroup005__Link042__Solid025" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link042__Link040" type="mesh" mesh="LinkGroup005__Link042__Link040" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link042__Link041" type="mesh" mesh="LinkGroup005__Link042__Link041" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link043__Solid024" type="mesh" mesh="LinkGroup005__Link043__Solid024" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link043__Solid025" type="mesh" mesh="LinkGroup005__Link043__Solid025" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link043__Link040" type="mesh" mesh="LinkGroup005__Link043__Link040" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link043__Link041" type="mesh" mesh="LinkGroup005__Link043__Link041" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link044__Solid024" type="mesh" mesh="LinkGroup005__Link044__Solid024" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link044__Solid025" type="mesh" mesh="LinkGroup005__Link044__Solid025" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link044__Link040" type="mesh" mesh="LinkGroup005__Link044__Link040" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link044__Link041" type="mesh" mesh="LinkGroup005__Link044__Link041" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid026" type="mesh" mesh="LinkGroup005__Solid026" material="carbon_fibre_tube" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link045" type="mesh" mesh="LinkGroup005__Link045" material="carbon_fibre_tube" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup002__Link046" type="mesh" mesh="LinkGroup005__LinkGroup002__Link046" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup002__Link047" type="mesh" mesh="LinkGroup005__LinkGroup002__Link047" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup002__Solid027" type="mesh" mesh="LinkGroup005__LinkGroup002__Solid027" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup002__Link048" type="mesh" mesh="LinkGroup005__LinkGroup002__Link048" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link049__Link046" type="mesh" mesh="LinkGroup005__Link049__Link046" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link049__Link047" type="mesh" mesh="LinkGroup005__Link049__Link047" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link049__Solid027" type="mesh" mesh="LinkGroup005__Link049__Solid027" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link049__Link048" type="mesh" mesh="LinkGroup005__Link049__Link048" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link050__Link046" type="mesh" mesh="LinkGroup005__Link050__Link046" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link050__Link047" type="mesh" mesh="LinkGroup005__Link050__Link047" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link050__Solid027" type="mesh" mesh="LinkGroup005__Link050__Solid027" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link050__Link048" type="mesh" mesh="LinkGroup005__Link050__Link048" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link051__Link046" type="mesh" mesh="LinkGroup005__Link051__Link046" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link051__Link047" type="mesh" mesh="LinkGroup005__Link051__Link047" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link051__Solid027" type="mesh" mesh="LinkGroup005__Link051__Solid027" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link051__Link048" type="mesh" mesh="LinkGroup005__Link051__Link048" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid028" type="mesh" mesh="LinkGroup005__Solid028" material="carbon_fibre_plate" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link052" type="mesh" mesh="LinkGroup005__Link052" material="carbon_fibre_plate" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link053" type="mesh" mesh="LinkGroup005__Link053" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link054" type="mesh" mesh="LinkGroup005__Link054" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link055" type="mesh" mesh="LinkGroup005__Link055" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link056" type="mesh" mesh="LinkGroup005__Link056" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link057" type="mesh" mesh="LinkGroup005__Link057" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link058" type="mesh" mesh="LinkGroup005__Link058" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link059" type="mesh" mesh="LinkGroup005__Link059" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link060" type="mesh" mesh="LinkGroup005__Link060" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link065" type="mesh" mesh="LinkGroup005__Link065" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link066" type="mesh" mesh="LinkGroup005__Link066" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link067" type="mesh" mesh="LinkGroup005__Link067" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link068" type="mesh" mesh="LinkGroup005__Link068" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid031" type="mesh" mesh="LinkGroup005__Solid031" material="carbon_fibre_plate" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup003__Solid032" type="mesh" mesh="LinkGroup005__LinkGroup003__Solid032" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup003__Solid033" type="mesh" mesh="LinkGroup005__LinkGroup003__Solid033" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup003__Solid034" type="mesh" mesh="LinkGroup005__LinkGroup003__Solid034" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup003__Solid035" type="mesh" mesh="LinkGroup005__LinkGroup003__Solid035" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup003__Solid036" type="mesh" mesh="LinkGroup005__LinkGroup003__Solid036" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid037" type="mesh" mesh="LinkGroup005__Solid037" material="camera_grey" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid038" type="mesh" mesh="LinkGroup005__Solid038" material="camera_grey" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid039" type="mesh" mesh="LinkGroup005__Solid039" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link069" type="mesh" mesh="LinkGroup005__Link069" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid040" type="mesh" mesh="LinkGroup005__Solid040" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid041" type="mesh" mesh="LinkGroup005__Solid041" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link070" type="mesh" mesh="LinkGroup005__Link070" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid042" type="mesh" mesh="LinkGroup005__Solid042" material="copper" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup004__Solid043" type="mesh" mesh="LinkGroup005__LinkGroup004__Solid043" material="pcb" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__LinkGroup004__Solid044" type="mesh" mesh="LinkGroup005__LinkGroup004__Solid044" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid045" type="mesh" mesh="LinkGroup005__Solid045" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link071" type="mesh" mesh="LinkGroup005__Link071" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link072" type="mesh" mesh="LinkGroup005__Link072" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link073" type="mesh" mesh="LinkGroup005__Link073" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid046" type="mesh" mesh="LinkGroup005__Solid046" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link074" type="mesh" mesh="LinkGroup005__Link074" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link075" type="mesh" mesh="LinkGroup005__Link075" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link076" type="mesh" mesh="LinkGroup005__Link076" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid047" type="mesh" mesh="LinkGroup005__Solid047" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link077" type="mesh" mesh="LinkGroup005__Link077" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link078" type="mesh" mesh="LinkGroup005__Link078" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link079" type="mesh" mesh="LinkGroup005__Link079" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid048" type="mesh" mesh="LinkGroup005__Solid048" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link080" type="mesh" mesh="LinkGroup005__Link080" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link081" type="mesh" mesh="LinkGroup005__Link081" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link082" type="mesh" mesh="LinkGroup005__Link082" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link083" type="mesh" mesh="LinkGroup005__Link083" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link084" type="mesh" mesh="LinkGroup005__Link084" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link085" type="mesh" mesh="LinkGroup005__Link085" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link086" type="mesh" mesh="LinkGroup005__Link086" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link087" type="mesh" mesh="LinkGroup005__Link087" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link088" type="mesh" mesh="LinkGroup005__Link088" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link089" type="mesh" mesh="LinkGroup005__Link089" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link090" type="mesh" mesh="LinkGroup005__Link090" material="steel" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid049" type="mesh" mesh="LinkGroup005__Solid049" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link091" type="mesh" mesh="LinkGroup005__Link091" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link092" type="mesh" mesh="LinkGroup005__Link092" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link093" type="mesh" mesh="LinkGroup005__Link093" material="nylon" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Solid050" type="mesh" mesh="LinkGroup005__Solid050" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link094" type="mesh" mesh="LinkGroup005__Link094" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link095" type="mesh" mesh="LinkGroup005__Link095" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup005__Link096" type="mesh" mesh="LinkGroup005__Link096" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="Body005" type="mesh" mesh="Body005" material="battery_blue" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup007__Solid055" type="mesh" mesh="LinkGroup015__LinkGroup007__Solid055" material="pcb" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Solid056" type="mesh" mesh="LinkGroup015__LinkGroup011__Solid056" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link097" type="mesh" mesh="LinkGroup015__LinkGroup011__Link097" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link098" type="mesh" mesh="LinkGroup015__LinkGroup011__Link098" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link099" type="mesh" mesh="LinkGroup015__LinkGroup011__Link099" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link100" type="mesh" mesh="LinkGroup015__LinkGroup011__Link100" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link101" type="mesh" mesh="LinkGroup015__LinkGroup011__Link101" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link102" type="mesh" mesh="LinkGroup015__LinkGroup011__Link102" material="tpu" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup008__Solid057" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup008__Solid057" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Solid058" type="mesh" mesh="LinkGroup015__LinkGroup011__Solid058" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Solid059" type="mesh" mesh="LinkGroup015__LinkGroup011__Solid059" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Solid060" type="mesh" mesh="LinkGroup015__LinkGroup011__Solid060" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link103" type="mesh" mesh="LinkGroup015__LinkGroup011__Link103" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup009__Solid061" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup009__Solid061" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link104__Solid061" type="mesh" mesh="LinkGroup015__LinkGroup011__Link104__Solid061" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid062" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid062" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid063" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid063" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid064" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid064" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid065" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid065" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid066" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid066" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__LinkGroup010__Solid067" type="mesh" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid067" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid062" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid062" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid063" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid063" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid064" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid064" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid065" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid065" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid066" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid066" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link105__Solid067" type="mesh" mesh="LinkGroup015__LinkGroup011__Link105__Solid067" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid062" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid062" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid063" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid063" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid064" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid064" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid065" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid065" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid066" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid066" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup011__Link106__Solid067" type="mesh" mesh="LinkGroup015__LinkGroup011__Link106__Solid067" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid068" type="mesh" mesh="LinkGroup015__Solid068" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link107" type="mesh" mesh="LinkGroup015__Link107" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup012__Solid069" type="mesh" mesh="LinkGroup015__LinkGroup012__Solid069" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup012__Solid070" type="mesh" mesh="LinkGroup015__LinkGroup012__Solid070" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup012__Solid071" type="mesh" mesh="LinkGroup015__LinkGroup012__Solid071" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid072" type="mesh" mesh="LinkGroup015__Solid072" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid073" type="mesh" mesh="LinkGroup015__Solid073" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid074" type="mesh" mesh="LinkGroup015__Solid074" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link108" type="mesh" mesh="LinkGroup015__Link108" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid075" type="mesh" mesh="LinkGroup015__Solid075" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid076" type="mesh" mesh="LinkGroup015__Solid076" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link109" type="mesh" mesh="LinkGroup015__Link109" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link110" type="mesh" mesh="LinkGroup015__Link110" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link111" type="mesh" mesh="LinkGroup015__Link111" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link112" type="mesh" mesh="LinkGroup015__Link112" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link113" type="mesh" mesh="LinkGroup015__Link113" material="stainless" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__LinkGroup014__Solid077" type="mesh" mesh="LinkGroup015__LinkGroup014__Solid077" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link114__Solid077" type="mesh" mesh="LinkGroup015__Link114__Solid077" material="aluminium" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid078" type="mesh" mesh="LinkGroup015__Solid078" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Solid079" type="mesh" mesh="LinkGroup015__Solid079" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="LinkGroup015__Link115" type="mesh" mesh="LinkGroup015__Link115" material="electronics" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <geom name="xiao_esp32s3_v3_with_pins" type="mesh" mesh="xiao_esp32s3_v3_with_pins" material="sx1262_black" contype="0" conaffinity="0" density="0" group="2" pos="0.0195 -0.1 -0.115" />
+      <freejoint name="aircraft_free" />
+      <inertial mass="1.6162175108198886" pos="0.001426509884 -0.000680621825 0.0161665655" fullinertia="0.01945343044 0.02015975637 0.0294529611 3.228317527e-05 -0.0004048382528 -2.778915366e-05" />
+      <geom name="contact__LinkGroup005__Solid" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid001" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid001" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid002" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid002" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid003" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid003" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid004" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid004" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid005" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid005" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid006" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid006" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid007" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid007" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link001" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link001" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid008" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid008" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid009" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid009" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid010" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid010" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link002" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link002" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link003" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link003" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link004" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link004" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link005" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link005" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid011" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid011" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link006" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link006" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link007" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link007" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link008" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link008" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link009" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link009" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link010" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link010" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link011" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link011" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link012" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link012" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link013" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link013" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link014" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link014" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link015" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link015" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link016" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link016" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link017" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link017" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link018" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link018" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link019" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link019" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link020" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link020" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link021" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link021" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid012" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid012" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid013" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid013" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid014" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid014" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid015" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid015" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid016" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid016" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid017" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid017" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid018" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid018" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link026" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link026" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link028" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link028" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid019" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid019" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link029" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link029" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid020" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid020" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link030" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link030" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid021" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid021" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link031" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link031" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link032" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link032" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link033" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link033" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Solid023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Solid023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link034" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link034" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link035" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link035" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup__Link036" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup__Link036" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid012" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid012" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid013" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid013" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid014" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid014" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid015" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid015" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid016" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid016" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid017" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid017" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid018" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid018" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link026" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link026" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link028" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link028" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid019" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid019" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link029" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link029" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid020" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid020" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link030" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link030" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid021" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid021" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link031" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link031" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link032" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link032" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link033" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link033" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Solid023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Solid023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link034" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link034" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link035" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link035" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link037__Link036" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link037__Link036" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid012" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid012" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid013" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid013" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid014" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid014" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid015" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid015" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid016" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid016" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid017" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid017" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid018" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid018" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link026" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link026" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link028" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link028" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid019" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid019" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link029" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link029" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid020" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid020" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link030" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link030" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid021" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid021" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link031" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link031" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link032" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link032" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link033" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link033" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Solid023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Solid023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link034" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link034" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link035" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link035" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link038__Link036" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link038__Link036" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid012" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid012" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid013" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid013" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid014" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid014" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid015" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid015" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid016" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid016" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid017" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid017" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid018" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid018" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link026" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link026" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link028" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link028" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid019" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid019" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link029" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link029" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid020" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid020" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link030" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link030" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid021" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid021" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link031" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link031" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link032" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link032" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link033" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link033" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid022" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid022" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Solid023" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Solid023" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link034" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link034" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link035" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link035" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link039__Link036" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link039__Link036" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup001__Solid024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup001__Solid024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup001__Solid025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup001__Solid025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup001__Link040" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup001__Link040" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup001__Link041" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup001__Link041" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link042__Solid024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link042__Solid024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link042__Solid025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link042__Solid025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link042__Link040" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link042__Link040" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link042__Link041" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link042__Link041" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link043__Solid024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link043__Solid024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link043__Solid025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link043__Solid025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link043__Link040" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link043__Link040" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link043__Link041" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link043__Link041" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link044__Solid024" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link044__Solid024" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link044__Solid025" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link044__Solid025" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link044__Link040" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link044__Link040" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link044__Link041" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link044__Link041" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid026" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid026" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link045" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link045" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup002__Link046" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup002__Link046" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup002__Link047" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup002__Link047" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup002__Solid027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup002__Solid027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup002__Link048" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup002__Link048" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link049__Link046" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link049__Link046" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link049__Link047" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link049__Link047" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link049__Solid027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link049__Solid027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link049__Link048" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link049__Link048" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link050__Link046" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link050__Link046" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link050__Link047" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link050__Link047" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link050__Solid027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link050__Solid027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link050__Link048" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link050__Link048" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link051__Link046" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link051__Link046" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link051__Link047" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link051__Link047" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link051__Solid027" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link051__Solid027" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link051__Link048" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link051__Link048" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid028" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid028" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link052" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link052" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link053" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link053" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link054" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link054" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link055" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link055" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link056" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link056" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link057" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link057" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link058" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link058" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link059" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link059" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link060" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link060" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link065" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link065" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link066" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link066" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link067" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link067" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link068" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link068" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid031" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid031" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup003__Solid032" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup003__Solid032" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup003__Solid033" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup003__Solid033" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup003__Solid034" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup003__Solid034" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup003__Solid035" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup003__Solid035" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup003__Solid036" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup003__Solid036" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid037" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid037" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid038" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid038" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid039" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid039" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link069" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link069" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid040" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid040" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid041" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid041" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link070" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link070" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid042" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid042" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup004__Solid043" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup004__Solid043" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__LinkGroup004__Solid044" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__LinkGroup004__Solid044" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid045" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid045" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link071" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link071" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link072" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link072" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link073" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link073" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid046" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid046" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link074" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link074" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link075" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link075" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link076" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link076" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid047" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid047" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link077" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link077" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link078" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link078" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link079" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link079" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid048" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid048" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link080" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link080" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link081" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link081" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link082" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link082" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link083" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link083" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link084" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link084" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link085" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link085" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link086" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link086" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link087" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link087" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link088" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link088" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link089" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link089" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link090" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link090" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid049" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid049" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link091" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link091" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link092" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link092" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link093" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link093" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Solid050" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Solid050" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link094" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link094" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link095" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link095" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup005__Link096" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup005__Link096" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__Body005" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="Body005" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup007__Solid055" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup007__Solid055" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Solid056" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Solid056" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link097" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link097" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link098" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link098" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link099" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link099" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link100" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link100" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link101" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link101" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link102" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link102" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup008__Solid057" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup008__Solid057" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Solid058" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Solid058" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Solid059" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Solid059" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Solid060" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Solid060" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link103" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link103" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup009__Solid061" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup009__Solid061" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link104__Solid061" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link104__Solid061" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid062" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid062" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid063" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid063" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid064" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid064" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid065" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid065" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid066" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid066" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__LinkGroup010__Solid067" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__LinkGroup010__Solid067" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid062" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid062" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid063" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid063" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid064" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid064" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid065" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid065" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid066" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid066" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link105__Solid067" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link105__Solid067" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid062" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid062" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid063" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid063" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid064" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid064" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid065" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid065" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid066" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid066" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup011__Link106__Solid067" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup011__Link106__Solid067" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid068" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid068" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link107" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link107" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup012__Solid069" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup012__Solid069" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup012__Solid070" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup012__Solid070" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup012__Solid071" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup012__Solid071" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid072" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid072" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid073" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid073" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid074" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid074" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link108" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link108" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid075" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid075" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid076" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid076" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link109" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link109" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link110" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link110" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link111" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link111" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link112" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link112" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link113" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link113" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__LinkGroup014__Solid077" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__LinkGroup014__Solid077" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link114__Solid077" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link114__Solid077" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid078" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid078" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Solid079" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Solid079" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__LinkGroup015__Link115" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="LinkGroup015__Link115" pos="0.0195 -0.1 -0.115" />
+      <geom name="contact__xiao_esp32s3_v3_with_pins" type="mesh" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".8 .005 .0001" mesh="xiao_esp32s3_v3_with_pins" pos="0.0195 -0.1 -0.115" />
+      <geom name="rotor_envelope_prop_1" type="cylinder" pos="0.177 -0.177 0.05904432788" size="0.1274243447 0.004380866245" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".4 .001 .0001" />
+      <geom name="rotor_envelope_prop_2" type="cylinder" pos="0.177 0.1765 0.05904432788" size="0.1274243447 0.004380866245" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".4 .001 .0001" />
+      <geom name="rotor_envelope_prop_3" type="cylinder" pos="-0.1765 0.1765 0.05904432788" size="0.1274243447 0.004380866245" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".4 .001 .0001" />
+      <geom name="rotor_envelope_prop_4" type="cylinder" pos="-0.1765 -0.177 0.05904432788" size="0.1274243447 0.004380866245" group="3" density="0" rgba="0 0 0 0" contype="2" conaffinity="1" friction=".4 .001 .0001" />
+      <site name="aero_0" pos="-3.469446952e-18 -0.0001029173889 -0.02231915362" size=".001" rgba="0 0 0 0" />
+      <site name="aero_1" pos="0.003851643585 0 -0.03416502351" size=".001" rgba="0 0 0 0" />
+      <site name="aero_2" pos="0.004824964722 -1.217212177e-06 -0.0541382" size=".001" rgba="0 0 0 0" />
+      <site name="imu" pos="0 0 .015" size=".003" rgba="0 0 0 0" />
+      <site name="gps_antenna" pos="0.099 0 0.11125" size=".003" rgba="0 0 0 0" />
+    </body>
+    <geom name="ground" type="plane" size="30 30 .1" material="ground_mat" friction=".9 .005 .0001" contype="1" conaffinity="2" />
+    <light pos="2 -3 6" dir="-1 1 -2" diffuse=".9 .9 .9" castshadow="true" />
+    <geom name="red_gate" type="box" pos="10 -1.8 1.5" size=".12 .12 1.5" rgba=".58 .25 .19 1" contype="1" conaffinity="2" />
+    <geom name="gate_right" type="box" pos="10 1.8 1.5" size=".12 .12 1.5" rgba=".58 .25 .19 1" contype="1" conaffinity="2" />
+    <geom name="gate_top" type="box" pos="10 0 3" size=".12 1.92 .12" rgba=".58 .25 .19 1" contype="1" conaffinity="2" />
+    <geom name="blue_block" type="box" pos="5 3 .6" size=".55 .55 .6" rgba=".12 .35 .65 1" contype="1" conaffinity="2" />
+    <geom name="yellow_block" type="box" pos="8 -4 .8" size=".7 .5 .8" rgba=".75 .55 .12 1" contype="1" conaffinity="2" />
+    <geom name="green_block" type="box" pos="15 2 .5" size=".7 .7 .5" rgba=".16 .5 .3 1" contype="1" conaffinity="2" />
+    <geom name="far_marker" type="box" pos="21 -3 1" size=".3 .3 1" rgba=".38 .46 .55 1" contype="1" conaffinity="2" />
+    <geom name="near_block" type="box" pos="-3 3 .35" size=".5 .5 .35" rgba=".23 .39 .48 1" contype="1" conaffinity="2" />
+    <camera name="overview" pos="3 -4 2.5" xyaxes=".8 .6 0 -.25 .33 .91" fovy="52" />
+  </worldbody>
+  <size njmax="3000" nconmax="1000" />
+  <visual>
+    <global offwidth="960" offheight="640" />
+    <headlight ambient=".3 .3 .3" diffuse=".6 .6 .6" specular=".1 .1 .1" />
+  </visual>
+  <actuator>
+    <motor name="drive_prop_1" joint="prop_1" gear="1" ctrllimited="true" ctrlrange="-3 3" />
+    <motor name="drive_prop_2" joint="prop_2" gear="1" ctrllimited="true" ctrlrange="-3 3" />
+    <motor name="drive_prop_3" joint="prop_3" gear="1" ctrllimited="true" ctrlrange="-3 3" />
+    <motor name="drive_prop_4" joint="prop_4" gear="1" ctrllimited="true" ctrlrange="-3 3" />
+    <motor name="drive_cam_x_pan" joint="cam_x_pan" gear="1" ctrllimited="true" ctrlrange="-.8 .8" />
+    <motor name="drive_cam_y_tilt" joint="cam_y_tilt" gear="1" ctrllimited="true" ctrlrange="-.8 .8" />
+  </actuator>
+  <sensor>
+    <accelerometer name="imu_accel_FLU" site="imu" />
+    <gyro name="imu_gyro_FLU" site="imu" />
+    <framequat name="attitude_FLU" objtype="body" objname="base_link" />
+  </sensor>
+</mujoco>

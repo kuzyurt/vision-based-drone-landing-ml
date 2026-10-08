@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "controller": "PX4 v1.16.0 native SITL",
+  "hover_height_m": 1.4651210230653275,
+  "forward_displacement_m": 2.229039139439022,
+  "camera_pan_change_deg": 85.84312669524286,
+  "camera_tilt_after_move_deg": -61.014476366548024,
+  "live_onboard_and_world_images": true,
+  "landed_disarmed": true,
+  "landing_height_m": 0.2152365171631003,
+  "messages": [
+    "[logger] ./log/2026-10-06/16_04_36.ulg\t",
+    "PX4 command 211: MAV_RESULT_ACCEPTED",
+    "PX4 command 176: MAV_RESULT_ACCEPTED",
+    "PX4 command 176: MAV_RESULT_ACCEPTED",
+    "PX4 command 400: MAV_RESULT_ACCEPTED",
+    "Armed by external command\t",
+    "Takeoff detected\t",
+    "PX4 command 21: MAV_RESULT_ACCEPTED",
+    "Landing at current position\t",
+    "Landing detected\t",
+    "PX4 command 400: MAV_RESULT_ACCEPTED",
+    "Disarmed by external command\t"
+  ],
+  "calibration_status": "integration_verified_not_real_flight_validated"
+}

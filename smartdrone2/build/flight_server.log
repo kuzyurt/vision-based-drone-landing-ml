@@ -1,0 +1,73 @@
+Loading flight meshes and physical mass model.
+Started PX4 v1.16.0 SITL; awaiting simulator connection.
+PX4 simulator TCP connected: ('192.168.28.218', 45304)
+Preflight Fail: system power unavailable
+PX4 command 211: MAV_RESULT_ACCEPTED
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 400: MAV_RESULT_ACCEPTED
+Armed by external command	
+Takeoff detected	
+PX4 command 21: MAV_RESULT_ACCEPTED
+Landing at current position	
+Landing detected	
+PX4 command 400: MAV_RESULT_ACCEPTED
+Disarmed by external command	
+Wind scenario: calm · seed 714
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 400: MAV_RESULT_ACCEPTED
+Armed by external command	
+[logger] ./log/2026-10-06/18_08_41.ulg	
+Takeoff detected	
+Wind scenario: calm · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Scene reset: original pose, battery, wind sequence and fresh PX4 estimator.
+Started PX4 v1.16.0 SITL; awaiting simulator connection.
+PX4 simulator TCP connected: ('192.168.28.218', 58136)
+[logger] ./log/2026-10-06/18_10_29.ulg	
+PX4 command 211: MAV_RESULT_ACCEPTED
+Wind scenario: calm · seed 714
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 400: MAV_RESULT_ACCEPTED
+Armed by external command	
+Takeoff detected	
+Wind scenario: steady10 · seed 714
+PX4 command 21: MAV_RESULT_ACCEPTED
+Landing at current position	
+Landing detected	
+PX4 command 400: MAV_RESULT_ACCEPTED
+Disarmed by external command	
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 176: MAV_RESULT_ACCEPTED
+PX4 command 400: MAV_RESULT_ACCEPTED
+Armed by external command	
+[logger] ./log/2026-10-06/18_25_13.ulg	
+Takeoff detected	
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady10 · seed 714
+Wind scenario: steady2 · seed 714
+Wind scenario: calm · seed 714
+Propeller strike: rotor 2 drive/thrust disabled until Reset scene.
+Propeller strike: rotor 1 drive/thrust disabled until Reset scene.
+Preflight Fail: Attitude failure (roll)
+Propeller strike: rotor 3 drive/thrust disabled until Reset scene.
+Failsafe activated	

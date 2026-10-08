@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "readme_links": 5,
+  "cad_parts": 281,
+  "cad_source_hash_matches": true,
+  "media": {
+    "boat_cutaway.png": {
+      "size": [
+        1600,
+        1000
+      ],
+      "frames": 1
+    },
+    "boat_exterior.png": {
+      "size": [
+        1600,
+        1000
+      ],
+      "frames": 1
+    },
+    "dock_lift.gif": {
+      "size": [
+        960,
+        540
+      ],
+      "frames": 210
+    },
+    "island_full_power.gif": {
+      "size": [
+        960,
+        540
+      ],
+      "frames": 120
+    }
+  },
+  "readme_words": 527
+}
