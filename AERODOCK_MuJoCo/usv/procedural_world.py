@@ -175,8 +175,8 @@ class Navigation:
         from .boat_sim import quaternion
         R=sim.data.xmat[sim.boat].reshape(3,3)
         roll=math.atan2(R[2,1],R[2,2]); pitch=math.asin(float(np.clip(-R[2,0],-1,1)))
-        sim.data.qpos[:2]=start
-        sim.data.qpos[3:7]=quaternion(roll,pitch,math.atan2(direction[1],direction[0]))
+        sim.data.qpos[sim.free_qadr:sim.free_qadr+2]=start
+        sim.data.qpos[sim.free_qadr+3:sim.free_qadr+7]=quaternion(roll,pitch,math.atan2(direction[1],direction[0]))
         self.progress=0.;self.integral=0.;self.target_speed=0.;self.next_update=0.;self.complete=False
         self.mode='automatic'; self.contact_anchor=None
         self.coast_distance=float(self.world.distance(start)[0])
@@ -197,7 +197,7 @@ class Navigation:
 
     def update_contacts(self,force=False):
         """Small fixed pool of vertical shore proxies, independent of rendering."""
-        sim=self.sim; p=sim.data.qpos[:2]
+        sim=self.sim; p=sim.data.qpos[sim.free_qadr:sim.free_qadr+2]
         if not force and self.contact_anchor is not None and np.linalg.norm(p-self.contact_anchor)<6: return
         self.contact_anchor=p.copy()
         if self.world:
@@ -260,7 +260,7 @@ class Navigation:
         self.integral=float(np.clip(self.integral+(target-speed)*.1,-8,8))
         base=np.clip(2.8*target**3+4*target+12*(target-speed)+3*self.integral,0,92)
         if abs(error)>.25:base=max(base,15)
-        yawrate=float(sim.data.qvel[5])
+        yawrate=float(sim.data.qvel[sim.free_vadr+5])
         turn=float(np.clip(60*error-85*yawrate,-base,base))
         # Exported port site is y=-0.205: extra port thrust turns +yaw.
         sim.power[:]=np.clip([base+turn,base-turn],0,100)

@@ -1,0 +1,11 @@
+{
+  "schema": "aerodock.landing.contract.v1",
+  "frames": {"world": "ENU", "px4_attitude": "NED/FRD", "beacon_heading": "forward/right/down using estimated yaw", "gimbal": "simulator FLU pan left positive, tilt down positive; hardware mapping unverified"},
+  "action_order": ["forward_m_s", "right_m_s", "down_m_s", "yaw_ned_rad_s", "gimbal_pan_rad_s", "gimbal_tilt_rad_s"],
+  "numeric_input_order": ["velocity_forward", "velocity_right", "velocity_down", "roll", "pitch", "yaw_ned", "roll_rate", "pitch_rate", "yaw_rate", "gimbal_pan", "gimbal_tilt", "beacon_relative_forward", "beacon_relative_right", "beacon_relative_down", "beacon_velocity_forward", "beacon_velocity_right", "beacon_velocity_down", "position_age", "attitude_age", "beacon_age", "px4_valid", "beacon_valid", "dock_ready", "image_age", "previous_forward", "previous_right", "previous_down", "previous_yaw_rate", "previous_pan_rate", "previous_tilt_rate", "decision_dt", "image_valid"],
+  "rgb": {"shape": [360,640,3], "dtype": "uint8", "overlay": false},
+  "privileged": "Ground truth only for expert labels and evaluation, excluded from numeric inputs",
+  "terminal": "No subsequent action; exclude terminal action from imitation loss",
+  "recording_roles": {"review": "Never eligible for training", "training": "Approved expert/DAgger collection", "validation": "Held-out worlds", "test": "Held-out worlds; never selected for training or checkpoint selection"},
+  "outcomes": ["flying", "stable_contact", "landed", "contact_only", "water_strike", "collision_failure", "abort", "timeout"]
+}
