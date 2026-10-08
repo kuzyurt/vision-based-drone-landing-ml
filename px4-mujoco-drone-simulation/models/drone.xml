@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<mujoco model="smartdrone2_corrected_inspection">
+<mujoco model="px4_mujoco_drone_simulation_corrected_inspection">
   <compiler angle="radian" meshdir="meshes" texturedir="textures" />
   <option gravity="0 0 0" />
   <asset>

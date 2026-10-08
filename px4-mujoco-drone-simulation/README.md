@@ -1,4 +1,4 @@
-# SmartDrone · Flight Lab
+# PX4–MuJoCo Drone Simulation
 
 A FreeCAD drone assembly brought into **MuJoCo + PX4 SITL**, with an articulated camera, real flight-control software and repeatable wind scenarios. Built for flight-and-camera experiments and an ML portfolio.
 

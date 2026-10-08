@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>smartdrone2 - camera angle editor</title>
+<title>PX4–MuJoCo Drone Simulation — Camera Angle Editor</title>
 <style>
   :root { color-scheme: dark; }
   html, body { margin:0; height:100%; background:#14161a; overflow:hidden;
@@ -63,7 +63,7 @@
 </script>
 
 <div class="panel" id="left">
-  <h1>smartdrone2 &mdash; camera angle editor</h1>
+  <h1>PX4–MuJoCo Drone Simulation &mdash; Camera Angle Editor</h1>
   <div class="sub" id="sub"></div>
 
   <h2>Joint limits &mdash; edit, then download</h2>
@@ -393,7 +393,7 @@ function buildJointUI() {
 }
 
 function limitsJSON() {
-  const out = { model: "smartdrone2", generated_by: "viewer/index.html", joints: {} };
+  const out = { model: "px4-mujoco-drone-simulation", generated_by: "viewer/index.html", joints: {} };
   for (const [name, j] of Object.entries(jointState)) {
     out.joints[name] = {
       body: j.body, type: j.type, axis: j.axis,

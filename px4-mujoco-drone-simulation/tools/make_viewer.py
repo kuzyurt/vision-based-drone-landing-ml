@@ -1,4 +1,4 @@
-"""Build the interactive three.js viewer for smartdrone2.
+"""Build the interactive three.js viewer for px4-mujoco-drone-simulation.
 
 Reads ``models/metadata/export.json`` and ``models/metadata/materials.json`` and writes
 ``web/inspection/index.html`` plus a metadata JSON and bounded binary chunks.
@@ -203,7 +203,7 @@ def build() -> dict:
         geometry_blob += block["blob"]
 
     payload = {
-        "model": "smartdrone2",
+        "model": "px4-mujoco-drone-simulation",
         "upAxis": export["up_axis"],
         "units": "mm",
         "bodies": export["bodies"],

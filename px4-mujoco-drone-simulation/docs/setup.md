@@ -4,13 +4,13 @@ The supported launch configuration is Windows, Python 3.12, desktop OpenGL, and 
 
 ## One-time PX4 setup
 
-Install WSL2 Ubuntu 22.04 using Microsoft's instructions. In that distribution, change into this checkout's WSL path (for example `/mnt/d/projects/smartdrone2`) and run:
+Install WSL2 Ubuntu 22.04 using Microsoft's instructions. In that distribution, change into this checkout's WSL path (for example `/mnt/d/projects/px4-mujoco-drone-simulation`) and run:
 
 ```bash
 bash tools/setup_px4.sh --install-deps
 ```
 
-This obtains official PX4 v1.16.0 at commit `6ea3539157ca358c70a515878b77077af7d4611d`, installs the vendor's Ubuntu build dependencies, applies the documented battery-message correction, and builds SITL. Source and firmware live in `~/.cache/smartdrone2/`. The installer may request your Ubuntu sudo password. This downloads/builds firmware, not the Gazebo simulator. If dependencies are already installed, omit `--install-deps`.
+This obtains official PX4 v1.16.0 at commit `6ea3539157ca358c70a515878b77077af7d4611d`, installs the vendor's Ubuntu build dependencies, applies the documented battery-message correction, and builds SITL. Source and firmware live in `~/.cache/px4-mujoco-drone-simulation/`. The installer may request your Ubuntu sudo password. This downloads/builds firmware, not the Gazebo simulator. If dependencies are already installed, omit `--install-deps`.
 
 ## Windows launch
 

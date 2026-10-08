@@ -72,7 +72,7 @@ The detailed inspection viewer is served at `/inspection/` by the flight server 
 
 ## Run and rebuild
 
-Use Windows Python 3.12 with `mujoco`, `numpy`, `scipy`, `Pillow`, `fastapi`, `uvicorn`, `pymavlink` and `fast-simplification`. PX4 source/build are in WSL Ubuntu-22.04 at `~/.cache/smartdrone2/PX4-Autopilot`, checked out at v1.16.0. Official setup was run with `--no-nuttx --no-sim-tools`; no Gazebo controller is substituted.
+Use Windows Python 3.12 with `mujoco`, `numpy`, `scipy`, `Pillow`, `fastapi`, `uvicorn`, `pymavlink` and `fast-simplification`. PX4 source/build are in WSL Ubuntu-22.04 at `~/.cache/px4-mujoco-drone-simulation/PX4-Autopilot`, checked out at v1.16.0. Official setup was run with `--no-nuttx --no-sim-tools`; no Gazebo controller is substituted.
 
 For setup use [setup.md](setup.md). `tools/setup_px4.sh` obtains the pinned release, applies `sim/patch_px4_battery.py` and builds SITL. The launcher uses this executable; it does not download a replacement controller at runtime.
 
