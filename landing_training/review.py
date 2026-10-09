@@ -54,5 +54,8 @@ def export_reviews(destination,limit=None):
     return manifest
 
 if __name__=='__main__':
+    import signal
+    def cancel(signum,frame):raise KeyboardInterrupt('Review export cancelled')
+    signal.signal(signal.SIGTERM,cancel)
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',default=str(ROOT/'outputs/review'));parser.add_argument('--limit',type=int)
     args=parser.parse_args();export_reviews(args.output,args.limit)

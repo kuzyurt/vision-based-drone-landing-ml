@@ -418,6 +418,16 @@ On normal completion, storage stop, Ctrl+C, SIGTERM or a handled error a final
 report is saved. Forced termination/power loss can prevent finalization; the last
 atomic progress report and previously completed episodes remain.
 
+The cloud launcher records each stage (`gpu_probe`, `approval_check`,
+`qualification`, `review_export`, `collection`), its duration and actual child
+exit code in `launch_status.json`. Stage boundaries also appear in `console.log`.
+SIGINT, SIGTERM and SIGHUP are recorded explicitly with exit codes 130, 143 and
+129 respectively. The launcher forwards a cleanup request to its owned child,
+drains its output and waits for cleanup before writing its final status. It never
+reports an interrupted launch as a successful exit merely because the previous
+stage passed. Review export also handles SIGTERM so its own PX4 and recording
+resources can close cleanly.
+
 ## Shared physics and clocks
 
 There is one `MjModel`, one `MjData`, gravity 9.80665 m/s² and a 1 ms physics
