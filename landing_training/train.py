@@ -12,7 +12,7 @@ from .gate import require_approval,file_hash
 from .recording import numeric_observation
 from .policy import LandingPolicy,normalize_actions
 
-def approved_dataset(manifest_path,bundle):
+def approved_dataset(manifest_path,bundle,verify_roles=None):
     require_approval(bundle)
     path=Path(manifest_path).resolve();manifest=json.loads(path.read_text())
     if manifest.get('review_manifest_sha256')!=file_hash(Path(bundle)/'manifest.json'):raise PermissionError('Dataset belongs to a different review bundle')
@@ -26,7 +26,7 @@ def approved_dataset(manifest_path,bundle):
         group_roles[group]=role
         artifact=(path.parent/episode['path']).resolve()
         if not artifact.is_relative_to(path.parent):raise ValueError('Dataset path escapes manifest directory')
-        if file_hash(artifact)!=episode['sha256']:raise ValueError('Dataset artifact changed')
+        if (verify_roles is None or role in verify_roles) and file_hash(artifact)!=episode['sha256']:raise ValueError('Dataset artifact changed')
         with h5py.File(artifact) as data:
             if not data.attrs.get('training_eligible',False) or data.attrs['role']!=role:raise PermissionError('Review or incorrectly labelled data cannot be trained on')
         if role=='training':training.append(artifact)

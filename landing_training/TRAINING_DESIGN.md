@@ -123,31 +123,44 @@ provenance. The benchmark compares RGB/cached throughput, charges one-time
 preparation separately and verifies loss improvement on a repeated fragment.
 That fit is a wiring diagnostic; its temporary weights are discarded.
 
-Before automatic collection→training:
+The implemented `workflow.py` now performs those readiness checks:
 
-1. Broaden and qualify boat starting progress. `Navigation.spawn` starts at
-   `route.points[0]` and resets progress to zero; `Environment` also uses the
-   first coastal coordinate for launch placement. Generated maps, reversed
-   routes and world rotation already vary the scene, but later route sections
-   are not guaranteed to appear during short flights. Random progress needs
-   consistent placement, clear-water checks and flight review.
-2. Inspect the initial 60 expert pilot flights for actual visibility, outcome,
-   distance/weather/fault coverage, duration and compressed size. These first
-   60 are training-role flights; add held-out validation coverage before fitting
-   a pilot policy. Do not infer coverage from ten near-boat review videos.
-3. Audit scenario-dependent expert decisions. Search uses the scenario's target
-   height and abort uses its deadline, neither of which is an explicit actor
-   input. Measure agreement on search/abort states; mission deadlines should be
-   handled explicitly by the deployment supervisor rather than assuming the GRU
-   will reconstruct them. The current benchmark does not resolve this contract.
-4. Run a short frozen-encoder pilot and closed-loop validation before spending
-   the full epoch budget. Compare against action persistence, inspect recovery
-   from off-expert states, then use DAgger or fine-tuning according to the
-   observed failures. No arbitrary success threshold is claimed as qualified.
-5. The future orchestrator must require compatible approval, collection
-   completion, valid train/validation coverage and space for caches/checkpoints.
-   A disk-limit or crash stop must not silently launch training on an incomplete
-   dataset. Persist stage reports and resume checkpoints independently of SSH.
+1. Boat starts use a seeded fraction of the usable interior of the route, with
+   mission-distance reserves at both ends. Forward/reverse partners share the
+   physical position with opposite headings; launch coastal coordinates and
+   navigation progress are consistent. Qualification checks all five maps.
+2. The first 240 expert episodes include 120 training and 120 validation flights,
+   each covering every map/distance/weather/direction combination. The audit
+   verifies every recording row, masks, timing, open/raised dock, actual initial
+   visibility/distance, durations and compressed storage. Unsafe flights and
+   unsuccessful nominal expert flights stop scaling. Fault aborts may be retained.
+3. Search uses delivered coarse beacon height rather than the unobserved
+   scenario target height. Missing-beacon scanning uses a fixed ascent command.
+   Mission deadlines, readiness and estimator-age overrides use a shared
+   observable supervisor and are excluded from imitation targets. The actor
+   remains a 32-value contract; deployment must provide the mission clock to
+   that supervisor separately.
+4. After complete collection and all-file integrity verification, train up to
+   three epochs and evaluate 12 stratified validation worlds. At least one
+   landing and zero unsafe outcomes are required to continue the ten-epoch
+   budget. This minimum check catches failed learning without claiming a
+   qualified reliability threshold. Compare losses against action persistence
+   and inspect closed-loop traces; DAgger or fine-tuning remains an evidence-led
+   next iteration, rather than an unvalidated automatic change of objective.
+5. Complete collection, exact plan, compatible user approval, split isolation,
+   storage reserves and matching checkpoint provenance precede training. Disk
+   stops and crashes cannot silently train an incomplete dataset. State reports
+   and optimizer/RNG checkpoints survive SSH loss. Final validation/test use all
+   held-out scenarios; test worlds never select the model.
+
+Evaluation defaults to JSONL traces without archiving RGB again; camera rendering
+for inference remains necessary. PX4 continuous flight logging stops after
+startup, so small bootstrap logs can remain. Collection leaves 95 GB free for
+worst-case cached features/evaluation/checkpoints plus its in-flight shutdown
+reserve, while also respecting the 1,500 GB dataset cap. Pilot measured-size
+projections and every stage's elapsed time are saved. The current VM benchmarks
+do not measure the duration or reliability of these production pilots/final
+closed-loop flights.
 
 Training/plan changes refresh the full-source review fingerprint. Existing
 videos can be reused by review export only when its simulation-runtime hash

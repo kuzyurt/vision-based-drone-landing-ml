@@ -10,6 +10,15 @@ def json_value(value):
     if isinstance(value,np.generic):return value.item()
     raise TypeError(type(value).__name__)
 
+class TraceRecorder:
+    """Evaluation traces only; no RGB archive and never a training dataset."""
+    def __init__(self,directory):
+        self.rows=(Path(directory)/'steps.jsonl').open('w');self.count=0
+    def append(self,rgb,row):
+        self.rows.write(json.dumps(row,default=json_value,separators=(',',':'),allow_nan=False)+'\n');self.count+=1
+        if self.count%16==0:self.rows.flush()
+    def close(self):self.rows.close()
+
 class Recorder:
     def __init__(self,directory,scenario,role='review',batch_size=16):
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)

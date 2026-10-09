@@ -19,12 +19,38 @@ def stop_wsl_runtime(runtime):
     subprocess.run(['wsl','-d',os.environ.get('PX4_WSL_DISTRO','Ubuntu-22.04'),'--','bash',
                     wsl_path(ROOT/'px4_wsl.sh'),'stop',wsl_path(runtime)],check=True,timeout=15)
 
+def stop_owned_native_runtime(runtime):
+    """Stop only the journalled PX4 child of a crashed/stopped collector."""
+    import psutil
+    import signal
+    runtime=Path(runtime).resolve();journal=runtime/'owned_process.json'
+    if not journal.exists():return
+    record=json.loads(journal.read_text())
+    try:
+        process=psutil.Process(record['pid'])
+        if process.create_time()!=record['create_time'] or record['runtime']!=str(runtime) or str(runtime) not in process.cmdline() or os.getpgid(process.pid)!=process.pid:
+            raise RuntimeError('PX4 ownership mismatch; refusing to stop another process')
+        os.killpg(process.pid,signal.SIGTERM)
+        def stopped():
+            # The coordinator is not the parent of an orphaned PX4. A zombie
+            # has stopped executing; waiting for its adoptive parent to reap
+            # it can time out indefinitely in a container.
+            deadline=time.monotonic()+5
+            while time.monotonic()<deadline:
+                if not process.is_running() or process.status()==psutil.STATUS_ZOMBIE:return True
+                time.sleep(.05)
+            return False
+        if not stopped():
+            os.killpg(process.pid,signal.SIGKILL)
+            if not stopped():raise RuntimeError('Owned PX4 did not stop after SIGKILL')
+    except (psutil.NoSuchProcess,ProcessLookupError):pass
+
 class NativePX4:
     send_sensors=Simulation.send_sensors
     sensor=Simulation.sensor
 
-    def __init__(self,env,runtime,instance=0):
-        self.env=env;self.model=env.model;self.data=env.data;self.base=env.drone.base
+    def __init__(self,env,runtime,instance=0,flight_logging=True):
+        self.env=env;self.model=env.model;self.data=env.data;self.base=env.drone.base;self.flight_logging=flight_logging
         self.gps_site=self.model.site('drone_gps_antenna').id
         self.sensor_ids={n:self.model.sensor('drone_'+n).id for n in ('imu_accel_FLU','imu_gyro_FLU')}
         self.rng=np.random.default_rng(env.scenario.seed+30)
@@ -63,6 +89,7 @@ class NativePX4:
         script+=f'battery_simulator stop\nmavlink start -u {self.px4_port} -o {self.port} -t {self.host} -m onboard -r 150000\n'
         for stream,rate in (('LOCAL_POSITION_NED',25),('ATTITUDE',25),('EXTENDED_SYS_STATE',10)):
             script+=f'mavlink stream -u {self.px4_port} -s {stream} -r {rate}\n'
+        if not self.flight_logging:script+='logger stop\n'
         (self.runtime/'rcS').write_text(script,encoding='utf-8',newline='\n')
 
     def start(self):
@@ -76,6 +103,9 @@ class NativePX4:
                 stdout=self.log,stderr=subprocess.STDOUT)
             return
         self.process=subprocess.Popen([str(binary),'-d',str(binary.parent.parent/'etc'),'-w',str(self.runtime),'-s',str(self.runtime/'rcS'),'-i',str(self.instance)],cwd=vendor,env=env,stdout=self.log,stderr=subprocess.STDOUT,start_new_session=True)
+        import psutil
+        from .collection_session import atomic_json
+        atomic_json(self.runtime/'owned_process.json',{'pid':self.process.pid,'create_time':psutil.Process(self.process.pid).create_time(),'runtime':str(self.runtime.resolve())})
 
     def poll(self):
         if self.process and self.process.poll() is not None:raise RuntimeError('PX4 exited; inspect '+str(self.runtime/'px4.log'))

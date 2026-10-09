@@ -90,9 +90,13 @@ class CloudCollection:
         output = []
         actual_code = None
         try:
+            import psutil
             self.child = subprocess.Popen(command, cwd=ROOT.parent, stdin=subprocess.DEVNULL,
                                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                           text=True, start_new_session=True)
+            try:created=psutil.Process(self.child.pid).create_time()
+            except psutil.NoSuchProcess:created=None  # Already-exited short probes need no recovery.
+            entry.update(child_pid=self.child.pid,child_create_time=created,command=[str(value) for value in command])
             self.save()
             for line in self.child.stdout:
                 self.emit(line)

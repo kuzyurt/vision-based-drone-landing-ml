@@ -5,16 +5,86 @@
   "image_height": 360,
   "episode_duration_max_s": 180,
   "initial_episodes": 1200,
-  "pilot_episodes": 60,
-  "splits": {"training": 960, "validation": 120, "test": 120},
-  "map_families": ["island", "beach", "city", "gravel", "rock"],
-  "distance_bands_m": [[0, 5], [5, 20], [20, 60]],
-  "clearance_m": [2, 8],
-  "boat_speed_m_s": [0, 1],
-  "wave_height_parameter_m": [0, 0.15],
-  "wave_period_s": [2, 5],
-  "wind_profiles": ["calm", "steady2", "breeze", "gusty"],
-  "dock": {"lids_always_open": true, "platform_always_raised": true},
-  "training": {"sequence_steps": 64, "effective_batch_sequences": 8, "learning_rate": 0.0001, "gru_hidden": 128},
-  "hardware_pending": ["live camera latency", "gimbal interface", "radio interoperability and timing", "physical calibration"]
+  "pilot_episodes": 240,
+  "splits": {
+    "training": 960,
+    "validation": 120,
+    "test": 120
+  },
+  "map_families": [
+    "island",
+    "beach",
+    "city",
+    "gravel",
+    "rock"
+  ],
+  "distance_bands_m": [
+    [
+      0,
+      5
+    ],
+    [
+      5,
+      20
+    ],
+    [
+      20,
+      60
+    ]
+  ],
+  "boat_speed_m_s": [
+    0.1,
+    1.0
+  ],
+  "wave_height_parameter_m": [
+    0,
+    0.15
+  ],
+  "wave_period_s": [
+    2,
+    5
+  ],
+  "wind_profiles": [
+    "calm",
+    "steady2",
+    "breeze",
+    "gusty"
+  ],
+  "dock": {
+    "lids_always_open": true,
+    "platform_always_raised": true
+  },
+  "training": {
+    "sequence_steps": 64,
+    "effective_batch_sequences": 8,
+    "learning_rate": 0.0001,
+    "gru_hidden": 128
+  },
+  "hardware_pending": [
+    "live camera latency",
+    "gimbal interface",
+    "radio interoperability and timing",
+    "physical calibration"
+  ],
+  "pilot_splits": {
+    "training": 120,
+    "validation": 120
+  },
+  "height_above_deck_centre_m": [
+    2,
+    8
+  ],
+  "boat_start": {
+    "canonical_usable_fraction": [
+      0,
+      1
+    ],
+    "end_reserve_m": "boat_speed * episode_duration + 20",
+    "paired_directions_share_position": true
+  },
+  "supervisor": {
+    "mission_deadline": "last min(5 s, 10% budget): observable ascent override, masked from imitation",
+    "dock_not_ready": "hover override, masked from imitation",
+    "px4_max_age_s": 0.25
+  }
 }

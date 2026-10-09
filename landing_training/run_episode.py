@@ -9,7 +9,8 @@ from PIL import Image,ImageEnhance,ImageFilter
 from .environment import Environment
 from .expert import Expert,Beacon,pad_visibility
 from .px4 import NativePX4
-from .recording import Recorder
+from .recording import Recorder,TraceRecorder
+from .supervision import supervise_action
 from .rendering import ReviewRenderer,VideoWriter
 
 def camera_image(rgb,scenario):
@@ -20,7 +21,8 @@ def camera_image(rgb,scenario):
     if scenario.image_blur_px:image=image.filter(ImageFilter.GaussianBlur(scenario.image_blur_px))
     return np.asarray(image).copy()
 
-def run_episode(scenario,directory,*,role='review',video=True,instance=0,approval_bundle=None,controller=None,cancel_event=None):
+def run_episode(scenario,directory,*,role='review',video=True,instance=0,approval_bundle=None,controller=None,cancel_event=None,record_images=True):
+    if not record_images and (controller is None or video):raise ValueError('Trace-only recording requires policy evaluation without video')
     if role not in ('review','training','validation','test'):raise ValueError('Unknown recording role')
     if role!='review':
         from .gate import require_approval
@@ -41,7 +43,7 @@ def run_episode(scenario,directory,*,role='review',video=True,instance=0,approva
     init_started=time.perf_counter()
     env=Environment(scenario)
     stage['environment_init_s']=time.perf_counter()-init_started
-    env.boat.navigation.manual();px4=NativePX4(env,directory/'px4',instance)
+    env.boat.navigation.manual();px4=NativePX4(env,directory/'px4',instance,flight_logging=record_images)
     expert=Expert(env);beacon=Beacon(scenario.seed+40);renderer=None;recorder=None;writer=None
     previous=np.zeros(6);rows=0;phase_counts={};dock_error=0.;failure=None
     try:
@@ -59,7 +61,7 @@ def run_episode(scenario,directory,*,role='review',video=True,instance=0,approva
         stage['preparation_px4_sync_s']=px4.timings['sync_s']
         px4.timings={key:0. for key in px4.timings}
         renderer=timed('renderer_init_s',lambda:ReviewRenderer(env,overview=video))
-        record_start=time.perf_counter();recorder=Recorder(directory,asdict(scenario),role)
+        record_start=time.perf_counter();recorder=Recorder(directory,asdict(scenario),role) if record_images else TraceRecorder(directory)
         if video:writer=VideoWriter(directory/'review.mp4')
         task_start=float(env.data.time);env.task_start_time=task_start;env.recording=True;env.boat.navigation.mode='automatic'
         gimbal_rng=np.random.default_rng(scenario.seed+50)
@@ -81,13 +83,18 @@ def run_episode(scenario,directory,*,role='review',video=True,instance=0,approva
             raw,action,intervention=expert.act(px4,packet,visible)
             stage['expert_s']=stage.get('expert_s',0.)+time.perf_counter()-decision_started
             observation={'px4':px4.observation(),'beacon':packet,'gimbal_rad':(env.data.qpos[env.drone.camera_qpos]+gimbal_rng.normal(0,math_radians(.1),2)).tolist(),'gimbal_source':'synthetic_encoder_unverified_hardware_interface','image_capture_time_s':image_time,'image_delivery_time_s':capture_time,'image_age_s':capture_time-image_time,'image_wall_capture_duration_s':capture_duration,'image_valid':image_valid,'decision_dt_s':.04,'previous_executed_action':previous.tolist()}
-            expert_bounded=action.copy();learner=None;diagnostics=None
+            task_time=capture_time-task_start
+            action,supervisor_reason=supervise_action(action,observation,task_time,scenario.duration)
+            intervention=intervention or supervisor_reason
+            if supervisor_reason=='mission_deadline':expert.phase='abort'
+            observation['mission']={'elapsed_s':task_time,'budget_s':scenario.duration,'supervisor':supervisor_reason}
+            expert_bounded=action.copy();teacher_valid=intervention is None;learner=None;diagnostics=None
             if controller is not None:
                 learner,diagnostics=controller.act(rgb,observation);action=expert.bounded(learner)
-                if not np.isfinite(action).all():action=np.zeros(6);intervention='non_finite_policy_action'
-                if not observation['px4'].get('valid') or observation['px4'].get('position_age_s',100)>.25:action[:4]=0;intervention='estimator_unavailable_or_stale'
+                action,student_reason=supervise_action(action,observation,task_time,scenario.duration)
+                intervention=student_reason
             row={'schema':'aerodock.landing.step.v1','role':role,'frame_index':index,'time_s':capture_time,'task_time_s':capture_time-task_start,'phase':expert.phase,'outcome':env.outcome,'observation':observation,'output':{'expert_raw_action':raw.tolist(),'executed_action':action.tolist(),'intervention':intervention},'privileged':{'drone_position_enu_m':env.drone.position.tolist(),'drone_velocity_enu_m_s':env.drone.velocity.tolist(),'pad_position_enu_m':env.pad_position.tolist(),'pad_velocity_enu_m_s':env.pad_velocity.tolist(),'pad_rotation':env.pad_rotation.tolist(),'clearance_m':env.clearance,'pad_visible':visible,'pad_keypoints_px':pixels,'wind_enu_m_s':env.wind.velocity.tolist(),'boat_speed_m_s':env.boat.get_speed('m/s'),'dock_joint_m':env.boat._positions().tolist()}}
-            row['output'].update(expert_bounded_action=expert_bounded.tolist(),learner_action=learner.tolist() if learner is not None and np.isfinite(learner).all() else None,learner_diagnostics=diagnostics,action_supervision_valid=intervention is None)
+            row['output'].update(expert_bounded_action=expert_bounded.tolist(),learner_action=learner.tolist() if learner is not None and np.isfinite(learner).all() else None,learner_diagnostics=diagnostics,action_supervision_valid=teacher_valid)
             row['privileged']['vertical_clearance_m']=env.vertical_clearance
             stage['observation_and_decision_s']=stage.get('observation_and_decision_s',0.)+time.perf_counter()-observation_started
             timed('record_write_s',lambda:recorder.append(rgb,row))
@@ -109,6 +116,7 @@ def run_episode(scenario,directory,*,role='review',video=True,instance=0,approva
                 rgb=camera_image(rgb,scenario);row['time_s']=float(env.data.time);row['task_time_s']=float(env.data.time)-task_start;row['frame_index']=index+1;row['outcome']=env.outcome;row['observation']['px4']=px4.observation();row['observation']['image_capture_time_s']=float(env.data.time);row['observation']['image_delivery_time_s']=float(env.data.time);row['observation']['previous_executed_action']=action.tolist();row['privileged']['clearance_m']=env.clearance
                 terminal_visible,terminal_pixels=pad_visibility(env)
                 row['observation'].update(image_age_s=0.,image_valid=True,image_wall_capture_duration_s=capture_duration)
+                row['observation']['mission']['elapsed_s']=row['task_time_s']
                 row['observation']['beacon']=beacon.sample(env,px4)
                 row['observation']['gimbal_rad']=(env.data.qpos[env.drone.camera_qpos]+gimbal_rng.normal(0,math_radians(.1),2)).tolist()
                 row['privileged'].update(drone_position_enu_m=env.drone.position.tolist(),drone_velocity_enu_m_s=env.drone.velocity.tolist(),pad_position_enu_m=env.pad_position.tolist(),pad_velocity_enu_m_s=env.pad_velocity.tolist(),pad_rotation=env.pad_rotation.tolist(),pad_visible=terminal_visible,pad_keypoints_px=terminal_pixels,wind_enu_m_s=env.wind.velocity.tolist(),boat_speed_m_s=env.boat.get_speed('m/s'),dock_joint_m=env.boat._positions().tolist())
@@ -135,9 +143,11 @@ def run_episode(scenario,directory,*,role='review',video=True,instance=0,approva
                 if renderer:renderer.close()
             finally:px4.close()
         stage['shutdown_s']=time.perf_counter()-shutdown_started
-        summary={'scenario':asdict(scenario),'role':role,'source_sha256':provenance,'runtime_source_sha256':runtime_provenance,'training_eligible':role!='review','outcome':env.outcome,'failure':failure,'records':rows,'phase_counts':phase_counts,'events':env.events,'max_dock_error_m':dock_error,'achieved_start_bearing_deg':env.achieved_bearing_deg,'wall_seconds':time.perf_counter()-episode_started,'physics_timestep_s':float(env.model.opt.timestep),'controller':'PX4 v1.16.0 native MAVLink SITL','sensor_note':'GNSS HIL uses simulator truth; radio/gimbal are explicit synthetic references pending hardware calibration','px4_messages':px4.messages}
+        summary={'scenario':asdict(scenario),'role':role,'source_sha256':provenance,'runtime_source_sha256':runtime_provenance,'training_eligible':role!='review' and record_images,'outcome':env.outcome,'failure':failure,'records':rows,'phase_counts':phase_counts,'events':env.events,'max_dock_error_m':dock_error,'achieved_start_bearing_deg':env.achieved_bearing_deg,'wall_seconds':time.perf_counter()-episode_started,'physics_timestep_s':float(env.model.opt.timestep),'controller':'PX4 v1.16.0 native MAVLink SITL','sensor_note':'GNSS HIL uses simulator truth; radio/gimbal are explicit synthetic references pending hardware calibration','px4_messages':px4.messages}
         summary['performance']={'stages_s':stage,'record_start':locals().get('record_start'),'record_end':locals().get('record_end'),'recording_wall_s':record_end-record_start if recorder else 0.,'physics_s':px4.timings['physics_s'],'px4_sync_s':px4.timings['sync_s'],'sensor_send_s':px4.timings['sensor_send_s'],'advance_timing_scope':'recording only','camera_views':'external and onboard' if video else 'onboard only','stage_note':'expert_s is part of observation_and_decision_s; preparation_physics_s and preparation_px4_sync_s are parts of preparation_s'}
         summary.update(preparation_budget_s=env.preparation_budget_s,preparation_water_clearance_m=env.preparation_water_clearance_m)
+        summary['recording_mode']='rgb_and_trace' if record_images else 'evaluation_trace_only'
+        summary.update(boat_start_progress_m=env.boat_start_progress_m,route_length_m=env.boat.navigation.world.route.length)
         (directory/'summary.json').write_text(json.dumps(summary,indent=2))
     return summary
 

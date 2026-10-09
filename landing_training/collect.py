@@ -28,6 +28,8 @@ def planned_scenarios():
                     role='training' if repeat<8 else 'validation' if repeat==8 else 'test'
                     distance=float(np.sqrt(rng.uniform(lo*lo,hi*hi)))
                     height=float(rng.uniform(2,8));bearing=float(rng.uniform(-180,180));rotation=float(rng.uniform(0,360))
+                    start_fraction=float(rng.uniform(0,1))
+                    boat_speed=float(rng.uniform(.1,1))
                     wave=float(rng.uniform(.02,.15)) if weather in (2,3) else 0.
                     profile=str(rng.choice(['steady2','breeze','gusty'])) if weather in (1,3) else 'calm'
                     mean_wind=float(rng.uniform(0,4)) if weather in (1,3) else 0.
@@ -35,18 +37,18 @@ def planned_scenarios():
                     # held-out worlds must include nominal and fault cases.
                     challenge=(pair//10+repeat*3)%10
                     for reverse in (False,True):
-                        scenario=Scenario(name=f'{role}_{pair:04d}_{"reverse" if reverse else "forward"}',kind=kind,world_seed=90000+pair,path_seed=100000+pair,seed=110000+pair*2+int(reverse),reverse=reverse,world_rotation_deg=rotation,distance=distance,bearing_deg=bearing,height=height,boat_speed=float(rng.uniform(.1,1)),wave_height=wave,wave_period=float(rng.uniform(2,5)),wave_direction_deg=float(rng.uniform(0,360)),wind_profile=profile,wind_direction_deg=float(rng.uniform(0,360)),yaw_offset_deg=float(rng.uniform(-180,180)),initial_camera_target=(pair//10+repeat)%2==0,initial_pan_deg=float(rng.uniform(-180,180)),initial_tilt_deg=float(rng.uniform(0,90)),camera_blind_seconds=float(rng.uniform(1,3)) if challenge==7 else 0.,beacon_dropout_start_s=3. if challenge==8 else -1.,beacon_dropout_duration_s=3. if challenge==8 else 0.,dock_unavailable_seconds=5. if challenge==9 else 0.,duration=180.)
+                        scenario=Scenario(name=f'{role}_{pair:04d}_{"reverse" if reverse else "forward"}',kind=kind,world_seed=90000+pair,path_seed=100000+pair,seed=110000+pair*2+int(reverse),reverse=reverse,world_rotation_deg=rotation,distance=distance,bearing_deg=bearing,height=height,boat_speed=boat_speed,wave_height=wave,wave_period=float(rng.uniform(2,5)),wave_direction_deg=float(rng.uniform(0,360)),wind_profile=profile,wind_direction_deg=float(rng.uniform(0,360)),yaw_offset_deg=float(rng.uniform(-180,180)),initial_camera_target=(pair//10+repeat)%2==0,initial_pan_deg=float(rng.uniform(-180,180)),initial_tilt_deg=float(rng.uniform(0,90)),camera_blind_seconds=float(rng.uniform(1,3)) if challenge==7 else 0.,beacon_dropout_start_s=3. if challenge==8 else -1.,beacon_dropout_duration_s=3. if challenge==8 else 0.,dock_unavailable_seconds=5. if challenge==9 else 0.,duration=180.)
                         from dataclasses import replace
-                        scenario=replace(scenario,wind_mean_m_s=mean_wind,image_brightness=float(rng.uniform(.85,1.15)),image_contrast=float(rng.uniform(.85,1.15)),image_blur_px=float(rng.uniform(0,.5)),camera_delay_steps=int(rng.integers(0,6)))
+                        scenario=replace(scenario,boat_start_fraction=start_fraction,wind_mean_m_s=mean_wind,image_brightness=float(rng.uniform(.85,1.15)),image_contrast=float(rng.uniform(.85,1.15)),image_blur_px=float(rng.uniform(0,.5)),camera_delay_steps=int(rng.integers(0,6)))
                         episodes.append({'role':role,'pair':pair,'weather_group':weather,'distance_band':band,'scenario':asdict(scenario)})
-    # First 60 entries are the pilot: every map, both directions, all three
-    # distance bands and calm/combined weather. The remainder includes held-out
-    # worlds before further training flights, enabling incremental collection.
+    # First 240 entries are the pilot: 120 training and 120 validation
+    # recordings covering every map, direction, distance band and weather.
+    # Test worlds follow and stay excluded from pilot/model selection.
     def priority(item):
-        pilot=item['pair']%10==0 and item['weather_group'] in (0,3)
-        return (0 if pilot else 1 if item['role']!='training' else 2,item['distance_band'],item['weather_group'],item['pair']%10,item['scenario']['kind'],item['scenario']['reverse'])
+        pilot=item['pair']%10==0
+        return (0 if pilot else 1 if item['role']=='validation' else 2 if item['role']=='test' else 3,item['distance_band'],item['weather_group'],item['pair']%10,item['scenario']['kind'],item['scenario']['reverse'])
     episodes.sort(key=priority)
-    return {'schema':'aerodock.landing.plan.v1','role':'planned_not_collected','pilot_first_episodes':60,'episodes':episodes}
+    return {'schema':'aerodock.landing.plan.v1','role':'planned_not_collected','pilot_first_episodes':240,'episodes':episodes}
 
 def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance_base=20,gl=None,
             min_free_gb=1.074,max_dataset_gb=None,report_dir=None,require_gpu=False,

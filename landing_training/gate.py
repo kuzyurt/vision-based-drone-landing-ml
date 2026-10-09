@@ -13,7 +13,7 @@ def file_hash(path):
 def source_fingerprint(runtime_only=False,include_rendering=True):
     # Runtime caches, videos, approval files and timestamps are excluded.
     if runtime_only:
-        paths=[ROOT/name for name in ('config.py','environment.py','expert.py','scene.py','collision_pieces.py','visual_lod.py','px4.py','px4_wsl.sh','rendering.py','recording.py','run_episode.py','paths.py','runtime.py','execution.py')]
+        paths=[ROOT/name for name in ('config.py','environment.py','expert.py','supervision.py','scene.py','collision_pieces.py','visual_lod.py','px4.py','px4_wsl.sh','rendering.py','recording.py','run_episode.py','paths.py','runtime.py','execution.py')]
         if not include_rendering:paths=[p for p in paths if p.name!='rendering.py']
     else:paths=list(ROOT.glob('*.py'))+list(ROOT.glob('*.sh'))+list(ROOT.glob('*.json'))+list(ROOT.glob('*.txt'))
     for folder in ('AERODOCK_MuJoCo/usv','px4-mujoco-drone-simulation/sim'):

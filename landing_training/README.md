@@ -351,7 +351,11 @@ role, checkpoint, and record counts match. Partial or incompatible episodes are
 retained and refused, never overwritten. Workers load independent policy state
 when `--checkpoint` is used for DAgger collection.
 
-### Google Cloud: persistent collection with a storage limit
+### Google Cloud: legacy collection-only launcher
+
+For the complete collect→train→evaluate workflow, use
+`start_cloud_pipeline.sh` in the final section below. The launcher in this
+section collects only and reserves no feature-cache/evaluation budget.
 
 The prepared L4 VM measured 64 workers as the best tested setting. This launcher
 uses that count, requests all remaining episodes in the 1,200-episode plan, and
@@ -519,8 +523,10 @@ recording. Unsafe coastal bearings are rotated in 15° increments; requested and
 achieved bearings are recorded rather than silently treating them as identical.
 The straight preparation path is checked over clear water; its time budget scales
 with travel distance and height instead of failing longer starts after 45 s.
-Starting height and distant search use vertical height relative to the deck
-centre. Within 2 m of the target, descent uses distance along the deck normal.
+Configured starting height uses vertical height relative to the deck centre.
+During search, the teacher uses the delivered coarse beacon height instead of
+the scenario’s target height; when that beacon is stale it scans while climbing
+at 0.3 m/s. Within 2 m of the target, descent uses distance along the deck normal.
 Both heights are recorded; a tilted plane is not extrapolated to measure distant
 flight altitude.
 Blind search uses the coarse beacon and camera control. Visible approach and
@@ -558,16 +564,18 @@ outcomes but cannot authorize PX4 disarming.
 
 The deterministic plan contains 1,200 episodes: 960 training, 120 validation and
 120 test. It uses 600 distinct world/path seed pairs, with both directions kept
-in the same split. The first 60 episodes are a pilot covering every map, both
-directions, all distance bands and calm/combined weather. Review recordings are
-excluded entirely.
+in the same split. The first 240 episodes are the expert pilot: 120 training and
+120 validation episodes, each covering every map × distance band × weather group
+× route direction. Test worlds follow and remain excluded from pilot/model
+selection. Review recordings are excluded entirely.
 
 | Variable | Planned range/coverage |
 | --- | --- |
 | Maps | Island, beach, city, gravel, rock; seeded geometry and rotation |
 | Airborne horizontal distance | 0–5, 5–20, 20–60 m; area-weighted within each band |
-| Foot clearance | 2–8 m |
+| Configured height above deck centre | 2–8 m; actual foot clearance is recorded separately |
 | Boat target speed | 0.1–1 m/s |
+| Boat route start | Uniform fraction of the usable interior; paired directions share the physical start and have opposite headings |
 | Wind | Calm, steady, breeze, gusty; mean 0–4 m/s; all directions |
 | Waves | Height parameter 0–0.15 m; period 2–5 s; all directions and seeded phase |
 | Appearance | Brightness/contrast 0.85–1.15; blur 0–0.5 px |
@@ -605,8 +613,8 @@ landing_training/.venv/bin/python -m landing_training.train --review landing_tra
 
 The trainer also requires held-out validation episodes. A one-episode pilot is
 for collection inspection and cannot by itself start training. The full plan
-prioritizes validation/test worlds after the initial 60 pilot flights and before
-further training collection. Use staged limits matched to available storage.
+includes validation in the initial 240 pilot flights and prioritizes test
+worlds before further training collection. Use staged limits matched to available storage.
 
 ## Architecture and training steps
 
@@ -754,16 +762,14 @@ normalization, checkpoint writes and deployment evaluation add time. The review
 workload fits in RAM more easily than the eventual dataset: disk-cache effects
 can make estimates optimistic. Collection FPS is not training FPS.
 
-The automatic collection→training workflow is not enabled by this benchmark.
-Camera-aim balance, atomic optimizer/RNG checkpoints and resume are implemented.
-Broader boat starting progress on routes and closed-loop pilot performance still
-need qualification. Training-source changes invalidate an older full-source
-approval fingerprint. If the simulation runtime fingerprint is unchanged,
-review export can reuse its videos and regenerate current plan/audit metadata;
-the refreshed bundle still requires explicit user verification before production.
-A storage-limit stop must not silently train an incomplete dataset; the
-orchestrator must validate collection completion, split integrity and approval
-before starting a CUDA training job.
+The benchmark does not launch the production workflow. The separate
+`start_cloud_pipeline.sh` launcher now enforces review, expert-pilot audits,
+complete collection, compatible checkpoints and held-out policy evaluation.
+Training-source changes invalidate an older full-source approval fingerprint.
+If the simulation runtime fingerprint is unchanged, review export can reuse its
+videos and regenerate current plan/audit metadata; the refreshed bundle still
+requires explicit user verification before production. Interrupted review
+attempts are retained under `partial_attempts` and retried without overwriting.
 
 ```bash
 landing_training/.venv/bin/python -m landing_training.evaluate --review landing_training/outputs/review_bundle --manifest landing_training/datasets/pilot/manifest.json --checkpoint landing_training/checkpoints/baseline/best.pt --split validation --output landing_training/outputs/validation --max-episodes 10 --videos
@@ -772,8 +778,11 @@ landing_training/.venv/bin/python -m landing_training.evaluate --review landing_
 Closed-loop evaluation replays the scenario configuration of held-out episodes,
 while the learner controls the simulated aircraft. It reports deck landings,
 water strikes, collisions, aborts, timeouts and contact impact velocity. These
-evaluation records retain their validation/test split and cannot enter the
-training split. Inspect failures and search behaviour as well as success rate.
+evaluation records retain their validation/test split. Without `--videos`,
+evaluation saves JSONL traces and summaries, not a second RGB archive. Camera
+images are still rendered for the policy. PX4 continuous flight logging is
+stopped after startup; a small bootstrap ULog can remain. Evaluation traces
+are not training-eligible. Inspect failures and search behaviour as well as success rate.
 
 ## Known physical and hardware limits
 
@@ -827,3 +836,109 @@ approve collection:
 landing_training/.venv/bin/python -m landing_training.benchmark --speed 1.5 --count 30 --seed 4100 --wide-starts --instance 0 --output landing_training/outputs/repeated_speed_trials
 landing_training/.venv/bin/python -m landing_training.stress_review --report landing_training/build/speed_report.json --output landing_training/outputs/stress_review
 ```
+
+
+## Reviewed cloud collection → training → evaluation
+
+On the existing Linux L4 VM, keep its working CUDA PyTorch environment. The
+launcher does not reinstall dependencies or replace it with CPU wheels.
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+git switch codex/landing-training
+git pull --ff-only
+if ! tmux has-session -t landing-pipeline 2>/dev/null; then
+  tmux new-session -d -s landing-pipeline -c "$PWD" \
+    'bash landing_training/start_cloud_pipeline.sh'
+fi
+```
+
+It first checks hardware EGL and CUDA. With no current approved bundle it
+runs qualification and exports ten current videos in four workers, then exits
+with `user_review_required` (code 2). It neither approves its own output nor
+creates production data. Read the review path from the persistent state. After
+the user verifies all videos/data and explicitly approves that matching bundle,
+rerun the same launcher to proceed. The VM's dependency/PX4 fingerprint is part
+of approval, so a bundle from a different environment is not automatically valid.
+
+A running tmux session survives an SSH disconnect. Outside tmux, use
+`tmux attach -t landing-pipeline`; inside tmux use
+`tmux switch-client -t landing-pipeline`. Restart the launcher after a stop;
+completed recordings, caches and checkpoints remain intact. The wrapper uses
+the existing VM-wide collection lock; direct module launches also lock their
+persistent state. Do not run a separate benchmark/collector concurrently.
+
+The persistent report is `landing_training/outputs/pipeline_state.json`;
+`latest_pipeline_launch.txt` locates this attempt's `console.log` and
+`pipeline_report.json`. Reports save every stage and every 30 seconds, including
+cumulative wall time, stage durations, indexed episode/split counts, total
+stored dataset GB, checkpoint/cache GB, remaining disk space, pilot size/duration
+projection, audit outcomes, checkpoint paths and held-out evaluation results.
+Collection reports separately retain measured FPS/resource use and partial
+attempts. A forced kill or machine loss can prevent the final write; the last
+atomic report remains. Completed collection with a storage stop is reported as
+stopped, never as training-ready.
+
+The fixed default stages are:
+
+1. Verify current user approval and the reviewed 1,200-scenario plan.
+2. Collect the balanced 240-episode expert pilot with 64 workers. Audit all
+   metadata/HDF5 rows for airborne starts, timing, previous-action alignment,
+   bounded outputs, open/raised dock, terminal masks and PX4-confirmed landings.
+   Every nominal expert flight must land; every expert flight must avoid water
+   strikes and forbidden collisions. Fault cases may safely abort/timeout. A
+   failure stops scaling rather than silently changing the acceptance rules.
+3. Project full storage from that measured pilot with a 25% size margin; stop
+   if disk/capacity is inadequate. Collect the remaining episodes and require
+   the exact complete plan. Audit all episodes and world/split isolation.
+4. Train on the completed dataset for up to three epochs using four image
+   readers, frozen FP32 encoder features and eight recurrent lanes. The trainer
+   hashes all indexed HDF5 files before optimizer work, fits normalization on
+   training worlds only, and retains the validation-selected best checkpoint.
+5. Evaluate a stratified 12-world validation pilot in eight workers, covering
+   all maps, distance bands and weather groups. Require at least one landing
+   and zero unsafe pilot outcomes before continuing the epoch budget. This is
+   a minimum learning check, not a reliability qualification. A failed check
+   stops with `needs_model_iteration` and preserves traces/weights for diagnosis.
+6. Resume up to ten total epochs, with validation early stopping after three
+   unimproved epochs. Evaluate all 120 validation and all 120 test scenarios.
+   Test episodes never select weights. A successful pipeline reports measured
+   reliability and failures; it does not authorize real flight deployment.
+
+Defaults cap the dataset at **1,500 decimal GB** and leave at least **32 GB**
+for shutdown/headroom. The collection stage additionally reserves worst-case
+space for the 1,080 train/validation feature caches, JSONL evaluation traces,
+logs and checkpoints: currently **95 GB total free space**, before its additional
+in-flight/shutdown reservation. Thus collection can stop before reaching
+1,500 GB. With 1,532 GB initially free, roughly 1,437 GB is available for dataset
+writes before those margins. Actual episode durations/compression determine
+whether all 1,200 fit. No recordings are automatically deleted to meet the cap.
+Dataset, checkpoints and reports must share the guarded filesystem. Evaluation
+rechecks space before every attempt; retained interrupted attempts count against
+actual free space. These are admission/live guards, not a filesystem quota.
+
+Configuration and source/review hashes are frozen for resume. Restore those
+settings or use a fresh state/output/checkpoint directory after a substantive
+change. Interrupted child stages are journalled with PID, process start time and exact
+command; restart verifies that identity and stops the owned job before
+quarantining recordings. Unverifiable/reused PIDs are refused. Partial episode
+attempts are quarantined and retried; optimizer state resumes from the last
+complete epoch. Completed policy-pilot checks and final
+assessments are reused when compatible; an evaluation of changed weights gets
+a fresh trace directory. User approval remains mandatory after source changes.
+
+Boat starts reserve `boat_speed * duration + 20 m` at both ends of each route.
+Forward/reverse partners use the same canonical interior point with opposite
+headings. Launch-coast queries use that progress, and preparation rejects
+insufficient clear water. The existing standalone boat default still spawns
+at progress zero. Mission-deadline ascent, missing dock readiness and stale PX4
+state are handled by `supervision.supervise_action` using observable state and
+the caller's monotonic mission clock. Those commands are masked from imitation;
+a real deployment integration must call the same supervisor.
+
+The L4 benchmark measures the training pipeline, not these flight evaluations.
+At a hypothetical 60 s mean production episode, the earlier measurements suggest
+about 5 h of collection plus 30–44 min of feature preparation/training. Pilot
+and final closed-loop evaluation, integrity reads and writes add time; their
+actual duration is retained in the stage report. No precise end-to-end promise
+is justified until the diverse production pilot has run on this VM.

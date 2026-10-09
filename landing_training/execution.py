@@ -18,12 +18,14 @@ def collection_worker(job,result_queue,cancel_event):
         from .run_episode import run_episode
         controller=None
         if job.get('checkpoint'):
+            import torch
             from .policy import PolicyRuntime
-            controller=PolicyRuntime(job['checkpoint']);controller.reset()
+            torch.set_num_threads(job.get('cpu_threads',1))
+            controller=PolicyRuntime(job['checkpoint'],device=job.get('device','cpu'));controller.reset()
         scenario=replace(Scenario(**job['scenario']),name=job['name'])
-        summary=run_episode(scenario,job['directory'],role=job.get('role','review'),video=False,
+        summary=run_episode(scenario,job['directory'],role=job.get('role','review'),video=job.get('video',False),
                             instance=job['instance'],approval_bundle=job.get('approval_bundle'),
-                            controller=controller,cancel_event=cancel_event)
+                            controller=controller,cancel_event=cancel_event,record_images=job.get('record_images',True))
         if job.get('checkpoint'):
             import json
             from .gate import file_hash
@@ -79,13 +81,24 @@ def iter_jobs(jobs,workers,instance_base=20,*,cancel_event=None,can_launch=None)
                 launch(available_slot)
     finally:
         if active:cancel.set()
-        for _,process,_ in active.values():process.join(timeout=20)
+        deadline=time.monotonic()+20
+        for _,process,_ in active.values():process.join(timeout=max(0.,deadline-time.monotonic()))
+        forced=[]
         for _,process,job in active.values():
             if process.is_alive():
                 if WINDOWS:
                     from .px4 import stop_wsl_runtime
                     stop_wsl_runtime(Path(job['directory'])/'px4')
-                process.terminate();process.join(timeout=5)
+                process.terminate();forced.append((process,job))
+        deadline=time.monotonic()+5
+        for process,job in forced:
+            process.join(timeout=max(0.,deadline-time.monotonic()))
+            if process.is_alive():process.kill();process.join(timeout=2)
+        if not WINDOWS:
+            from .px4 import stop_owned_native_runtime
+            # An abrupt worker death skips its finally block even when there is
+            # no live Python process left to terminate. Its PX4 may still run.
+            for _,_,job in active.values():stop_owned_native_runtime(Path(job['directory'])/'px4')
         results.close();results.join_thread()
 
 def run_batch(jobs,*,cancel_event=None):

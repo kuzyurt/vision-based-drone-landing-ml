@@ -97,10 +97,13 @@ class Expert:
                 yaw=math.pi/2-px4.attitude.yaw
                 coarse=rotation_z(yaw)@(np.array(beacon['relative_heading_m'])*[1,-1,-1])
                 target=env.drone.position+coarse
-                velocity=.4*coarse;velocity[2]=np.clip(env.scenario.height-clearance,0,.5)
+                velocity=.4*coarse
+                # Public beacon FRD z is the measured height above the dock.
+                # Hold altitude unless below the fixed 1.5 m search clearance.
+                velocity[2]=np.clip(1.5-beacon['relative_heading_m'][2],0,.5)
                 camera=self.camera_action(target)
             else:
-                velocity=np.array([0.,0.,max(0.,1.5-clearance)*.3]);camera=np.array([math.radians(35),0.])
+                velocity=np.array([0.,0.,.3]);camera=np.array([math.radians(35),0.])
         else:
             # Align above the tilted deck along its normal. Using world XY at
             # high altitude leaves a persistent lateral error in deck axes.
@@ -130,9 +133,7 @@ class Expert:
             self.phase='confirm';velocity=vpad.copy();velocity[2]=min(vpad[2]-.32,-.30)
             if px4.armed and t-self.last_disarm>1: px4.request_disarm();self.last_disarm=t
         if not beacon.get('dock_ready',False) and env.first_contact is None:
-            self.phase='wait';velocity=np.array([0.,0.,np.clip(1.5-clearance,0,.5)])
-        if elapsed>env.scenario.duration-5 and env.first_contact is None:
-            self.phase='abort';velocity=np.array([0.,0.,np.clip(1.5-clearance,0,.5)])
+            self.phase='wait';velocity=np.zeros(3)
         state=px4.observation();reason=None
         yaw_enu=math.pi/2-px4.attitude.yaw if px4.attitude else 0.
         if self.yaw_branch is not None:

@@ -214,6 +214,30 @@ class Qualification(unittest.TestCase):
         self.assertGreaterEqual(e.preparation_water_clearance_m,5.)
         self.assertGreater(e.preparation_budget_s,45.)
         self.assertAlmostEqual(e.vertical_clearance,float(np.min(e.data.site_xpos[e.drone.feet,2])-e.pad_position[2]))
+    def test_route_progress_spawn_and_reversal_share_position(self):
+        from dataclasses import replace
+        for kind in ('island','beach','city','gravel','rock'):
+            s=Scenario(kind=kind,boat_start_fraction=.55,boat_speed=1.,duration=180.,distance=4.)
+            a=Environment(s);b=Environment(replace(s,reverse=True))
+            np.testing.assert_allclose(a.data.xpos[a.boat.boat,:2],b.data.xpos[b.boat.boat,:2],atol=1e-8)
+            np.testing.assert_allclose(a.data.xmat[a.boat.boat].reshape(3,3)[:2,0],-b.data.xmat[b.boat.boat].reshape(3,3)[:2,0],atol=1e-8)
+            for e in (a,b):
+                self.assertAlmostEqual(e.boat.navigation.progress,e.boat_start_progress_m)
+                self.assertGreaterEqual(e.boat.navigation.world.route.length-e.boat_start_progress_m,200.)
+                self.assertGreaterEqual(e.preparation_water_clearance_m,5.)
+                np.testing.assert_allclose(e.boat._positions(),[.4,.46,.46],atol=.001)
+    def test_supervisor_uses_only_observations_and_mission_clock(self):
+        from .supervision import supervise_action
+        observation={'px4':{'valid':True,'position_age_s':0.,'attitude_age_s':0.,'landed':False},'beacon':{'dock_ready':True}}
+        action=np.array([1.,.2,.4,.1,.2,.3]);original=action.copy()
+        safe,reason=supervise_action(action,observation,176.,180.)
+        self.assertEqual(reason,'mission_deadline');np.testing.assert_array_equal(safe[:4],[0,0,-.5,0]);np.testing.assert_array_equal(action,original)
+        observation['px4']['attitude_age_s']=.3
+        safe,reason=supervise_action(action,observation,1.,180.)
+        self.assertEqual(reason,'estimator_unavailable_or_stale');np.testing.assert_array_equal(safe[:4],0.)
+        observation['px4']['attitude_age_s']=0.;observation['beacon']['dock_ready']=False
+        safe,reason=supervise_action(action,observation,1.,180.)
+        self.assertEqual(reason,'dock_not_ready');np.testing.assert_array_equal(safe[:4],0.)
     def test_timestep_and_unloaded_dock(self):
         final=[]
         for dt in (.001,.0005):
@@ -289,7 +313,11 @@ def flight_qualification(instance=1,scenarios=None,report_name='flight_qualifica
             else:raise RuntimeError('Airborne preparation failed')
             env.recording=True;env.task_start_time=float(env.data.time);env.boat.navigation.mode='automatic'
             for _ in range(round(scenario.duration*25)):
-                visible,_=pad_visibility(env);_,action,_=expert.act(px4,beacon.sample(env,px4),visible);px4.send_action(action);px4.advance()
+                from .supervision import supervise_action
+                visible,_=pad_visibility(env);packet=beacon.sample(env,px4);_,action,_=expert.act(px4,packet,visible)
+                action,reason=supervise_action(action,{'px4':px4.observation(),'beacon':packet},float(env.data.time)-env.task_start_time,scenario.duration)
+                px4.send_action(action);px4.advance()
+                if reason=='mission_deadline' and env.clearance>1.4:env.outcome='abort';env.event('abort')
                 if env.outcome in ('landed','water_strike','collision_failure'):break
             results.append({'name':scenario.name,'outcome':env.outcome,'events':env.events,'px4_landed':px4.landed,'armed':px4.armed})
             print('FLIGHT',scenario.name,env.outcome,flush=True)
@@ -301,7 +329,8 @@ def flight_qualification(instance=1,scenarios=None,report_name='flight_qualifica
 def qualify():
     suite=unittest.defaultTestLoader.loadTestsFromTestCase(Qualification)
     result=unittest.TextTestRunner(verbosity=2).run(suite)
-    report={'passed':result.wasSuccessful(),'checks_run':result.testsRun,'failures':[str(x) for x in result.failures],'errors':[str(x) for x in result.errors],'scope':'software/physics consistency; not real vehicle calibration','px4_flight_checks':'included separately in final review episode summaries'}
+    from .gate import source_fingerprint
+    report={'passed':result.wasSuccessful(),'runtime_source_sha256':source_fingerprint(runtime_only=True),'checks_run':result.testsRun,'failures':[str(x) for x in result.failures],'errors':[str(x) for x in result.errors],'scope':'software/physics consistency; not real vehicle calibration','px4_flight_checks':'included separately in final review episode summaries'}
     ROOT.joinpath('build').mkdir(exist_ok=True);(ROOT/'build/qualification.json').write_text(json.dumps(report,indent=2))
     if not result.wasSuccessful():raise SystemExit(1)
 

@@ -113,7 +113,15 @@ class Environment:
         if route.direction<0:self.reverse_route(route)
         if scenario.reverse:self.reverse_route(route)
         route.speeds[:]=scenario.boat_speed
-        self.boat.navigation.spawn()
+        # During preparation the boat is held. Reserve enough forward route for
+        # the recording plus a 20 m controller/lookahead margin.
+        reserve=scenario.boat_speed*scenario.duration+20.
+        if scenario.boat_start_fraction is None:self.boat_start_progress_m=0.
+        else:
+            if route.length<=2*reserve:raise ValueError('Route is too short for bidirectional airborne starts')
+            canonical=reserve+scenario.boat_start_fraction*(route.length-2*reserve)
+            self.boat_start_progress_m=route.length-canonical if scenario.reverse else canonical
+        self.boat.navigation.spawn(self.boat_start_progress_m)
         # Dock is prepared before the recording and stays prepared throughout.
         for i,name in enumerate(('platform_slide','aft_lid_slide','fore_lid_slide')):
             value=(.4,.46,.46)[i];self.data.qpos[self.boat.qadr[name]]=value;self.boat.targets[i]=value;self.boat.servos[i]=value
@@ -132,7 +140,8 @@ class Environment:
         yaw=self.boat_yaw
         # Use the seaward side for launch; the airborne task may approach from
         # any clear heading. This avoids starting below decorative coastal land.
-        _,normal,_=self.boat.navigation.world.sample(self.boat.navigation.world.route.coast_s[0])
+        coast_coordinate=float(np.interp(self.boat_start_progress_m,route.arc,route.coast_s))
+        _,normal,_=self.boat.navigation.world.sample(coast_coordinate)
         self.launch_xy=self.pad_position[:2]+normal*max(2.,scenario.distance)
         world=self.boat.navigation.world
         self.task_start_xy=None;self.achieved_bearing_deg=None

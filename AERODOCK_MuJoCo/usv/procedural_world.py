@@ -168,16 +168,21 @@ class Navigation:
         self.contact_anchor=None
         self.update_contacts(force=True)
 
-    def spawn(self):
+    def spawn(self, progress=0.):
         sim=self.sim; route=self.world.route
+        if not math.isfinite(progress) or not 0<=progress<route.length:
+            raise ValueError('Boat spawn progress must be on the route before its endpoint')
         sim.reset()
-        start=route.points[0]; direction=route.points[1]-start
+        start,_,segment=route.at(progress)
+        index=min(len(route.points)-2,max(0,int(np.searchsorted(route.arc,progress,side='right')-1)))
+        direction=route.points[index+1]-route.points[index]
         from .boat_sim import quaternion
         R=sim.data.xmat[sim.boat].reshape(3,3)
         roll=math.atan2(R[2,1],R[2,2]); pitch=math.asin(float(np.clip(-R[2,0],-1,1)))
         sim.data.qpos[sim.free_qadr:sim.free_qadr+2]=start
         sim.data.qpos[sim.free_qadr+3:sim.free_qadr+7]=quaternion(roll,pitch,math.atan2(direction[1],direction[0]))
-        self.progress=0.;self.integral=0.;self.target_speed=0.;self.next_update=0.;self.complete=False
+        self.progress=float(progress);self.segment=segment
+        self.integral=0.;self.target_speed=0.;self.next_update=0.;self.complete=False
         self.mode='automatic'; self.contact_anchor=None
         self.coast_distance=float(self.world.distance(start)[0])
         self.update_contacts(force=True)

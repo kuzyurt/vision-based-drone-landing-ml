@@ -16,6 +16,13 @@ def scheduler_fixture(job, queue, cancel):
     directory = Path(job['directory'])
     directory.mkdir()
     (directory/'started').write_text('fixture')
+    if job.get('crash_with_owned_child'):
+        import os,subprocess,sys,psutil
+        from .collection_session import atomic_json
+        runtime=directory/'px4';runtime.mkdir()
+        child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(120)',str(runtime.resolve())],start_new_session=True)
+        atomic_json(runtime/'owned_process.json',{'pid':child.pid,'create_time':psutil.Process(child.pid).create_time(),'runtime':str(runtime.resolve())})
+        os._exit(23)
     if job.get('wait_for_cancel'):
         cancel.wait(5)
         queue.put({'ok': False, 'name': job['name'], 'directory': job['directory'],
@@ -146,6 +153,16 @@ class SessionChecks(unittest.TestCase):
                 jobs=schedule.call_args.args[0]
                 self.assertEqual(len(jobs),1)
                 self.assertEqual(jobs[0]['name'],scenario['name'])
+
+    def test_abrupt_worker_death_stops_only_its_journalled_native_child(self):
+        import os,psutil
+        if os.name=='nt':self.skipTest('Linux native ownership journal')
+        with tempfile.TemporaryDirectory() as folder:
+            job={'name':'crash','directory':str(Path(folder)/'crash'),'crash_with_owned_child':True}
+            with patch('landing_training.execution.collection_worker',scheduler_fixture):
+                with self.assertRaisesRegex(RuntimeError,'without a result'):list(iter_jobs([job],1))
+            record=json.loads((Path(job['directory'])/'px4/owned_process.json').read_text())
+            self.assertFalse(psutil.pid_exists(record['pid']) and psutil.Process(record['pid']).status()!=psutil.STATUS_ZOMBIE)
 
 
 if __name__=='__main__':unittest.main()
