@@ -633,6 +633,77 @@ evaluates held-out validation loss and saves latest/best checkpoints. Test world
 never choose weights. Offline loss alone does not qualify autonomous landing;
 run closed-loop held-out evaluation and inspect failures before deployment.
 
+### Training time benchmark before production collection
+
+`landing_training.benchmarks.training` reads the ten review HDF5 files, uses the
+actual `Lane`, policy and loss from the trainer, and times temporary optimizer
+updates. It discards model weights, writes no policy checkpoint, and does not
+change approval or recording eligibility. Review data remains excluded from
+production training. No simulator or additional camera is rendered during this
+benchmark. Existing review approval is unaffected because these isolated tools
+do not change any production source or asset.
+
+Defaults match the trainer's frozen ImageNet encoder, 640×360 images, FP32,
+eight serial recurrent lanes, 64-frame chunks, Adam and gradient clipping.
+Telemetry normalization is measured on the review workload. Two optimizer
+updates and one validation chunk warm up the device and are excluded from
+throughput. Twenty measured optimizer updates and twenty validation chunks
+follow. CUDA timing synchronizes the device. CPU threads default to four; use
+the same thread setting for the eventual production trainer when comparing
+speeds. `--sequence-steps`, `--lanes` and `--no-pretrained` are useful for smoke
+tests but change the workload; reports flag deviations from production defaults.
+
+On a configured Linux cloud VM, launch in detached tmux:
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+tmux new-session -d -s landing-train-bench -c "$PWD" \
+  'bash landing_training/benchmarks/start_training_benchmark.sh --device cuda'
+```
+
+The wrapper prevents duplicate benchmarks with `flock`, preserves the Python
+exit code and saves `console.log`, `exit_code.txt`, `report.json` and `summary.md`
+under `outputs/training_benchmark_...`. It automatically uses
+`outputs/latest_collection_launch.txt/current_review`; pass `--review PATH` if
+your review is elsewhere. The wrapper creates a pointer to the benchmark folder:
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+AERODOCK_TRAIN_BENCH="$(cat landing_training/outputs/latest_training_benchmark.txt)"
+cat "$AERODOCK_TRAIN_BENCH/summary.md"
+tail -n 20 "$AERODOCK_TRAIN_BENCH/console.log"
+```
+
+CUDA is required by default, with no silent CPU fallback. Keep CUDA PyTorch on
+the VM; installing `requirements-training.txt` would replace it with CPU wheels.
+The first pretrained run downloads the standard torchvision MobileNet weights
+into `outputs/weights/`. The ten-minute limit is cooperative between chunks;
+downloads or an individual CUDA operation can overrun it. Normal SIGINT/SIGTERM
+save partial results; sudden power loss or SIGKILL can only retain the last
+atomic progress report. Resource guards reserve RAM and GPU headroom.
+
+The report includes train and validation frames/s, data read/decode/transfer,
+forward, loss/backward and optimizer time; parameter counts; CPU use and peak
+RAM; CUDA device and PyTorch allocated/reserved VRAM; device-wide NVIDIA
+utilization and VRAM. GPU telemetry can include other jobs. Run without concurrent
+collection or training for an interpretable result.
+
+Projections use 960 training and 120 validation episodes per epoch; the 120 test
+episodes are excluded. It shows the observed review mean and hypothetical
+30/60/90/180-second production means at 25 records/s, including the terminal
+record. Ten epochs are a budget, not a convergence claim. Full dataset hashing,
+normalization, checkpoint writes and deployment evaluation add time. The review
+workload fits in RAM more easily than the eventual dataset: disk-cache effects
+can make estimates optimistic. Collection FPS is not training FPS.
+
+The automatic collection→training workflow is not enabled by this benchmark.
+Before implementing it, fix camera-visibility balance in validation/test and
+validate broader boat starting progress on routes. Production training also
+needs atomic checkpoints containing optimizer/RNG state and an explicit resume
+path. A storage-limit stop must not silently train an incomplete dataset; the
+orchestrator must validate collection completion, split integrity and approval
+before starting a CUDA training job.
+
 ```bash
 landing_training/.venv/bin/python -m landing_training.evaluate --review landing_training/outputs/review_bundle --manifest landing_training/datasets/pilot/manifest.json --checkpoint landing_training/checkpoints/baseline/best.pt --split validation --output landing_training/outputs/validation --max-episodes 10 --videos
 ```
