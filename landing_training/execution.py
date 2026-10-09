@@ -39,14 +39,19 @@ def collection_worker(job,result_queue,cancel_event):
                 'error':f'{type(exc).__name__}: {exc}','traceback':traceback.format_exc()}
     result_queue.put(result)
 
-def iter_jobs(jobs,workers,instance_base=20,*,cancel_event=None):
+def iter_jobs(jobs,workers,instance_base=20,*,cancel_event=None,can_launch=None):
     """One isolated PX4 instance per slot; the parent alone writes the manifest."""
     context=multiprocessing.get_context('spawn');results=context.Queue()
     cancel=cancel_event if cancel_event is not None else context.Event()
-    pending=iter(jobs);active={}
+    pending=iter(jobs);active={};next_job=None
     def launch(slot):
-        try:job=dict(next(pending))
-        except StopIteration:return
+        nonlocal next_job
+        if cancel.is_set():return
+        if next_job is None:
+            try:next_job=dict(next(pending))
+            except StopIteration:return
+        if can_launch is not None and not can_launch(next_job,[job for _,_,job in active.values()]):return
+        job=next_job;next_job=None
         job['instance']=instance_base+slot
         process=context.Process(target=collection_worker,args=(job,results,cancel))
         process.start();active[job['name']]=(slot,process,job)
@@ -64,11 +69,16 @@ def iter_jobs(jobs,workers,instance_base=20,*,cancel_event=None):
             if process.is_alive():
                 active[result['name']]=(slot,process,job)
                 raise RuntimeError('Worker reported a result but did not exit')
-            if not result['ok']:raise RuntimeError(result['error']+'\n'+result['traceback'])
-            launch(slot)
+            if not result['ok']:
+                if cancel.is_set():continue
+                raise RuntimeError(result.get('error','Episode failed; see '+result['directory'])+'\n'+result.get('traceback',''))
             yield result
+            # Commit a complete recording before admitting another flight.
+            launch(slot)
+            for available_slot in set(range(workers))-{s for s,_,_ in active.values()}-{slot}:
+                launch(available_slot)
     finally:
-        cancel.set()
+        if active:cancel.set()
         for _,process,_ in active.values():process.join(timeout=20)
         for _,process,job in active.values():
             if process.is_alive():

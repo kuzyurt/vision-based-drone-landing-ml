@@ -12,6 +12,7 @@ from dataclasses import asdict
 import json
 from pathlib import Path
 import shutil
+import multiprocessing
 import numpy as np
 from .config import Scenario
 from .gate import require_approval,file_hash
@@ -47,7 +48,9 @@ def planned_scenarios():
     episodes.sort(key=priority)
     return {'schema':'aerodock.landing.plan.v1','role':'planned_not_collected','pilot_first_episodes':60,'episodes':episodes}
 
-def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance_base=20,gl=None):
+def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance_base=20,gl=None,
+            min_free_gb=1.074,max_dataset_gb=None,report_dir=None,require_gpu=False,
+            quarantine_partial=False):
     require_approval(bundle) # Gate precedes all dataset writes or flights.
     if max_episodes<=0:raise ValueError('Explicit positive collection limit required')
     if not 1<=workers<=128 or not 0<=instance_base<=254-workers:raise ValueError('Invalid worker count or PX4 instance range')
@@ -64,11 +67,35 @@ def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance
     if workers*1.75+1>available:raise MemoryError('Insufficient available RAM for workers and headroom; reduce --workers')
     graphics=renderer_info()
     print('Collection renderer: '+graphics['renderer'],flush=True)
+    if require_gpu and graphics['software_rendering']:raise RuntimeError('GPU rendering required; software renderer selected')
     destination=Path(destination).resolve();destination.mkdir(parents=True,exist_ok=True)
     with cache_lock(path=destination/'.collection.lock'):
-        return _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,graphics,source_fingerprint())
+        from .collection_session import CollectionSession,GIB
+        from .resource_monitor import ResourceMonitor,available_memory,nvidia_snapshot,renderer_gpu_indices
+        cancel_event=multiprocessing.get_context('spawn').Event()
+        session=CollectionSession(destination,cancel_event,workers=workers,max_episodes=max_episodes,
+                                  min_free_gb=min_free_gb,max_dataset_gb=max_dataset_gb,report_dir=report_dir)
+        session.graphics=graphics
+        devices,_=nvidia_snapshot();free_ram=available_memory()
+        monitor=ResourceMonitor(cancel_event,ram_budget_bytes=free_ram*.8,
+                                reserve_bytes=max(GIB,free_ram*.1),deadline=float('inf'),
+                                gpu_indices=renderer_gpu_indices(graphics['renderer'],devices))
+        with session:
+            try:
+                with monitor:
+                    manifest=_collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,
+                                             graphics,source_fingerprint(),session=session,
+                                             quarantine_partial=quarantine_partial)
+                return manifest
+            finally:
+                if monitor.started is not None:
+                    session.resources=monitor.report()
+                    if monitor.reason:
+                        if session.reason in (None,'collection cancelled by a resource guard'):session.reason=monitor.reason
+                        session.reject(monitor.reason)
 
-def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,graphics,source_hash):
+def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,graphics,source_hash,
+                    *,session=None,quarantine_partial=False):
     from .execution import iter_jobs
     path=destination/'manifest.json'
     manifest=json.loads(path.read_text()) if path.exists() else {'schema':'aerodock.landing.dataset.v1','role':'dataset','review_manifest_sha256':file_hash(Path(bundle)/'manifest.json'),'episodes':[]}
@@ -76,11 +103,22 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
     completed={item['name'] for item in manifest['episodes']}
     planned=[item for item in planned_scenarios()['episodes'] if item['scenario']['name'] not in completed][:max_episodes]
     manifest['collection_configuration']={'workers':workers,'instance_base':instance_base,'graphics':graphics,'source_sha256':source_hash}
-    required=len(planned)*180*25*640*360*3+1024**3
-    if shutil.disk_usage(destination).free<required:raise OSError(f'Insufficient disk budget: reserve {required/1e9:.1f} GB or request fewer episodes')
+    if session is None:
+        required=len(planned)*180*25*640*360*3+1024**3
+        if shutil.disk_usage(destination).free<required:raise OSError(f'Insufficient disk budget: reserve {required/1e9:.1f} GB or request fewer episodes')
+    else:
+        session.report.update(source_sha256=source_hash,review_bundle=str(Path(bundle).resolve()),
+                              review_manifest_sha256=manifest['review_manifest_sha256'],
+                              episodes_remaining_in_plan=len(planned))
+        for entry in manifest['episodes']:
+            summary=json.loads((destination/entry['name']/'summary.json').read_text())
+            session.existing.append({'name':entry['name'],'role':entry['role'],'outcome':entry['outcome'],
+                                     'frames':summary['records'],
+                                     'hdf5_bytes':(destination/entry['path']).stat().st_size})
+        session.write_report(scan=True)
     checkpoint_hash=file_hash(checkpoint) if checkpoint else None
     by_name={item['scenario']['name']:item for item in planned}
-    def finalize(result):
+    def finalize(result,*,recovered=False):
         item=by_name[result['name']];directory=Path(result['directory'])
         summary=json.loads((directory/'summary.json').read_text());artifact=directory/'observations.h5'
         if summary['failure'] or summary['source_sha256']!=source_hash or summary['scenario']!=item['scenario'] or summary['role']!=item['role'] or not summary['training_eligible']:
@@ -100,27 +138,84 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
             if last['frame_index']!=count-1 or not last.get('terminal') or last['outcome']!=summary['outcome'] or any(last['output']['executed_action']) or last['output']['action_supervision_valid']:raise ValueError('Dataset terminal record is incomplete')
             if summary['outcome']=='landed' and (last['observation']['px4']['armed'] or not last['observation']['px4']['landed']):raise ValueError('Dataset landing is not confirmed by PX4')
         manifest['episodes'].append({'name':result['name'],'path':str(artifact.relative_to(destination)),'sha256':file_hash(artifact),'role':item['role'],'world_seed':item['scenario']['world_seed'],'path_seed':item['scenario']['path_seed'],'outcome':summary['outcome'],'collection':'dagger' if checkpoint else 'expert','checkpoint_sha256':checkpoint_hash})
-        temporary=path.with_suffix('.tmp');temporary.write_text(json.dumps(manifest,indent=2));temporary.replace(path)
+        from .collection_session import atomic_json
+        atomic_json(path,manifest)
+        if session:session.add_episode(manifest['episodes'][-1],summary,recovered=recovered)
     jobs=[]
     for item in planned:
         directory=destination/item['scenario']['name']
         if directory.exists():
-            if not (directory/'summary.json').is_file():raise FileExistsError('Partial episode retained: '+str(directory))
-            finalize({'name':item['scenario']['name'],'directory':str(directory)})
-        else:
-            jobs.append({'name':item['scenario']['name'],'scenario':item['scenario'],'role':item['role'],
-                         'directory':str(directory),'approval_bundle':str(Path(bundle).resolve()),
-                         'checkpoint':str(Path(checkpoint).resolve()) if checkpoint else None})
-    for result in iter_jobs(jobs,min(workers,len(jobs)),instance_base):finalize(result)
+            summary_path=directory/'summary.json'
+            incomplete=not summary_path.is_file()
+            if summary_path.is_file():
+                try:incomplete=bool(json.loads(summary_path.read_text()).get('failure'))
+                except json.JSONDecodeError:incomplete=True
+            if incomplete:
+                if not quarantine_partial:raise FileExistsError('Partial episode retained: '+str(directory))
+                from datetime import datetime,timezone
+                import uuid
+                target=destination/'partial_attempts'/(directory.name+'_'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')+'_'+uuid.uuid4().hex[:8])
+                target.parent.mkdir(exist_ok=True);directory.rename(target)
+                if session:session.partial.append(str(target))
+            else:
+                finalize({'name':item['scenario']['name'],'directory':str(directory)},recovered=True)
+                continue
+        jobs.append({'name':item['scenario']['name'],'scenario':item['scenario'],'role':item['role'],
+                     'directory':str(directory),'approval_bundle':str(Path(bundle).resolve()),
+                     'checkpoint':str(Path(checkpoint).resolve()) if checkpoint else None})
+    options={'cancel_event':session.cancel,'can_launch':session.can_launch} if session else {}
+    iterator=iter_jobs(jobs,min(workers,len(jobs)),instance_base,**options)
+    try:
+        for result in iterator:finalize(result)
+    finally:
+        # Close explicitly when validation fails; workers must stop before reporting.
+        if hasattr(iterator,'close'):iterator.close()
+    if session and session.cancel.is_set() and session.reason is None:
+        session.reject('collection cancelled by a resource guard')
     return manifest
 
-if __name__=='__main__':
+def approved_bundle(value):
+    if value!='auto':
+        require_approval(value)
+        return str(Path(value).resolve())
+    candidates=sorted((paths.REPO/'landing_training/outputs').rglob('approval.json'),key=lambda p:p.stat().st_mtime,reverse=True)
+    failures=[]
+    for approval in candidates:
+        try:
+            require_approval(approval.parent)
+            return str(approval.parent)
+        except (PermissionError,ValueError,OSError,KeyError) as exc:failures.append(str(approval.parent)+': '+str(exc))
+    raise PermissionError('No current user-approved ten-video review bundle found. '
+                          'Older videos and benchmark flights do not authorize the current source. '
+                          'Generate and verify a current review first. '+('; '.join(failures)))
+
+
+def main():
     import signal
     def cancel(signum,frame):raise KeyboardInterrupt('Collection cancelled')
     signal.signal(signal.SIGTERM,cancel)
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--plan-output');parser.add_argument('--review');parser.add_argument('--output');parser.add_argument('--max-episodes',type=int);parser.add_argument('--checkpoint');parser.add_argument('--workers',type=int,default=1);parser.add_argument('--instance-base',type=int,default=20);parser.add_argument('--gl',choices=('egl','glfw','osmesa'))
+    parser.add_argument('--min-free-gb',type=float,default=1.074,help='Minimum filesystem free space in decimal GB, plus shutdown reserve')
+    parser.add_argument('--max-dataset-gb',type=float,help='Maximum total dataset folder size in decimal GB, including resumed and partial data')
+    parser.add_argument('--report-dir',help='Report directory on the same filesystem (default OUTPUT/collection_runs)')
+    parser.add_argument('--require-gpu',action='store_true')
+    parser.add_argument('--quarantine-partial',action='store_true',help='Move incomplete previous attempts aside before retrying; never delete them')
     args=parser.parse_args()
-    if args.plan_output:Path(args.plan_output).write_text(json.dumps(planned_scenarios(),indent=2))
-    else:
-        if not args.review or not args.output or not args.max_episodes:parser.error('Collection requires --review, --output and --max-episodes')
-        collect(args.review,args.output,args.max_episodes,args.checkpoint,workers=args.workers,instance_base=args.instance_base,gl=args.gl)
+    if args.plan_output:
+        Path(args.plan_output).write_text(json.dumps(planned_scenarios(),indent=2));return 0
+    if not args.review or not args.output or not args.max_episodes:parser.error('Collection requires --review (path or auto), --output and --max-episodes')
+    try:
+        bundle=approved_bundle(args.review)
+        collect(bundle,args.output,args.max_episodes,args.checkpoint,workers=args.workers,instance_base=args.instance_base,gl=args.gl,
+                min_free_gb=args.min_free_gb,max_dataset_gb=args.max_dataset_gb,report_dir=args.report_dir,
+                require_gpu=args.require_gpu,quarantine_partial=args.quarantine_partial)
+    except PermissionError as exc:
+        print('Collection blocked: '+str(exc),file=sys.stderr);return 2
+    except KeyboardInterrupt:
+        print('Collection cancelled; completed data and progress are retained.',file=sys.stderr);return 130
+    except Exception as exc:
+        print(f'Collection failed: {type(exc).__name__}: {exc}',file=sys.stderr);return 1
+    return 0
+
+
+if __name__=='__main__':raise SystemExit(main())

@@ -351,6 +351,73 @@ role, checkpoint, and record counts match. Partial or incompatible episodes are
 retained and refused, never overwritten. Workers load independent policy state
 when `--checkpoint` is used for DAgger collection.
 
+### Google Cloud: persistent collection with a storage limit
+
+The prepared L4 VM measured 64 workers as the best tested setting. This launcher
+uses that count, requests all remaining episodes in the 1,200-episode plan, and
+requires GPU rendering. Run from the repository root after updating the
+`codex/landing-training` branch:
+
+```bash
+tmux new-session -d -s landing-data 'bash landing_training/start_cloud_collection.sh'
+tmux attach-session -t landing-data
+```
+
+Detach with **Ctrl+B, then D**. Collection continues when SSH disconnects.
+Reattach using the same command. A finished session closes, but its files remain.
+If `landing-data` already exists, reattach instead of starting a second job.
+The launcher also rejects concurrent launches using its own lock.
+
+The script finds an already approved **current** review bundle automatically;
+an explicit bundle may be supplied as its first argument. It does not approve
+recordings or bypass qualification. If none exists, it runs the physics/software
+qualification and exports ten current review videos to the launch directory's
+`current_review/` folder, then exits with `user_review_required` before dataset
+creation. Inspect that folder's `index.html`, recordings, qualification and plan;
+after explicit verification, create the matching `approval.json` as described
+above and rerun the launcher. Source/dependency changes invalidate previous
+approvals. Historical review files are ignored by Git and do not accompany a clone.
+
+Data lives in `landing_training/datasets/expert/` by default. Set
+`AERODOCK_DATASET_DIR` to change the location. The launcher enforces
+`--max-dataset-gb 1500 --min-free-gb 32`: **decimal GB**, including previously
+collected and partial data in the dataset limit. It reserves uncompressed RGB,
+metadata and log space for each in-flight episode before admitting another,
+rather than reserving the worst case for all 1,200 upfront. Near the limit, it
+reduces active concurrency and lets admitted flights finish. An independent
+0.5-second free-space check and 5-second dataset-size check cancel active work
+if space drops unexpectedly. A shutdown buffer is added to the 32 GB floor, so
+collection intentionally stops before the limit. These are cooperative checks,
+not a filesystem quota; unrelated processes or a machine failure can defeat them.
+
+Live process-tree RAM and available memory are guarded, along with selected
+NVIDIA device VRAM. Finished episodes are validated, hashed and committed using
+an atomic, fsynced manifest. With `--quarantine-partial`, incomplete previous
+attempts move to `partial_attempts/` before retrying; their space still counts.
+They are retained, not used for training. Incompatible complete files are refused.
+Restart the same launcher to resume; completed indexed episodes are skipped.
+
+Each invocation saves separate reports and the full console log under
+`landing_training/outputs/collection_launch_.../`. The path of the latest launch
+is retained in `outputs/latest_collection_launch.txt`:
+
+```bash
+AERODOCK_LAST_RUN="$(cat landing_training/outputs/latest_collection_launch.txt)"
+cat "$AERODOCK_LAST_RUN/launch_status.json"
+cat "$AERODOCK_LAST_RUN/results/latest.json"
+tail -n 30 "$AERODOCK_LAST_RUN/console.log"
+```
+
+`results/latest.json` is updated after every completed episode and every 30
+seconds; a timestamped JSON report is retained too. Reports include status/stop
+reason, start/end/update times, elapsed hours, episode/frame counts, train/val/test
+counts, landing/failure outcomes, total bytes/GB/GiB, indexed HDF5 bytes, disk
+headroom, actual renderer, maximum active workers, sampled CPU/RAM and device-wide
+GPU/VRAM measurements. `launch_status.json` also captures preflight failures.
+On normal completion, storage stop, Ctrl+C, SIGTERM or a handled error a final
+report is saved. Forced termination/power loss can prevent finalization; the last
+atomic progress report and previously completed episodes remain.
+
 ## Shared physics and clocks
 
 There is one `MjModel`, one `MjData`, gravity 9.80665 m/s² and a 1 ms physics
