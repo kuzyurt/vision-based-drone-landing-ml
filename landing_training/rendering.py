@@ -24,15 +24,15 @@ def append_scenery(world_renderer,scene,world,position,renderer=None):
         geom.mat[:]=rotation@geom.mat
 
 class ReviewRenderer:
-    def __init__(self,env):
+    def __init__(self,env,*,overview=True):
         self.env=env;m=env.model
         m.vis.quality.offsamples=0
-        self.external=mujoco.Renderer(m,height=450,width=800,max_geom=20000)
+        self.external=mujoco.Renderer(m,height=450,width=800,max_geom=20000) if overview else None
         self.onboard=mujoco.Renderer(m,height=360,width=640,max_geom=20000)
-        for renderer in (self.external,self.onboard):
+        for renderer in self.renderers:
             renderer.scene.flags[mujoco.mjtRndFlag.mjRND_SHADOW]=False
             renderer.scene.flags[mujoco.mjtRndFlag.mjRND_REFLECTION]=False
-        self.worlds={id(r):WorldRenderer(m,radius=250) for r in (self.external,self.onboard)}
+        self.worlds={id(r):WorldRenderer(m,radius=250) for r in self.renderers}
         self.options=mujoco.MjvOption();self.options.geomgroup[3:]=0
         self.options.sitegroup[:]=0;self.options.flags[mujoco.mjtVisFlag.mjVIS_CONTACTPOINT]=False
         self.camera=mujoco.MjvCamera();self.camera.type=mujoco.mjtCamera.mjCAMERA_FREE
@@ -42,8 +42,41 @@ class ReviewRenderer:
         self.water_texture_tick=None
         self.water_texture_generation=0
         self.water_texture_uploaded={}
-        self.font=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',14)
-        self.titlefont=ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf',20)
+        self.font=None;self.titlefont=None
+        grid=np.linspace(-100,100,101);xx,yy=np.meshgrid(grid,grid)
+        self.water_offsets=np.column_stack((xx.ravel(),yy.ravel()))
+        self.water_xy=np.empty_like(self.water_offsets)
+        self.water_vertices=np.empty((len(self.water_offsets),3))
+        self.water_state=None;self.water_center=None
+
+    @property
+    def renderers(self):return tuple(r for r in (self.external,self.onboard) if r is not None)
+
+    def ensure_overview(self):
+        if self.external is None:
+            self.external=mujoco.Renderer(self.env.model,height=450,width=800,max_geom=20000)
+            self.external.scene.flags[mujoco.mjtRndFlag.mjRND_SHADOW]=False
+            self.external.scene.flags[mujoco.mjtRndFlag.mjRND_REFLECTION]=False
+            self.worlds[id(self.external)]=WorldRenderer(self.env.model,radius=250)
+        return self.external
+
+    def overview(self):
+        env=self.env
+        self.camera.lookat[:]=(env.pad_position+env.drone.position)/2
+        self.camera.distance=max(6.,float(np.linalg.norm(env.pad_position-env.drone.position))*1.15+3.)
+        self.camera.azimuth=math.degrees(env.boat_yaw)+135.;self.camera.elevation=-23.
+        return self.view(self.ensure_overview(),self.camera)
+
+    def onboard_image(self):return self.view(self.onboard,'drone_onboard')
+
+    def prepare_fonts(self):
+        def font(names,size):
+            for name in names:
+                try:return ImageFont.truetype(name,size)
+                except OSError:pass
+            return ImageFont.load_default(size=size)
+        self.font=font(('/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf','C:/Windows/Fonts/consola.ttf','DejaVuSansMono.ttf'),14)
+        self.titlefont=font(('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf','C:/Windows/Fonts/arial.ttf','DejaVuSans.ttf'),20)
 
     def upload_water_texture(self,renderer):
         """Share one small procedural tile across cameras, refreshing at 5 Hz.
@@ -64,16 +97,17 @@ class ReviewRenderer:
             mujoco.mjr_uploadTexture(m,renderer._mjr_context,self.water_texture)
             self.water_texture_uploaded[key]=self.water_texture_generation
 
-    def append_water(self,scene):
+    def update_water(self):
         env=self.env;m=env.model;center=env.drone.position[:2]
-        grid=np.linspace(-100,100,101)
-        xx,yy=np.meshgrid(grid+center[0],grid+center[1]);xy=np.column_stack((xx.ravel(),yy.ravel()))
+        state=(float(env.data.time),*map(float,center),float(env.boat.wave_height),float(env.boat.wave_period),float(env.boat.wave_direction))
+        if state==self.water_state:return
+        xy=self.water_xy;np.add(self.water_offsets,center,out=xy)
         zz,_=env.boat.waves(xy)
         distance=np.max(np.abs(xy-center),axis=1);blend=np.clip((100-distance)/20,0,1);blend=blend*blend*(3-2*blend)
         # The 0.5 m wave setting can reach -0.25 m. Keep the distant flat
         # background below every supported trough, rather than clipping it.
         zz=zz*blend-.3*(1-blend)
-        vertices=np.column_stack((xy-center,zz));height=zz.reshape(101,101)
+        vertices=self.water_vertices;vertices[:,:2]=xy-center;vertices[:,2]=zz;height=zz.reshape(101,101)
         dy,dx=np.gradient(height,2.,2.);normal=np.column_stack((-dx.ravel(),-dy.ravel(),np.ones(len(zz))))
         normal/=np.linalg.norm(normal,axis=1,keepdims=True)
         mesh=self.water_mesh;va=int(m.mesh_vertadr[mesh]);na=int(m.mesh_normaladr[mesh]);ta=int(m.mesh_texcoordadr[mesh]);count=len(vertices)
@@ -81,6 +115,10 @@ class ReviewRenderer:
         # One seamless tile per 12 world metres. World coordinates keep texture
         # features fixed when the observer-centred mesh follows the aircraft.
         m.mesh_vert[va:va+count]=vertices;m.mesh_normal[na:na+count]=normal;m.mesh_texcoord[ta:ta+count]=xy/12.
+        self.water_state=state;self.water_center=center.copy()
+
+    def append_water(self,scene):
+        m=self.env.model;mesh=self.water_mesh;center=self.water_center
         if scene.ngeom>=scene.maxgeom:raise RuntimeError('Water/scenery render budget exceeded')
         g=scene.geoms[scene.ngeom]
         mujoco.mjv_initGeom(g,mujoco.mjtGeom.mjGEOM_MESH,np.ones(3),np.r_[center,0.],np.eye(3).ravel(),m.mat_rgba[self.material].copy())
@@ -102,22 +140,17 @@ class ReviewRenderer:
             if geom.objtype==mujoco.mjtObj.mjOBJ_GEOM and geom.objid==water_id:geom.pos[2]=-.3
         world=self.worlds[id(renderer)]
         append_scenery(world,renderer.scene,env.boat.navigation.world,env.pad_position,renderer)
-        self.append_water(renderer.scene)
+        self.update_water();self.append_water(renderer.scene)
         renderer._gl_context.make_current();mujoco.mjr_uploadMesh(env.model,renderer._mjr_context,self.water_mesh)
         self.upload_water_texture(renderer)
         if world.truncated:raise RuntimeError('Scenery render budget exceeded')
         return renderer.render().copy()
 
     def capture(self):
-        env=self.env
-        self.camera.lookat[:]=(env.pad_position+env.drone.position)/2
-        self.camera.distance=max(6.,float(np.linalg.norm(env.pad_position-env.drone.position))*1.15+3.)
-        self.camera.azimuth=math.degrees(env.boat_yaw)+135.;self.camera.elevation=-23.
-        external=self.view(self.external,self.camera)
-        onboard=self.view(self.onboard,'drone_onboard')
-        return external,onboard
+        return self.overview(),self.onboard_image()
 
     def compose(self,external,onboard,row):
+        if self.font is None:self.prepare_fonts()
         canvas=Image.new('RGB',(1280,720),(15,21,30));canvas.paste(Image.fromarray(external),(0,0))
         canvas.paste(Image.fromarray(onboard).resize((480,270)),(0,450))
         draw=ImageDraw.Draw(canvas);obs=row['observation'];truth=row['privileged'];out=row['output'];s=self.env.scenario
@@ -158,7 +191,8 @@ class ReviewRenderer:
         for text,color in lines:draw.text((814,y),text,font=self.font,fill=color);y+=18
         return np.asarray(canvas)
 
-    def close(self):self.external.close();self.onboard.close()
+    def close(self):
+        for renderer in self.renderers:renderer.close()
 
 class VideoWriter:
     def __init__(self,path,fps=25):

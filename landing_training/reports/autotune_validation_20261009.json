@@ -1,0 +1,79 @@
+{
+  "role": "benchmark validation; not training data",
+  "hardware": {
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "visible_cpu_threads": 5,
+    "effective_cpu_capacity": 4.0,
+    "ram_GiB": 32.0,
+    "available_ram_GiB": 24.449260711669922,
+    "nvidia_gpu_name_memory_MiB_driver": null,
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "host_physical_cores": 5,
+    "host_logical_cpus": 5,
+    "allowed_logical_cpu_ids": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "physical_cores_in_affinity": 5,
+    "output_filesystem": {
+      "path": "/workspace/vision-based-drone-landing-ml/landing_training/outputs/autotune_validation_20261009",
+      "free_GiB": 10.67257308959961,
+      "total_GiB": 31.450942993164062
+    }
+  },
+  "graphics": {
+    "vendor": "Mesa",
+    "renderer": "llvmpipe (LLVM 19.1.7, 256 bits)",
+    "version": "4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1",
+    "software_rendering": true,
+    "backend": "egl",
+    "mujoco": "3.14.0"
+  },
+  "scope": "Only worker counts 1 and 2 tested here; one full scenario per finalist. These results do not establish the optimum over all worker counts or all scenarios.",
+  "confirmation_results": [
+    {
+      "workers": 1,
+      "recording_fps": 5.944326534397326,
+      "complete_episode_pipeline_per_hour": 20.145630382838952,
+      "mean_used_cpu_cores": 1.1414399305931853,
+      "peak_used_cpu_cores_sampled": 1.2715740367080042,
+      "peak_ram_GiB": 1.1933364868164062,
+      "gpu_rendering_used": false,
+      "peak_device_vram_GiB": null
+    },
+    {
+      "workers": 2,
+      "recording_fps": 10.876871750040062,
+      "complete_episode_pipeline_per_hour": 36.938613585818295,
+      "mean_used_cpu_cores": 2.2266467955343505,
+      "peak_used_cpu_cores_sampled": 2.472956466074927,
+      "peak_ram_GiB": 2.3077354431152344,
+      "gpu_rendering_used": false,
+      "peak_device_vram_GiB": null
+    }
+  ],
+  "full_flight_outcomes": [
+    "landed",
+    "landed",
+    "landed"
+  ],
+  "recording_audits_passed": true,
+  "tests": {
+    "passed": 16,
+    "modules": [
+      "landing_training.test_autotune",
+      "landing_training.test_collection"
+    ]
+  },
+  "time_budget_validation": {
+    "status": "stopped",
+    "stop_reason": "tuning time budget reached",
+    "budget_s": 4.8,
+    "elapsed_wall_s": 5.225953772009234
+  },
+  "gpu_hardware_and_windows_live_validation": false
+}

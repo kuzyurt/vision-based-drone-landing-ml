@@ -1,5 +1,6 @@
 .vendor/
 .venv/
+.venv-windows/
 build/
 outputs/
 datasets/

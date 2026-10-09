@@ -13,9 +13,9 @@ def file_hash(path):
 def source_fingerprint(runtime_only=False,include_rendering=True):
     # Runtime caches, videos, approval files and timestamps are excluded.
     if runtime_only:
-        paths=[ROOT/name for name in ('config.py','environment.py','expert.py','scene.py','collision_pieces.py','visual_lod.py','px4.py','rendering.py','recording.py','run_episode.py','paths.py')]
+        paths=[ROOT/name for name in ('config.py','environment.py','expert.py','scene.py','collision_pieces.py','visual_lod.py','px4.py','px4_wsl.sh','rendering.py','recording.py','run_episode.py','paths.py','runtime.py','execution.py')]
         if not include_rendering:paths=[p for p in paths if p.name!='rendering.py']
-    else:paths=list(ROOT.glob('*.py'))+list(ROOT.glob('*.json'))+list(ROOT.glob('*.txt'))
+    else:paths=list(ROOT.glob('*.py'))+list(ROOT.glob('*.sh'))+list(ROOT.glob('*.json'))+list(ROOT.glob('*.txt'))
     for folder in ('AERODOCK_MuJoCo/usv','px4-mujoco-drone-simulation/sim'):
         paths+=list((REPO/folder).glob('*.py'))+list((REPO/folder).glob('*.sh'))
     for folder in ('AERODOCK_MuJoCo/models','px4-mujoco-drone-simulation/models'):
@@ -25,6 +25,9 @@ def source_fingerprint(runtime_only=False,include_rendering=True):
     binary=ROOT/'.vendor/PX4-Autopilot/build/px4_sitl_landing/bin/px4'
     if binary.exists():paths.append(binary)
     digest=hashlib.sha256()
+    from .runtime import WINDOWS,check_px4,wsl
+    if WINDOWS:
+        digest.update(('WSL-PX4='+wsl('sha256sum',check_px4()).split()[0]).encode())
     from importlib.metadata import version
     for package in ('mujoco','numpy','scipy','Pillow','pymavlink','h5py','fast-simplification','torch','torchvision'):
         digest.update((package+'='+version(package)).encode())

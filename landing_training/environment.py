@@ -102,7 +102,9 @@ class DronePhysics:
 class Environment:
     def __init__(self,scenario,timestep=.001):
         scenario.validate();self.scenario=scenario
-        self.model=compile_scene(timestep);self.data=mujoco.MjData(self.model)
+        from .runtime import cache_lock
+        with cache_lock():self.model=compile_scene(timestep)
+        self.data=mujoco.MjData(self.model)
         self.boat=BoatSim(model=self.model,data=self.data)
         self.boat.new_world(scenario.kind,scenario.world_seed,scenario.path_seed)
         self.boat.navigation.world=RotatedWorld(self.boat.navigation.world,math.radians(scenario.world_rotation_deg))

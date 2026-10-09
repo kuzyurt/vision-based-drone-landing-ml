@@ -11,20 +11,32 @@ def json_value(value):
     raise TypeError(type(value).__name__)
 
 class Recorder:
-    def __init__(self,directory,scenario,role='review'):
+    def __init__(self,directory,scenario,role='review',batch_size=16):
         self.directory=Path(directory);self.directory.mkdir(parents=True,exist_ok=True)
         self.rows=(self.directory/'steps.jsonl').open('w')
         self.file=h5py.File(self.directory/'observations.h5','w')
         self.file.attrs.update(schema='aerodock.landing.v1',role=role,training_eligible=role!='review',scenario=json.dumps(scenario))
         self.images=self.file.create_dataset('rgb',(0,360,640,3),maxshape=(None,360,640,3),chunks=(1,360,640,3),dtype='u1',compression='lzf')
         self.records=self.file.create_dataset('steps',(0,),maxshape=(None,),dtype=h5py.string_dtype('utf-8'))
-        self.count=0
+        if batch_size<1:raise ValueError('batch_size must be positive')
+        self.count=0;self.batch_size=batch_size;self.pending_images=[];self.pending_records=[]
     def append(self,rgb,row):
-        index=self.count;serialized=json.dumps(row,default=json_value,separators=(',',':'),allow_nan=False)
-        self.rows.write(serialized+'\n');self.images.resize(index+1,axis=0);self.records.resize(index+1,axis=0)
-        self.images[index]=rgb;self.records[index]=serialized;self.count+=1
-        if self.count%100==0:self.rows.flush();self.file.flush()
-    def close(self):self.rows.close();self.file.close()
+        serialized=json.dumps(row,default=json_value,separators=(',',':'),allow_nan=False)
+        # Own the buffered image; callers may reuse or mutate their array.
+        self.pending_images.append(np.array(rgb,dtype=np.uint8,copy=True));self.pending_records.append(serialized)
+        self.count+=1
+        if len(self.pending_records)>=self.batch_size:self.flush()
+    def flush(self):
+        if not self.pending_records:return
+        start=self.images.shape[0];end=start+len(self.pending_records)
+        self.images.resize(end,axis=0);self.records.resize(end,axis=0)
+        self.images[start:end]=np.stack(self.pending_images);self.records[start:end]=self.pending_records
+        self.rows.write(''.join(record+'\n' for record in self.pending_records))
+        self.pending_images.clear();self.pending_records.clear()
+        self.rows.flush();self.file.flush()
+    def close(self):
+        try:self.flush()
+        finally:self.rows.close();self.file.close()
 
 def numeric_observation(row):
     """Fixed 32-value deployable contract. Privileged fields are inaccessible."""

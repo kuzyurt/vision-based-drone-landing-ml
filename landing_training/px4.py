@@ -13,6 +13,11 @@ from pymavlink.dialects.v20 import common as mavlink
 from sim.server import Simulation,C,D,PX4_TO_CAD,SPIN,SocketWriter
 from sim.propulsion import THRUST,TORQUE,THRUST_MODEL_FACTOR
 from .scene import ROOT,DRONE
+from .runtime import WINDOWS,wsl,wsl_path,check_px4,windows_host
+
+def stop_wsl_runtime(runtime):
+    subprocess.run(['wsl','-d',os.environ.get('PX4_WSL_DISTRO','Ubuntu-22.04'),'--','bash',
+                    wsl_path(ROOT/'px4_wsl.sh'),'stop',wsl_path(runtime)],check=True,timeout=15)
 
 class NativePX4:
     send_sensors=Simulation.send_sensors
@@ -28,13 +33,15 @@ class NativePX4:
         self.attitude=None;self.local=None;self.local_time=None;self.attitude_time=None;self.messages=[];self.ack=[]
         self.origin_enu=self.data.site_xpos[self.gps_site].copy()
         self.runtime=Path(runtime);self.runtime.mkdir(parents=True,exist_ok=True)
+        self.host=windows_host() if WINDOWS else '127.0.0.1'
+        self.timings={'physics_s':0.,'sync_s':0.,'sensor_send_s':0.}
         # Keep the review transport away from PX4's automatic 14580+instance
         # Offboard sockets, including other workers' default endpoints.
         self.instance=instance;self.port=19000+instance;self.px4_port=18000+instance
         self.listener=socket.socket();self.listener.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-        self.listener.bind(('127.0.0.1',4560+instance));self.listener.listen(1);self.listener.setblocking(False)
+        self.listener.bind(('0.0.0.0' if WINDOWS else '127.0.0.1',4560+instance));self.listener.listen(1);self.listener.setblocking(False)
         self.sock=None;self.sim_mav=None
-        self.offboard=mavutil.mavlink_connection(f'udpin:127.0.0.1:{self.port}',source_system=255,source_component=190,dialect='common')
+        self.offboard=mavutil.mavlink_connection(f'udpin:{"0.0.0.0" if WINDOWS else "127.0.0.1"}:{self.port}',source_system=255,source_component=190,dialect='common')
         self.power_mav=mavlink.MAVLink(self.offboard,srcSystem=1+instance,srcComponent=180)
         self.last_battery=-1.;self.process=None;self.log=None
         self.create_startup()
@@ -53,16 +60,21 @@ class NativePX4:
             params[f'CA_ROTOR{slot}_KM']=float(SPIN[idx]*km);params[f'PWM_MAIN_FUNC{slot+1}']=101+slot
         (self.runtime/'parameters.json').write_text(json.dumps(params,indent=2))
         script='. ${R}etc/init.d-posix/rcS\n'+'\n'.join(f'param set {key} {value}' for key,value in params.items())+'\n'
-        script+=f'battery_simulator stop\nmavlink start -u {self.px4_port} -o {self.port} -t 127.0.0.1 -m onboard -r 150000\n'
+        script+=f'battery_simulator stop\nmavlink start -u {self.px4_port} -o {self.port} -t {self.host} -m onboard -r 150000\n'
         for stream,rate in (('LOCAL_POSITION_NED',25),('ATTITUDE',25),('EXTENDED_SYS_STATE',10)):
             script+=f'mavlink stream -u {self.px4_port} -s {stream} -r {rate}\n'
-        (self.runtime/'rcS').write_text(script)
+        (self.runtime/'rcS').write_text(script,encoding='utf-8',newline='\n')
 
     def start(self):
-        vendor=ROOT/'.vendor/PX4-Autopilot';binary=vendor/'build/px4_sitl_landing/bin/px4'
-        if not binary.exists():raise FileNotFoundError('Build PX4 with python -m landing_training.setup_px4')
+        binary=Path(check_px4());vendor=ROOT/'.vendor/PX4-Autopilot'
         env=os.environ.copy();env.update(PX4_SYS_AUTOSTART='10016',PX4_SIM_MODEL='none_iris',PX4_SIM_HOST_ADDR='127.0.0.1')
         self.log=(self.runtime/'px4.log').open('w')
+        if WINDOWS:
+            linux_binary=check_px4();linux_vendor=linux_binary.removesuffix('/build/px4_sitl_landing/bin/px4')
+            self.process=subprocess.Popen(['wsl','-d',os.environ.get('PX4_WSL_DISTRO','Ubuntu-22.04'),'--',
+                'bash',wsl_path(ROOT/'px4_wsl.sh'),'start',wsl_path(self.runtime),linux_vendor,self.host,str(self.instance)],
+                stdout=self.log,stderr=subprocess.STDOUT)
+            return
         self.process=subprocess.Popen([str(binary),'-d',str(binary.parent.parent/'etc'),'-w',str(self.runtime),'-s',str(self.runtime/'rcS'),'-i',str(self.instance)],cwd=vendor,env=env,stdout=self.log,stderr=subprocess.STDOUT,start_new_session=True)
 
     def poll(self):
@@ -76,8 +88,7 @@ class NativePX4:
             try:
                 blob=self.sock.recv(65536)
                 if not blob:raise RuntimeError('PX4 simulator link disconnected')
-                for byte in blob:
-                    message=self.sim_mav.parse_char(bytes([byte]))
+                for message in self.sim_mav.parse_buffer(blob) or ():
                     if message and message.get_type()=='HIL_ACTUATOR_CONTROLS':
                         self.armed=bool(message.mode & mavlink.MAV_MODE_FLAG_SAFETY_ARMED)
                         self.env.drone.commands[:]=0
@@ -101,14 +112,20 @@ class NativePX4:
     def advance(self,steps=40):
         if steps%4:raise ValueError('PX4 advance requires complete 4 ms sensor cycles')
         for _ in range(steps//4):
+            sync_started=time.perf_counter()
             deadline=time.monotonic()+15
             while True:
                 self.poll()
                 if self.sim_mav is not None and (not self.first_actuator or self.actuator_time_usec>=self.last_sensor_time_usec):break
                 if time.monotonic()>deadline:raise TimeoutError('PX4 lockstep timeout; inspect '+str(self.runtime/'px4.log'))
                 time.sleep(.0002)
+            self.timings['sync_s']+=time.perf_counter()-sync_started
+            physics_started=time.perf_counter()
             for _ in range(4):self.env.step(self.armed)
+            self.timings['physics_s']+=time.perf_counter()-physics_started
+            sensor_started=time.perf_counter()
             self.send_sensors()
+            self.timings['sensor_send_s']+=time.perf_counter()-sensor_started
         self.poll()
 
     def send_action(self,action):
@@ -141,10 +158,19 @@ class NativePX4:
 
     def close(self):
         if self.process:
+            if WINDOWS:
+                stop_wsl_runtime(self.runtime)
+                try:self.process.wait(timeout=10)
+                except subprocess.TimeoutExpired:self.process.terminate();self.process.wait(timeout=5)
+            else:
+                self.stop_native()
+        if self.sock:self.sock.close()
+        self.listener.close();self.offboard.close()
+        if self.log:self.log.close()
+
+    def stop_native(self):
+        if self.process:
             import signal
             try:os.killpg(self.process.pid,signal.SIGTERM);self.process.wait(timeout=5)
             except subprocess.TimeoutExpired:os.killpg(self.process.pid,signal.SIGKILL);self.process.wait(timeout=5)
             except ProcessLookupError:pass
-        if self.sock:self.sock.close()
-        self.listener.close();self.offboard.close()
-        if self.log:self.log.close()

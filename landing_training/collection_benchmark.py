@@ -3,24 +3,24 @@ import argparse
 import csv
 import gc
 import json
-import math
-import multiprocessing
 import os
 import platform
-import queue
 import shutil
-import signal
 import socket
 import subprocess
 import sys
 import time
-import traceback
+import statistics
+import signal
 from datetime import datetime,timezone
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parent
 if not __package__:
     sys.path.insert(0,str(ROOT.parent));__package__='landing_training'
+
+from .runtime import WINDOWS,cache_lock,check_px4,windows_memory
+from .execution import run_batch
 
 def worker_counts(value):
     try:counts=sorted({1,*map(int,value.split(','))})
@@ -33,6 +33,13 @@ def read_number(path):
     except (OSError,ValueError):return None
 
 def hardware_info():
+    if WINDOWS:
+        total,available=windows_memory()
+        return {'cpu_model':platform.processor(),'visible_cpu_threads':os.cpu_count(),
+                'effective_cpu_capacity':float(os.cpu_count() or 1),'ram_GiB':total/1024**3,
+                'available_ram_GiB':available/1024**3,'platform':platform.platform(),
+                'python':platform.python_version(),'nvidia_gpu_name_memory_MiB_driver':None,
+                'resource_scope':'Windows host; WSL PX4 resources are additional'}
     visible=len(os.sched_getaffinity(0))
     capacity=float(visible)
     try:
@@ -70,6 +77,10 @@ def hardware_info():
             'nvidia_gpu_name_memory_MiB_driver':gpu,'platform':platform.platform(),
             'python':platform.python_version()}
 
+def software_renderer(name):
+    return any(word in name.lower() for word in ('llvmpipe','softpipe','lavapipe','software rasterizer',
+        'swiftshader','gdi generic','microsoft basic render driver','mesa x11'))
+
 def renderer_info():
     import mujoco
     from OpenGL import GL
@@ -78,23 +89,10 @@ def renderer_info():
         context.make_current()
         info={key:GL.glGetString(token).decode() for key,token in (
             ('vendor',GL.GL_VENDOR),('renderer',GL.GL_RENDERER),('version',GL.GL_VERSION))}
-        name=info['renderer'].lower()
-        info['software_rendering']=any(word in name for word in ('llvmpipe','softpipe','software rasterizer','swiftshader'))
+        info['software_rendering']=software_renderer(info['renderer'])
         info['backend']=os.environ['MUJOCO_GL'];info['mujoco']=mujoco.__version__
         return info
     finally:context.free()
-
-def cache_lock():
-    """Serialize model cache generation across benchmark processes."""
-    import fcntl
-    from contextlib import contextmanager
-    @contextmanager
-    def locked():
-        ROOT.joinpath('build').mkdir(exist_ok=True)
-        with (ROOT/'build/collection_benchmark.cache.lock').open('a') as stream:
-            fcntl.flock(stream,fcntl.LOCK_EX)
-            yield
-    return locked()
 
 def check_ports(base,count):
     for index in range(base,base+count):
@@ -102,69 +100,24 @@ def check_ports(base,count):
                           (socket.SOCK_DGRAM,19000+index)):
             with socket.socket(socket.AF_INET,kind) as connection:
                 if kind==socket.SOCK_STREAM:connection.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
-                try:connection.bind(('127.0.0.1',port))
+                try:connection.bind(('0.0.0.0' if WINDOWS else '127.0.0.1',port))
                 except OSError as exc:raise RuntimeError(f'Port {port} is occupied; choose another --instance-base') from exc
 
-def worker(job,result_queue):
-    # Convert parent cancellation into Python cleanup, including PX4.close().
-    signal.signal(signal.SIGINT,signal.SIG_IGN)
-    def cancel(signum,frame):raise KeyboardInterrupt('Benchmark cancelled')
-    signal.signal(signal.SIGTERM,cancel)
-    try:
-        import resource
-        from dataclasses import replace
-        from .config import Scenario
-        import landing_training.environment as environment
-        import landing_training.run_episode as episode
-        compile_original=environment.compile_scene
-        def locked_compile(*args,**kwargs):
-            with cache_lock():return compile_original(*args,**kwargs)
-        environment.compile_scene=locked_compile
-        times={};recorder_original=episode.Recorder
-        class TimedRecorder(recorder_original):
-            def __init__(self,*args,**kwargs):
-                times['record_start']=time.perf_counter()
-                super().__init__(*args,**kwargs)
-            def close(self):
-                super().close();times['record_end']=time.perf_counter()
-        episode.Recorder=TimedRecorder
-        scenario=replace(Scenario(**job['scenario']),name=job['name'])
-        summary=episode.run_episode(scenario,job['directory'],role='review',video=False,instance=job['instance'])
-        cpu=resource.getrusage(resource.RUSAGE_SELF);children=resource.getrusage(resource.RUSAGE_CHILDREN)
-        result={'ok':summary['failure'] is None,'name':job['name'],'directory':job['directory'],
-                'frames':summary['records'],'outcome':summary['outcome'],
-                'flight_wall_s':summary['wall_seconds'],'max_rss_MiB':cpu.ru_maxrss/1024,
-                'cpu_seconds':cpu.ru_utime+cpu.ru_stime+children.ru_utime+children.ru_stime,**times}
-    except BaseException as exc:
-        if isinstance(exc,KeyboardInterrupt):result_queue.cancel_join_thread()
-        result={'ok':False,'name':job['name'],'error':f'{type(exc).__name__}: {exc}',
-                'traceback':traceback.format_exc()}
-    result_queue.put(result)
-
-def run_batch(jobs):
-    context=multiprocessing.get_context('spawn');results_queue=context.Queue()
-    processes=[context.Process(target=worker,args=(job,results_queue)) for job in jobs]
-    results=[];started=time.perf_counter()
-    try:
-        for process in processes:process.start()
-        while len(results)<len(jobs):
-            try:result=results_queue.get(timeout=.5)
-            except queue.Empty:
-                if any(p.exitcode not in (None,0) for p in processes):
-                    raise RuntimeError('Benchmark worker exited unexpectedly; inspect the output directory')
-                if all(p.exitcode==0 for p in processes):
-                    raise RuntimeError('Benchmark worker finished without reporting a result')
-                continue
-            results.append(result)
-            if not result['ok']:raise RuntimeError(result['error'])
-        for process in processes:process.join()
-        return results,time.perf_counter()-started
-    finally:
-        for process in processes:
-            if process.pid and process.is_alive():process.terminate()
-        for process in processes:
-            if process.pid:process.join()
-        results_queue.close()
+def benchmark_scenarios(mode='full',quick_seconds=10):
+    from .collect import planned_scenarios
+    plan=planned_scenarios()['episodes']
+    if mode=='quick':
+        scenario=plan[0]['scenario'].copy();scenario['duration']=quick_seconds
+        return [scenario]
+    cases=[]
+    for round_index in range(4):
+        for family,kind in enumerate(('island','beach','city','gravel','rock')):
+            weather=(family+round_index)%4
+            band=(family+round_index)%3;reverse=bool((family+round_index)%2)
+            cases.append(next(item['scenario'].copy() for item in plan if
+                              item['scenario']['kind']==kind and item['weather_group']==weather and
+                              item['distance_band']==band and item['scenario']['reverse']==reverse))
+    return cases
 
 def validate_recording(result,runtime_hash):
     import h5py
@@ -189,17 +142,31 @@ def validate_recording(result,runtime_hash):
     result['hdf5_bytes']=(directory/'observations.h5').stat().st_size
     result['recorded_flight_s']=rows[-1]['task_time_s']
 
-def summarize(count,batches,episodes,mean_seconds):
+def summarize(count,batches,episodes,mean_seconds,mode='quick'):
     frames=sum(b['frames'] for b in batches);span=sum(b['recording_span_s'] for b in batches)
-    fps=frames/span
-    setup=sum(b['wall_s']-b['recording_span_s'] for b in batches)/len(batches)
-    seconds=episodes*mean_seconds*25/fps+math.ceil(episodes/count)*setup
+    fps=frames/span;wall=sum(b['wall_s'] for b in batches)
     jobs=[job for batch in batches for job in batch['jobs']]
+    batch_fps=[b['frames']/b['recording_span_s'] for b in batches]
+    stage={}
+    for job in jobs:
+        for key,value in job['performance']['stages_s'].items():stage[key]=stage.get(key,0.)+value
+    simulated=sum(job['recorded_flight_s'] for job in jobs)
     return {'workers':count,'repeats':len(batches),'recorded_frames':frames,'recording_fps':fps,
-            'mean_batch_setup_s':setup,'measured_batch_wall_s':sum(b['wall_s'] for b in batches),
+            'recording_fps_by_repeat':batch_fps,'recording_fps_min':min(batch_fps),'recording_fps_max':max(batch_fps),
+            'recording_fps_stdev':statistics.stdev(batch_fps) if len(batch_fps)>1 else None,
+            'simulated_seconds_per_wall_second':simulated/span,
+            'measured_batch_wall_s':wall,'measured_episodes':len(jobs),
+            'complete_episode_pipeline_per_hour':len(jobs)*3600/wall,
+            'mean_batch_setup_s':sum(b['wall_s']-b['recording_span_s'] for b in batches)/len(batches),
             'max_worker_ram_MiB':max(job['max_rss_MiB'] for job in jobs),
             'hdf5_bytes':sum(job['hdf5_bytes'] for job in jobs),
-            'projected_collection_hours':seconds/3600,'batches':batches}
+            'stage_worker_seconds':stage,
+            'physics_worker_s':sum(job['performance']['physics_s'] for job in jobs),
+            'px4_sync_worker_s':sum(job['performance']['px4_sync_s'] for job in jobs),
+            'sensor_send_worker_s':sum(job['performance']['sensor_send_s'] for job in jobs),
+            'projected_collection_hours':episodes*wall/len(jobs)/3600 if mode=='full' else None,
+            'projection_basis':'measured full episode pipeline including setup, shutdown, and artifact hashing; sample only' if mode=='full' else 'quick abort probe; no production time projection',
+            'batches':batches}
 
 def save_report(output,report):
     temporary=output/'report.tmp';temporary.write_text(json.dumps(report,indent=2));temporary.replace(output/'report.json')
@@ -209,23 +176,24 @@ def save_report(output,report):
         writer=csv.DictWriter(stream,fieldnames=fields,extrasaction='ignore');writer.writeheader();writer.writerows(report['results'])
 
 def main(argv=None):
+    def cancel(signum,frame):raise KeyboardInterrupt('Benchmark cancelled')
+    signal.signal(signal.SIGTERM,cancel)
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--workers',type=worker_counts,default=worker_counts('1,2,3'),help='Concurrent worker counts; always includes 1 as a baseline')
     parser.add_argument('--mode',choices=('quick','full'),default='quick',help='Quick: throughput probe that reaches the expert time-reserve abort; full: normal flights')
-    parser.add_argument('--repeats',type=int,default=1,help='Repeat each worker count; full mode cycles near/middle/far start cases')
+    parser.add_argument('--repeats',type=int,default=3,help='Repeat each worker count; full mode cycles a 20-case map/weather/distance/direction matrix')
     parser.add_argument('--quick-seconds',type=float,default=10,help='Quick scenario limit (8..30 s); expert abort reserve is 5 s')
     parser.add_argument('--episodes',type=int,default=1200,help='Dataset episode count for time projection')
-    parser.add_argument('--mean-episode-seconds',type=float,default=60,help='Explicit assumed mean recorded flight length for projection (1..180 s)')
+    parser.add_argument('--mean-episode-seconds',type=float,default=60,help='Legacy compatibility option; projections now use measured full flights')
     parser.add_argument('--instance-base',type=int,default=20,help='First PX4 instance; adjust if ports are already in use')
-    parser.add_argument('--gl',choices=('egl','glfw','osmesa'),default=os.environ.get('MUJOCO_GL','egl'),help='Actual MuJoCo rendering backend, selected before import')
+    parser.add_argument('--gl',choices=('egl','glfw','osmesa'),default=os.environ.get('MUJOCO_GL','glfw' if WINDOWS else 'egl'),help='Actual MuJoCo rendering backend, selected before import')
     parser.add_argument('--output',type=Path,help='New output directory; existing directories are never replaced')
     args=parser.parse_args(argv)
-    if sys.platform!='linux':parser.error('Run this native PX4 benchmark in Linux or WSL2; see landing_training/README.md')
+    if sys.platform not in ('linux','win32'):parser.error('Supported hosts: Linux/WSL or Windows rendering with WSL PX4')
     if args.repeats<1 or args.episodes<1:parser.error('Repeats and episodes must be positive')
     if not 8<=args.quick_seconds<=30 or not 1<=args.mean_episode_seconds<=180:parser.error('Invalid quick duration or mean episode length')
     if not 0<=args.instance_base<=254-max(args.workers):parser.error('PX4 instance range must reserve MAVLink system 255 for the GCS')
-    binary=ROOT/'.vendor/PX4-Autopilot/build/px4_sitl_landing/bin/px4'
-    if not binary.is_file():parser.error('Native PX4 is missing. Run bash landing_training/setup.sh from the repository root first.')
+    check_px4()
     # One native thread per numeric library prevents nested pools from consuming
     # all CPU cores in every independent simulation. GL driver threads are intact.
     for name in ('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS'):os.environ[name]='1'
@@ -234,7 +202,6 @@ def main(argv=None):
     os.environ.setdefault('XDG_CACHE_HOME',str(ROOT/'build/benchmark_cache'))
     output=(args.output or ROOT/'outputs'/('collection_benchmark_'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S_%f'))).resolve()
     if output.exists():parser.error('Output already exists; choose a new directory')
-    from .collect import planned_scenarios
     from .gate import source_fingerprint
     from .scene import compile_scene
     info=hardware_info();info['graphics']=renderer_info()
@@ -242,14 +209,12 @@ def main(argv=None):
     print(f'Renderer: {info["graphics"]["renderer"]} ({args.gl})',flush=True)
     if info['graphics']['software_rendering']:print('Rendering uses the CPU; these timings do not measure your RTX rendering performance.',flush=True)
     check_ports(args.instance_base,max(args.workers))
-    plan=planned_scenarios()['episodes']
-    if args.mode=='quick':cases=[plan[0]['scenario'].copy()];cases[0]['duration']=args.quick_seconds
-    else:
-        cases=[next(item['scenario'] for item in plan if item['distance_band']==band and item['weather_group']==0 and
-                    not item['scenario']['reverse'] and item['scenario']['kind']==('island','beach','rock')[band]) for band in range(3)]
+    cases=benchmark_scenarios(args.mode,args.quick_seconds)
     # Precompile before spawning. Workers also lock cache access during loading.
     print('Preparing the shared model cache (first run may take longer).',flush=True)
+    cache_started=time.perf_counter()
     with cache_lock():model=compile_scene()
+    cache_prepare_s=time.perf_counter()-cache_started
     del model;gc.collect()
     maximum_bytes=sum((int(cases[r%len(cases)]['duration']*25)+1)*640*360*3*n
                       for n in args.workers for r in range(args.repeats))+1024**3
@@ -258,16 +223,17 @@ def main(argv=None):
     if shutil.disk_usage(disk_path).free<maximum_bytes:
         parser.error(f'Reserve {maximum_bytes/1e9:.1f} GB free for worst-case raw RGB, or reduce workers/repeats')
     output.mkdir(parents=True)
-    report={'schema':'aerodock.landing.collection-benchmark.v1','role':'review','training_eligible':False,
-            'status':'running','hardware':info,'mode':args.mode,'video_export':False,'camera_views':'external and onboard, matching current collection',
-            'runtime_source_sha256':source_fingerprint(runtime_only=True),'projection':{'episodes':args.episodes,'assumed_mean_episode_s':args.mean_episode_seconds,'policy_hz':25},
-            'limitations':['Time estimates assume measured throughput persists and the stated mean episode length.',
+    report={'schema':'aerodock.landing.collection-benchmark.v2','role':'review','training_eligible':False,
+            'status':'running','hardware':info,'mode':args.mode,'video_export':False,'camera_views':'onboard only, matching production collection','cache_prepare_s':cache_prepare_s,
+            'runtime_source_sha256':source_fingerprint(runtime_only=True),'projection':{'episodes':args.episodes,'policy_hz':25,'method':'measured full episode cost' if args.mode=='full' else 'disabled for quick probe'},
+            'sample_scenarios':[cases[r%len(cases)] for r in range(args.repeats)],
+            'limitations':['Full-flight projections extrapolate the measured scenario sample; use repeats 20 to cover the entire matrix.',
                            'Quick mode measures approach recording throughput and intentionally reaches the expert time-reserve abort; it does not test landing reliability.',
-                           'Full mode cycles three calm scenarios; neither mode measures the complete weather/map distribution.',
+                           'Full mode cycles 20 stratified cases across five maps, four weather groups, three distance bands and both directions; this is not the complete 1200-episode distribution.',
                            'Observed memory does not include a GPU VRAM peak measurement.'],
             'results':[]}
     save_report(output,report)
-    print(f'REVIEW ONLY — output: {output}\nProjection: {args.episodes} episodes × {args.mean_episode_seconds:g} recorded seconds',flush=True)
+    print(f'REVIEW ONLY — output: {output}\nProduction time projection: '+('measured full flights' if args.mode=='full' else 'disabled for short abort probes'),flush=True)
     code=0
     try:
         for count in args.workers:
@@ -285,14 +251,20 @@ def main(argv=None):
                 print(f'Benchmark: {count} worker(s), repeat {repeat+1}/{args.repeats}',flush=True)
                 rows,wall=run_batch(jobs)
                 span=max(r['record_end'] for r in rows)-min(r['record_start'] for r in rows)
-                for row in rows:validate_recording(row,report['runtime_source_sha256'])
-                batches.append({'wall_s':wall,'recording_span_s':span,'frames':sum(r['frames'] for r in rows),'jobs':rows})
-            result=summarize(count,batches,args.episodes,args.mean_episode_seconds)
+                validation_started=time.perf_counter()
+                for row in rows:
+                    validate_recording(row,report['runtime_source_sha256'])
+                    from .gate import file_hash
+                    hash_started=time.perf_counter();row['artifact_sha256']=file_hash(Path(row['directory'])/'observations.h5')
+                    wall+=time.perf_counter()-hash_started
+                validation_wall=time.perf_counter()-validation_started
+                batches.append({'wall_s':wall,'recording_span_s':span,'frames':sum(r['frames'] for r in rows),'jobs':rows,'validation_wall_s':validation_wall})
+            result=summarize(count,batches,args.episodes,args.mean_episode_seconds,args.mode)
             result['speedup_vs_one']=result['recording_fps']/report['results'][0]['recording_fps'] if report['results'] else 1.
             report['results'].append(result);save_report(output,report)
-            print(f'{count} workers: {result["recording_fps"]:.2f} frames/s; {result["speedup_vs_one"]:.2f}×; projected {result["projected_collection_hours"]:.1f} hours',flush=True)
+            print(f'{count} workers: {result["recording_fps"]:.2f} recorded frames/s; {result["speedup_vs_one"]:.2f}×; '+(f'projected {result["projected_collection_hours"]:.1f} hours (sample only)' if args.mode=='full' else 'no full-dataset projection'),flush=True)
         report['status']='completed'
-        report['recommended_measured_worker_count']=max(report['results'],key=lambda r:r['recording_fps'])['workers']
+        report['recommended_measured_worker_count']=max(report['results'],key=lambda r:r['complete_episode_pipeline_per_hour'])['workers']
     except KeyboardInterrupt:
         report['status']='cancelled';code=130
     except Exception as exc:

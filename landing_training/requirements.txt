@@ -4,6 +4,7 @@ scipy>=1.14,<2
 Pillow>=10,<13
 pymavlink==2.4.50
 h5py>=3.12,<4
+psutil>=7,<8
 cmake>=3.28,<4
 ninja>=1.11,<2
 empy==3.3.4

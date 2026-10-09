@@ -141,67 +141,204 @@ Review export resumes complete episodes only when runtime provenance matches.
 For changed runtime code or failed exports, use a new output directory; the
 runner refuses to replace recorded data. Each runner owns and stops its own PX4
 process. TCP 4560+instance and dedicated UDP 18000/19000+instance are local
-transports. No separately running boat server, drone server or WSL is required.
+transports. Linux needs no separately running boat server, drone server or WSL.
+Windows rendering uses WSL for PX4 as described below.
 
 ## Benchmark collection on your computer
 
-Run [collection_benchmark.py](collection_benchmark.py) from the repository root
-in Linux, or inside WSL2 on Windows. Native Windows Python cannot run this Linux
-PX4 build. Prepare the environment above first; the benchmark does not install
-drivers, dependencies, or firmware, and does not run ML training.
+Run [collection_benchmark.py](collection_benchmark.py) from the repository root.
+Linux/WSL uses native PX4; Windows Python renders and records natively while an
+owned PX4 process runs in WSL. This command does not collect production training
+data, approve a review, or train a model.
 
 ```bash
 landing_training/.venv/bin/python -m landing_training.collection_benchmark \
-  --workers 1,2,3
+  --workers 1,2,3 --repeats 3
 ```
 
-The default quick mode runs native PX4 takeoff and short expert approach
-recordings through the current collection pipeline: both actual camera views,
-25 Hz decisions, JSONL rows, and compressed HDF5 RGB. Video encoding is disabled.
-The 10 s scenario limit deliberately reaches the expert's 5 s timeout reserve
-and aborts after approximately 5 recorded seconds. These probes measure
-throughput; their aborts are not evidence of landing failures in normal-length
-scenarios. All recordings remain `review` / `training_eligible=false` and cannot
-release the training-data approval gate.
+The default quick mode takes off using PX4, then measures a short expert approach
+through the same worker and recording code as production collection. It renders
+**only the 640 × 360 drone camera**, records at 25 decisions per simulated second,
+and writes lossless LZF HDF5 RGB and matching JSONL/HDF5 metadata. It does not
+render overview frames, diagnostic screenshots, or video. The 10 s scenario limit
+reaches the expert's 5 s timeout reserve and ends after about 5 recorded seconds.
+These deliberate aborts measure throughput, not normal-flight landing reliability.
+**Quick mode no longer projects full-dataset collection time.** The legacy
+`--mean-episode-seconds` option is accepted for command compatibility but does not
+control projections.
 
-The script prints effective CPU capacity, memory, the actual OpenGL renderer,
-frames per wall-clock second, parallel speedup, measured maximum process RAM,
-and estimated time for 1,200 episodes averaging 60 recorded seconds. Each run
-uses a new timestamped directory in `landing_training/outputs/`, containing
-`report.json`, `results.csv`, and raw review recordings. Existing output
-directories are never overwritten. Predictions use the explicitly supplied
-mean duration and measured preparation overhead; they do not guarantee the
-speed of unmeasured maps/weather or larger worker counts. RAM measurements do
-not include GPU VRAM peaks.
+Reports include the actual graphics renderer, effective CPU capacity, worker
+memory, recording FPS, repeat-to-repeat variation, simulated seconds per wall
+second, and complete episode pipeline throughput. Per-worker timings separate
+initialization, physical preparation, camera capture, observations/decisions,
+recording writes, physics, PX4 synchronization, sensor transmission, and shutdown.
+Some timings are explicitly nested: expert time is part of observation/decision
+time, and preparation physics/synchronization are parts of preparation time.
+Camera capture includes scene construction, wave updates, GPU upload, rendering,
+and readback. Worker-second totals for parallel runs must not be added to obtain
+elapsed batch time. Recorded spans exclude takeoff and renderer creation;
+complete batch costs include worker startup, takeoff, final flush, shutdown,
+and the artifact hashing also required by collection. Benchmark-only raw audits
+are reported separately. Shared model precompilation is reported separately too.
 
-Try four workers or change the sizing calculation:
+Each run creates a new output directory containing `report.json`, `results.csv`,
+and review-only recordings. The raw audit checks 25 Hz timing, frame/row order,
+finite inputs, airborne starts, open/raised dock joints, terminal supervision
+masking, and landed/disarmed PX4 states when a flight lands. Existing outputs
+are never overwritten. Memory figures do not include GPU VRAM; Windows worker
+CPU/RAM measurements exclude the additional WSL PX4 processes.
+
+For complete flights and empirical collection time estimates:
 
 ```bash
 landing_training/.venv/bin/python -m landing_training.collection_benchmark \
-  --workers 1,2,3,4 --repeats 2 --mean-episode-seconds 90
+  --mode full --workers 1,2 --repeats 20
 ```
 
-For normal-length expert flights, use `--mode full`. With `--repeats 3`, each
-worker count cycles calm near/middle/far starts; these take longer and reserve
-the raw worst-case disk budget before starting.
+Full mode cycles 20 seeded cases spanning five maps, four weather groups, three
+distance bands, and both route directions. The first five cases visit all five
+map families. Fewer repeats explicitly measure only that prefix. Projection uses
+measured complete episode pipeline cost, including failures, rather than an
+assumed flight duration. It remains a sample estimate, not a measurement of the
+entire 1,200-episode distribution or a landing reliability qualification.
+The report recommends the measured worker count with highest complete episode
+pipeline throughput. Larger unmeasured counts are not extrapolated.
+
+Inspect the printed **renderer**. `llvmpipe`/`softpipe` means CPU rendering even
+when `nvidia-smi` lists an RTX. Linux/WSL defaults to `--gl egl`; `--gl glfw` needs
+a working desktop display. Native Windows defaults to `glfw`. Compare runs on
+the same backend, power settings, output filesystem, and scenario matrix.
+Workers own independent physics states, PX4 ports, and files. `--instance-base 40`
+selects another port range. Ctrl+C or SIGTERM requests worker cleanup and saves
+a cancelled benchmark report.
+
+### Automatic resource scan and worker tuning
+
+Install the updated locked dependencies first (the tuner uses `psutil==7.2.2`):
 
 ```bash
-landing_training/.venv/bin/python -m landing_training.collection_benchmark \
-  --mode full --workers 1 --repeats 3
+UV_CACHE_DIR=/tmp/aerodock-uv-cache uv pip install --python landing_training/.venv/bin/python -r landing_training/requirements-lock.txt
+landing_training/.venv/bin/python -m landing_training.autotune
 ```
 
-For an RTX benchmark, inspect the printed **renderer**. A name containing
-`llvmpipe` or `softpipe` means CPU rendering even if `nvidia-smi` lists an RTX.
-On a desktop or WSLg session, `--gl glfw` provides an alternative to default
-`--gl egl`; it requires a working graphical display. The report records the
-backend and actual renderer. Compare timings with the same rendering backend,
-AC power, and laptop power settings.
+The tuner scans CPU affinity and quota, physical/logical CPU topology, available
+RAM and container limits, output disk capacity, and visible NVIDIA GPU/VRAM data.
+It probes OpenGL backends in fresh processes before importing MuJoCo in workers,
+prefers hardware rendering (NVIDIA first), and records the actual renderer.
+Linux tries EGL, desktop GLFW when a display is available, then OSMesa; Windows
+uses GLFW and the existing WSL PX4 launcher. Backend probes verify rendering
+availability; they do not benchmark every backend's performance.
 
-Workers use separate physics states, PX4 ports and output files; model-cache
-access is locked. `--instance-base 40` selects different ports if the default
-range is in use. Ctrl+C stops this run's worker processes and their PX4 instances
-and saves a cancelled report. The ordinary production collector remains serial;
-this script supplies review-only measurements for implementing its scheduler.
+It starts with one worker, grows concurrency geometrically, and tests intermediate
+counts around the measured throughput peak. The default ceiling is the detected
+CPU allocation; RAM/VRAM measurements can lower it. `--max-workers` overrides the
+CPU-based ceiling, while resource guards still apply. The strongest candidates
+are compared on full flights through the same collector. Default confirmation
+uses three cases from the full map/weather matrix; `--confirm-scenarios 20`
+uses all 20. `--confirm-repeats 2` repeats that matrix for stronger confirmation.
+Counts within 3% of the best throughput prefer fewer workers; change this with
+`--tie-margin`. The objective is complete episode pipeline throughput, including
+worker startup, physical takeoff preparation, recording, shutdown and artifact
+hashing. Short-probe aborts are intentionally not production time estimates.
+
+```bash
+# GPU rental: refuse accidental CPU software rendering, limit tuning time/cost.
+landing_training/.venv/bin/python -m landing_training.autotune \
+  --require-gpu --max-minutes 20 --hourly-price 0.128 --budget 0.10
+
+# A shorter validation: two counts, one full-flight case for each finalist.
+landing_training/.venv/bin/python -m landing_training.autotune \
+  --max-workers 2 --confirm-scenarios 1 --max-minutes 15
+
+# Inspect the environment without starting PX4 or running flights.
+landing_training/.venv/bin/python -m landing_training.autotune --scan-only
+```
+
+The price and budget must use the same currency (`--currency USD` by default).
+Cost estimates cover the stated compute rate only; storage, bandwidth, deposits,
+payment fees and time before launching the script are not included. The time
+budget requests cooperative cancellation, so startup/cleanup can extend beyond
+the deadline. A RAM or identified-device VRAM headroom violation also requests
+cancellation. Every result says whether full confirmation finished; a budget-
+limited search recommends only the best configuration actually measured and
+never claims an untested global optimum. All runs remain review-only, and no
+approval or production dataset is created.
+
+Reports are saved under a new `landing_training/outputs/autotune_*` directory:
+
+- `summary.md`: recommendation, actual renderer, CPU/RAM/VRAM figures and a
+  collection command requiring an approved review bundle.
+- `recommended_configuration.json`: machine-readable worker/backend settings.
+- `report.json` and `results.csv`: all candidates, scenario coverage, throughput,
+  stage timings, CPU usage, resource limits, unsuccessful trials and stop reasons.
+- Per-batch `resources.json`: sampled CPU/RAM and NVIDIA utilization/VRAM details.
+
+CPU use is reported as CPU-seconds per wall-second (logical core equivalents),
+plus sampled peaks; it is not a claim of exclusive physical cores. RAM is summed
+process-tree RSS and can count shared pages more than once. NVIDIA counters are
+**device-wide**, including unrelated workloads; unsupported counters are null.
+An identical-name multi-GPU system may not permit identifying the selected
+physical GPU from OpenGL's renderer string, so selected-device VRAM summaries
+remain unknown in that case. Workers use the selected OpenGL device; multi-GPU
+load balancing is not implemented. Windows accounting excludes Linux PX4 inside
+WSL. Samples can miss very brief usage peaks.
+
+By default, audited disposable RGB/JSONL files from this tuner are removed after
+each batch to avoid accumulating large review datasets; scenarios, summaries,
+audits, hashes and resource reports remain. `--keep-recordings` retains the raw
+review files. Existing directories and production datasets are never overwritten
+or cleaned. Free disk is checked against each batch's worst-case raw RGB size.
+The script does not reduce camera resolution, physics accuracy, policy frequency
+or scenario coverage to improve its throughput score.
+
+### Native Windows rendering with WSL PX4
+
+This host path is implemented but has not been exercised on a Windows machine in
+the cloud validation. It follows the existing drone simulator's Windows/WSL
+split. Fully native Windows PX4 is not supplied.
+
+Build the pinned `px4_sitl_landing` target using `landing_training/setup.sh` in
+WSL Ubuntu 22.04 first. In Windows PowerShell, from this repository:
+
+```powershell
+py -3.12 -m venv landing_training/.venv-windows
+landing_training/.venv-windows/Scripts/python -m pip install -r landing_training/requirements-lock.txt
+landing_training/.venv-windows/Scripts/python -m pip install -r landing_training/requirements-training.txt
+$env:PX4_WSL_DISTRO = "Ubuntu-22.04"
+# If firmware was built in a separate Linux checkout, use its Linux vendor path:
+$env:LANDING_PX4_WSL_ROOT = "/home/YOUR_USER/vision-based-drone-landing-ml/landing_training/.vendor/PX4-Autopilot"
+landing_training/.venv-windows/Scripts/python -m landing_training.collection_benchmark --gl glfw --workers 1,2 --repeats 3
+```
+
+Omit `LANDING_PX4_WSL_ROOT` if the target was built in this checkout through WSL.
+The launcher resolves paths using `wslpath`, discovers the Windows gateway from
+WSL's default route, creates instance-specific startup files, and records the
+WSL firmware hash in provenance. Windows must permit WSL connections to the
+Python process's TCP simulator and UDP telemetry ports. Each launcher stops only
+its recorded process after verifying its executable and runtime-directory
+arguments; it never issues a blanket PX4 kill.
+
+### Approved parallel dataset collection
+
+Production collection still requires explicit verification of a current review
+bundle. These source changes invalidate earlier review approvals. Generate and
+verify the current ten-video bundle before starting production collection.
+
+```bash
+MUJOCO_GL=egl landing_training/.venv/bin/python -m landing_training.collect \
+  --review landing_training/outputs/CURRENT_APPROVED_REVIEW \
+  --output landing_training/datasets/expert --max-episodes 60 --workers 2
+```
+
+Use the best measured worker count for your machine. Collection checks available
+RAM and disk headroom, uses the same spawned-worker scheduler as the benchmark,
+and retains the same train/validation/test scenario plan. Only the coordinator
+writes the manifest, under a collection-directory lock. Completed recordings are
+hashed before atomic manifest updates. A completed episode omitted from the
+manifest during interruption can be recovered only if its scenario, source,
+role, checkpoint, and record counts match. Partial or incompatible episodes are
+retained and refused, never overwritten. Workers load independent policy state
+when `--checkpoint` is used for DAgger collection.
 
 ## Shared physics and clocks
 

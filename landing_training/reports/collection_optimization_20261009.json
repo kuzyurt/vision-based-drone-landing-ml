@@ -1,0 +1,118 @@
+{
+  "date": "2026-10-09",
+  "scope": "review-only paired short expert collection benchmarks; not production collection or full distribution qualification",
+  "hardware": {
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "visible_cpu_threads": 5,
+    "effective_cpu_capacity": 4.0,
+    "ram_GiB": 32.0,
+    "available_ram_GiB": 24.449142456054688,
+    "nvidia_gpu_name_memory_MiB_driver": null,
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "graphics": {
+      "vendor": "Mesa",
+      "renderer": "llvmpipe (LLVM 19.1.7, 256 bits)",
+      "version": "4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1",
+      "software_rendering": true,
+      "backend": "egl",
+      "mujoco": "3.14.0"
+    }
+  },
+  "method": {
+    "mode": "quick",
+    "quick_scenario_limit_s": 10,
+    "actual_recorded_s_per_episode": 5.04,
+    "repeats_per_worker_count": 2,
+    "video_export": false,
+    "resolution": [
+      640,
+      360
+    ],
+    "physics_timestep_s": 0.001,
+    "policy_hz": 25,
+    "same_seeded_scenario": true,
+    "before_camera_views": "external and onboard",
+    "after_camera_views": "onboard only"
+  },
+  "before_runtime_sha256": "0116dde9ab3e63cc3029cd91ae88b06e8e00ae793e409d8540ad517173a789f1",
+  "after_runtime_sha256": "d02d2e4749df6c4f4d7d9c63f56dd3873aaafc7576a7b8fb3b5b9f4cd2a76d95",
+  "comparison": [
+    {
+      "workers": 1,
+      "before_recording_fps": 3.2357368121694154,
+      "after_recording_fps": 5.500974794609077,
+      "speedup": 1.700068674905893,
+      "throughput_increase_percent": 70.00686749058931,
+      "before_batch_wall_s": 135.49015310200048,
+      "after_batch_wall_s": 99.16746841499116,
+      "before_max_worker_ram_MiB": 1371.8203125,
+      "after_max_worker_ram_MiB": 1170.8125,
+      "after_repeat_recording_fps": [
+        5.485063738487309,
+        5.5169784287668255
+      ],
+      "after_capture_median_ms": 110.13922899292083,
+      "capture_fraction_of_worker_recording_time": 0.6224059367055791
+    },
+    {
+      "workers": 2,
+      "before_recording_fps": 5.851541458550583,
+      "after_recording_fps": 10.050166578863902,
+      "speedup": 1.7175246300576175,
+      "throughput_increase_percent": 71.75246300576174,
+      "before_batch_wall_s": 145.5963944390096,
+      "after_batch_wall_s": 106.23553450497275,
+      "before_max_worker_ram_MiB": 1399.3203125,
+      "after_max_worker_ram_MiB": 1171.84765625,
+      "after_repeat_recording_fps": [
+        9.814961268322188,
+        10.296921565274362
+      ],
+      "after_capture_median_ms": 117.4939650009037,
+      "capture_fraction_of_worker_recording_time": 0.6223729449558598
+    }
+  ],
+  "artifacts": {
+    "before": "outputs/optimization_before_20261009/report.json",
+    "after": "outputs/optimization_after_final_20261009/report.json",
+    "complete_flight": "outputs/optimization_full_validation_20261009/report.json",
+    "video_validation": "outputs/optimization_video_validation_20261009/review.mp4",
+    "cancellation": "outputs/optimization_cancel_verified_20261009/report.json"
+  },
+  "limitations": [
+    "Software renderer on a four-core CPU quota; not an RTX benchmark.",
+    "No production dataset has been collected.",
+    "Short-probe recording FPS excludes physical preparation; batch wall times include worker startup/preparation/shutdown.",
+    "After batch wall time also includes artifact hashing; before did not.",
+    "Windows host and WSL networking not exercised on this Linux machine.",
+    "Full-flight validation used the optimized Linux collector before the final WSL-only process-group cleanup hardening."
+  ],
+  "validation": {
+    "qualification_checks_passed": 29,
+    "collection_checks_passed": 6,
+    "complete_expert_flight": {
+      "outcome": "landed",
+      "frames": 912,
+      "recorded_seconds": 36.44,
+      "raw_audit_passed": true
+    },
+    "video_delay_blackout_check": {
+      "frames": 127,
+      "outcome": "abort (deliberate short probe)",
+      "video_matches_records": true,
+      "raw_audit_passed": true
+    },
+    "cancellation": {
+      "report_status": "cancelled",
+      "exit_code": 130,
+      "owned_px4_processes_remaining": 0
+    },
+    "wsl_launcher_shell_on_linux": {
+      "pinned_px4_starts": true,
+      "owned_process_group_stops": true,
+      "unrelated_process_preserved": true,
+      "windows_networking_tested": false
+    }
+  }
+}
