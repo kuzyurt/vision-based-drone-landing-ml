@@ -25,6 +25,13 @@ from .runtime import WINDOWS,cache_lock,check_px4
 
 class TrialStopped(RuntimeError):pass
 
+def requested_worker_counts(value):
+    try:counts=sorted(set(int(item) for item in value.split(',')))
+    except ValueError:raise argparse.ArgumentTypeError('Use comma-separated worker counts, e.g. 32,64')
+    if not counts or min(counts)<1 or max(counts)>128:
+        raise argparse.ArgumentTypeError('Worker counts must be 1..128')
+    return counts
+
 def probe_backends(requested=None):
     """MuJoCo chooses its GL implementation at import: probe in fresh processes."""
     candidates=[requested] if requested else (['glfw'] if WINDOWS else ['egl']+(['glfw'] if os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY') else [])+['osmesa'])
@@ -191,6 +198,7 @@ def recommend(output,report,args):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--worker-counts',type=requested_worker_counts,help='Compare exactly these counts on full flights; skip adaptive search and short probes, e.g. 32,64')
     parser.add_argument('--max-workers',type=int,help='Search ceiling; default is detected CPU allocation, additionally limited by RAM/VRAM')
     parser.add_argument('--max-minutes',type=float,default=20,help='Total tuning budget, including setup/probes; active trials are cancelled at the limit')
     parser.add_argument('--quick-seconds',type=float,default=10)
@@ -212,10 +220,14 @@ def main(argv=None):
     args=parser.parse_args(argv)
     if sys.platform not in ('linux','win32'):parser.error('Supported hosts: Linux/WSL and Windows with WSL PX4')
     if args.max_workers is not None and not 1<=args.max_workers<=128:parser.error('max-workers must be 1..128')
+    if args.worker_counts and args.max_workers is not None and max(args.worker_counts)>args.max_workers:
+        parser.error('worker-counts exceeds max-workers; omit max-workers or increase it')
     if not math.isfinite(args.max_minutes) or args.max_minutes<=0:parser.error('max-minutes must be positive and finite')
     if not 8<=args.quick_seconds<=30 or not 1<=args.confirm_scenarios<=20:parser.error('Invalid scenario duration or confirmation matrix size')
     if min(args.probe_repeats,args.confirm_repeats,args.finalists,args.episodes)<1:parser.error('Repeats, finalists and episodes must be positive')
     if not 0<=args.tie_margin<.25 or not 0<=args.instance_base<=252:parser.error('Invalid tie margin or instance base')
+    if args.worker_counts and args.instance_base+max(args.worker_counts)>254:
+        parser.error('Worker counts exceed the available PX4 instance range')
     for value in (args.hourly_price,args.budget):
         if value is not None and (not math.isfinite(value) or value<=0):parser.error('Prices and budgets must be positive and finite')
     if args.budget is not None and args.hourly_price is None:parser.error('budget requires hourly-price')
@@ -239,9 +251,10 @@ def main(argv=None):
             'role':'review','training_eligible':False,'_started':started,'hardware':hardware,
             'gpu_inventory':devices,'gpu_inventory_note':gpu_error,'graphics':graphics,'backend_probes':probes,
             'budget_s':budget_s,'results':[],'stopped_trials':[],
+            'search_mode':'fixed_full_flights' if args.worker_counts else 'adaptive',
             'settings':vars(args)|{'output':str(output)},
             'limitations':['Short probes deliberately abort and do not measure normal landing reliability.',
-                'The search is bounded and adaptive; untested worker counts/backends are not claimed optimal.',
+                'The search is bounded; untested worker counts/backends are not claimed optimal.',
                 'Resource samples can miss brief peaks. Device-wide GPU counters include other workloads.',
                 'Windows resource totals exclude PX4 inside WSL; unsupported GPU telemetry is null.',
                 'Workers use the selected OpenGL device; multi-GPU load balancing is not implemented.',
@@ -259,7 +272,7 @@ def main(argv=None):
     ram_budget=available_memory()*.8;args.vram_fraction=.9
     selected=renderer_gpu_indices(graphics['renderer'],devices)
     report['uniquely_identified_nvidia_gpu_indices']=selected
-    cap=initial_worker_cap(hardware,args.max_workers,args.instance_base)
+    cap=max(args.worker_counts) if args.worker_counts else initial_worker_cap(hardware,args.max_workers,args.instance_base)
     report['initial_worker_cap']=cap;report['search_worker_cap']=cap
     def trial(count,phase):
         if time.monotonic()>=deadline:raise TrialStopped('tuning time budget reached')
@@ -278,45 +291,55 @@ def main(argv=None):
         with cache_lock():model=compile_scene()
         del model;gc.collect();report['model_cache_prepare_s']=time.monotonic()-cache_started
         args.runtime_hash=source_fingerprint(runtime_only=True);report['runtime_source_sha256']=args.runtime_hash
-        probe_cases=benchmark_scenarios('quick',args.quick_seconds)
+        probe_cases=benchmark_scenarios('quick',args.quick_seconds) if not args.worker_counts else []
         confirm_cases=benchmark_scenarios('full')[:args.confirm_scenarios]
         report['probe_scenarios']=probe_cases;report['confirmation_scenarios']=confirm_cases
-        trial(1,'probe');growth=2;flat=0
-        while growth<=cap:
-            try:result=trial(growth,'probe')
-            except TrialStopped as exc:
-                report['stopped_trials'].append({'workers':growth,'phase':'probe','reason':str(exc)})
-                if 'time budget' in str(exc):raise
-                cap=growth-1;break
-            probes_done=[r for r in report['results'] if r['phase']=='probe']
-            previous=max(r['complete_episode_pipeline_per_hour'] for r in probes_done[:-1])
-            flat=flat+1 if result['complete_episode_pipeline_per_hour']<=previous*(1+args.tie_margin) else 0
-            cap=min(cap,adjusted_cap(probes_done,hardware,args.max_workers,args.instance_base,selected))
-            if flat>=2 or growth>=cap:break
-            growth=min(cap,growth*2)
-        while True:
-            probes_done=[r for r in report['results'] if r['phase']=='probe']
-            nearby=refinement_counts(probes_done,cap)
-            if not nearby:break
-            for count in nearby:
-                if count>cap:continue
-                try:trial(count,'probe')
+        if args.worker_counts:
+            print('Fixed full-flight comparison: '+','.join(map(str,args.worker_counts)),flush=True)
+            for count in args.worker_counts:
+                try:trial(count,'confirm')
                 except TrialStopped as exc:
-                    report['stopped_trials'].append({'workers':count,'phase':'probe','reason':str(exc)})
+                    report['stopped_trials'].append({'workers':count,'phase':'confirm','reason':str(exc)})
+                    print(f'Stopped {count} workers: {exc}',flush=True)
                     if 'time budget' in str(exc):raise
-                    cap=min(cap,count-1)
-        report['search_worker_cap']=cap
-        available=[r for r in report['results'] if r['phase']=='probe' and r['workers']<=cap]
-        preferred=best_result(available,args.tie_margin)
-        ranked=sorted(available,key=lambda r:r['complete_episode_pipeline_per_hour'],reverse=True)
-        finalists=([preferred]+[r for r in ranked if r is not preferred])[:args.finalists] if preferred else []
-        # Confirm lower counts first, so a larger failed trial leaves a validated fallback.
-        for candidate in sorted(finalists,key=lambda r:r['workers']):
-            try:trial(candidate['workers'],'confirm')
-            except TrialStopped as exc:
-                report['stopped_trials'].append({'workers':candidate['workers'],'phase':'confirm','reason':str(exc)})
-                if 'time budget' in str(exc):raise
-        report['status']='completed'
+        else:
+            trial(1,'probe');growth=2;flat=0
+            while growth<=cap:
+                try:result=trial(growth,'probe')
+                except TrialStopped as exc:
+                    report['stopped_trials'].append({'workers':growth,'phase':'probe','reason':str(exc)})
+                    if 'time budget' in str(exc):raise
+                    cap=growth-1;break
+                probes_done=[r for r in report['results'] if r['phase']=='probe']
+                previous=max(r['complete_episode_pipeline_per_hour'] for r in probes_done[:-1])
+                flat=flat+1 if result['complete_episode_pipeline_per_hour']<=previous*(1+args.tie_margin) else 0
+                cap=min(cap,adjusted_cap(probes_done,hardware,args.max_workers,args.instance_base,selected))
+                if flat>=2 or growth>=cap:break
+                growth=min(cap,growth*2)
+            while True:
+                probes_done=[r for r in report['results'] if r['phase']=='probe']
+                nearby=refinement_counts(probes_done,cap)
+                if not nearby:break
+                for count in nearby:
+                    if count>cap:continue
+                    try:trial(count,'probe')
+                    except TrialStopped as exc:
+                        report['stopped_trials'].append({'workers':count,'phase':'probe','reason':str(exc)})
+                        if 'time budget' in str(exc):raise
+                        cap=min(cap,count-1)
+            report['search_worker_cap']=cap
+            available=[r for r in report['results'] if r['phase']=='probe' and r['workers']<=cap]
+            preferred=best_result(available,args.tie_margin)
+            ranked=sorted(available,key=lambda r:r['complete_episode_pipeline_per_hour'],reverse=True)
+            finalists=([preferred]+[r for r in ranked if r is not preferred])[:args.finalists] if preferred else []
+            # Confirm lower counts first, so a larger failed trial leaves a validated fallback.
+            for candidate in sorted(finalists,key=lambda r:r['workers']):
+                try:trial(candidate['workers'],'confirm')
+                except TrialStopped as exc:
+                    report['stopped_trials'].append({'workers':candidate['workers'],'phase':'confirm','reason':str(exc)})
+                    if 'time budget' in str(exc):raise
+        report['status']='stopped' if args.worker_counts and report['stopped_trials'] else 'completed'
+        if report['status']=='stopped':report['stop_reason']='Requested configurations hit resource limits; see stopped_trials'
     except TrialStopped as exc:report['status']='stopped';report['stop_reason']=str(exc)
     except KeyboardInterrupt:report['status']='cancelled';code=130
     except Exception as exc:report['status']='failed';report['error']=f'{type(exc).__name__}: {exc}';code=1

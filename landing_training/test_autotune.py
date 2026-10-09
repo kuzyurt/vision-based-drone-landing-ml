@@ -1,6 +1,7 @@
 """Check adaptive choices, GPU detection and resource-budget cancellation."""
 import json
 import contextlib
+import io
 import os
 from pathlib import Path
 import subprocess
@@ -10,12 +11,52 @@ import time
 import unittest
 from unittest.mock import patch
 
-from .autotune import best_result,initial_worker_cap,probe_backends,refinement_counts,prune_recordings,main
+from .autotune import best_result,initial_worker_cap,probe_backends,refinement_counts,prune_recordings,main,requested_worker_counts,TrialStopped
 from .resource_monitor import GIB,ResourceMonitor,nvidia_snapshot,renderer_gpu_indices
 
 def result(count,speed):return {'workers':count,'complete_episode_pipeline_per_hour':speed}
 
 class AutoTuneChecks(unittest.TestCase):
+    def test_requested_counts_do_not_insert_baseline(self):
+        import argparse
+        self.assertEqual(requested_worker_counts('64,32,64'),[32,64])
+        for value in ('','0,32','32,129','32,no'):
+            with self.subTest(value=value),self.assertRaises(argparse.ArgumentTypeError):requested_worker_counts(value)
+    def test_fixed_counts_skip_search_and_preserve_resource_stops(self):
+        for resource_stop in (False,True):
+            with self.subTest(resource_stop=resource_stop):
+                tested=[]
+                def fake_trial(count,cases,repeats,phase,*args):
+                    tested.append((phase,count))
+                    if resource_stop and count==64:raise TrialStopped('process-tree RAM budget exceeded')
+                    return dict(result(count,100 if count==32 else 90),phase=phase,recording_fps=100,
+                        max_worker_ram_MiB=1024,resources=[],mean_used_cpu_cores=30,
+                        peak_used_cpu_cores_sampled=32,peak_ram_GiB=count,
+                        peak_device_vram_GiB=None,gpu_rendering_used=True,projected_collection_hours=10)
+                graphics={'renderer':'NVIDIA L4','backend':'egl','software_rendering':False}
+                with tempfile.TemporaryDirectory() as folder,contextlib.ExitStack() as stack:
+                    output=Path(folder)/'run'
+                    patches=[patch('landing_training.autotune.run_trial',side_effect=fake_trial),
+                        patch('landing_training.autotune.probe_backends',return_value=(graphics,[])),
+                        patch('landing_training.autotune.available_memory',return_value=128*GIB),
+                        patch('landing_training.autotune.cpu_topology',return_value={}),
+                        patch('landing_training.autotune.nvidia_snapshot',return_value=([],None)),
+                        patch('landing_training.collection_benchmark.hardware_info',return_value={'effective_cpu_capacity':32,'ram_GiB':128}),
+                        patch('landing_training.collection_benchmark.benchmark_scenarios',return_value=[{}]),
+                        patch('landing_training.autotune.check_px4'),
+                        patch('landing_training.autotune.cache_lock',return_value=contextlib.nullcontext()),
+                        patch('landing_training.scene.compile_scene',return_value=object()),
+                        patch('landing_training.gate.source_fingerprint',return_value='fixture')]
+                    for p in patches:stack.enter_context(p)
+                    stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
+                    self.assertEqual(main(['--worker-counts','32,64','--confirm-scenarios','1','--output',str(output)]),0)
+                    report=json.loads((output/'report.json').read_text())
+                    self.assertEqual(tested,[('confirm',32),('confirm',64)])
+                    self.assertEqual(report['search_mode'],'fixed_full_flights')
+                    self.assertEqual(report['probe_scenarios'],[])
+                    self.assertEqual(report['recommendation']['workers'],32)
+                    self.assertEqual(report['status'],'stopped' if resource_stop else 'completed')
+                    if resource_stop:self.assertEqual(report['stopped_trials'][0]['workers'],64)
     def test_choose_lower_concurrency_inside_noise_margin(self):
         rows=[result(1,50),result(2,98),result(4,100)]
         self.assertEqual(best_result(rows)['workers'],2)

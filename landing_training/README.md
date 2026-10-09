@@ -252,7 +252,18 @@ landing_training/.venv/bin/python -m landing_training.autotune \
 
 # Inspect the environment without starting PX4 or running flights.
 landing_training/.venv/bin/python -m landing_training.autotune --scan-only
+
+# Compare only 32 and 64 workers, without smaller counts or short probes.
+landing_training/.venv/bin/python -m landing_training.autotune \
+  --worker-counts 32,64 --confirm-scenarios 1 --max-minutes 40 --require-gpu
 ```
+
+`--worker-counts` skips adaptive search and runs complete flights only for the
+listed counts. It permits intentional CPU oversubscription, while live RAM,
+VRAM, disk and time guards still apply. Use a longer budget or more confirmation
+cases when needed. A stopped trial is reported explicitly; it is never replaced
+with an unrequested lower count. If `--max-workers` is also supplied it must
+cover every requested count.
 
 The price and budget must use the same currency (`--currency USD` by default).
 Cost estimates cover the stated compute rate only; storage, bandwidth, deposits,
