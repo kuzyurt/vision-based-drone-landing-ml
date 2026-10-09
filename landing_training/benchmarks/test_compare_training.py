@@ -1,6 +1,7 @@
 """The optimized benchmark must retain reports and reap its spawned readers."""
 from argparse import Namespace
 import contextlib
+import copy
 import io
 import json
 from pathlib import Path
@@ -13,13 +14,36 @@ import unittest
 from unittest.mock import patch
 
 import psutil
+import torch
 
 from .test_training import fixture
 from . import compare_training
 from ..gate import file_hash
+from ..policy import LandingPolicy
 
 
 class ComparisonChecks(unittest.TestCase):
+    def test_cleanup_failure_retains_measured_phase_with_incomplete_shutdown(self):
+        torch.set_num_threads(1)
+        real_loader=compare_training.ChunkLoader
+        class FailingCleanup(real_loader):
+            def __exit__(self,*args):
+                super().__exit__(*args)
+                raise RuntimeError('simulated cleanup failure')
+        with tempfile.TemporaryDirectory() as directory:
+            bundle=fixture(Path(directory));path=bundle/'one/observations.h5';progress=[]
+            args=Namespace(lanes=1,min_phase_seconds=0,sequence_steps=1,warmup_updates=0,
+                           updates=1,validation_chunks=1)
+            import threading
+            with patch.object(compare_training,'ChunkLoader',FailingCleanup):
+                with self.assertRaisesRegex(RuntimeError,'simulated cleanup'):
+                    compare_training.phase(LandingPolicy(freeze_encoder=True),[path],args,torch.device('cpu'),
+                        threading.Event(),cached=False,workers=0,
+                        save_progress=lambda results:progress.append(copy.deepcopy(results)))
+            self.assertGreater(progress[-1]['training']['frames_per_second'],0)
+            self.assertEqual(progress[-1]['training']['frames'],1)
+            self.assertFalse(progress[-1]['training']['reader_shutdown_completed'])
+
     def test_cuda_requirement_keeps_failure_report(self):
         with tempfile.TemporaryDirectory() as directory:
             args=Namespace(output=directory,device='cuda')

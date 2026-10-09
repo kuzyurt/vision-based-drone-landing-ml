@@ -113,11 +113,15 @@ def phase(model, paths, args, device, cancel, *, cached, workers, save_progress)
                             next_log = time.monotonic() + 2
                         if len(samples) >= required and measured >= minimum:
                             break
-        stats = reference.throughput(samples)
-        stats['loader_wait_percent'] = stats['stage_percent'].get('loader_wait', 0.)
-        stats['minimum_seconds_achieved'] = measured >= minimum
-        if validation_metrics is not None and samples:stats['metrics']=validation_metrics.report()
-        results[name] = stats; save_progress(results)
+            # Publish measured samples before leaving the reader context. Cleanup
+            # failures must retain throughput, while leaving completion false.
+            stats = reference.throughput(samples)
+            stats['loader_wait_percent'] = stats['stage_percent'].get('loader_wait', 0.)
+            stats['minimum_seconds_achieved'] = measured >= minimum
+            stats['reader_shutdown_completed']=False
+            if validation_metrics is not None and samples:stats['metrics']=validation_metrics.report()
+            results[name] = stats; save_progress(results)
+        stats['reader_shutdown_completed']=True;save_progress(results)
         if cancel.is_set():break
     results['workers'] = actual_workers
     results['finite_parameters'] = all(bool(torch.isfinite(p).all()) for p in model.parameters())

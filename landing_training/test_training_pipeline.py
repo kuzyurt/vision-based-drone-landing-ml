@@ -131,6 +131,38 @@ class PipelineChecks(unittest.TestCase):
                           ('c', 0, 2, 2), ('b', 6, 7, 2)])
         self.assertNotEqual(plan[0]['token'], plan[-2]['token'])
 
+    def test_early_exit_drains_only_prefetched_window_and_reaps_four_readers(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);source=self.recording(root);before=file_hash(source)
+            plan=chunk_plan([source],frame_counts([source]),lanes=1,steps=1,repeat=True,max_updates=10000)
+            # Beyond the current prefetch window, data is deliberately unavailable.
+            # Cleanup must not start these unrequested records or drain the full plan.
+            for spec in plan[10:]:spec['path']=str(root/'unrequested.h5')
+            with ChunkLoader(plan,workers=4) as loader:
+                first=next(loader);readers=list(loader.iterator._workers)
+                self.assertEqual(first['spec']['start'],0)
+            self.assertTrue(all(not process.is_alive() for process in readers))
+            self.assertTrue(all(process.exitcode==0 for process in readers))
+            self.assertEqual(file_hash(source),before)
+
+    def test_feature_steady_timing_excludes_reader_join_but_total_includes_it(self):
+        from . import training_pipeline as pipeline
+        from types import SimpleNamespace
+        real_loader=pipeline.ChunkLoader;real_clock=time.monotonic;offset=[0.]
+        class DelayedJoin(real_loader):
+            def __exit__(self,*args):
+                super().__exit__(*args)
+                offset[0]+=1000. # Simulate a slow join without blocking the test.
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);source=self.recording(root)
+            with patch.object(pipeline,'ChunkLoader',DelayedJoin), \
+                    patch.object(pipeline,'time',SimpleNamespace(monotonic=lambda:real_clock()+offset[0])):
+                _,stats=build_feature_cache(LandingPolicy(freeze_encoder=True),[source],root/'cache','cpu',
+                                            workers=0,steps=1,min_free_gb=0)
+            self.assertGreaterEqual(stats['seconds'],1000)
+            self.assertLess(stats['steady_seconds'],10)
+            self.assertEqual(stats['steady_frames'],2)
+
     def test_cache_refuses_trainable_encoder_and_cooperative_cancel(self):
         with self.assertRaisesRegex(ValueError, 'frozen'):
             encoder_fingerprint(LandingPolicy())

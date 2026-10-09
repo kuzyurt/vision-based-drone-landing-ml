@@ -72,6 +72,8 @@ def chunk_plan(paths, counts, lanes=8, steps=64, *, repeat=False, max_updates=No
 
 
 def worker_init(_index):
+    import faulthandler
+    faulthandler.enable(all_threads=True)
     torch.set_num_threads(1)
 
 
@@ -150,7 +152,7 @@ class ChunkLoader:
             options.update(prefetch_factor=prefetch, multiprocessing_context='spawn',
                            worker_init_fn=worker_init, timeout=120)
         self.loader = DataLoader(ChunkDataset(plan, cached), **options)
-        self.iterator = None
+        self.iterator = None;self.prefetch=prefetch
 
     def __enter__(self):
         self.iterator = iter(self.loader)
@@ -174,11 +176,25 @@ class ChunkLoader:
             yield update
 
     def __exit__(self, *_args):
-        # PyTorch 2.7's iterator has no public context manager for early shutdown.
-        if self.iterator is not None and hasattr(self.iterator, '_shutdown_workers'):
-            self.iterator._shutdown_workers()
-        self.iterator = None
-        self.loader.dataset.arrays.clear(); self.loader.dataset.array_bytes = 0
+        iterator=self.iterator
+        try:
+            if self.workers and iterator is not None and not iterator._shutdown:
+                # Timed benchmarks stop with tensors still being prefetched/pinned.
+                # Finish the bounded in-flight window before asking workers to exit.
+                # PyTorch 2.7 has no public stop-prefetch API: replacing its sampler
+                # prevents __next__ from scheduling any new work while we drain it.
+                iterator._sampler_iter=iter(())
+                for _ in range(self.workers*self.prefetch+1):
+                    try:next(iterator)
+                    except StopIteration:break
+                else:raise RuntimeError('DataLoader did not exhaust its bounded prefetch window')
+        finally:
+            try:
+                if iterator is not None and hasattr(iterator,'_shutdown_workers'):
+                    iterator._shutdown_workers()
+            finally:
+                self.iterator=None
+                self.loader.dataset.arrays.clear();self.loader.dataset.array_bytes=0
 
 
 def encoder_fingerprint(model):
@@ -290,7 +306,9 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
                 if chunks == max(2, loader.workers * 2):
                     steady_started = time.monotonic()
                 next_begin=time.monotonic();cache_write+=next_begin-loaded-encode_seconds
-            steady_finished = time.monotonic()
+                # Stop steady timing at the last completed chunk, before the
+                # iterator's natural EOF joins readers and its pinning thread.
+                if steady_frames:steady_finished=next_begin
             actual_workers = loader.workers
     finally:
         if current is not None:
@@ -298,7 +316,7 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
         if partial is not None:
             partial.unlink(missing_ok=True)
     elapsed = time.monotonic() - started
-    steady_seconds = steady_finished - steady_started if steady_started is not None else 0.
+    steady_seconds = steady_finished - steady_started if steady_started is not None and steady_finished is not None else 0.
     return mapping, {'encoder_sha256': encoder_hash, 'workers': actual_workers,
                      'built_episodes': completed, 'reused_episodes': reused, 'built_frames': built_frames,
                      'seconds': elapsed, 'frames_per_second': built_frames / elapsed if built_frames else None,

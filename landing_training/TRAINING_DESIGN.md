@@ -48,6 +48,9 @@ benchmark 0/4/8/16 readers rather than equating vCPUs with a good setting. Cache
 files are content/encoder/preprocessing/supervision keyed, checksummed and
 atomically published. Interrupted partial files are removed; completed caches
 can be reused. Production preparation reserves 32 GB free space.
+Early exit stops scheduling new chunks and drains only the in-flight prefetch
+window before worker shutdown, including outstanding tensor transfers/pinning.
+Normal worker errors still fail the run; shutdown errors are not suppressed.
 
 Cached epochs use in-process feature reads with a bounded 512 MiB LRU and batch
 equal-length recurrent lanes. Each episode has a distinct hidden-state token;

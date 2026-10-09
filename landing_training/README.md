@@ -724,6 +724,14 @@ downloads or an individual CUDA operation can overrun it. Normal SIGINT/SIGTERM
 save partial results; sudden power loss or SIGKILL can only retain the last
 atomic progress report. Resource guards reserve RAM and GPU headroom.
 
+Timed phases stop scheduling new reads and drain only the bounded prefetch
+window before reader shutdown. This also applies when training exits early.
+Measurements are saved before cleanup; each phase records
+`reader_shutdown_completed`, so a cleanup failure retains its measurements while
+the overall run stays failed. Worker fault handlers write abort diagnostics to
+the console log. To repeat only the reader configuration already measured best,
+pass `--reader-workers 4` (use your own measured winner).
+
 The report includes train and validation frames/s, cache preparation speed for
 each reader setting, loader wait and transfer/model/optimizer time, learning
 sanity results, reference stage timings and parameter counts; CPU use and peak
