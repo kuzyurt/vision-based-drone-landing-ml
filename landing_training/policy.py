@@ -23,6 +23,10 @@ class LandingPolicy(nn.Module):
         self.register_buffer('image_mean',torch.tensor([.485,.456,.406]).view(1,3,1,1));self.register_buffer('image_std',torch.tensor([.229,.224,.225]).view(1,3,1,1))
 
     def forward(self,images,telemetry,hidden=None):
+        return self.forward_features(self.encode_images(images),telemetry,hidden)
+
+    def encode_images(self,images):
+        """Fixed spatial features can be cached while the encoder is frozen."""
         batch,steps=images.shape[:2]
         image=images.reshape(-1,*images.shape[2:]).float()/255.
         features=self.encoder((image-self.image_mean)/self.image_std)
@@ -30,7 +34,10 @@ class LandingPolicy(nn.Module):
         probability=torch.softmax(features.reshape(n,channels,-1),dim=-1)
         yy,xx=torch.meshgrid(torch.linspace(-1,1,height,device=images.device),torch.linspace(-1,1,width,device=images.device),indexing='ij')
         spatial=torch.stack(((probability*xx.flatten()).sum(-1),(probability*yy.flatten()).sum(-1),features.mean((2,3))),dim=-1).reshape(n,-1)
-        visual=self.visual(spatial).reshape(batch,steps,-1)
+        return spatial.reshape(batch,steps,-1)
+
+    def forward_features(self,spatial,telemetry,hidden=None):
+        visual=self.visual(spatial)
         state=self.telemetry((telemetry-self.observation_mean)/self.observation_std)
         recurrent,hidden=self.gru(torch.cat((visual,state),dim=-1),hidden)
         return torch.tanh(self.actions(recurrent)),self.auxiliary(recurrent),hidden
@@ -52,6 +59,7 @@ class PolicyRuntime:
         self.device=torch.device(device);self.model=LandingPolicy().to(self.device)
         checkpoint=torch.load(checkpoint,map_location=self.device,weights_only=False)
         if checkpoint.get('schema')!='aerodock.landing.checkpoint.v1':raise ValueError('Unknown checkpoint schema')
+        self.metadata={key:checkpoint.get(key) for key in ('schema','epoch','dataset_sha256','review_manifest_sha256','training')}
         self.model.load_state_dict(checkpoint['model']);self.model.eval();self.hidden=None
     def reset(self):self.hidden=None
     @torch.inference_mode()

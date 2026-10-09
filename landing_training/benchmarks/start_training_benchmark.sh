@@ -20,7 +20,7 @@ mkdir "$AERODOCK_BENCHMARK_OUTPUT"
 printf '%s\n' "$AERODOCK_BENCHMARK_OUTPUT" > landing_training/outputs/latest_training_benchmark.txt.tmp
 mv landing_training/outputs/latest_training_benchmark.txt.tmp landing_training/outputs/latest_training_benchmark.txt
 set +e
-"$AERODOCK_BENCHMARK_PYTHON" -u -m landing_training.benchmarks.training \
+"$AERODOCK_BENCHMARK_PYTHON" -u -m landing_training.benchmarks.compare_training \
   "$@" --output "$AERODOCK_BENCHMARK_OUTPUT" \
   2>&1 | tee "$AERODOCK_BENCHMARK_OUTPUT/console.log"
 AERODOCK_BENCHMARK_EXIT="${PIPESTATUS[0]}"

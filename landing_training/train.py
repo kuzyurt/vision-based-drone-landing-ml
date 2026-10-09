@@ -70,64 +70,128 @@ def loss_function(prediction,aux,targets,valid,aux_targets):
     mask=aux_targets[...,0]
     return loss+.1*visibility+.05*contact+.05*(regression*mask).sum()/mask.sum().clamp_min(1)
 
-def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,finetune_encoder=False):
+def atomic_checkpoint(value,path):
+    import os
+    temporary=path.with_suffix('.pt.tmp')
+    torch.save(value,temporary)
+    with temporary.open('rb') as stream:os.fsync(stream.fileno())
+    temporary.replace(path)
+    if os.name!='nt':
+        descriptor=os.open(path.parent,os.O_RDONLY|os.O_DIRECTORY)
+        try:os.fsync(descriptor)
+        finally:os.close(descriptor)
+
+
+def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,finetune_encoder=False,
+          loader_workers='auto',feature_cache='auto',cpu_threads=4,resume=False,patience=3,min_delta=1e-5):
+    # Authorization always precedes feature-cache creation or optimizer work.
     path,manifest,training,validation=approved_dataset(manifest_path,bundle)
-    if epochs<=0:raise ValueError('Epoch count must be positive')
-    random.seed(714);torch.manual_seed(714)
-    output=Path(output);output.mkdir(parents=True,exist_ok=True);torch.hub.set_dir(str(output/'weights'))
+    if epochs<=0 or cpu_threads<=0 or patience<0 or not math.isfinite(min_delta) or min_delta<0:raise ValueError('Invalid training budget or early stopping settings')
+    if finetune_encoder and feature_cache not in ('auto','off'):raise ValueError('Cannot cache a trainable encoder')
+    from .training_pipeline import (build_feature_cache,frame_counts,chunk_plan,ChunkLoader,run_update,
+                                    ValidationMetrics,teacher_supervision)
+    random.seed(714);torch.manual_seed(714);torch.set_num_threads(cpu_threads)
+    output=Path(output)
+    if not resume and any((output/name).exists() for name in ('latest.pt','best.pt','history.json','training_result.json')):
+        raise FileExistsError('Training results already exist: use --resume or a new output directory')
+    output.mkdir(parents=True,exist_ok=True);torch.hub.set_dir(str(output/'weights'))
     model=LandingPolicy(pretrained=pretrained,freeze_encoder=not finetune_encoder).to(device)
-    total=np.zeros(32);squared=np.zeros(32);count=0
+    dataset_hash=file_hash(path);review_hash=file_hash(Path(bundle)/'manifest.json');restored=None
+    if resume:
+        restored=torch.load(output/'latest.pt',map_location=device,weights_only=False)
+        if restored.get('schema')!='aerodock.landing.checkpoint.v1' or restored.get('dataset_sha256')!=dataset_hash or restored.get('review_manifest_sha256')!=review_hash:
+            raise PermissionError('Resume checkpoint does not match the approved dataset/review')
+        if 'optimizer' not in restored or 'rng' not in restored:raise ValueError('Legacy checkpoint cannot resume optimizer/RNG state')
+        if restored['training'].get('finetune_encoder')!=finetune_encoder:raise ValueError('Resume must keep the encoder training mode')
+        model.load_state_dict(restored['model'])
+    supervision,excluded=teacher_supervision(manifest,path.parent)
+    if excluded:print('Masking imitation targets from failed expert flights:',excluded,flush=True)
+    cached=not finetune_encoder and feature_cache!='off';cache_info=None
+    if cached:
+        cache_directory=output/'features' if feature_cache=='auto' else Path(feature_cache)
+        source_hashes={str((path.parent/e['path']).resolve()):e['sha256'] for e in manifest['episodes']}
+        mapping,cache_info=build_feature_cache(model,training+validation,cache_directory,device,
+                                             workers=loader_workers,source_hashes=source_hashes,supervision=supervision)
+        training=[Path(mapping[str(p)]) for p in training];validation=[Path(mapping[str(p)]) for p in validation]
+    total=np.zeros(32);squared=np.zeros(32);count=0;supervised=0
     for episode in training:
-        for row in rows(episode):
-            value=numeric_observation(row).astype(np.float64);total+=value;squared+=value*value;count+=1
+        if cached:
+            with h5py.File(episode,'r') as data:
+                for start in range(0,len(data['numeric']),1024):
+                    values=np.asarray(data['numeric'][start:start+1024],dtype=np.float64)
+                    total+=values.sum(0);squared+=(values*values).sum(0);count+=len(values)
+                supervised+=int(np.asarray(data['valid']).sum())
+        else:
+            for row in rows(episode):
+                value=numeric_observation(row).astype(np.float64);total+=value;squared+=value*value;count+=1
+                supervised+=int(supervision.get(str(episode),True) and not row.get('terminal',False) and row['output'].get('action_supervision_valid',True))
+    if not count or not supervised:raise ValueError('No valid training teacher actions')
     mean=total/count;std=np.sqrt(np.maximum(squared/count-mean*mean,1e-6))
     model.observation_mean.copy_(torch.from_numpy(mean).to(device));model.observation_std.copy_(torch.from_numpy(std).to(device))
     optimizer=torch.optim.Adam([p for p in model.parameters() if p.requires_grad],lr=1e-4)
-    best=float('inf');history=[]
-    for epoch in range(epochs):
-        order=training.copy();random.shuffle(order);pending=iter(order);lanes=[];steps=0;total_loss=0.
-        for _ in range(8):
-            try:lanes.append(Lane(next(pending)))
-            except StopIteration:break
+    best=float('inf');history=[];counts=frame_counts(training+validation);start_epoch=0;bad_epochs=0
+    if restored is not None:
+        optimizer.load_state_dict(restored['optimizer']);start_epoch=restored['epoch']
+        best=restored['best_validation_loss'];bad_epochs=restored['bad_epochs'];history=restored['history']
+        random.setstate(restored['rng']['python']);np.random.set_state(restored['rng']['numpy'])
+        torch.set_rng_state(restored['rng']['torch'].cpu())
+        if torch.device(device).type=='cuda' and restored['rng']['cuda'] is not None:torch.cuda.set_rng_state(restored['rng']['cuda'].cpu(),device)
+        if restored['is_best']:atomic_checkpoint(restored,output/'best.pt')
+    stop_reason='epoch_budget_completed'
+    for epoch in range(start_epoch,epochs):
+        if patience and bad_epochs>=patience:stop_reason='validation_early_stopping';break
+        order=training.copy();random.shuffle(order);steps=0;total_loss=0.;hidden={}
         model.train()
         if not finetune_encoder:model.encoder.eval()
         else:
-            # Keep frame features independent of future frames in a sequence.
             for module in model.encoder.modules():
                 if isinstance(module,nn.BatchNorm2d):module.eval()
-        while lanes:
-            optimizer.zero_grad();count=len(lanes)
-            for lane in lanes:
-                image,obs,target,valid,aux_target=lane.chunk(64,device)
-                prediction,aux,lane.hidden=model(image,obs,lane.hidden)
-                loss=loss_function(prediction,aux,target,valid,aux_target);(loss/count).backward();total_loss+=float(loss.detach())
-                lane.hidden=lane.hidden.detach()
-            nn.utils.clip_grad_norm_(model.parameters(),1.);optimizer.step();steps+=1
-            next_lanes=[]
-            for lane in lanes:
-                if lane.done():
-                    lane.close()
-                    try:next_lanes.append(Lane(next(pending)))
-                    except StopIteration:pass
-                else:next_lanes.append(lane)
-            lanes=next_lanes
-        model.eval();validation_losses=[]
-        with torch.inference_mode():
-            for episode in validation:
-                lane=Lane(episode)
-                try:
-                    while not lane.done():
-                        image,obs,target,valid,aux_target=lane.chunk(64,device);prediction,aux,lane.hidden=model(image,obs,lane.hidden)
-                        validation_losses.append(float(loss_function(prediction,aux,target,valid,aux_target)))
-                finally:lane.close()
-        value=float(np.mean(validation_losses));history.append({'epoch':epoch+1,'optimizer_steps':steps,'train_sequence_loss_sum':total_loss,'validation_loss':value})
-        checkpoint={'schema':'aerodock.landing.checkpoint.v1','model':model.state_dict(),'epoch':epoch+1,'dataset_sha256':file_hash(path),'review_manifest_sha256':file_hash(Path(bundle)/'manifest.json'),'training':{'sequence_steps':64,'effective_batch_sequences':8,'learning_rate':1e-4},'validation_loss':value}
-        torch.save(checkpoint,output/'latest.pt')
-        if value<best:best=value;torch.save(checkpoint,output/'best.pt')
-        (output/'history.json').write_text(json.dumps(history,indent=2));print(history[-1],flush=True)
+        plan=chunk_plan(order,counts,lanes=8,steps=64,supervision=None if cached else supervision)
+        # Feature records are tiny: in-process reads avoid multiprocessing overhead.
+        epoch_workers=0 if cached else loader_workers
+        with ChunkLoader(plan,cached=cached,workers=epoch_workers,device=device) as loader:
+            actual_workers=loader.workers
+            for update in loader.updates():
+                _,value=run_update(model,optimizer,update,hidden,device,cached=cached)
+                total_loss+=value;steps+=1
+        model.eval();metrics=ValidationMetrics();hidden={}
+        plan=chunk_plan(validation,counts,lanes=1,steps=64,supervision=None if cached else supervision)
+        with ChunkLoader(plan,cached=cached,workers=epoch_workers,device=device) as loader,torch.inference_mode():
+            for update in loader.updates():
+                run_update(model,None,update,hidden,device,cached=cached,metrics=metrics)
+        validation_metrics=metrics.report();value=validation_metrics['loss']
+        improved=value<best-min_delta
+        if improved:best=value;bad_epochs=0
+        else:bad_epochs+=1
+        history.append({'epoch':epoch+1,'optimizer_steps':steps,'train_sequence_loss_sum':total_loss,
+                        'validation_loss':value,'validation_metrics':validation_metrics})
+        checkpoint={'schema':'aerodock.landing.checkpoint.v1','model':model.state_dict(),'epoch':epoch+1,
+                    'dataset_sha256':dataset_hash,'review_manifest_sha256':review_hash,
+                    'training':{'sequence_steps':64,'effective_batch_sequences':8,'learning_rate':1e-4,
+                                'loader_workers':actual_workers,'feature_cache':cached,'cpu_threads':cpu_threads,
+                                'precision':'float32','batched_lanes':True,'finetune_encoder':finetune_encoder,
+                                'validation_metric':'dataset_weighted_components.v1','patience':patience,'min_delta':min_delta},
+                    'validation_loss':value,'feature_preparation':cache_info,'optimizer':optimizer.state_dict(),
+                    'rng':{'python':random.getstate(),'numpy':np.random.get_state(),'torch':torch.get_rng_state(),
+                           'cuda':torch.cuda.get_rng_state(device) if torch.device(device).type=='cuda' else None},
+                    'best_validation_loss':best,'bad_epochs':bad_epochs,'history':history,'is_best':improved,
+                    'data_quality':{'masked_expert_failures':excluded,'train_steps':count,'supervised_train_steps':supervised,
+                                    'training_episodes':len(training),'validation_episodes':len(validation)}}
+        atomic_checkpoint(checkpoint,output/'latest.pt')
+        if improved:atomic_checkpoint(checkpoint,output/'best.pt')
+        from .collection_session import atomic_json
+        atomic_json(output/'history.json',history);print(history[-1],flush=True)
+    from .collection_session import atomic_json
+    atomic_json(output/'training_result.json',{'status':'completed','stop_reason':stop_reason,'completed_epochs':len(history),
+                'best_validation_loss':best,'latest_checkpoint':str(output/'latest.pt'),'best_checkpoint':str(output/'best.pt')})
     return history
 
 import math
 if __name__=='__main__':
+    import signal
+    def cancel(signum,frame):raise KeyboardInterrupt('Training cancelled')
+    signal.signal(signal.SIGTERM,cancel)
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--manifest',required=True);parser.add_argument('--review',required=True);parser.add_argument('--output',required=True);parser.add_argument('--epochs',type=int,default=10);parser.add_argument('--device',default='cpu');parser.add_argument('--no-pretrained',action='store_true');parser.add_argument('--finetune-encoder',action='store_true')
-    args=parser.parse_args();train(args.manifest,args.review,args.output,args.epochs,args.device,not args.no_pretrained,args.finetune_encoder)
+    parser.add_argument('--loader-workers',default='auto');parser.add_argument('--feature-cache',default='auto',help='auto, off, or a cache directory');parser.add_argument('--cpu-threads',type=int,default=4)
+    parser.add_argument('--resume',action='store_true');parser.add_argument('--patience',type=int,default=3);parser.add_argument('--min-delta',type=float,default=1e-5)
+    args=parser.parse_args();train(args.manifest,args.review,args.output,args.epochs,args.device,not args.no_pretrained,args.finetune_encoder,args.loader_workers,args.feature_cache,args.cpu_threads,args.resume,args.patience,args.min_delta)

@@ -133,11 +133,11 @@ def summary(report):
     return '\n'.join(lines) + '\n'
 
 
-def benchmark(args):
+def benchmark(args, cancel_event=None):
     output = Path(args.output).resolve()
     output.mkdir(parents=True, exist_ok=True)
     started = time.monotonic()
-    cancelled = threading.Event()
+    cancelled = cancel_event if cancel_event is not None else threading.Event()
     report = {'schema': 'aerodock.landing.training_benchmark.v1',
               'role': 'performance_benchmark', 'status': 'starting',
               'started_utc': datetime.now(timezone.utc).isoformat(),
@@ -194,6 +194,8 @@ def benchmark(args):
         report['device_name'] = torch.cuda.get_device_name(device) if device.type == 'cuda' else 'CPU'
         bundle = default_bundle() if args.review == 'auto' else Path(args.review).resolve()
         inputs = recordings(bundle)
+        if getattr(args, 'episode_limit', None):
+            inputs = inputs[:args.episode_limit]
         report['review_manifest_sha256'] = file_hash(bundle / 'manifest.json')
         report['review_directory'] = str(bundle)
         report['recordings'] = inputs

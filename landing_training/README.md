@@ -571,7 +571,7 @@ excluded entirely.
 | Wind | Calm, steady, breeze, gusty; mean 0–4 m/s; all directions |
 | Waves | Height parameter 0–0.15 m; period 2–5 s; all directions and seeded phase |
 | Appearance | Brightness/contrast 0.85–1.15; blur 0–0.5 px |
-| Camera timing | 0–200 ms synthetic delay; initial view visible or outside boat |
+| Camera timing | 0–200 ms synthetic delay; initial camera aimed at/away from boat, 50/50 in each split |
 | Fault coverage | 70% nominal, 10% camera blackout, 10% radio dropout, 10% readiness delay |
 
 All splits include nominal and fault cases. The wave parameter is the original
@@ -581,8 +581,10 @@ follow the shared gravity and Airy dispersion relation, rather than varying
 height, wavelength and period inconsistently. Sea current is supported explicitly
 within 0.3 m/s but stays zero in the initial collection plan.
 
-An episode starts airborne, ends at an outcome or 180 s, and retains failures and
-their preceding valid expert actions. RGB, raw and bounded teacher actions,
+An episode starts airborne, ends at an outcome or 180 s, and retains failures.
+The trainer masks action imitation for expert flights ending in water strikes or
+forbidden collisions; their visibility/contact labels remain available. DAgger
+teacher corrections on failed student flights remain supervised. RGB, raw and bounded teacher actions,
 executed actions, intervention masks, timestamps, telemetry, seeded scenario and
 privileged labels are stored. DAgger collection additionally retains the learner
 proposal and checkpoint hash while labelling the learner's visited states.
@@ -628,27 +630,67 @@ truncated between chunks. One optimizer step accumulates the current eight lane
 chunks, with shorter final chunks and fewer lanes when the epoch ends. Adam uses
 1e-4, gradient norm clipping 1, normalized Huber action loss, and auxiliary
 visibility/contact/regression losses. Invalid or terminal teacher actions are
-excluded from action imitation. Default run length is ten epochs; each epoch
-evaluates held-out validation loss and saves latest/best checkpoints. Test worlds
+excluded from action imitation. Default run budget is ten epochs, with early
+stopping after three validation epochs without improvement. Validation loss uses
+dataset-wide denominators for each component, so one-frame terminal chunks do
+not receive disproportionate weight. Reports include the previous-action
+persistence baseline and visibility/contact coverage. Each epoch saves atomic
+latest/best checkpoints, optimizer state and RNG state. Test worlds
 never choose weights. Offline loss alone does not qualify autonomous landing;
 run closed-loop held-out evaluation and inspect failures before deployment.
 
+The default frozen encoder is evaluated once per recording. Its 1,728 spatial
+features are cached in FP32 before the trainable vision projection; no image
+resolution or feature precision is reduced. Epochs then train the projection,
+telemetry network, GRU and heads without repeatedly decoding RGB or running the
+same CNN. Eight equal-length lanes share one recurrent batch; shorter final
+chunks retain their original loss weight and episode state. Fine-tuning uses the
+RGB path and cannot reuse fixed features.
+
+Feature preparation uses bounded spawned readers, capped by CPU availability,
+RAM and shared memory. Each cache file is checksummed, keyed by source contents,
+encoder/preprocessing and supervision mask, and published atomically. Original
+recordings remain intact. The production cache reserves 32 GB free space and
+costs approximately 7,108 bytes per frame plus file metadata: about 11.5 GB for
+1,080 training/validation episodes averaging 60 s. Test episodes are not cached.
+There is no image augmentation during cached epochs; appearance variation is
+already recorded in the scenarios. New per-epoch visual augmentation requires
+the RGB path or a separately qualified cache scheme.
+
+`--loader-workers auto` selects bounded raw readers; cached epochs always read
+features in-process. Use the benchmark's measured reader setting for raw/cache
+preparation if appropriate for the pilot.
+`--feature-cache off` retains RGB training. `--resume` restores `latest.pt`,
+including optimizer and RNG state, against exactly the same approved dataset.
+Resume starts after the last complete epoch and replays any interrupted epoch.
+An existing training output requires resume or a new output directory.
+`--patience 0` disables early stopping. `--epochs` is the total epoch budget,
+including resumed epochs. [TRAINING_DESIGN.md](TRAINING_DESIGN.md) records the
+model rationale, verified checks and remaining production-readiness gaps.
+
 ### Training time benchmark before production collection
 
-`landing_training.benchmarks.training` reads the ten review HDF5 files, uses the
-actual `Lane`, policy and loss from the trainer, and times temporary optimizer
-updates. It discards model weights, writes no policy checkpoint, and does not
-change approval or recording eligibility. Review data remains excluded from
-production training. No simulator or additional camera is rendered during this
-benchmark. Existing review approval is unaffected because these isolated tools
-do not change any production source or asset.
+`landing_training.benchmarks.compare_training` reads the ten review HDF5 files
+and compares the previous serial RGB trainer, parallel RGB with batched recurrent
+updates, and the new cached-feature production loop. It scans 0/4/8/16 raw reader
+workers, capped by available resources, then reports the best measured cache-build
+configuration. Cache preparation is measured separately and included once in
+the total-time projection. It also fits a small fixed fragment for 100 updates
+to verify that action imitation loss decreases. This diagnostic establishes
+optimizer/label wiring, not held-out accuracy or landing reliability.
+
+All temporary weights are discarded; no policy checkpoint or approval is
+created. Source recordings remain unchanged and retain review-only eligibility.
+No simulator or additional camera is rendered. The previous benchmark remains
+available as `landing_training.benchmarks.training` for reference comparisons.
 
 Defaults match the trainer's frozen ImageNet encoder, 640×360 images, FP32,
-eight serial recurrent lanes, 64-frame chunks, Adam and gradient clipping.
+eight recurrent lanes, 64-frame chunks, Adam and gradient clipping.
 Telemetry normalization is measured on the review workload. Two optimizer
 updates and one validation chunk warm up the device and are excluded from
 throughput. Twenty measured optimizer updates and twenty validation chunks
-follow. CUDA timing synchronizes the device. CPU threads default to four; use
+follow, with at least 15 measured seconds per optimized phase. CUDA timing
+synchronizes the device. CPU threads default to four; use
 the same thread setting for the eventual production trainer when comparing
 speeds. `--sequence-steps`, `--lanes` and `--no-pretrained` are useful for smoke
 tests but change the workload; reports flag deviations from production defaults.
@@ -677,16 +719,24 @@ tail -n 20 "$AERODOCK_TRAIN_BENCH/console.log"
 CUDA is required by default, with no silent CPU fallback. Keep CUDA PyTorch on
 the VM; installing `requirements-training.txt` would replace it with CPU wheels.
 The first pretrained run downloads the standard torchvision MobileNet weights
-into `outputs/weights/`. The ten-minute limit is cooperative between chunks;
+into `outputs/weights/`. The twenty-minute limit is cooperative between chunks;
 downloads or an individual CUDA operation can overrun it. Normal SIGINT/SIGTERM
 save partial results; sudden power loss or SIGKILL can only retain the last
 atomic progress report. Resource guards reserve RAM and GPU headroom.
 
-The report includes train and validation frames/s, data read/decode/transfer,
-forward, loss/backward and optimizer time; parameter counts; CPU use and peak
+The report includes train and validation frames/s, cache preparation speed for
+each reader setting, loader wait and transfer/model/optimizer time, learning
+sanity results, reference stage timings and parameter counts; CPU use and peak
 RAM; CUDA device and PyTorch allocated/reserved VRAM; device-wide NVIDIA
 utilization and VRAM. GPU telemetry can include other jobs. Run without concurrent
 collection or training for an interpretable result.
+
+Cache-build reader probes include startup and complete-file checksums in their
+end-to-end speed, and also report steady throughput after warmup. Selection uses
+steady throughput when available. A small review workload cannot prove that the
+same reader count wins on cold production storage. Cache-build timing includes
+encoding and cache writes, but source integrity hashing is reported separately.
+The benchmark reserves 2 GB disk headroom; production preparation reserves 32 GB.
 
 Projections use 960 training and 120 validation episodes per epoch; the 120 test
 episodes are excluded. It shows the observed review mean and hypothetical
@@ -697,10 +747,13 @@ workload fits in RAM more easily than the eventual dataset: disk-cache effects
 can make estimates optimistic. Collection FPS is not training FPS.
 
 The automatic collection→training workflow is not enabled by this benchmark.
-Before implementing it, fix camera-visibility balance in validation/test and
-validate broader boat starting progress on routes. Production training also
-needs atomic checkpoints containing optimizer/RNG state and an explicit resume
-path. A storage-limit stop must not silently train an incomplete dataset; the
+Camera-aim balance, atomic optimizer/RNG checkpoints and resume are implemented.
+Broader boat starting progress on routes and closed-loop pilot performance still
+need qualification. Training-source changes invalidate an older full-source
+approval fingerprint. If the simulation runtime fingerprint is unchanged,
+review export can reuse its videos and regenerate current plan/audit metadata;
+the refreshed bundle still requires explicit user verification before production.
+A storage-limit stop must not silently train an incomplete dataset; the
 orchestrator must validate collection completion, split integrity and approval
 before starting a CUDA training job.
 
