@@ -8,9 +8,32 @@ from .recording import numeric_observation
 
 ACTION_SCALE=torch.tensor([2.,2.,.7,.5,math.radians(50),math.radians(40)])
 
+OBSERVATION_MODES = ('legacy', 'periodic_no_action_v1')
+
+def policy_observation(telemetry, mode='legacy'):
+    """Versioned model inputs; the recorded 32-value sensor contract stays fixed.
+
+    A previous teacher action can be an imitation shortcut and becomes the
+    model's own prediction in closed loop. The opt-in representation replaces
+    those six values with periodic yaw/pan/tilt pairs. Raw angles are zeroed so
+    an equivalent orientation after a complete turn has equivalent inputs.
+    """
+    if mode == 'legacy':
+        return telemetry
+    if mode != 'periodic_no_action_v1':
+        raise ValueError('Unknown policy observation mode: ' + str(mode))
+    result = telemetry.clone()
+    for angle_index, slot in ((5, 24), (9, 26), (10, 28)):
+        result[..., slot] = torch.sin(telemetry[..., angle_index])
+        result[..., slot + 1] = torch.cos(telemetry[..., angle_index])
+        result[..., angle_index] = 0
+    return result
+
 class LandingPolicy(nn.Module):
-    def __init__(self,pretrained=False,freeze_encoder=False):
+    def __init__(self,pretrained=False,freeze_encoder=False,observation_mode='legacy'):
         super().__init__()
+        if observation_mode not in OBSERVATION_MODES:raise ValueError('Unknown policy observation mode')
+        self.observation_mode=observation_mode
         backbone=mobilenet_v3_small(weights=MobileNet_V3_Small_Weights.DEFAULT if pretrained else None)
         self.encoder=backbone.features
         if freeze_encoder:
@@ -38,7 +61,7 @@ class LandingPolicy(nn.Module):
 
     def forward_features(self,spatial,telemetry,hidden=None):
         visual=self.visual(spatial)
-        state=self.telemetry((telemetry-self.observation_mean)/self.observation_std)
+        state=self.telemetry((policy_observation(telemetry,self.observation_mode)-self.observation_mean)/self.observation_std)
         recurrent,hidden=self.gru(torch.cat((visual,state),dim=-1),hidden)
         return torch.tanh(self.actions(recurrent)),self.auxiliary(recurrent),hidden
 
@@ -56,9 +79,10 @@ def denormalize_action(action):
 
 class PolicyRuntime:
     def __init__(self,checkpoint,device='cpu'):
-        self.device=torch.device(device);self.model=LandingPolicy().to(self.device)
+        self.device=torch.device(device)
         checkpoint=torch.load(checkpoint,map_location=self.device,weights_only=False)
         if checkpoint.get('schema')!='aerodock.landing.checkpoint.v1':raise ValueError('Unknown checkpoint schema')
+        self.model=LandingPolicy(observation_mode=checkpoint.get('training',{}).get('observation_mode','legacy')).to(self.device)
         self.metadata={key:checkpoint.get(key) for key in ('schema','epoch','dataset_sha256','review_manifest_sha256','training')}
         self.model.load_state_dict(checkpoint['model']);self.model.eval();self.hidden=None
     def reset(self):self.hidden=None

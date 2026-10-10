@@ -106,6 +106,7 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
         restored=torch.load(output/'latest.pt',map_location=device,weights_only=False)
         if restored.get('schema')!='aerodock.landing.checkpoint.v1' or restored.get('dataset_sha256')!=dataset_hash or restored.get('review_manifest_sha256')!=review_hash:
             raise PermissionError('Resume checkpoint does not match the approved dataset/review')
+        if restored['training'].get('observation_mode','legacy') != model.observation_mode:raise ValueError('Resume observation mode differs; use the matching iteration trainer')
         if 'optimizer' not in restored or 'rng' not in restored:raise ValueError('Legacy checkpoint cannot resume optimizer/RNG state')
         if restored['training'].get('finetune_encoder')!=finetune_encoder:raise ValueError('Resume must keep the encoder training mode')
         model.load_state_dict(restored['model'])
