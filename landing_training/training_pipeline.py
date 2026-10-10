@@ -229,12 +229,14 @@ def cache_valid(path, source_hash, encoder_hash, count):
 
 
 def build_feature_cache(model, paths, destination, device, *, workers='auto',
-                        steps=64, source_hashes=None, cancel=None, min_free_gb=32, force=False,supervision=None):
+                        steps=64, source_hashes=None, cancel=None, min_free_gb=32, force=False,supervision=None,progress=None):
     """One raw-image pass; publish only complete checksummed per-episode caches."""
     destination = Path(destination); destination.mkdir(parents=True, exist_ok=True)
     encoder_hash = encoder_fingerprint(model); counts = frame_counts(paths)
     source_hashes = source_hashes or {}; mapping = {}; pending = []; keys = {}
     started = time.monotonic(); reused = 0; built_frames = 0
+    total_frames = sum(counts.values()); reused_frames = 0
+    if progress:progress(cache_completed_frames=0,cache_total_frames=total_frames)
     for source in paths:
         source = str(source)
         if cancel is not None and cancel.is_set():
@@ -246,6 +248,7 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
         mapping[source] = str(path)
         if not force and cache_valid(path, source_hash, encoder_hash, counts[source]):
             reused += 1
+            reused_frames += counts[source]
         else:
             pending.append(source)
     required = sum(counts[path] for path in pending) * (FEATURES + 32 + 6 + 1 + 10) * 4
@@ -257,6 +260,7 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
     pipeline_started = time.monotonic(); first_chunk_seconds = None; chunks = 0; steady_finished = None
     next_begin=pipeline_started;reader_wait=0.;encode_transfer=0.;cache_write=0.
     model.encoder.eval()
+    if progress:progress(cache_completed_frames=reused_frames,cache_total_frames=total_frames)
     try:
         with ChunkLoader(plan, workers=workers, device=device) as loader, torch.inference_mode():
             for item in loader:
@@ -292,6 +296,7 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
                                        [features, *item['values'][1:]]):
                     current[name][start:stop] = value
                 built_frames += stop - start
+                if progress:progress(cache_completed_frames=reused_frames+built_frames,cache_total_frames=total_frames)
                 chunks += 1
                 if steady_started is not None:
                     steady_frames += stop - start
@@ -316,6 +321,7 @@ def build_feature_cache(model, paths, destination, device, *, workers='auto',
         if partial is not None:
             partial.unlink(missing_ok=True)
     elapsed = time.monotonic() - started
+    if progress:progress(cache_completed_frames=total_frames,cache_total_frames=total_frames)
     steady_seconds = steady_finished - steady_started if steady_started is not None and steady_finished is not None else 0.
     return mapping, {'encoder_sha256': encoder_hash, 'workers': actual_workers,
                      'built_episodes': completed, 'reused_episodes': reused, 'built_frames': built_frames,

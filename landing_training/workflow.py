@@ -17,6 +17,8 @@ from .cloud_collection import CloudCollection,StageFailed
 from .collection_session import atomic_json,tree_bytes
 from .collect import planned_scenarios,approved_bundle
 from .gate import file_hash,source_fingerprint
+from .status import snapshot,stage_times,display
+from .progress import atomic_text
 
 ROOT=Path(__file__).resolve().parent
 
@@ -60,7 +62,10 @@ class Pipeline(CloudCollection):
                             for key in ('output','checkpoints','epochs','pilot_epochs','patience','workers','evaluation_workers','reader_workers','min_free_gb','max_dataset_gb','device')}
         if old and old['configuration']!=self.configuration:raise ValueError('Pipeline settings changed: select a new --state file/output or restore previous settings')
         self.state=old or {'schema':'aerodock.landing.pipeline.v1','configuration':self.configuration,'milestones':{},'stages':[]}
-        self.interrupted=[stage for stage in self.state['stages'] if stage['status']=='running']
+        self.interrupted=[stage for stage in self.state['stages'] if stage['status'] in ('running','recovery_pending')]
+        for stage in self.interrupted:
+            stage['elapsed_seconds']=max(stage.get('elapsed_seconds',0.),stage.get('observed_elapsed_seconds',0.))
+            stage['status']='recovery_pending'
         self.prior_seconds=self.state.get('elapsed_total_seconds',0.)
         super().__init__(args)
         self.stages=self.state['stages'];self.checkpoints=Path(args.checkpoints).resolve();self.manifest=self.dataset/'manifest.json'
@@ -70,6 +75,7 @@ class Pipeline(CloudCollection):
         if len({filesystem(p) for p in (self.dataset,self.checkpoints,self.folder,self.state_path.parent)})!=1:
             raise ValueError('Dataset, checkpoints and reports must share the guarded filesystem')
         self.progress_failure=None
+        self.state['planned_episodes']=len(planned_scenarios()['episodes'])
         self.state['latest_launch']=str(self.folder);self.state['configuration']=self.configuration
         (ROOT/'outputs/latest_pipeline_launch.txt').write_text(str(self.folder)+'\n')
 
@@ -89,10 +95,15 @@ class Pipeline(CloudCollection):
             self.state['checkpoint_and_cache_GB']=tree_bytes(self.checkpoints)/10**9
             self.state['disk_free_GB']=shutil.disk_usage(self.folder).free/10**9
             self.state['elapsed_total_hours']=self.state['elapsed_total_seconds']/3600
-            self.state['stage_seconds']={}
+            self.state['stage_seconds'],self.state['timing']=stage_times(self.state)
             for stage in self.stages:
-                self.state['stage_seconds'][stage['name']]=self.state['stage_seconds'].get(stage['name'],0.)+stage.get('elapsed_seconds',0.)
+                if stage.get('status')=='running' and stage.get('started_utc'):
+                    stage['observed_elapsed_seconds']=max(0.,
+                        (datetime.now(timezone.utc)-datetime.fromisoformat(stage['started_utc'])).total_seconds())
+            current=snapshot(self.state)
+            self.state['progress']=current['progress']
             atomic_json(self.state_path,self.state);atomic_json(self.folder/'pipeline_report.json',self.state)
+            atomic_text(self.folder/'summary.txt',display(current)+'\n')
 
     def pulse(self):
         while not self.heartbeat_stop.wait(30):
@@ -120,8 +131,12 @@ class Pipeline(CloudCollection):
 
     def resolve_review(self):
         try:bundle=approved_bundle(self.args.review)
-        except PermissionError:
+        except PermissionError as exc:
             if self.args.review!='auto':raise
+            if getattr(self.args,'no_review_export',False):
+                self.status='user_review_required';self.stage='awaiting_user_review';self.code=2
+                self.reason='Automatic review-video export was disabled. '+str(exc)
+                return None
             runtime=source_fingerprint(runtime_only=True)
             bundle=ROOT/'outputs'/('pipeline_review_'+runtime[:16])
             (self.folder/'current_review').symlink_to(bundle.resolve(),target_is_directory=True)
@@ -236,11 +251,17 @@ class Pipeline(CloudCollection):
             for scope in set(scopes):
                 if scope.is_dir():
                     for journal in scope.rglob('owned_process.json'):stop_owned_native_runtime(journal.parent)
-            stage.update(status='interrupted_recovered',recovered_utc=datetime.now(timezone.utc).isoformat())
+            recovered=datetime.now(timezone.utc)
+            # An abrupt stop has no known finish time: don't count offline hours.
+            stage['elapsed_seconds']=max(stage.get('elapsed_seconds',0.),stage.get('observed_elapsed_seconds',0.))
+            stage['timing_note']='Last observed running time; unreported work before interruption may be missing.'
+            stage.update(status='interrupted_recovered',recovered_utc=recovered.isoformat())
             self.save()
 
     def execute(self):
         self.recover_interrupted()
+        if getattr(self.args,'reuse_approved_runtime',False):
+            os.environ['LANDING_REUSE_APPROVED_RUNTIME']='1'
         self.run_stage('gpu_probe',[sys.executable,'-u','-c',
             'import torch; from landing_training.collection_benchmark import renderer_info; '
             'info=renderer_info(); print(info,flush=True); '
@@ -254,6 +275,11 @@ class Pipeline(CloudCollection):
         plan=planned_scenarios();pilot=plan['episodes'][:plan['pilot_first_episodes']]
         reviewed=json.loads((Path(bundle)/'manifest.json').read_text())
         if reviewed['collection_plan']!=plan:raise PermissionError('Review collection plan does not match current plan')
+        self.state['review_authorization']={'bundle':str(bundle),'manifest_sha256':file_hash(Path(bundle)/'manifest.json'),
+            'approved_source_sha256':reviewed.get('source_sha256'),
+            'current_source_sha256':source,'runtime_sha256':source_fingerprint(runtime_only=True),
+            'reuse_approved_runtime':getattr(self.args,'reuse_approved_runtime',False),
+            'note':'Original user approval preserved; runtime/plan compatibility required for source-only changes.'}
         reserve=storage_reserve(plan,self.args.min_free_gb);self.state['collection_min_free_GB']=reserve
         self.save()
         current=json.loads(self.manifest.read_text())['episodes'] if self.manifest.exists() else []
@@ -292,6 +318,8 @@ class Pipeline(CloudCollection):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--review',default='auto');parser.add_argument('--output',default=str(ROOT/'datasets/expert'))
+    parser.add_argument('--no-review-export',action='store_true',help='Stop with a report if approval is missing; do not render new review videos')
+    parser.add_argument('--reuse-approved-runtime',action='store_true',help='Reuse unchanged approved runtime/scenarios after training or reporting code changes; never create an approval')
     parser.add_argument('--checkpoints',default=str(ROOT/'checkpoints/production'))
     parser.add_argument('--state',default=str(ROOT/'outputs/pipeline_state.json'))
     parser.add_argument('--workers',type=int,default=64);parser.add_argument('--evaluation-workers',type=int,default=8)

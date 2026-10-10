@@ -1,6 +1,7 @@
 """Explicit user review bound to artifact, scenario and source fingerprints."""
 import hashlib
 import json
+import os
 from pathlib import Path
 from .scene import REPO,ROOT
 
@@ -44,8 +45,30 @@ def require_approval(bundle):
     if decision.get('reviewed_episodes')!=sorted(e['name'] for e in review['episodes']):raise PermissionError('Approval must cover every review episode')
     if len(review['episodes'])<10:raise PermissionError('At least ten review videos are required')
     if not review.get('qualification_passed'):raise PermissionError('Environment qualification did not pass')
-    if review['source_sha256']!=source_fingerprint():raise PermissionError('Source/assets changed after review; regenerate and review the package')
+    source_matches=review['source_sha256']==source_fingerprint()
+    if not source_matches and os.environ.get('LANDING_REUSE_APPROVED_RUNTIME')!='1':
+        raise PermissionError('Source/assets changed after review; regenerate and review the package')
     for relative,expected in review['artifacts'].items():
         path=(bundle/relative).resolve()
         if not path.is_relative_to(bundle) or not path.is_file() or file_hash(path)!=expected:raise PermissionError('Reviewed artifact missing or changed: '+relative)
+    if not source_matches:
+        # Explicit reuse of an already user-approved recording; never rewrite
+        # its approval/manifest. Visible inputs, physics, assets, dependencies,
+        # PX4, reviewed evidence and planned scenarios must remain identical.
+        runtime=source_fingerprint(runtime_only=True)
+        if 'qualification.json' not in review['artifacts']:
+            raise PermissionError('Approved review has no fingerprinted qualification evidence')
+        qualification=json.loads((bundle/'qualification.json').read_text())
+        if not qualification.get('passed') or qualification.get('runtime_source_sha256')!=runtime:
+            raise PermissionError('Approved simulation runtime changed; existing videos cannot be reused')
+        for episode in review['episodes']:
+            relative=episode['name']+'/summary.json'
+            if relative not in review['artifacts']:
+                raise PermissionError('Approved episode has no fingerprinted runtime evidence')
+            summary=json.loads((bundle/relative).read_text())
+            if summary.get('runtime_source_sha256')!=runtime or summary.get('failure') or summary.get('outcome')!='landed':
+                raise PermissionError('Approved episode runtime/outcome is incompatible: '+episode['name'])
+        from .collect import planned_scenarios
+        if review.get('collection_plan')!=planned_scenarios():
+            raise PermissionError('Collection scenarios changed since the approved review')
     return review

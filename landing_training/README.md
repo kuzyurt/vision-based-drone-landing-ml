@@ -879,6 +879,69 @@ attempts. A forced kill or machine loss can prevent the final write; the last
 atomic report remains. Completed collection with a storage stop is reported as
 stopped, never as training-ready.
 
+### Live progress, measured hours and loss over time
+
+Start with `bash landing_training/start_cloud_pipeline.sh --no-review-export --reuse-approved-runtime`
+to use an existing approved bundle without generating more review videos.
+`--reuse-approved-runtime` explicitly permits reporting/training code changes
+while preserving the original approved manifest and approval file. Every
+approved artifact is still verified; the recorded runtime and qualification
+fingerprints must match current physics, renderer, inputs, scenarios, assets,
+PX4 and dependency versions, and the complete collection plan must be identical.
+It cannot reuse changed physics/scenarios or an unapproved bundle. Without this
+option, the original strict full-source comparison remains the default.
+If none matches, this mode saves `user_review_required` and exits before data
+collection. It does not silently bypass approval or export new videos.
+
+Read status from another SSH terminal (this uses only the Python standard
+library and does not load a model or scan the recorded images):
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+python3 -m landing_training.status
+python3 -m landing_training.status --watch 10
+python3 -m landing_training.status --json
+```
+
+The display gives separate percentages for indexed episodes out of 1,200,
+feature-preparation frames, the current epoch's training/validation frames,
+completed epochs out of the ten-epoch budget, and each flight evaluation.
+Percentages represent actual counts, not an invented fraction of total runtime.
+Early stopping is labelled explicitly: finishing at six epochs uses 60% of the
+maximum budget. A stale heartbeat warns that process health is unconfirmed.
+Collection state refreshes every 30 seconds; training progress at most every
+five seconds and at phase boundaries. Evaluation advances per completed flight.
+
+Each attempt also saves `summary.txt` beside `pipeline_report.json`. The latter
+and the persistent state include `timing.collection_hours`,
+`timing.collection_audit_hours`,
+`timing.training_hours_including_preparation`, and `timing.evaluation_hours`.
+Training hours include integrity reads, feature preparation, normalization,
+optimization, validation and checkpoint writes. Policy flight evaluation is
+reported separately. Retries count toward the totals; time between launches
+does not. After a forced stop, only the last observed active stage time is
+known, so its report explicitly identifies that limitation.
+
+The production checkpoint directory contains:
+
+* `loss_history.csv`: one row per committed epoch, including UTC finish time,
+  cumulative training hours, epoch duration, mean training lane loss, weighted
+  validation loss, validation action Huber and the persistence baseline.
+* `loss_updates.csv`: training-loss samples approximately every five seconds,
+  plus the final partial window of each epoch, with UTC timestamp, cumulative
+  hours, epoch, optimizer step and unique attempt ID. These include attempted
+  work; interrupted/retried epochs are distinguishable by attempt ID.
+* `history.json`: the same committed epoch metrics in structured form.
+* `training_progress.json`: current training phase and counters.
+
+For a chronological chart, plot `training_elapsed_hours` on the horizontal
+axis and `validation_loss` or `validation_action_huber` on the vertical axis
+from `loss_history.csv`; use `loss_updates.csv` for the finer training curve.
+The training lane mean and dataset-weighted validation loss have different
+weighting, so their values are not directly interchangeable. The epoch CSV is
+rebuilt from checkpoint history on resume, preventing duplicate committed
+epochs after a crash. Monitoring adds no image reads or GPU synchronization.
+
 The fixed default stages are:
 
 1. Verify current user approval and the reviewed 1,200-scenario plan.

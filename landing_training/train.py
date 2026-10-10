@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import random
+import time
 import h5py
 import numpy as np
 import torch
@@ -85,6 +86,7 @@ def atomic_checkpoint(value,path):
 def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,finetune_encoder=False,
           loader_workers='auto',feature_cache='auto',cpu_threads=4,resume=False,patience=3,min_delta=1e-5):
     # Authorization always precedes feature-cache creation or optimizer work.
+    training_started=time.monotonic()
     path,manifest,training,validation=approved_dataset(manifest_path,bundle)
     if epochs<=0 or cpu_threads<=0 or patience<0 or not math.isfinite(min_delta) or min_delta<0:raise ValueError('Invalid training budget or early stopping settings')
     if finetune_encoder and feature_cache not in ('auto','off'):raise ValueError('Cannot cache a trainable encoder')
@@ -95,6 +97,9 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
     if not resume and any((output/name).exists() for name in ('latest.pt','best.pt','history.json','training_result.json')):
         raise FileExistsError('Training results already exist: use --resume or a new output directory')
     output.mkdir(parents=True,exist_ok=True);torch.hub.set_dir(str(output/'weights'))
+    from .progress import TrainingProgress,export_loss_history,utc_now
+    progress=TrainingProgress(output,epochs,started=training_started)
+    progress.save(force=True,phase='initialization')
     model=LandingPolicy(pretrained=pretrained,freeze_encoder=not finetune_encoder).to(device)
     dataset_hash=file_hash(path);review_hash=file_hash(Path(bundle)/'manifest.json');restored=None
     if resume:
@@ -104,6 +109,8 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
         if 'optimizer' not in restored or 'rng' not in restored:raise ValueError('Legacy checkpoint cannot resume optimizer/RNG state')
         if restored['training'].get('finetune_encoder')!=finetune_encoder:raise ValueError('Resume must keep the encoder training mode')
         model.load_state_dict(restored['model'])
+        progress.save(force=True,completed_epochs=restored['epoch'])
+        export_loss_history(output,restored['history'])
     supervision,excluded=teacher_supervision(manifest,path.parent)
     if excluded:print('Masking imitation targets from failed expert flights:',excluded,flush=True)
     cached=not finetune_encoder and feature_cache!='off';cache_info=None
@@ -111,10 +118,11 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
         cache_directory=output/'features' if feature_cache=='auto' else Path(feature_cache)
         source_hashes={str((path.parent/e['path']).resolve()):e['sha256'] for e in manifest['episodes']}
         mapping,cache_info=build_feature_cache(model,training+validation,cache_directory,device,
-                                             workers=loader_workers,source_hashes=source_hashes,supervision=supervision)
+                                             workers=loader_workers,source_hashes=source_hashes,supervision=supervision,progress=progress.cache)
         training=[Path(mapping[str(p)]) for p in training];validation=[Path(mapping[str(p)]) for p in validation]
     total=np.zeros(32);squared=np.zeros(32);count=0;supervised=0
-    for episode in training:
+    progress.save(force=True,phase='normalization',normalization_completed_episodes=0,normalization_total_episodes=len(training))
+    for episode_index,episode in enumerate(training):
         if cached:
             with h5py.File(episode,'r') as data:
                 for start in range(0,len(data['numeric']),1024):
@@ -125,6 +133,7 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
             for row in rows(episode):
                 value=numeric_observation(row).astype(np.float64);total+=value;squared+=value*value;count+=1
                 supervised+=int(supervision.get(str(episode),True) and not row.get('terminal',False) and row['output'].get('action_supervision_valid',True))
+        progress.save(normalization_completed_episodes=episode_index+1)
     if not count or not supervised:raise ValueError('No valid training teacher actions')
     mean=total/count;std=np.sqrt(np.maximum(squared/count-mean*mean,1e-6))
     model.observation_mean.copy_(torch.from_numpy(mean).to(device));model.observation_std.copy_(torch.from_numpy(std).to(device))
@@ -140,7 +149,11 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
     stop_reason='epoch_budget_completed'
     for epoch in range(start_epoch,epochs):
         if patience and bad_epochs>=patience:stop_reason='validation_early_stopping';break
-        order=training.copy();random.shuffle(order);steps=0;total_loss=0.;hidden={}
+        epoch_started=time.monotonic();order=training.copy();random.shuffle(order);steps=0;total_loss=0.;hidden={}
+        lanes=0;window_lanes=0;window_loss=0.;sample_started=time.monotonic();done_frames=0
+        total_frames=sum(counts[str(p)] for p in training)
+        progress.save(force=True,phase='training',current_epoch=epoch+1,completed_epochs=epoch,
+                      phase_completed_frames=0,phase_total_frames=total_frames)
         model.train()
         if not finetune_encoder:model.encoder.eval()
         else:
@@ -152,18 +165,31 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
         with ChunkLoader(plan,cached=cached,workers=epoch_workers,device=device) as loader:
             actual_workers=loader.workers
             for update in loader.updates():
-                _,value=run_update(model,optimizer,update,hidden,device,cached=cached)
-                total_loss+=value;steps+=1
+                frames,value=run_update(model,optimizer,update,hidden,device,cached=cached)
+                total_loss+=value;steps+=1;lanes+=len(update);done_frames+=frames
+                window_loss+=value;window_lanes+=len(update)
+                progress.save(phase_completed_frames=done_frames,optimizer_steps=steps)
+                if time.monotonic()-sample_started>=5:
+                    progress.loss_sample(epoch+1,steps,window_lanes,window_loss)
+                    window_loss=0.;window_lanes=0;sample_started=time.monotonic()
+        if window_lanes:progress.loss_sample(epoch+1,steps,window_lanes,window_loss)
         model.eval();metrics=ValidationMetrics();hidden={}
+        done_frames=0
+        progress.save(force=True,phase='validation',phase_completed_frames=0,
+                      phase_total_frames=sum(counts[str(p)] for p in validation))
         plan=chunk_plan(validation,counts,lanes=1,steps=64,supervision=None if cached else supervision)
         with ChunkLoader(plan,cached=cached,workers=epoch_workers,device=device) as loader,torch.inference_mode():
             for update in loader.updates():
-                run_update(model,None,update,hidden,device,cached=cached,metrics=metrics)
+                frames,_=run_update(model,None,update,hidden,device,cached=cached,metrics=metrics)
+                done_frames+=frames;progress.save(phase_completed_frames=done_frames)
         validation_metrics=metrics.report();value=validation_metrics['loss']
         improved=value<best-min_delta
         if improved:best=value;bad_epochs=0
         else:bad_epochs+=1
         history.append({'epoch':epoch+1,'optimizer_steps':steps,'train_sequence_loss_sum':total_loss,
+                        'train_lane_loss_mean':total_loss/max(1,lanes),
+                        'finished_utc':utc_now(),'epoch_seconds':time.monotonic()-epoch_started,
+                        'training_elapsed_hours':(progress.prior_seconds+time.monotonic()-progress.started)/3600,
                         'validation_loss':value,'validation_metrics':validation_metrics})
         checkpoint={'schema':'aerodock.landing.checkpoint.v1','model':model.state_dict(),'epoch':epoch+1,
                     'dataset_sha256':dataset_hash,'review_manifest_sha256':review_hash,
@@ -180,7 +206,12 @@ def train(manifest_path,bundle,output,epochs=10,device='cpu',pretrained=True,fin
         atomic_checkpoint(checkpoint,output/'latest.pt')
         if improved:atomic_checkpoint(checkpoint,output/'best.pt')
         from .collection_session import atomic_json
-        atomic_json(output/'history.json',history);print(history[-1],flush=True)
+        export_loss_history(output,history);print(history[-1],flush=True)
+        progress.save(force=True,completed_epochs=epoch+1,bad_epochs=bad_epochs,
+                      latest_train_lane_loss=history[-1]['train_lane_loss_mean'],latest_validation_loss=value)
+    if patience and bad_epochs>=patience:stop_reason='validation_early_stopping'
+    export_loss_history(output,history)
+    progress.save(force=True,status='completed',phase='finished',stop_reason=stop_reason,completed_epochs=len(history),bad_epochs=bad_epochs)
     from .collection_session import atomic_json
     atomic_json(output/'training_result.json',{'status':'completed','stop_reason':stop_reason,'completed_epochs':len(history),
                 'best_validation_loss':best,'latest_checkpoint':str(output/'latest.pt'),'best_checkpoint':str(output/'best.pt')})

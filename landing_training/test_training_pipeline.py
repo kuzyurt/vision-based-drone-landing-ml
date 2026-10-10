@@ -215,7 +215,17 @@ class PipelineChecks(unittest.TestCase):
             self.assertEqual(history[0]['optimizer_steps'],1)
             saved=torch.load(root/'checkpoints/latest.pt',weights_only=False)
             uninterrupted=torch.load(root/'uninterrupted/latest.pt',weights_only=False)
-            self.assertEqual(resumed,control)
+            # Wall-clock telemetry differs; learning and committed epoch metrics must match.
+            for left,right in zip(resumed,control):
+                for key in ('epoch','optimizer_steps','train_sequence_loss_sum','train_lane_loss_mean','validation_loss','validation_metrics'):
+                    self.assertEqual(left[key],right[key])
+            import csv
+            with (root/'checkpoints/loss_history.csv').open() as stream:
+                loss_rows=list(csv.DictReader(stream))
+            self.assertEqual([int(row['epoch']) for row in loss_rows],[1,2])
+            self.assertGreater(float(loss_rows[1]['training_elapsed_hours']),float(loss_rows[0]['training_elapsed_hours']))
+            self.assertTrue((root/'checkpoints/loss_updates.csv').is_file())
+            self.assertEqual(json.loads((root/'checkpoints/training_progress.json').read_text())['completed_epochs'],2)
             for name,value in saved['model'].items():
                 torch.testing.assert_close(value,uninterrupted['model'][name],rtol=0,atol=0)
             self.assertEqual(saved['epoch'],2)

@@ -105,6 +105,18 @@ class WorkflowChecks(unittest.TestCase):
             report=json.loads(runner.state_path.read_text())
             self.assertEqual(report['episodes_total'],1);self.assertGreater(report['elapsed_total_seconds'],0)
             self.assertEqual(json.loads((runner.folder/'pipeline_report.json').read_text()),report)
+            self.assertEqual(report['progress']['collection']['percent'],25.)
+            self.assertGreater(report['timing']['collection_hours'],0)
+            self.assertTrue((runner.folder/'summary.txt').is_file())
+
+    def test_no_review_export_stops_without_creating_videos_or_data(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,calls,patches,_=self.fixtures(root,pending=True)
+            args=args_fixture(root);args.no_review_export=True
+            runner,code=self.start(args,patches)
+            self.assertEqual(code,2);self.assertEqual(calls,['gpu_probe'])
+            self.assertFalse(runner.dataset.exists());self.assertFalse(runner.checkpoints.exists())
+            self.assertIn('disabled',runner.reason)
 
     def test_failed_expert_audit_prevents_full_collection(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -168,7 +180,8 @@ class WorkflowChecks(unittest.TestCase):
                         for replacement in patches:stack.enter_context(replacement)
                         runner=flow.Pipeline(args)
                         runner.state['stages'].append({'name':'interrupted_fixture','status':'running','child_pid':child.pid,
-                            'child_create_time':psutil.Process(child.pid).create_time()+(1 if changed else 0),'command':command})
+                            'child_create_time':psutil.Process(child.pid).create_time()+(1 if changed else 0),'command':command,
+                            'started_utc':'2026-01-01T00:00:00+00:00','observed_elapsed_seconds':12.5})
                         atomic_json(runner.state_path,runner.state)
                     runner,code=self.start(args,patches)
                     if changed:
@@ -177,6 +190,7 @@ class WorkflowChecks(unittest.TestCase):
                     else:
                         self.assertEqual(code,0);child.wait(timeout=5);self.assertNotEqual(child.returncode,0)
                         self.assertEqual(runner.state['stages'][0]['status'],'interrupted_recovered')
+                        self.assertEqual(runner.state['stages'][0]['elapsed_seconds'],12.5)
                 finally:
                     if child.poll() is None:child.terminate()
                     child.wait(timeout=5)
