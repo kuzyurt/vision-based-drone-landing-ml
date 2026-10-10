@@ -76,3 +76,26 @@ inspection rather than being overwritten.
 Closed-loop evaluation is mandatory before interpreting an iteration as an
 improvement. The production pilot criterion and full validation/test evaluation
 requirements remain unchanged.
+
+## Measured iteration result and camera coverage
+
+The ten-epoch experiment selected epoch 9, with validation action Huber
+0.00319540. Its repeated original twelve-scenario pilot still produced twelve
+aborts and zero landings. Mean pad visibility improved from 17.07% to 78.97%;
+this improvement does not authorize promotion or continuation past the pilot
+gate. All experimental checkpoints and traces remain separate.
+
+The full training recording range is approximately -9.81 to +90.19 degrees of
+gimbal tilt, with only 0.53% of supervised frames looking upward. The policy
+video reaches both -61/+140 degree travel stops and continues commanding
+outward movement there. The compiled camera transform confirms that negative
+tilt looks upward. Sky coverage alone cannot identify altitude.
+
+The first twenty seconds of the same scenario have policy roll/pitch RMS of
+4.38/4.02 degrees, compared with expert 1.11/1.59. Camera recovery outside
+training coverage and command stability remain unresolved. Targeted supervised
+recovery recordings are likely required; RL is not part of this pipeline.
+
+For fewer concurrent simulations, 8 vCPUs/32 GB RAM with the same L4 is the
+recommended next configuration. The original frozen 64-worker collection
+configuration must not be relaunched unchanged on that smaller machine.
