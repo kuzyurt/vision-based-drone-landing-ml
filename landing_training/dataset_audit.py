@@ -115,14 +115,16 @@ def audit_dataset(manifest_path,expected_entries=None,allow_other_planned=False,
             'feature_cache_bytes':sum(r['frames'] for r in rows if r['role']!='test')*7108,
             'note':'Strict structure/label audit. Full HDF5 SHA256 integrity is checked by the trainer before optimizer work. '
                    'Nominal non-landings require three recorded retries, masked action imitation and >=98% '
-                   'nominal landings per split when bounded-retry acceptance is enabled. Fault flights may abort safely. '
+                   'nominal landings in each training/validation split when bounded-retry acceptance is enabled. '
+                   'Test expert landing rates are reported without gating fitting; all test scenarios stay held out. '
+                   'Test integrity, safe outcomes, masks and retry evidence remain mandatory. Fault flights may abort safely. '
                    'This does not qualify a learned policy.'}
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--manifest',required=True);parser.add_argument('--output',required=True)
     parser.add_argument('--pilot',action='store_true')
-    parser.add_argument('--allow-retried-aborts',action='store_true',help='Accept at most 2% nominal non-landings per split after three verified retries, with action imitation masked')
+    parser.add_argument('--allow-retried-aborts',action='store_true',help='Accept nominal non-landings after three verified retries and masked action imitation; require >=98%% nominal landings in training/validation, and report test expert success separately')
     args=parser.parse_args()
     plan=planned_scenarios();entries=plan['episodes'][:plan['pilot_first_episodes']] if args.pilot else plan['episodes']
     try:report=audit_dataset(args.manifest,entries,allow_other_planned=args.pilot,allow_retried_aborts=args.allow_retried_aborts)

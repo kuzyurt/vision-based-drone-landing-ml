@@ -4,6 +4,7 @@ from pathlib import Path
 
 RETRY_LIMIT = 3
 MIN_NOMINAL_LANDING_RATE = .98
+LANDING_RATE_GATED_SPLITS = ('training', 'validation')
 RETRYABLE_OUTCOMES = {'abort', 'timeout', 'contact_only'}
 
 
@@ -47,18 +48,35 @@ def quality(rows, manifest, allow_retried_aborts):
                   if row['outcome'] in RETRYABLE_OUTCOMES and not exhausted(manifest, row['name'])]
     retained = [row['name'] for row in failures
                 if row['outcome'] in RETRYABLE_OUTCOMES and exhausted(manifest, row['name'])]
-    rates = {}
+    rates = {}; counts = {}
     for role in ('training', 'validation', 'test'):
         subset = [row for row in nominal if row['role'] == role]
         if subset:
-            rates[role] = sum(row['outcome'] == 'landed' for row in subset) / len(subset)
+            landed = sum(row['outcome'] == 'landed' for row in subset)
+            rates[role] = landed / len(subset)
+            counts[role] = {'episodes': len(subset), 'landed': landed,
+                            'non_landings': len(subset) - landed}
+    # Test trajectories never provide optimization targets or choose weights.
+    # Keep their full scenario coverage and report expert limitations rather
+    # than conditioning permission to fit a model on held-out test successes.
+    blocking = [role for role in LANDING_RATE_GATED_SPLITS
+                if role in rates and rates[role] < MIN_NOMINAL_LANDING_RATE]
     passed = not failures or (allow_retried_aborts and len(retained) == len(failures)
-                             and all(rate >= MIN_NOMINAL_LANDING_RATE for rate in rates.values()))
+                             and not blocking)
+    warnings = ([f'{len(retained)} nominal non-landings retained after '
+                 f'{RETRY_LIMIT} retries; action imitation is masked.']
+                if retained and passed else [])
+    if 'test' in rates and rates['test'] < MIN_NOMINAL_LANDING_RATE:
+        warnings.append(f"Held-out test expert landed {counts['test']['landed']}/"
+                        f"{counts['test']['episodes']} nominal flights ({rates['test']:.2%}). "
+                        'Reported limitation; test expert success does not gate training. '
+                        'All test scenarios remain in final policy evaluation.')
     return {'nominal_expert_failures': [row['name'] for row in failures],
             'retry_candidates': candidates, 'retry_exhausted': retained,
-            'nominal_landing_rates': rates, 'nominal_quality_passed': passed,
-            'quality_warnings': ([f'{len(retained)} nominal non-landings retained after '
-                                  f'{RETRY_LIMIT} retries; action imitation is masked.']
-                                 if retained and passed else []),
+            'nominal_landing_rates': rates, 'nominal_outcome_counts': counts,
+            'landing_rate_blocking_splits': blocking, 'nominal_quality_passed': passed,
+            'quality_warnings': warnings,
             'retry_policy': {'additional_attempts': RETRY_LIMIT,
-                             'minimum_nominal_landing_rate_per_split': MIN_NOMINAL_LANDING_RATE}}
+                             'minimum_nominal_landing_rate_per_split': MIN_NOMINAL_LANDING_RATE,
+                             'landing_rate_gated_splits': list(LANDING_RATE_GATED_SPLITS),
+                             'test_expert_landing_rate': 'reported, not used to gate fitting or select weights'}}

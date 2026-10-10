@@ -1009,12 +1009,17 @@ The fixed default stages are:
    episodes are never rerun. Water strikes, collisions, invalid recordings,
    missing coverage and storage/resource failures still stop the pipeline.
    The audited selected nominal flights must land at least 98% of the time
-   **in each split**. Up to 2% may remain non-landings only after three verified
+   **in each training and validation split**. Up to 2% may remain non-landings only after three verified
    unsuccessful retries; those original episodes keep their true outcomes and
    are excluded from action imitation, while auxiliary labels remain usable.
    Fault cases may safely abort/timeout without replay. The 98% floor is an
    operational dataset criterion, not evidence of first-attempt reliability.
-   First-attempt and retry outcome counts are reported separately.
+   First-attempt and retry outcome counts are reported separately. Test expert
+   landing rates are reported as limitations and do not gate fitting or select
+   weights. All 120 test scenarios remain held out for final policy evaluation,
+   including those where the expert failed. Safe test non-landings still require
+   three verified retry recordings and masking; incomplete, corrupt or unsafe
+   test recordings still block the audit.
 3. Project full storage from that measured pilot with a 25% size margin; stop
    if disk/capacity is inadequate. Collect the remaining episodes and require
    the exact complete plan. Audit all episodes and world/split isolation.

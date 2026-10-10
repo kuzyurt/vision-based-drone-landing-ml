@@ -3,6 +3,7 @@ import copy
 from dataclasses import asdict
 import json
 from pathlib import Path
+import shutil
 import tempfile
 import unittest
 import torch
@@ -51,6 +52,56 @@ def manifest(root,entries):
 
 
 class AuditChecks(unittest.TestCase):
+    def test_safe_failed_test_retained_with_verified_retries_and_excluded_from_fitting(self):
+        from .train import approved_dataset
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder);items=[];entries=[]
+            for index,role in enumerate(('training','validation','test')):
+                item,entry=write_episode(root,name=role,role=role,world=index,
+                                         outcome='abort' if role=='test' else 'landed')
+                entry['sha256']=file_hash(root/entry['path']);items.append(item);entries.append(entry)
+            entries[-1]['imitation_allowed']=False
+            path=manifest(root,entries);data=json.loads(path.read_text())
+            bundle=root/'review';bundle.mkdir();(bundle/'manifest.json').write_text('{}')
+            data['review_manifest_sha256']=file_hash(bundle/'manifest.json')
+            attempts=[]
+            for number in range(1,4):
+                destination=root/'retry_attempts/test'/f'attempt_{number:03d}'
+                destination.parent.mkdir(parents=True,exist_ok=True)
+                shutil.copytree(root/'test',destination)
+                attempts.append({'number':number,'directory':str(destination.relative_to(root)),
+                                 'status':'completed','outcome':'abort',
+                                 'sha256':file_hash(destination/'observations.h5')})
+            data['outcome_retries']={'test':attempts};atomic_json(path,data)
+            before={str(p):file_hash(p) for p in root.rglob('*') if p.is_file()}
+            self.assertFalse(audit_dataset(path,items)['passed'])
+            report=audit_dataset(path,items,allow_retried_aborts=True)
+            self.assertTrue(report['passed'])
+            self.assertEqual(report['splits'],{'training':1,'validation':1,'test':1})
+            self.assertEqual(report['nominal_landing_rates']['test'],0.)
+            self.assertEqual(select_episodes(data['episodes'],'test',120),[entries[-1]])
+            with patch('landing_training.train.require_approval'):
+                _,_,training,validation=approved_dataset(path,bundle)
+            self.assertEqual(training,[root/'training/observations.h5'])
+            self.assertEqual(validation,[root/'validation/observations.h5'])
+            self.assertEqual(before,{str(p):file_hash(Path(p)) for p in before})
+            data['episodes'][-1]['imitation_allowed']=True;atomic_json(path,data)
+            with self.assertRaisesRegex(ValueError,'imitation must be masked'):
+                audit_dataset(path,items,allow_retried_aborts=True)
+            data['episodes'][-1]['imitation_allowed']=False;atomic_json(path,data)
+            evidence=root/attempts[0]['directory']/'observations.h5'
+            with evidence.open('ab') as stream:stream.write(b'corrupt test retry')
+            with self.assertRaisesRegex(ValueError,'Retry evidence missing or changed'):
+                audit_dataset(path,items,allow_retried_aborts=True)
+
+    def test_unsafe_test_recording_still_blocks_fitting(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder)
+            item,entry=write_episode(root,name='unsafe_test',role='test',outcome='water_strike')
+            report=audit_dataset(manifest(root,[entry]),[item],allow_retried_aborts=True)
+            self.assertFalse(report['passed'])
+            self.assertEqual(report['unsafe_expert_flights'],['unsafe_test'])
+
     def test_airborne_terminal_clock_and_storage_audit(self):
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);item,entry=write_episode(root);report=audit_dataset(manifest(root,[entry]),[item])

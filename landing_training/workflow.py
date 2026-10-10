@@ -217,7 +217,8 @@ class Pipeline(CloudCollection):
             critical=report.get('error') or report.get('missing_episodes') or report.get('unsafe_expert_flights')
             if critical or not candidates or round_number==RETRY_LIMIT:
                 detail=report.get('error') or json.dumps({key:report.get(key) for key in
-                    ('missing_episodes','unsafe_expert_flights','nominal_expert_failures','nominal_landing_rates')})
+                    ('missing_episodes','unsafe_expert_flights','nominal_expert_failures','nominal_landing_rates',
+                     'nominal_outcome_counts','landing_rate_blocking_splits')})
                 self.emit('Audit cannot continue: '+detail+'\n')
                 raise DatasetAuditFailed(label,detail) from failure
             if (self.checkpoints/'latest.pt').exists():raise ValueError('Cannot replace dataset episodes after training has started')

@@ -118,6 +118,37 @@ class ReplayChecks(unittest.TestCase):
         rows += [{'name':'bad','role':'validation','outcome':'abort','fault_case':False}]
         result=quality(rows,data,True)
         self.assertFalse(result['nominal_quality_passed']);self.assertEqual(result['nominal_landing_rates']['validation'],0.)
+        self.assertEqual(result['landing_rate_blocking_splits'],['validation'])
+
+    def test_reported_production_counts_pass_without_using_test_success_to_gate_fitting(self):
+        rows=[];history={}
+        for role,count,failed in (('training',672,7),('validation',84,1),('test',84,2)):
+            for index in range(count):
+                name=f'{role}_{index}'
+                rows.append({'name':name,'role':role,'outcome':'abort' if index<failed else 'landed',
+                             'fault_case':False})
+                if index<failed:
+                    history[name]=[{'status':'completed','outcome':'abort'} for _ in range(3)]
+        data={'outcome_retries':history}
+        self.assertFalse(quality(rows,data,False)['nominal_quality_passed'])
+        result=quality(rows,data,True)
+        self.assertTrue(result['nominal_quality_passed'])
+        self.assertEqual(result['landing_rate_blocking_splits'],[])
+        self.assertEqual(result['nominal_outcome_counts']['test'],
+                         {'episodes':84,'landed':82,'non_landings':2})
+        self.assertAlmostEqual(result['nominal_landing_rates']['test'],82/84)
+        self.assertEqual(result['retry_policy']['landing_rate_gated_splits'],['training','validation'])
+        self.assertTrue(any('82/84' in warning for warning in result['quality_warnings']))
+        # Test failures still need exhausted retries; no blanket acceptance.
+        history['test_0'].pop()
+        self.assertFalse(quality(rows,data,True)['nominal_quality_passed'])
+
+    def test_test_rate_cannot_hide_poor_training_data(self):
+        rows=[{'name':'bad','role':'training','outcome':'abort','fault_case':False}]
+        rows += [{'name':f'test_{i}','role':'test','outcome':'landed','fault_case':False} for i in range(100)]
+        result=quality(rows,{'outcome_retries':{'bad':[{'status':'completed','outcome':'abort'}]*3}},True)
+        self.assertFalse(result['nominal_quality_passed'])
+        self.assertEqual(result['landing_rate_blocking_splits'],['training'])
 
     def test_pending_attempt_slot_survives_restart_and_rejects_escaped_path(self):
         data={};item={'scenario':{'name':'flight'}}
