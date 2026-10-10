@@ -12,6 +12,18 @@ from .status import snapshot, stage_times, display
 
 
 class StatusChecks(unittest.TestCase):
+    def test_audit_progress_includes_retry_recordings_and_worker_count(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);report=root/'dataset_audit.json'
+            atomic_json(report.with_suffix('.progress.json'),{'recordings_completed':615,
+                'recordings_total':1230,'workers_used':32,'frames_checked':900000,'elapsed_seconds':12.3})
+            state={'configuration':{'output':str(root/'dataset'),'checkpoints':str(root/'weights'),'epochs':10},
+                   'status':'running','active_stage':'dataset_audit','milestones':{'dataset_audit':{'report':str(report)}}}
+            result=snapshot(state)
+            self.assertEqual(result['progress']['dataset_audit_recordings']['percent'],50.)
+            self.assertIn('Audit workers: 32',display(result))
+            self.assertIn('615/1230',display(result))
+
     def test_live_collection_training_and_evaluation_counts(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);data=root/'dataset';data.mkdir();weights=root/'weights';weights.mkdir()

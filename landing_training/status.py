@@ -48,6 +48,14 @@ def snapshot(state):
              'pending':sum(a['status']=='pending' for a in attempts),
              'masked_nominal_nonlandings':sum(e.get('imitation_allowed') is False for e in entries)}
     progress = {'collection': fraction(len(entries), state.get('planned_episodes', 1200))}
+    audit={};active=state.get('active_stage')
+    if active in ('pilot_audit','dataset_audit'):
+        path=state.get('milestones',{}).get(active,{}).get('report')
+        if path:
+            audit=read_json(Path(path).with_suffix('.progress.json'),{})
+            if audit:
+                progress[active+'_recordings']=fraction(audit.get('recordings_completed',0),
+                                                      audit.get('recordings_total',0))
     if manifest:
         splits = {}
         for item in entries: splits[item['role']] = splits.get(item['role'], 0) + 1
@@ -83,7 +91,7 @@ def snapshot(state):
             'dataset_splits': splits, 'dataset_GB': state.get('dataset_GB'),
             'disk_free_GB': state.get('disk_free_GB'), 'timing': timing,
             'elapsed_total_hours': state.get('elapsed_total_hours', 0.),
-            'outcome_retries':retries,
+            'outcome_retries':retries,'audit':audit,
             'heartbeat_age_seconds': age, 'training': training,
             'latest_launch': state.get('latest_launch'), 'final_model': state.get('final_model'),
             'loss_history_csv': str(checkpoints / 'loss_history.csv'),
@@ -97,6 +105,11 @@ def display(report):
         extra = ' (completed early)' if item.get('early_stopped') else ''
         lines.append(f"{name}: {item['completed']}/{item['total']} — {percent}{extra}")
     if report['training'].get('phase'): lines.append('Training phase: ' + report['training']['phase'])
+    audit=report.get('audit',{})
+    if audit:
+        lines.append(f"Audit workers: {audit.get('workers_used',0)} | "
+                     f"Frames checked: {audit.get('frames_checked',0)} | "
+                     f"Elapsed: {audit.get('elapsed_seconds',0):.1f} s")
     retries=report.get('outcome_retries',{})
     if retries.get('completed') or retries.get('pending'):
         lines.append(f"Outcome retries: {retries['completed']} completed, {retries['pending']} pending; "

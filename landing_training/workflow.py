@@ -199,7 +199,7 @@ class Pipeline(CloudCollection):
         output=self.folder/('pilot_audit.json' if pilot else 'dataset_audit.json')
         label='pilot_audit' if pilot else 'dataset_audit'
         self.milestone(label,{'report':str(output),'passed':False})
-        command=[sys.executable,'-u','-m','landing_training.dataset_audit','--manifest',str(self.manifest),'--output',str(output),'--allow-retried-aborts']
+        command=[sys.executable,'-u','-m','landing_training.dataset_audit','--manifest',str(self.manifest),'--output',str(output),'--allow-retried-aborts','--workers','0']
         if pilot:command.append('--pilot')
         for round_number in range(RETRY_LIMIT+1):
             failure=None

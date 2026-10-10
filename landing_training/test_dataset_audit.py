@@ -77,6 +77,10 @@ class AuditChecks(unittest.TestCase):
             self.assertFalse(audit_dataset(path,items)['passed'])
             report=audit_dataset(path,items,allow_retried_aborts=True)
             self.assertTrue(report['passed'])
+            parallel=audit_dataset(path,items,allow_retried_aborts=True,workers=2)
+            self.assertEqual({k:v for k,v in report.items() if k!='performance'},
+                             {k:v for k,v in parallel.items() if k!='performance'})
+            self.assertEqual(parallel['performance']['retry_recordings_completed'],3)
             self.assertEqual(report['splits'],{'training':1,'validation':1,'test':1})
             self.assertEqual(report['nominal_landing_rates']['test'],0.)
             self.assertEqual(select_episodes(data['episodes'],'test',120),[entries[-1]])

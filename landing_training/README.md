@@ -1061,6 +1061,32 @@ Retry time is included in collection hours, and the status watcher shows retry
 counts and the number of masked nominal non-landings. Rerunning an identical
 seed may fail identically; retries do not repair the teacher's descent logic.
 
+The workflow runs metadata audits with `--workers 0`: choose up to 32 independent
+processes, limited by CPU affinity/cgroup quota, available memory and the number
+of recordings. A worker holds at most 256 metadata rows at once; queued jobs
+are bounded to twice the worker count. All rows are checked, with identical
+serialized JSON compared directly and equivalent JSON formatting accepted by
+the semantic fallback. Numerical checks operate on bounded batches, including
+previous-action and clock continuity across batch boundaries. Indexed RGB is
+never decoded during the audit. Retry evidence retains full SHA256 checks,
+with at most four concurrent checksum streams to avoid flooding the SSD.
+The trainer still verifies indexed HDF5 SHA256 before optimization.
+
+`status --watch` shows audit recording counts/percentages including retries,
+workers, checked frames and elapsed seconds. Each audit writes a sibling
+`dataset_audit.progress.json` (or `pilot_audit.progress.json`) every five seconds
+and at completion/failure. The audit report's `performance` field records the
+worker count, queue bound, checked rows, checksum bytes, check CPU seconds and
+wall time. CPU accounting excludes process startup and IPC. Worker errors and
+SIGTERM/SIGINT stop admission and cancel remaining checks; a partial audit can
+never authorize training. SIGKILL cannot guarantee a final report.
+
+One local benchmark of 96 synthetic recordings / 432,000 metadata frames took
+23.1 s with the prior serial audit, 14.4 s with batched serial checks, and 2.7 s
+with four process workers, with identical findings. This metadata fixture and
+warm filesystem cache do not establish throughput for production retry hashes
+or the cloud VM's disk. The VM saves its actual timing in each audit report.
+
 Configuration and source/review hashes are frozen for resume. Restore those
 settings or use a fresh state/output/checkpoint directory after a substantive
 change. The exact short-rock-coast-tile renderer correction is compatible with
