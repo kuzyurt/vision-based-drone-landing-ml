@@ -450,7 +450,7 @@ class ValidationMetrics:
 def teacher_supervision(manifest,root):
     result={};excluded=[]
     for episode in manifest['episodes']:
-        allowed=not (episode.get('collection','expert')=='expert' and
+        allowed=episode.get('imitation_allowed',True) and not (episode.get('collection','expert')=='expert' and
                      episode.get('outcome') in ('water_strike','collision_failure'))
         result[str((Path(root)/episode['path']).resolve())]=allowed
         if not allowed:excluded.append(episode.get('name',episode['path']))

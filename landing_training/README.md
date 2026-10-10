@@ -926,6 +926,29 @@ option, the original strict full-source comparison remains the default.
 If none matches, this mode saves `user_review_required` and exits before data
 collection. It does not silently bypass approval or export new videos.
 
+To resume an interrupted or failed VM run in a new detached tmux session:
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+bash landing_training/resume_cloud_pipeline.sh
+python3 -m landing_training.status --watch 10
+```
+
+The launcher selects the original approved bundle saved in the pipeline state,
+keeps the existing dataset/configuration, refuses a concurrent VM workflow,
+and saves launcher errors as well as the normal pipeline log. The session name
+is saved in `outputs/latest_pipeline_session.txt`; the launcher log path is in
+`outputs/latest_resume_launcher.txt`. Closing SSH or stopping the status viewer
+does not signal the detached job. The process still exits on a failed data,
+storage, GPU or model check; tmux does not suppress those errors.
+
+Reporting/collection orchestration changes can resume the original state with
+`--reuse-approved-runtime` only when both its frozen runtime fingerprint and
+every indexed episode's runtime match the currently approved simulation. The
+original review and approval files are preserved. Migration of the full source
+fingerprint is recorded in `source_migrations`; changed flight physics, teacher,
+recording, renderer, assets, PX4 or dependencies remain incompatible.
+
 Read status from another SSH terminal (this uses only the Python standard
 library and does not load a model or scan the recorded images):
 
@@ -981,9 +1004,17 @@ The fixed default stages are:
 2. Collect the balanced 240-episode expert pilot with 64 workers. Audit all
    metadata/HDF5 rows for airborne starts, timing, previous-action alignment,
    bounded outputs, open/raised dock, terminal masks and PX4-confirmed landings.
-   Every nominal expert flight must land; every expert flight must avoid water
-   strikes and forbidden collisions. Fault cases may safely abort/timeout. A
-   failure stops scaling rather than silently changing the acceptance rules.
+   Nominal aborts/timeouts/contact-only outcomes automatically receive up to
+   three additional attempts, with the exact same scenario and seeds. Landed
+   episodes are never rerun. Water strikes, collisions, invalid recordings,
+   missing coverage and storage/resource failures still stop the pipeline.
+   The audited selected nominal flights must land at least 98% of the time
+   **in each split**. Up to 2% may remain non-landings only after three verified
+   unsuccessful retries; those original episodes keep their true outcomes and
+   are excluded from action imitation, while auxiliary labels remain usable.
+   Fault cases may safely abort/timeout without replay. The 98% floor is an
+   operational dataset criterion, not evidence of first-attempt reliability.
+   First-attempt and retry outcome counts are reported separately.
 3. Project full storage from that measured pilot with a 25% size margin; stop
    if disk/capacity is inadequate. Collect the remaining episodes and require
    the exact complete plan. Audit all episodes and world/split isolation.
@@ -1013,6 +1044,18 @@ Dataset, checkpoints and reports must share the guarded filesystem. Evaluation
 rechecks space before every attempt; retained interrupted attempts count against
 actual free space. These are admission/live guards, not a filesystem quota.
 
+Retries are saved under `datasets/expert/retry_attempts/EPISODE/attempt_NNN/`,
+with a pending/completed journal in the dataset manifest before/after each
+attempt. Originals and partial attempts remain on disk and count toward every
+storage guard. A landed replay atomically replaces only the indexed recording;
+a non-landing leaves the original indexed and masks its imitation targets.
+An interrupted completed replay is recovered without another flight. Retrying
+ends after three completed additional attempts, including across launcher
+restarts. Missing/changed retry evidence cannot authorize the 2% exception.
+Retry time is included in collection hours, and the status watcher shows retry
+counts and the number of masked nominal non-landings. Rerunning an identical
+seed may fail identically; retries do not repair the teacher's descent logic.
+
 Configuration and source/review hashes are frozen for resume. Restore those
 settings or use a fresh state/output/checkpoint directory after a substantive
 change. Interrupted child stages are journalled with PID, process start time and exact
@@ -1021,7 +1064,8 @@ quarantining recordings. Unverifiable/reused PIDs are refused. Partial episode
 attempts are quarantined and retried; optimizer state resumes from the last
 complete epoch. Completed policy-pilot checks and final
 assessments are reused when compatible; an evaluation of changed weights gets
-a fresh trace directory. User approval remains mandatory after source changes.
+a fresh trace directory. User approval remains mandatory after runtime/plan
+changes; verified orchestration-only changes can use the explicit reuse option.
 
 Boat starts reserve `boat_speed * duration + 20 m` at both ends of each route.
 Forward/reverse partners use the same canonical interior point with opposite

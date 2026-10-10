@@ -1,6 +1,7 @@
 """Plan deterministic coverage; collection requires explicit user verification."""
 import argparse
 import os
+import os
 import sys
 if __name__=='__main__':
     early=argparse.ArgumentParser(add_help=False)
@@ -52,7 +53,7 @@ def planned_scenarios():
 
 def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance_base=20,gl=None,
             min_free_gb=1.074,max_dataset_gb=None,report_dir=None,require_gpu=False,
-            quarantine_partial=False):
+            quarantine_partial=False,retry_names=None):
     require_approval(bundle) # Gate precedes all dataset writes or flights.
     if max_episodes<=0:raise ValueError('Explicit positive collection limit required')
     if not 1<=workers<=128 or not 0<=instance_base<=254-workers:raise ValueError('Invalid worker count or PX4 instance range')
@@ -87,7 +88,7 @@ def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance
                 with monitor:
                     manifest=_collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,
                                              graphics,source_fingerprint(),session=session,
-                                             quarantine_partial=quarantine_partial)
+                                             quarantine_partial=quarantine_partial,retry_names=retry_names)
                 return manifest
             finally:
                 if monitor.started is not None:
@@ -97,13 +98,38 @@ def collect(bundle,destination,max_episodes,checkpoint=None,*,workers=1,instance
                         session.reject(monitor.reason)
 
 def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_base,graphics,source_hash,
-                    *,session=None,quarantine_partial=False):
+                    *,session=None,quarantine_partial=False,retry_names=None):
     from .execution import iter_jobs
     path=destination/'manifest.json'
     manifest=json.loads(path.read_text()) if path.exists() else {'schema':'aerodock.landing.dataset.v1','role':'dataset','review_manifest_sha256':file_hash(Path(bundle)/'manifest.json'),'episodes':[]}
     if manifest['review_manifest_sha256']!=file_hash(Path(bundle)/'manifest.json'):raise PermissionError('Dataset belongs to a different approved review')
     completed={item['name'] for item in manifest['episodes']}
-    planned=[item for item in planned_scenarios()['episodes'] if item['scenario']['name'] not in completed][:max_episodes]
+    retry_attempts={}
+    if retry_names is not None:
+        from .outcome_retries import prepare_attempt,fault,RETRYABLE_OUTCOMES
+        from .collection_session import atomic_json
+        names=set(retry_names);indexed={entry['name']:entry for entry in manifest['episodes']}
+        if names-completed:raise ValueError('Retry requires an already indexed episode')
+        if names-{item['scenario']['name'] for item in planned_scenarios()['episodes']}:
+            raise ValueError('Retry contains an unplanned episode')
+        planned=[]
+        for item in planned_scenarios()['episodes']:
+            name=item['scenario']['name']
+            if name not in names or indexed[name]['outcome']=='landed':continue
+            if fault(item['scenario']) or indexed[name]['outcome'] not in RETRYABLE_OUTCOMES:
+                raise ValueError('Only nominal non-landings can be retried: '+name)
+            if indexed[name].get('collection','expert')!='expert':raise ValueError('Student recordings cannot be replaced by expert retries')
+            original=(destination/indexed[name]['path']).resolve()
+            if not original.is_relative_to(destination.resolve()):raise ValueError('Indexed retry candidate escapes dataset')
+            if indexed[name].get('sha256') and file_hash(original)!=indexed[name]['sha256']:
+                raise ValueError('Indexed retry candidate changed: '+name)
+            attempt=prepare_attempt(manifest,destination,item)
+            if attempt is not None:
+                retry_attempts[name]=attempt;planned.append(item)
+        if len(planned)>max_episodes:raise ValueError('Explicit retry limit is smaller than requested episodes')
+        atomic_json(path,manifest)
+    else:
+        planned=[item for item in planned_scenarios()['episodes'] if item['scenario']['name'] not in completed][:max_episodes]
     manifest['collection_configuration']={'workers':workers,'instance_base':instance_base,'graphics':graphics,'source_sha256':source_hash}
     if session is None:
         required=len(planned)*180*25*640*360*3+1024**3
@@ -113,7 +139,8 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
                               review_manifest_sha256=manifest['review_manifest_sha256'],
                               episodes_remaining_in_plan=len(planned))
         for entry in manifest['episodes']:
-            summary=json.loads((destination/entry['name']/'summary.json').read_text())
+            if entry['name'] in retry_attempts:continue
+            summary=json.loads((destination/entry['path']).parent.joinpath('summary.json').read_text())
             session.existing.append({'name':entry['name'],'role':entry['role'],'outcome':entry['outcome'],
                                      'frames':summary['records'],
                                      'hdf5_bytes':(destination/entry['path']).stat().st_size})
@@ -123,7 +150,11 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
     def finalize(result,*,recovered=False):
         item=by_name[result['name']];directory=Path(result['directory'])
         summary=json.loads((directory/'summary.json').read_text());artifact=directory/'observations.h5'
-        if summary['failure'] or summary['source_sha256']!=source_hash or summary['scenario']!=item['scenario'] or summary['role']!=item['role'] or not summary['training_eligible']:
+        source_matches=summary['source_sha256']==source_hash
+        if not source_matches and os.environ.get('LANDING_REUSE_APPROVED_RUNTIME')=='1':
+            from .gate import source_fingerprint
+            source_matches=summary.get('runtime_source_sha256')==source_fingerprint(runtime_only=True)
+        if summary['failure'] or not source_matches or summary['scenario']!=item['scenario'] or summary['role']!=item['role'] or not summary['training_eligible']:
             raise ValueError('Incomplete or incompatible episode; retain it and choose a new output directory: '+str(directory))
         if summary.get('collection_checkpoint_sha256')!=checkpoint_hash:raise ValueError('Episode checkpoint differs from requested collector')
         import h5py
@@ -139,13 +170,26 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
             if first['frame_index']!=0 or not first['observation']['px4']['armed'] or first['privileged']['vertical_clearance_m']<1.2:raise ValueError('Dataset did not start airborne')
             if last['frame_index']!=count-1 or not last.get('terminal') or last['outcome']!=summary['outcome'] or any(last['output']['executed_action']) or last['output']['action_supervision_valid']:raise ValueError('Dataset terminal record is incomplete')
             if summary['outcome']=='landed' and (last['observation']['px4']['armed'] or not last['observation']['px4']['landed']):raise ValueError('Dataset landing is not confirmed by PX4')
-        manifest['episodes'].append({'name':result['name'],'path':str(artifact.relative_to(destination)),'sha256':file_hash(artifact),'role':item['role'],'world_seed':item['scenario']['world_seed'],'path_seed':item['scenario']['path_seed'],'outcome':summary['outcome'],'collection':'dagger' if checkpoint else 'expert','checkpoint_sha256':checkpoint_hash})
+        entry={'name':result['name'],'path':str(artifact.relative_to(destination)),'sha256':file_hash(artifact),'role':item['role'],'world_seed':item['scenario']['world_seed'],'path_seed':item['scenario']['path_seed'],'outcome':summary['outcome'],'collection':'dagger' if checkpoint else 'expert','checkpoint_sha256':checkpoint_hash}
+        if result['name'] in retry_attempts:
+            from datetime import datetime,timezone
+            if summary['outcome'] not in ('landed','abort','timeout','contact_only'):
+                raise ValueError('Unsafe expert retry; retained recording: '+str(directory))
+            attempt,_=retry_attempts[result['name']]
+            attempt.update(status='completed',outcome=summary['outcome'],sha256=entry['sha256'],
+                           completed_utc=datetime.now(timezone.utc).isoformat())
+            position=next(i for i,e in enumerate(manifest['episodes']) if e['name']==result['name'])
+            # Failed attempts never erase the original. A successful replay
+            # replaces only the index; all previous files remain on disk.
+            if summary['outcome']=='landed':manifest['episodes'][position]=entry
+            else:manifest['episodes'][position]['imitation_allowed']=False
+        else:manifest['episodes'].append(entry)
         from .collection_session import atomic_json
         atomic_json(path,manifest)
-        if session:session.add_episode(manifest['episodes'][-1],summary,recovered=recovered)
+        if session:session.add_episode(entry,summary,recovered=recovered)
     jobs=[]
     for item in planned:
-        directory=destination/item['scenario']['name']
+        directory=retry_attempts[item['scenario']['name']][1] if item['scenario']['name'] in retry_attempts else destination/item['scenario']['name']
         if directory.exists():
             summary_path=directory/'summary.json'
             incomplete=not summary_path.is_file()
@@ -202,6 +246,7 @@ def main():
     parser.add_argument('--report-dir',help='Report directory on the same filesystem (default OUTPUT/collection_runs)')
     parser.add_argument('--require-gpu',action='store_true')
     parser.add_argument('--quarantine-partial',action='store_true',help='Move incomplete previous attempts aside before retrying; never delete them')
+    parser.add_argument('--retry-names',nargs='+',help='Replay only these indexed nominal non-landings; keep originals and allow at most three retries')
     args=parser.parse_args()
     if args.plan_output:
         Path(args.plan_output).write_text(json.dumps(planned_scenarios(),indent=2));return 0
@@ -210,7 +255,7 @@ def main():
         bundle=approved_bundle(args.review)
         collect(bundle,args.output,args.max_episodes,args.checkpoint,workers=args.workers,instance_base=args.instance_base,gl=args.gl,
                 min_free_gb=args.min_free_gb,max_dataset_gb=args.max_dataset_gb,report_dir=args.report_dir,
-                require_gpu=args.require_gpu,quarantine_partial=args.quarantine_partial)
+                require_gpu=args.require_gpu,quarantine_partial=args.quarantine_partial,retry_names=args.retry_names)
     except PermissionError as exc:
         print('Collection blocked: '+str(exc),file=sys.stderr);return 2
     except KeyboardInterrupt:

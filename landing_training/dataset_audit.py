@@ -9,12 +9,9 @@ from .collect import planned_scenarios
 from .collection_session import atomic_json
 from .gate import file_hash
 from .recording import numeric_observation
+from .outcome_retries import fault,quality
 
 OUTCOMES={'landed','abort','timeout','contact_only','water_strike','collision_failure'}
-
-
-def fault(scenario):
-    return bool(scenario['camera_blind_seconds'] or scenario['beacon_dropout_duration_s'] or scenario['dock_unavailable_seconds'])
 
 
 def inspect_episode(path,entry,expected):
@@ -67,7 +64,7 @@ def inspect_episode(path,entry,expected):
             'hdf5_bytes':path.stat().st_size,'supervisor_counts':dict(supervisors)}
 
 
-def audit_dataset(manifest_path,expected_entries=None,allow_other_planned=False):
+def audit_dataset(manifest_path,expected_entries=None,allow_other_planned=False,allow_retried_aborts=False):
     path=Path(manifest_path).resolve();manifest=json.loads(path.read_text())
     if manifest.get('schema')!='aerodock.landing.dataset.v1' or manifest.get('role')!='dataset':raise ValueError('Production dataset manifest required')
     expected=expected_entries if expected_entries is not None else planned_scenarios()['episodes'];by_name={item['scenario']['name']:item for item in expected}
@@ -84,28 +81,51 @@ def audit_dataset(manifest_path,expected_entries=None,allow_other_planned=False)
         if group in worlds and worlds[group]!=entry['role']:raise ValueError('World leaks between splits')
         worlds[group]=entry['role'];rows.append(inspect_episode(artifact,entry,item))
     unsafe=[r['name'] for r in rows if r['outcome'] in ('water_strike','collision_failure')]
-    nominal_failures=[r['name'] for r in rows if not r['fault_case'] and r['outcome']!='landed']
+    policy=quality(rows,manifest,allow_retried_aborts)
+    if allow_retried_aborts:
+        indexed={entry['name']:entry for entry in manifest['episodes']}
+        for name in policy['retry_exhausted']:
+            if indexed[name].get('imitation_allowed') is not False:raise ValueError('Failed nominal imitation must be masked: '+name)
+            history=manifest['outcome_retries'][name]
+            for number,attempt in enumerate(history,1):
+                if attempt['number']!=number:raise ValueError('Invalid retry sequence')
+                artifact=(path.parent/attempt['directory']/'observations.h5').resolve()
+                if not artifact.is_relative_to(path.parent) or file_hash(artifact)!=attempt['sha256']:
+                    raise ValueError('Retry evidence missing or changed: '+name)
+                replay={**indexed[name],'path':str(artifact.relative_to(path.parent)),
+                        'sha256':attempt['sha256'],'outcome':attempt['outcome']}
+                inspect_episode(artifact,replay,by_name[name])
     missing=sorted(set(by_name)-seen);coverage={}
     for role in ('training','validation','test'):
         subset=[r for r in rows if r['role']==role]
         coverage[role]={field:dict(Counter(str(r[field]) for r in subset)) for field in ('map','distance_band','weather_group','reverse','initial_camera_aimed','outcome')}
     frames=sum(r['frames'] for r in rows);seconds=sum(r['duration_s'] for r in rows)
-    return {'schema':'aerodock.landing.dataset-audit.v1','passed':not missing and not unsafe and not nominal_failures,
+    histories=manifest.get('outcome_retries',{})
+    first_outcomes=Counter(histories[row['name']][0].get('original_outcome',row['outcome'])
+                           if histories.get(row['name']) else row['outcome'] for row in rows)
+    retry_outcomes=Counter(attempt['outcome'] for row in rows for attempt in histories.get(row['name'],[])
+                           if attempt['status']=='completed')
+    return {'schema':'aerodock.landing.dataset-audit.v1','passed':not missing and not unsafe and policy['nominal_quality_passed'],
             'dataset_manifest_sha256':file_hash(path),'review_manifest_sha256':manifest['review_manifest_sha256'],
             'episodes':rows,'episodes_total':len(rows),'frames_total':frames,'splits':dict(Counter(r['role'] for r in rows)),
             'outcomes':dict(Counter(r['outcome'] for r in rows)),'coverage':coverage,
-            'missing_episodes':missing,'unsafe_expert_flights':unsafe,'nominal_expert_failures':nominal_failures,
+            'first_attempt_outcomes':dict(first_outcomes),'retry_attempt_outcomes':dict(retry_outcomes),
+            'missing_episodes':missing,'unsafe_expert_flights':unsafe,**policy,
             'mean_episode_seconds':seconds/len(rows) if rows else None,'indexed_hdf5_bytes':sum(r['hdf5_bytes'] for r in rows),
             'feature_cache_bytes':sum(r['frames'] for r in rows if r['role']!='test')*7108,
             'note':'Strict structure/label audit. Full HDF5 SHA256 integrity is checked by the trainer before optimizer work. '
-                   'Nominal expert flights must land; fault flights may abort safely. This does not qualify a learned policy.'}
+                   'Nominal non-landings require three recorded retries, masked action imitation and >=98% '
+                   'nominal landings per split when bounded-retry acceptance is enabled. Fault flights may abort safely. '
+                   'This does not qualify a learned policy.'}
 
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--manifest',required=True);parser.add_argument('--output',required=True)
-    parser.add_argument('--pilot',action='store_true');args=parser.parse_args()
+    parser.add_argument('--pilot',action='store_true')
+    parser.add_argument('--allow-retried-aborts',action='store_true',help='Accept at most 2% nominal non-landings per split after three verified retries, with action imitation masked')
+    args=parser.parse_args()
     plan=planned_scenarios();entries=plan['episodes'][:plan['pilot_first_episodes']] if args.pilot else plan['episodes']
-    try:report=audit_dataset(args.manifest,entries,allow_other_planned=args.pilot)
+    try:report=audit_dataset(args.manifest,entries,allow_other_planned=args.pilot,allow_retried_aborts=args.allow_retried_aborts)
     except Exception as exc:report={'passed':False,'error':f'{type(exc).__name__}: {exc}'}
     atomic_json(args.output,report);print(json.dumps({k:v for k,v in report.items() if k not in ('episodes','coverage')},indent=2),flush=True)
     raise SystemExit(0 if report['passed'] else 2)

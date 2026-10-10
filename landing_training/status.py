@@ -29,7 +29,7 @@ def stage_times(state, now=None):
             seconds = max(seconds, (now - datetime.fromisoformat(stage['started_utc'])).total_seconds())
         times[stage['name']] = times.get(stage['name'], 0.) + max(0., seconds)
     groups = {
-        'collection_hours': ('pilot_collection', 'main_collection'),
+        'collection_hours': ('pilot_collection', 'main_collection', 'pilot_retry_collection', 'dataset_retry_collection'),
         'collection_audit_hours': ('pilot_audit', 'dataset_audit'),
         'training_hours_including_preparation': ('initial_training', 'remaining_training'),
         'evaluation_hours': ('policy_pilot', 'final_validation', 'final_test'),
@@ -43,6 +43,10 @@ def snapshot(state):
     checkpoints = Path(config['checkpoints'])
     manifest = read_json(dataset / 'manifest.json', {})
     entries = manifest.get('episodes', [])
+    attempts=[attempt for history in manifest.get('outcome_retries',{}).values() for attempt in history]
+    retries={'completed':sum(a['status']=='completed' for a in attempts),
+             'pending':sum(a['status']=='pending' for a in attempts),
+             'masked_nominal_nonlandings':sum(e.get('imitation_allowed') is False for e in entries)}
     progress = {'collection': fraction(len(entries), state.get('planned_episodes', 1200))}
     if manifest:
         splits = {}
@@ -79,6 +83,7 @@ def snapshot(state):
             'dataset_splits': splits, 'dataset_GB': state.get('dataset_GB'),
             'disk_free_GB': state.get('disk_free_GB'), 'timing': timing,
             'elapsed_total_hours': state.get('elapsed_total_hours', 0.),
+            'outcome_retries':retries,
             'heartbeat_age_seconds': age, 'training': training,
             'latest_launch': state.get('latest_launch'), 'final_model': state.get('final_model'),
             'loss_history_csv': str(checkpoints / 'loss_history.csv'),
@@ -92,6 +97,10 @@ def display(report):
         extra = ' (completed early)' if item.get('early_stopped') else ''
         lines.append(f"{name}: {item['completed']}/{item['total']} — {percent}{extra}")
     if report['training'].get('phase'): lines.append('Training phase: ' + report['training']['phase'])
+    retries=report.get('outcome_retries',{})
+    if retries.get('completed') or retries.get('pending'):
+        lines.append(f"Outcome retries: {retries['completed']} completed, {retries['pending']} pending; "
+                     f"{retries['masked_nominal_nonlandings']} nominal non-landings masked from action imitation")
     lines.append(f"Dataset: {report['dataset_GB']} GB | Free disk: {report['disk_free_GB']} GB")
     for name, hours in report['timing'].items(): lines.append(f'{name}: {hours:.3f} h')
     age = report['heartbeat_age_seconds']

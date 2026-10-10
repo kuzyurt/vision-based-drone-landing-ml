@@ -23,6 +23,26 @@ from .progress import atomic_text
 ROOT=Path(__file__).resolve().parent
 
 
+class DatasetAuditFailed(StageFailed):
+    def __init__(self,stage,detail):
+        super().__init__(stage,2)
+        self.args=('Dataset audit rejected recordings: '+detail,)
+
+
+def verify_runtime_resume(state,runtime,manifest_path):
+    if state.get('review_authorization',{}).get('runtime_sha256')!=runtime:
+        raise ValueError('Source changed since this pipeline began; unchanged approved runtime proof is required to resume')
+    manifest_path=Path(manifest_path)
+    if manifest_path.exists():
+        manifest=json.loads(manifest_path.read_text())
+        for entry in manifest['episodes']:
+            artifact=(manifest_path.parent/entry['path']).resolve()
+            if not artifact.is_relative_to(manifest_path.parent.resolve()):raise ValueError('Dataset path escapes its directory')
+            summary=json.loads(artifact.parent.joinpath('summary.json').read_text())
+            if summary.get('runtime_source_sha256')!=runtime:
+                raise ValueError('Recorded episode runtime changed: '+entry['name'])
+
+
 def storage_reserve(plan,minimum_gb):
     feature_bytes=sum((math.ceil(item['scenario']['duration']*25)+1)*7108
                       for item in plan['episodes'] if item['role']!='test')
@@ -174,13 +194,45 @@ class Pipeline(CloudCollection):
         return True
 
     def audit(self,pilot=False):
+        from .outcome_retries import RETRY_LIMIT
         output=self.folder/('pilot_audit.json' if pilot else 'dataset_audit.json')
-        self.milestone('pilot_audit' if pilot else 'dataset_audit',{'report':str(output),'passed':False})
-        command=[sys.executable,'-u','-m','landing_training.dataset_audit','--manifest',str(self.manifest),'--output',str(output)]
+        label='pilot_audit' if pilot else 'dataset_audit'
+        self.milestone(label,{'report':str(output),'passed':False})
+        command=[sys.executable,'-u','-m','landing_training.dataset_audit','--manifest',str(self.manifest),'--output',str(output),'--allow-retried-aborts']
         if pilot:command.append('--pilot')
-        self.run_stage('pilot_audit' if pilot else 'dataset_audit',command)
-        report=json.loads(output.read_text());self.milestone('pilot_audit' if pilot else 'dataset_audit',{'report':str(output),'passed':report['passed']})
-        return report
+        for round_number in range(RETRY_LIMIT+1):
+            failure=None
+            try:self.run_stage(label,command)
+            except StageFailed as exc:
+                if exc.code!=2 or not output.is_file():raise
+                failure=exc
+            report=json.loads(output.read_text())
+            self.milestone(label,{'report':str(output),'passed':report['passed'],
+                                  'warnings':report.get('quality_warnings',[])})
+            if report['passed']:
+                for warning in report.get('quality_warnings',[]):self.emit('DATA QUALITY NOTE: '+warning+'\n')
+                return report
+            candidates=report.get('retry_candidates',[])
+            critical=report.get('error') or report.get('missing_episodes') or report.get('unsafe_expert_flights')
+            if critical or not candidates or round_number==RETRY_LIMIT:
+                detail=report.get('error') or json.dumps({key:report.get(key) for key in
+                    ('missing_episodes','unsafe_expert_flights','nominal_expert_failures','nominal_landing_rates')})
+                self.emit('Audit cannot continue: '+detail+'\n')
+                raise DatasetAuditFailed(label,detail) from failure
+            if (self.checkpoints/'latest.pt').exists():raise ValueError('Cannot replace dataset episodes after training has started')
+            reserve=storage_reserve(planned_scenarios(),self.args.min_free_gb)
+            retry_label='pilot_retry_collection' if pilot else 'dataset_retry_collection'
+            self.emit(f'Retrying {len(candidates)} nominal non-landings; successful episodes stay untouched.\n')
+            results=self.folder/'results';results.mkdir(exist_ok=True)
+            self.run_stage(retry_label,[sys.executable,'-u','-m','landing_training.collect',
+                '--review',self.state['review_bundle'],'--output',str(self.dataset),
+                '--max-episodes',str(len(candidates)),'--workers',str(min(self.args.workers,len(candidates))),
+                '--instance-base','20','--gl','egl','--require-gpu','--quarantine-partial',
+                '--min-free-gb',str(reserve),'--max-dataset-gb',str(self.args.max_dataset_gb),
+                '--report-dir',str(results),'--retry-names',*candidates])
+            retry_report=json.loads((results/'latest.json').read_text())
+            if retry_report['status']!='completed':
+                raise RuntimeError('Retry collection stopped: '+str(retry_report.get('stop_reason')))
 
     def train_to(self,bundle,epochs,label):
         latest=self.checkpoints/'latest.pt'
@@ -270,14 +322,24 @@ class Pipeline(CloudCollection):
         bundle=self.resolve_review()
         if bundle is None:return
         source=source_fingerprint()
-        if self.state.get('source_sha256',source)!=source:raise ValueError('Source changed since this pipeline began: use a new dataset/state')
+        previous_source=self.state.get('source_sha256',source)
+        runtime=source_fingerprint(runtime_only=True)
+        if previous_source!=source:
+            if not getattr(self.args,'reuse_approved_runtime',False):
+                raise ValueError('Source changed since this pipeline began; unchanged approved runtime proof is required to resume')
+            verify_runtime_resume(self.state,runtime,self.manifest)
+            self.state.setdefault('source_migrations',[]).append({
+                'previous_source_sha256':previous_source,'current_source_sha256':source,
+                'runtime_sha256':runtime,'updated_utc':datetime.now(timezone.utc).isoformat(),
+                'reason':'Explicitly reuse approved, unchanged simulation runtime and plan after orchestration changes.'})
+            self.emit('Resuming existing data after verified orchestration changes; simulation runtime unchanged.\n')
         self.state['source_sha256']=source
         plan=planned_scenarios();pilot=plan['episodes'][:plan['pilot_first_episodes']]
         reviewed=json.loads((Path(bundle)/'manifest.json').read_text())
         if reviewed['collection_plan']!=plan:raise PermissionError('Review collection plan does not match current plan')
         self.state['review_authorization']={'bundle':str(bundle),'manifest_sha256':file_hash(Path(bundle)/'manifest.json'),
             'approved_source_sha256':reviewed.get('source_sha256'),
-            'current_source_sha256':source,'runtime_sha256':source_fingerprint(runtime_only=True),
+            'current_source_sha256':source,'runtime_sha256':runtime,
             'reuse_approved_runtime':getattr(self.args,'reuse_approved_runtime',False),
             'note':'Original user approval preserved; runtime/plan compatibility required for source-only changes.'}
         reserve=storage_reserve(plan,self.args.min_free_gb);self.state['collection_min_free_GB']=reserve
@@ -287,8 +349,10 @@ class Pipeline(CloudCollection):
         if not self.state['milestones'].get('pilot_audit',{}).get('passed'):
             if self.collect_to(bundle,pilot,reserve,'pilot_collection') is False:return
             audit=self.audit(pilot=True)
-            projected=audit['indexed_hdf5_bytes']/len(pilot)*len(plan['episodes'])*1.25
+            retained=max(0,tree_bytes(self.dataset)-audit['indexed_hdf5_bytes'])
+            projected=audit['indexed_hdf5_bytes']/len(pilot)*len(plan['episodes'])*1.25+retained
             self.state['pilot_projection']={'dataset_GB_with_25_percent_margin':projected/10**9,
+                'retained_attempts_and_current_overhead_GB':retained/10**9,
                 'mean_episode_seconds':audit['mean_episode_seconds'],'observed_episodes':audit['episodes_total'],
                 'note':'Measured balanced pilot projection; not a guarantee for later episodes.'}
             available=shutil.disk_usage(self.dataset).free+tree_bytes(self.dataset)-reserve*10**9

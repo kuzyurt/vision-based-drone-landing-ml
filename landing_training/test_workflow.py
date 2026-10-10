@@ -133,6 +133,75 @@ class WorkflowChecks(unittest.TestCase):
             self.assertEqual(code,4);self.assertEqual(runner.status,'needs_model_iteration')
             self.assertIn('initial_training',calls);self.assertNotIn('remaining_training',calls);self.assertNotIn('final_test',calls)
 
+    def test_nominal_audit_failure_replays_only_failed_names_then_continues(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,calls,patches,_=self.fixtures(root)
+            original=patches[-2].new;replayed=[]
+            def stage(runner,name,command,**kwargs):
+                if name=='pilot_audit' and not replayed:
+                    calls.append(name);runner.stage=name
+                    output=Path(command[command.index('--output')+1])
+                    atomic_json(output,{'passed':False,'retry_candidates':['training_0'],
+                        'nominal_expert_failures':['training_0'],'missing_episodes':[],'unsafe_expert_flights':[]})
+                    raise cloud.StageFailed(name,2)
+                if name=='pilot_retry_collection':
+                    calls.append(name);replayed.append(command[command.index('--retry-names')+1:])
+                    self.assertEqual(int(command[command.index('--workers')+1]),1)
+                    results=Path(command[command.index('--report-dir')+1]);results.mkdir(exist_ok=True)
+                    atomic_json(results/'latest.json',{'status':'completed','dataset_GB':.01,'episodes_total':2})
+                    runner.stages.append({'name':name,'elapsed_seconds':1.,'status':'completed','exit_code':0})
+                    return
+                return original(runner,name,command,**kwargs)
+            patches[-2]=patch.object(flow.Pipeline,'run_stage',stage)
+            runner,code=self.start(args_fixture(root),patches)
+            self.assertEqual(code,0);self.assertEqual(replayed,[['training_0']])
+            self.assertEqual(calls.count('pilot_collection'),1);self.assertEqual(calls.count('pilot_audit'),2)
+            self.assertLess(calls.index('pilot_retry_collection'),calls.index('main_collection'))
+            self.assertGreater(runner.state['timing']['collection_hours'],1/3600)
+
+    def test_retry_loop_is_bounded_and_small_exhausted_set_can_continue(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,calls,patches,_=self.fixtures(root)
+            original=patches[-2].new;retries=[]
+            def stage(runner,name,command,**kwargs):
+                if name=='pilot_audit' and len(retries)<3:
+                    calls.append(name);runner.stage=name
+                    atomic_json(Path(command[command.index('--output')+1]),{
+                        'passed':False,'retry_candidates':['training_0'],
+                        'nominal_expert_failures':['training_0'],'missing_episodes':[],'unsafe_expert_flights':[]})
+                    raise cloud.StageFailed(name,2)
+                if name=='pilot_retry_collection':
+                    calls.append(name);retries.append(name)
+                    results=Path(command[command.index('--report-dir')+1]);results.mkdir(exist_ok=True)
+                    atomic_json(results/'latest.json',{'status':'completed','dataset_GB':.01,'episodes_total':2});return
+                return original(runner,name,command,**kwargs)
+            patches[-2]=patch.object(flow.Pipeline,'run_stage',stage)
+            _,code=self.start(args_fixture(root),patches)
+            self.assertEqual(code,0);self.assertEqual(len(retries),3)
+            self.assertEqual(calls.count('pilot_audit'),4);self.assertIn('initial_training',calls)
+
+    def test_restart_of_failed_audit_preserves_collected_pilot(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,calls,patches,_=self.fixtures(root,failed_audit=True)
+            args=args_fixture(root);first,code=self.start(args,patches)
+            self.assertEqual(code,2);self.assertEqual(first.state['episodes_total'],2)
+            before=json.loads(first.manifest.read_text())['episodes'];calls.clear()
+            original=patches[-2].new
+            def stage(runner,name,command,**kwargs):
+                if name.endswith('audit'):
+                    calls.append(name);runner.stage=name
+                    atomic_json(Path(command[command.index('--output')+1]),{
+                        'passed':True,'episodes_total':2 if name=='pilot_audit' else 4,
+                        'indexed_hdf5_bytes':100,'mean_episode_seconds':20,'feature_cache_bytes':100})
+                    return
+                return original(runner,name,command,**kwargs)
+            patches[-2]=patch.object(flow.Pipeline,'run_stage',stage)
+            resumed,code=self.start(args,patches)
+            self.assertEqual(code,0,resumed.reason);self.assertNotIn('pilot_collection',calls)
+            self.assertIn('main_collection',calls)
+            after=json.loads(resumed.manifest.read_text())['episodes']
+            self.assertEqual(after[:2],before);self.assertEqual(len(after),4)
+
     def test_completed_restart_reuses_weights_and_test_assessment(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);_,_,calls,patches,_=self.fixtures(root)
