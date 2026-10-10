@@ -59,8 +59,14 @@ def require_approval(bundle):
         if 'qualification.json' not in review['artifacts']:
             raise PermissionError('Approved review has no fingerprinted qualification evidence')
         qualification=json.loads((bundle/'qualification.json').read_text())
-        if not qualification.get('passed') or qualification.get('runtime_source_sha256')!=runtime:
-            raise PermissionError('Approved simulation runtime changed; existing videos cannot be reused')
+        if not qualification.get('passed'):
+            raise PermissionError('Approved qualification evidence did not pass')
+        qualified_runtime=qualification.get('runtime_source_sha256')
+        if not qualified_runtime:
+            raise PermissionError('This older qualification report has no runtime fingerprint; its approval cannot establish compatibility with the current simulation')
+        if qualified_runtime!=runtime:
+            raise PermissionError('Approved simulation runtime changed; existing videos cannot be reused '
+                                  f'(reviewed {qualified_runtime[:12]}, current {runtime[:12]})')
         for episode in review['episodes']:
             relative=episode['name']+'/summary.json'
             if relative not in review['artifacts']:
