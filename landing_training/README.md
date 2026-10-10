@@ -840,6 +840,39 @@ landing_training/.venv/bin/python -m landing_training.stress_review --report lan
 
 ## Reviewed cloud collection → training → evaluation
 
+### Parallel diverse review uploaded from the VM
+
+On an authenticated GitHub CLI VM, run
+`bash landing_training/start_diverse_review.sh` inside detached tmux. This
+checks GitHub upload permission and NVIDIA EGL first, runs current qualification,
+and renders ten review flights with eight concurrent workers. Seven are nominal;
+three add camera blindness, radio dropout or dock-readiness delay. The scenarios
+use production map/path seeds with both directions of all five map types,
+approximately 3–51 m airborne distances, 2.2–8 m heights, boat speeds
+0.18–0.88 m/s, wind up to 3.73 m/s and waves up to 0.136 m. All variations stay
+inside the existing production envelope. Legs, raised platform and open lids
+remain governed by the unchanged simulation.
+
+The original per-frame RGB, JSONL and full-resolution video remain on the VM.
+After video/recording audits, `review_package.py` builds an at-most **80 decimal
+MB** viewing ZIP with ten 720p/25 Hz videos, all recorded input/output JSONL,
+scenarios, qualification/audit reports, previews and collection plan. Raw HDF5
+and PX4 logs are omitted from the download. If needed, four concurrent two-pass
+encoders compress viewing copies while preserving original videos, every frame,
+dimensions and timestamps. Viewing-video hashes are recorded separately from
+the full original manifest. User approval always applies to the complete VM
+bundle. Safe abort/timeout/contact-only outcomes are accepted for explicit fault
+cases; nominal failures, water strikes and collisions block qualification.
+
+The launcher **uploads** the ZIP and its SHA256 checksum as a GitHub prerelease
+on `kuzyurt/vision-based-drone-landing-ml`, verifies the uploaded asset size,
+and writes `github_download_url.txt`, `github_release_url.txt`, `run_report.json`
+and `console.log`. `outputs/latest_diverse_review.txt` points to this run.
+Authentication, render, audit, packaging and upload failures have a nonzero exit
+code; they are never reported as successful uploads. The launcher does not
+approve videos or begin production collection. It uses the VM-wide workflow
+lock and should not overlap a benchmark or collector.
+
 On the existing Linux L4 VM, keep its working CUDA PyTorch environment. The
 launcher does not reinstall dependencies or replace it with CPU wheels.
 

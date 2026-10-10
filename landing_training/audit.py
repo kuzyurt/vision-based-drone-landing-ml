@@ -8,7 +8,7 @@ import h5py
 import numpy as np
 from usv.procedural_world import World
 from .recording import numeric_observation
-from .gate import source_fingerprint
+from .gate import source_fingerprint,safe_review_outcome
 
 def audit_episode(directory,require_landing=True):
     directory=Path(directory)
@@ -51,7 +51,7 @@ def audit_episode(directory,require_landing=True):
     if abs(signed)<1:raise ValueError('Coastal side is ambiguous')
     return {'name':summary['scenario']['name'],'passed':True,'frames':len(records),'seconds':len(records)/25,'outcome':summary['outcome'],'phases':summary['phase_counts'],'max_dock_error_m':summary['max_dock_error_m'],'coast_side_relative_to_boat_forward':'left' if signed>0 else 'right','video_matches_records':True,'review_excluded_from_training':True}
 
-def audit_bundle(bundle):
+def audit_bundle(bundle,allow_fault_outcomes=False):
     bundle=Path(bundle)
     directories=sorted(p.parent for p in bundle.glob('*/summary.json'))
     if len(directories)<10:raise ValueError('At least ten complete review flights are required')
@@ -61,7 +61,13 @@ def audit_bundle(bundle):
         paired=[s for s in scenarios if s['kind']==kind]
         if {s['reverse'] for s in paired}!={False,True}:raise ValueError('Both route directions required')
         if len({(s['world_seed'],s['path_seed']) for s in paired})!=1:raise ValueError('Route pair uses different map geometry')
-    report={'passed':True,'scope':'video, serialized records, timing, actuator bounds, airborne start, dock invariants, native PX4 terminal state and map/direction coverage','episodes':[audit_episode(p) for p in directories]}
+    episodes=[]
+    for directory in directories:
+        summary=json.loads((directory/'summary.json').read_text())
+        if allow_fault_outcomes and not safe_review_outcome(summary):
+            raise ValueError('Nominal landing failure or unsafe fault outcome: '+directory.name)
+        episodes.append(audit_episode(directory,require_landing=not allow_fault_outcomes or summary['outcome']=='landed'))
+    report={'passed':True,'scope':'video, serialized records, timing, actuator bounds, airborne start, dock invariants, native PX4 terminal state and map/direction coverage','allow_safe_fault_outcomes':allow_fault_outcomes,'episodes':episodes}
     by_name={e['name']:e for e in report['episodes']}
     for kind in {s['kind'] for s in scenarios}:
         sides={by_name[s['name']]['coast_side_relative_to_boat_forward'] for s in scenarios if s['kind']==kind}

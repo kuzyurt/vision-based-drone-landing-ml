@@ -5,6 +5,14 @@ import os
 from pathlib import Path
 from .scene import REPO,ROOT
 
+def safe_review_outcome(summary):
+    if summary.get('failure'):return False
+    if summary.get('outcome')=='landed':return True
+    scenario=summary.get('scenario',{})
+    fault=any(scenario.get(name,0)>0 for name in
+              ('camera_blind_seconds','beacon_dropout_duration_s','dock_unavailable_seconds'))
+    return fault and summary.get('outcome') in ('abort','timeout','contact_only')
+
 def file_hash(path):
     digest=hashlib.sha256()
     with Path(path).open('rb') as stream:
@@ -72,7 +80,7 @@ def require_approval(bundle):
             if relative not in review['artifacts']:
                 raise PermissionError('Approved episode has no fingerprinted runtime evidence')
             summary=json.loads((bundle/relative).read_text())
-            if summary.get('runtime_source_sha256')!=runtime or summary.get('failure') or summary.get('outcome')!='landed':
+            if summary.get('runtime_source_sha256')!=runtime or not safe_review_outcome(summary):
                 raise PermissionError('Approved episode runtime/outcome is incompatible: '+episode['name'])
         from .collect import planned_scenarios
         if review.get('collection_plan')!=planned_scenarios():
