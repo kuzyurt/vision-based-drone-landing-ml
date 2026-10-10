@@ -8,14 +8,14 @@ from unittest.mock import patch
 
 import h5py
 
-from .collect import _collect_locked
-from .collection_session import atomic_json
-from .dataset_audit import audit_dataset
-from .gate import file_hash
-from .outcome_retries import quality, prepare_attempt, RETRY_LIMIT
+from ..collect import _collect_locked
+from ..collection_session import atomic_json
+from ..dataset_audit import audit_dataset
+from ..gate import file_hash
+from ..outcome_retries import quality, prepare_attempt, RETRY_LIMIT
 from .test_dataset_audit import write_episode, manifest
-from .training_pipeline import teacher_supervision
-from .workflow import verify_runtime_resume
+from ..training_pipeline import teacher_supervision
+from ..workflow import verify_runtime_resume
 
 
 class ReplayChecks(unittest.TestCase):

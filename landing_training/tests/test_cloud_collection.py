@@ -11,7 +11,7 @@ import unittest
 from unittest.mock import patch
 from argparse import Namespace
 
-from . import cloud_collection as cloud
+from .. import cloud_collection as cloud
 
 REAL_POPEN = subprocess.Popen
 

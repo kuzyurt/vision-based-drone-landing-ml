@@ -15,7 +15,7 @@ from unittest.mock import patch
 import h5py
 import numpy as np
 
-from . import training
+from ..benchmarks import training
 from ..gate import file_hash
 
 

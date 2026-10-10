@@ -12,8 +12,8 @@ from unittest.mock import patch
 import h5py
 import numpy as np
 
-from . import audit_execution as execution
-from .dataset_audit import audit_dataset,inspect_episode
+from .. import audit_execution as execution
+from ..dataset_audit import audit_dataset,inspect_episode
 from .test_dataset_audit import write_episode,manifest
 
 
@@ -56,7 +56,7 @@ class ParallelAuditChecks(unittest.TestCase):
     sys.argv=['audit','--manifest',str(root/'manifest.json'),'--output',str(root/'report.json'),'--workers','2']
     audit.main()
 ''')
-            environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parent.parent),
+            environment={**os.environ,'PYTHONPATH':str(Path(__file__).resolve().parents[2]),
                          'PYTHONDONTWRITEBYTECODE':'1'}
             result=subprocess.run([sys.executable,str(driver),str(root)],env=environment,
                                   text=True,capture_output=True,timeout=30)

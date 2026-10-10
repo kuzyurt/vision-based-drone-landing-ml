@@ -7,3 +7,6 @@ Machine learning for camera-based drone landing on moving boats.
 
 The combined environment exports review videos and recorded input/output data.
 Training collection requires explicit user verification of that review bundle.
+
+The [landing technical report](landing_training/docs/technical_report.md)
+explains the shared physics, dataset design, recurrent policy and evaluation phases.

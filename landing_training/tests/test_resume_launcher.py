@@ -11,7 +11,7 @@ import unittest
 class ResumeLauncherChecks(unittest.TestCase):
     def fixture(self,root):
         training=root/'landing_training';training.mkdir()
-        shutil.copyfile(Path(__file__).with_name('resume_cloud_pipeline.sh'),training/'resume_cloud_pipeline.sh')
+        shutil.copyfile(Path(__file__).resolve().parents[1]/'resume_cloud_pipeline.sh',training/'resume_cloud_pipeline.sh')
         scripts=root/'fixture_commands';scripts.mkdir()
         python=training/'.venv/bin/python';python.parent.mkdir(parents=True)
         bundle=training/'outputs/review';bundle.mkdir(parents=True)

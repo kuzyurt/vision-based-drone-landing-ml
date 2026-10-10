@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 from PIL import Image
-from . import review
-from .config import review_scenarios
+from .. import review
+from ..config import review_scenarios
 
 class ReviewChecks(unittest.TestCase):
     def test_interrupted_export_is_quarantined_without_self_approval(self):

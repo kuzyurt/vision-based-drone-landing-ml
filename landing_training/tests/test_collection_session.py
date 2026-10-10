@@ -8,8 +8,8 @@ import time
 import unittest
 from unittest.mock import patch
 
-from .collection_session import CollectionSession, GB, episode_reservation
-from .execution import iter_jobs
+from ..collection_session import CollectionSession, GB, episode_reservation
+from ..execution import iter_jobs
 
 
 def scheduler_fixture(job, queue, cancel):
@@ -18,7 +18,7 @@ def scheduler_fixture(job, queue, cancel):
     (directory/'started').write_text('fixture')
     if job.get('crash_with_owned_child'):
         import os,subprocess,sys,psutil
-        from .collection_session import atomic_json
+        from ..collection_session import atomic_json
         runtime=directory/'px4';runtime.mkdir()
         child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(120)',str(runtime.resolve())],start_new_session=True)
         atomic_json(runtime/'owned_process.json',{'pid':child.pid,'create_time':psutil.Process(child.pid).create_time(),'runtime':str(runtime.resolve())})
@@ -129,8 +129,8 @@ class SessionChecks(unittest.TestCase):
 
     def test_crashed_attempt_is_retained_and_retried_without_overwriting(self):
         from dataclasses import asdict
-        from .config import Scenario
-        from .collect import _collect_locked
+        from ..config import Scenario
+        from ..collect import _collect_locked
         scenario=asdict(Scenario(name='crashed_fixture'))
         item={'scenario':scenario,'role':'training'}
         for summary_text in (None,'{unfinished',json.dumps({'failure':'KeyboardInterrupt'})):

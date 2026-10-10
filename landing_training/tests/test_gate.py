@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from . import gate
+from .. import gate
 
 
 class ApprovalReuseChecks(unittest.TestCase):

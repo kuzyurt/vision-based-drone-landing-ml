@@ -11,13 +11,13 @@ from unittest.mock import patch
 import h5py
 import numpy as np
 
-from .config import Scenario
-from .collection_session import atomic_json
-from .recording import Recorder,TraceRecorder
-from .dataset_audit import audit_dataset
-from .collect import planned_scenarios
-from .evaluate import select_episodes
-from .gate import file_hash
+from ..config import Scenario
+from ..collection_session import atomic_json
+from ..recording import Recorder,TraceRecorder
+from ..dataset_audit import audit_dataset
+from ..collect import planned_scenarios
+from ..evaluate import select_episodes
+from ..gate import file_hash
 
 
 def write_episode(root,name='flight',role='training',outcome='landed',fault=False,world=1):
@@ -53,7 +53,7 @@ def manifest(root,entries):
 
 class AuditChecks(unittest.TestCase):
     def test_safe_failed_test_retained_with_verified_retries_and_excluded_from_fitting(self):
-        from .train import approved_dataset
+        from ..train import approved_dataset
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);items=[];entries=[]
             for index,role in enumerate(('training','validation','test')):
@@ -169,7 +169,7 @@ class AuditChecks(unittest.TestCase):
         self.assertTrue(all(e['role']=='validation' for e in selected))
 
     def test_parallel_evaluation_jobs_use_trace_only_and_preserve_split(self):
-        from . import evaluate as evaluator,train as trainer,execution
+        from .. import evaluate as evaluator,train as trainer,execution
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder);entries=[]
             for world,role in enumerate(('training','validation','test'),1):
