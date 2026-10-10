@@ -16,7 +16,7 @@ from . import cloud_collection as cloud
 from .cloud_collection import CloudCollection,StageFailed
 from .collection_session import atomic_json,tree_bytes
 from .collect import planned_scenarios,approved_bundle
-from .gate import file_hash,source_fingerprint
+from .gate import file_hash,source_fingerprint,compatible_runtime_fingerprints
 from .status import snapshot,stage_times,display
 from .progress import atomic_text
 
@@ -30,7 +30,8 @@ class DatasetAuditFailed(StageFailed):
 
 
 def verify_runtime_resume(state,runtime,manifest_path):
-    if state.get('review_authorization',{}).get('runtime_sha256')!=runtime:
+    accepted=compatible_runtime_fingerprints(runtime)
+    if state.get('review_authorization',{}).get('runtime_sha256') not in accepted:
         raise ValueError('Source changed since this pipeline began; unchanged approved runtime proof is required to resume')
     manifest_path=Path(manifest_path)
     if manifest_path.exists():
@@ -39,7 +40,7 @@ def verify_runtime_resume(state,runtime,manifest_path):
             artifact=(manifest_path.parent/entry['path']).resolve()
             if not artifact.is_relative_to(manifest_path.parent.resolve()):raise ValueError('Dataset path escapes its directory')
             summary=json.loads(artifact.parent.joinpath('summary.json').read_text())
-            if summary.get('runtime_source_sha256')!=runtime:
+            if summary.get('runtime_source_sha256') not in accepted:
                 raise ValueError('Recorded episode runtime changed: '+entry['name'])
 
 
@@ -328,11 +329,16 @@ class Pipeline(CloudCollection):
             if not getattr(self.args,'reuse_approved_runtime',False):
                 raise ValueError('Source changed since this pipeline began; unchanged approved runtime proof is required to resume')
             verify_runtime_resume(self.state,runtime,self.manifest)
+            previous_runtime=self.state.get('review_authorization',{}).get('runtime_sha256')
+            correction=previous_runtime!=runtime
+            reason=('Exact short-rock-tile renderer crash correction; previously successful scenery unchanged.'
+                    if correction else 'Explicitly reuse approved, unchanged simulation runtime and plan after orchestration changes.')
             self.state.setdefault('source_migrations',[]).append({
                 'previous_source_sha256':previous_source,'current_source_sha256':source,
+                'previous_runtime_sha256':previous_runtime,
                 'runtime_sha256':runtime,'updated_utc':datetime.now(timezone.utc).isoformat(),
-                'reason':'Explicitly reuse approved, unchanged simulation runtime and plan after orchestration changes.'})
-            self.emit('Resuming existing data after verified orchestration changes; simulation runtime unchanged.\n')
+                'reason':reason})
+            self.emit('Resuming existing data after verified source compatibility: '+reason+'\n')
         self.state['source_sha256']=source
         plan=planned_scenarios();pilot=plan['episodes'][:plan['pilot_first_episodes']]
         reviewed=json.loads((Path(bundle)/'manifest.json').read_text())
@@ -341,7 +347,7 @@ class Pipeline(CloudCollection):
             'approved_source_sha256':reviewed.get('source_sha256'),
             'current_source_sha256':source,'runtime_sha256':runtime,
             'reuse_approved_runtime':getattr(self.args,'reuse_approved_runtime',False),
-            'note':'Original user approval preserved; runtime/plan compatibility required for source-only changes.'}
+            'note':'Original user approval preserved; exact runtime/plan compatibility required, with the audited short-rock-tile crash correction allowed.'}
         reserve=storage_reserve(plan,self.args.min_free_gb);self.state['collection_min_free_GB']=reserve
         self.save()
         current=json.loads(self.manifest.read_text())['episodes'] if self.manifest.exists() else []

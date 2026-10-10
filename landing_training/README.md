@@ -1058,7 +1058,35 @@ seed may fail identically; retries do not repair the teacher's descent logic.
 
 Configuration and source/review hashes are frozen for resume. Restore those
 settings or use a fresh state/output/checkpoint directory after a substantive
-change. Interrupted child stages are journalled with PID, process start time and exact
+change. The exact short-rock-coast-tile renderer correction is compatible with
+the preceding runtime under `--reuse-approved-runtime`: tiles shorter than 4 m
+previously raised an exception before producing an image, while all valid tiles
+keep their geometry and random draws unchanged. Compatibility recomputes the
+old runtime fingerprint using only the pinned old renderer-file hash; every
+other simulator source, dependency, asset and PX4 binary must still match.
+Existing approval/manifests and recording files are preserved, and the pipeline
+records both runtime hashes and the correction reason in `source_migrations`.
+Other renderer or flight changes are not covered by this exception.
+
+To resume the failed collection on the VM, keeping its existing 64-worker
+configuration, run:
+
+```bash
+cd "$HOME/vision-based-drone-landing-ml"
+git switch codex/landing-training
+git pull --ff-only
+bash landing_training/resume_cloud_pipeline.sh
+python3 -m landing_training.status --watch 10
+```
+
+The launcher creates a detached tmux session. Closing SSH or stopping the
+status watcher does not stop the pipeline. Indexed episodes are skipped;
+complete unindexed episodes are checked and recovered without another flight.
+Incomplete attempts are retained in `partial_attempts/` and rerun. Collection
+still precedes the complete dataset audit, training and policy evaluation.
+Launcher errors are saved at the path in `outputs/latest_resume_launcher.txt`.
+
+Interrupted child stages are journalled with PID, process start time and exact
 command; restart verifies that identity and stops the owned job before
 quarantining recordings. Unverifiable/reused PIDs are refused. Partial episode
 attempts are quarantined and retried; optimizer state resumes from the last

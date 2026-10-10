@@ -224,6 +224,43 @@ class WorkflowChecks(unittest.TestCase):
             second,code=self.start(args_fixture(root),patches)
             self.assertEqual(code,1);self.assertEqual(calls,['gpu_probe']);self.assertIn('Source changed',second.reason)
 
+    def test_renderer_correction_resumes_failed_main_stage_and_journals_both_runtimes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);_,_,calls,patches,_=self.fixtures(root)
+            original=patches[-2].new
+            def fail_main(runner,name,command,**kwargs):
+                if name=='main_collection':
+                    runner.stage=name
+                    raise cloud.StageFailed(name,1)
+                return original(runner,name,command,**kwargs)
+            patches[-2]=patch.object(flow.Pipeline,'run_stage',fail_main)
+            args=args_fixture(root)
+            first,code=self.start(args,patches)
+            self.assertEqual(code,1)
+            state=json.loads(first.state_path.read_text());state['source_sha256']='previous-source'
+            state['review_authorization']['runtime_sha256']='previous-runtime'
+            atomic_json(first.state_path,state)
+            data=json.loads(first.manifest.read_text())
+            for entry in data['episodes']:
+                entry['path']=entry['name']+'/observations.h5'
+                folder=first.dataset/entry['name'];folder.mkdir()
+                atomic_json(folder/'summary.json',{'runtime_source_sha256':'previous-runtime'})
+            atomic_json(first.manifest,data);before=data['episodes']
+            calls.clear();args.reuse_approved_runtime=True
+            patches[-2]=patch.object(flow.Pipeline,'run_stage',original)
+            patches.append(patch.object(flow,'compatible_runtime_fingerprints',
+                                        return_value={'previous-runtime','fixture-source'}))
+            resumed,code=self.start(args,patches)
+            self.assertEqual(code,0,resumed.reason)
+            self.assertNotIn('pilot_collection',calls)
+            self.assertIn('main_collection',calls)
+            after=json.loads(resumed.manifest.read_text())['episodes']
+            self.assertEqual(after[:len(before)],before)
+            migration=resumed.state['source_migrations'][-1]
+            self.assertEqual(migration['previous_runtime_sha256'],'previous-runtime')
+            self.assertEqual(migration['runtime_sha256'],'fixture-source')
+            self.assertIn('renderer crash correction',migration['reason'])
+
     def test_completion_requires_unique_exact_plan_and_reserves_training_space(self):
         plan=plan_fixture()
         self.assertGreater(flow.storage_reserve(plan,32),32)

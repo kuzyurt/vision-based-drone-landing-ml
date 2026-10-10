@@ -147,13 +147,16 @@ def _collect_locked(bundle,destination,max_episodes,checkpoint,workers,instance_
         session.write_report(scan=True)
     checkpoint_hash=file_hash(checkpoint) if checkpoint else None
     by_name={item['scenario']['name']:item for item in planned}
+    compatible_runtimes=None
     def finalize(result,*,recovered=False):
+        nonlocal compatible_runtimes
         item=by_name[result['name']];directory=Path(result['directory'])
         summary=json.loads((directory/'summary.json').read_text());artifact=directory/'observations.h5'
         source_matches=summary['source_sha256']==source_hash
         if not source_matches and os.environ.get('LANDING_REUSE_APPROVED_RUNTIME')=='1':
-            from .gate import source_fingerprint
-            source_matches=summary.get('runtime_source_sha256')==source_fingerprint(runtime_only=True)
+            from .gate import compatible_runtime_fingerprints
+            if compatible_runtimes is None:compatible_runtimes=compatible_runtime_fingerprints()
+            source_matches=summary.get('runtime_source_sha256') in compatible_runtimes
         if summary['failure'] or not source_matches or summary['scenario']!=item['scenario'] or summary['role']!=item['role'] or not summary['training_eligible']:
             raise ValueError('Incomplete or incompatible episode; retain it and choose a new output directory: '+str(directory))
         if summary.get('collection_checkpoint_sha256')!=checkpoint_hash:raise ValueError('Episode checkpoint differs from requested collector')

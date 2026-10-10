@@ -5,6 +5,12 @@ import os
 from pathlib import Path
 from .scene import REPO,ROOT
 
+# Exact, audited crash-only correction. Legacy fingerprints are recomputed
+# with this one file's old hash; every other runtime input still has to match.
+SCENERY_RENDERER_PATH='AERODOCK_MuJoCo/usv/world_render.py'
+SCENERY_RENDERER_BEFORE='bb40bb809fa5c15bc8003bfe62b80acf7004712bb5037b339b8569ddbc47e689'
+SCENERY_RENDERER_FIXED='d4fb2c6343b20dfea73fd0fbe66f6b162d5a41dc35c67c8f89311ebb079b696e'
+
 def safe_review_outcome(summary):
     if summary.get('failure'):return False
     if summary.get('outcome')=='landed':return True
@@ -20,6 +26,9 @@ def file_hash(path):
     return digest.hexdigest()
 
 def source_fingerprint(runtime_only=False,include_rendering=True):
+    return _source_fingerprint(runtime_only,include_rendering)
+
+def _source_fingerprint(runtime_only,include_rendering,*,legacy_scenery=False):
     # Runtime caches, videos, approval files and timestamps are excluded.
     if runtime_only:
         paths=[ROOT/name for name in ('config.py','environment.py','expert.py','supervision.py','scene.py','collision_pieces.py','visual_lod.py','px4.py','px4_wsl.sh','rendering.py','recording.py','run_episode.py','paths.py','runtime.py','execution.py')]
@@ -41,8 +50,27 @@ def source_fingerprint(runtime_only=False,include_rendering=True):
     for package in ('mujoco','numpy','scipy','Pillow','pymavlink','h5py','fast-simplification','torch','torchvision'):
         digest.update((package+'='+version(package)).encode())
     for path in sorted(set(paths)):
-        digest.update(str(path.relative_to(REPO)).encode());digest.update(file_hash(path).encode())
+        relative=str(path.relative_to(REPO));actual=file_hash(path)
+        if legacy_scenery and relative==SCENERY_RENDERER_PATH:
+            if actual!=SCENERY_RENDERER_FIXED:
+                raise PermissionError('Scenery compatibility requires the exact audited renderer correction')
+            actual=SCENERY_RENDERER_BEFORE
+        digest.update(relative.encode());digest.update(actual.encode())
     return digest.hexdigest()
+
+def compatible_runtime_fingerprints(runtime=None):
+    """Current runtime plus the exact predecessor of the short-rock-tile fix.
+
+    This does not approve a bundle or enable reuse: callers must still verify
+    user approval, artifacts and the plan, and explicitly request runtime reuse.
+    The old renderer failed before producing an image in the corrected branch;
+    all successful chunks retain identical geometry and random draws.
+    """
+    accepted={runtime or source_fingerprint(runtime_only=True)}
+    renderer=REPO/SCENERY_RENDERER_PATH
+    if renderer.is_file() and file_hash(renderer)==SCENERY_RENDERER_FIXED:
+        accepted.add(_source_fingerprint(True,True,legacy_scenery=True))
+    return frozenset(accepted)
 
 def require_approval(bundle):
     bundle=Path(bundle).resolve();approval=bundle/'approval.json';manifest=bundle/'manifest.json'
@@ -61,8 +89,9 @@ def require_approval(bundle):
         if not path.is_relative_to(bundle) or not path.is_file() or file_hash(path)!=expected:raise PermissionError('Reviewed artifact missing or changed: '+relative)
     if not source_matches:
         # Explicit reuse of an already user-approved recording; never rewrite
-        # its approval/manifest. Visible inputs, physics, assets, dependencies,
-        # PX4, reviewed evidence and planned scenarios must remain identical.
+        # its approval/manifest. Reviewed successful frames stay identical;
+        # only the exact short-rock-tile crash correction can differ. Physics,
+        # assets, dependencies, PX4, evidence and the plan remain fingerprinted.
         runtime=source_fingerprint(runtime_only=True)
         if 'qualification.json' not in review['artifacts']:
             raise PermissionError('Approved review has no fingerprinted qualification evidence')
@@ -72,7 +101,7 @@ def require_approval(bundle):
         qualified_runtime=qualification.get('runtime_source_sha256')
         if not qualified_runtime:
             raise PermissionError('This older qualification report has no runtime fingerprint; its approval cannot establish compatibility with the current simulation')
-        if qualified_runtime!=runtime:
+        if qualified_runtime not in compatible_runtime_fingerprints(runtime):
             raise PermissionError('Approved simulation runtime changed; existing videos cannot be reused '
                                   f'(reviewed {qualified_runtime[:12]}, current {runtime[:12]})')
         for episode in review['episodes']:
@@ -80,7 +109,7 @@ def require_approval(bundle):
             if relative not in review['artifacts']:
                 raise PermissionError('Approved episode has no fingerprinted runtime evidence')
             summary=json.loads((bundle/relative).read_text())
-            if summary.get('runtime_source_sha256')!=runtime or not safe_review_outcome(summary):
+            if summary.get('runtime_source_sha256')!=qualified_runtime or not safe_review_outcome(summary):
                 raise PermissionError('Approved episode runtime/outcome is incompatible: '+episode['name'])
         from .collect import planned_scenarios
         if review.get('collection_plan')!=planned_scenarios():

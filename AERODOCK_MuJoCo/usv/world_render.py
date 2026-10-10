@@ -240,8 +240,12 @@ class WorldRenderer:
                     p=grounded(point(float(rng.uniform(start,end)),float(rng.uniform(2,w.beach_width))))
                     r=float(rng.uniform(.3,1.1));geoms.append(self.primitive(mujoco.mjtGeom.mjGEOM_ELLIPSOID,[r,r*.7,r*.5],p+[0,0,r*.2],[.64,.62,.56,1],'gravel'))
         else:
+            # The final coastline tile may be shorter than both 2 m margins.
+            # Keep every previously valid tile identical, including its RNG
+            # stream; shorten margins only where the old interval was invalid.
+            margin=2. if end-start>=4. else (end-start)*.25
             for rock_index in range(9):
-                s=float(rng.uniform(start+2,end-2))
+                s=float(rng.uniform(start+margin,end-margin))
                 inland=float(rng.uniform(1.2,2.2) if rock_index<3 else rng.uniform(9,30))
                 p=grounded(point(s,inland))
                 r=float(rng.uniform(.35,.7) if rock_index<3 else rng.uniform(1.1,2.6))
