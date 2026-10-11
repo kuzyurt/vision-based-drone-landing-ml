@@ -28,3 +28,18 @@ landing_training/.venv/bin/python -B -m landing_training.evaluate_boat_appearanc
 ```
 
 Plan, reports, native traces, input RGB snapshots and videos are retained in outputs/boat_appearance_20261011/flights_v1. The appearance extensions are separate from the original environment qualification and are not training data.
+
+## Completed results
+
+All four flights landed with zero unsafe outcomes: both worn finishes and both palette changes. Three material-invariance checks pass. The completion audit verifies frozen policy weights and source, unchanged base runtime/assets/checkpoints/approvals and exact matched scenario settings. No retraining was performed.
+
+| Appearance | Outcome | First metric track, seconds | Terminal task time, seconds | Matched baseline terminal time |
+|---|---|---:|---:|---:|
+| used_light | landed | 0.96 | 43.24 | 42.20 |
+| recolor_warm | landed | 1.00 | 41.40 | 42.20 |
+| used_heavy | landed | 23.64 | 66.68 | 65.12 |
+| recolor_cool | landed | 28.64 | 65.08 | 65.12 |
+
+The cooler palette acquired metric tracking at 28.64 s versus 23.72 s for its control, but still landed at 65.08 s versus 65.12 s. A single run cannot establish whether this acquisition delay is systematic. The dirt tests include marker weathering; palette tests preserve the original cyan marker.
+
+All four H.264 MP4s (1280x720, 25 fps) were downloaded to the Windows PC in a combined 22.724 seconds with exact SHA-256 matches. Native traces, videos, camera snapshots and comparison/preservation evidence remain in the experiment directory. Original recordings were preserved.
