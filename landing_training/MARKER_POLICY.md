@@ -31,6 +31,12 @@ Use a fresh output path. The bundle defaults to the same original twelve validat
 
 ## Evidence
 
-The final three-case focus pilot landed all three flights, including both previously blocked high-altitude cases, with no unsafe outcomes. Thirty-one focused checks pass. The final twelve-case comparison is stored in outputs/marker_iteration_20261010T233621Z/full_validation_v5/report.json. Its completed report is the source of final performance numbers; a running or partial report cannot pass the minimum learning check. This is simulation evaluation evidence, not hardware qualification.
+The final three-case focus pilot landed all three flights, including both previously blocked high-altitude cases, with no unsafe outcomes. Thirty-one focused checks pass. The completed twelve-case comparison landed 12/12 flights with zero unsafe outcomes, versus 12 aborts and zero landings from the original three-epoch action policy. All twelve scenario configurations match the original comparison exactly. The unchanged physical evaluator confirmed contact and disarm; the separate policy-controlled video flight also landed.
+
+Median roll/pitch RMS over the first 20 task seconds decreased from 5.682/3.940 degrees to 2.136/1.887 degrees across the twelve matched scenarios. These numbers use observed PX4 attitude and the same window for both policies.
+
+Evidence is stored in outputs/marker_iteration_20261010T233621Z/full_validation_v5/report.json, paired_comparison_v5.json and completion_receipt_v5.json. The selected bundle is policy_bundle_v5/policy.json; the final video is video_v5/validation_0008_forward/review.mp4. Its SHA-256 is f4ac0600a16268faa28cc3c29526bbc1222aeaff14b88470ca0dc8e1e43f1994. It was downloaded to the Windows PC in 4.871 seconds with an exact checksum match.
+
+These twelve validation scenarios guided model and controller iteration. The held-out test split remains unevaluated by the selected policy, so these results establish progress on the comparison scenarios and do not establish general landing reliability or hardware qualification.
 
 Original recordings, manifest, production checkpoints, review approvals and pipeline state are preserved. The VM verification receipt and preservation hashes are stored with the experiment. All source and policy variants, interrupted flights and failed launches are retained.
