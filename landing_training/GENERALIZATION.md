@@ -8,7 +8,7 @@ Three unused test scenarios were declared before any outcomes were inspected: te
 
 Eight visual conditions each use those three scenarios, for 24 flights: original appearance, green ocean, white ocean, light fog, dense fog, procedural clouds with overcast lighting, rain, and combined green water/fog/clouds/rain. Fog has full linear obscuration at 45 m, 12 m or 25 m respectively. Rain uses 90 or 140 moving camera-space streaks per image; these counts are not calibrated precipitation rates. Clouds are a procedural sky texture with changed diffuse lighting. The experiment does not add rain aerodynamics, wet-surface friction or a calibrated real-weather model.
 
-The changed image reaches the policy before the existing image delay and brightness/blur pipeline. Saved policy_rgb frames contain the exact final RGB passed to the frozen policy. The original-appearance renderer is checked for pixel equality against the original renderer. Native graphics fog distances, boat material invariance and the physics model arrays are checked explicitly. The original approved review establishes the base simulation; it does not claim qualification of these new visual conditions. New outputs have separate visual-extension hashes and are never marked training eligible.
+The changed image reaches the policy before the existing image delay and brightness/blur pipeline. Saved policy_rgb frames contain the exact final RGB passed to the frozen policy. The original-appearance renderer is checked for pixel equality against the original renderer. Native graphics fog distances, boat material invariance and the physics model arrays are checked explicitly. The original approved review establishes the base simulation; it does not claim qualification of these new visual conditions. New outputs have separate visual-extension hashes and are excluded from the approved training manifest; their experimental summaries set training_eligible=False.
 
 Run on the VM, using a fresh output path:
 
@@ -26,3 +26,9 @@ landing_training/.venv/bin/python -B -m landing_training.evaluate_generalization
 For one policy-controlled video, add `--names test_0489_forward --conditions combined --video --workers 1` and use another fresh output and PX4 slot. Render only on the VM.
 
 The full matrix plan and results are in `outputs/generalization_20261011/matrix_v1/plan.json` and `report.json`; native traces, camera snapshots and terminal outcomes are retained under each condition. Baseline failures remain part of the report. Three scenarios per condition give an exploratory generalization screen, not a statistical reliability qualification.
+
+## Completed results
+
+The frozen policy landed 24/24 flights with zero unsafe outcomes: 3/3 for every one of the eight conditions. The separate combined-weather video flight also landed. All 24 scenario configurations matched the declared controls, and the final audit verified unchanged weights, policy source, base runtime, recordings, checkpoints and approvals. Five visual-renderer checks passed. Results and preservation evidence are in outputs/generalization_20261011/completion_audit.json and paired_visual_results.json.
+
+The combined-weather MP4 was downloaded to the Windows PC in 5.677 seconds, with SHA-256 d08a134623cce831c770dd25ee2d6953b4772c56f3ac9c41b0d6b1c010ba7e2e matching the VM file. This establishes generalization within this small procedural visual screen, not calibrated real-weather or hardware reliability.
