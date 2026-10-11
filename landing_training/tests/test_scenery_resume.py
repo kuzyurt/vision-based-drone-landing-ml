@@ -10,12 +10,12 @@ from unittest.mock import patch
 
 import numpy as np
 
-from . import paths, gate
-from .collect import _collect_locked, planned_scenarios
-from .collection_session import atomic_json
+from .. import paths, gate
+from ..collect import _collect_locked, planned_scenarios
+from ..collection_session import atomic_json
 from .test_dataset_audit import write_episode, manifest
 from . import test_gate as approval_fixtures
-from .workflow import verify_runtime_resume
+from ..workflow import verify_runtime_resume
 from usv.procedural_world import World
 from usv.world_render import WorldRenderer
 

@@ -13,11 +13,11 @@ import h5py
 import numpy as np
 import torch
 
-from .benchmarks.test_training import fixture
-from .gate import file_hash
-from .policy import LandingPolicy
-from .train import Lane, loss_function
-from .training_pipeline import (build_feature_cache, ChunkLoader, frame_counts,
+from .test_training_benchmark import fixture
+from ..gate import file_hash
+from ..policy import LandingPolicy
+from ..train import Lane, loss_function
+from ..training_pipeline import (build_feature_cache, ChunkLoader, frame_counts,
                                 chunk_plan, run_update, encoder_fingerprint,ValidationMetrics,teacher_supervision)
 
 
@@ -146,7 +146,7 @@ class PipelineChecks(unittest.TestCase):
             self.assertEqual(file_hash(source),before)
 
     def test_feature_steady_timing_excludes_reader_join_but_total_includes_it(self):
-        from . import training_pipeline as pipeline
+        from .. import training_pipeline as pipeline
         from types import SimpleNamespace
         real_loader=pipeline.ChunkLoader;real_clock=time.monotonic;offset=[0.]
         class DelayedJoin(real_loader):
@@ -174,9 +174,9 @@ class PipelineChecks(unittest.TestCase):
             self.assertFalse(list((root/'cache').glob('*.h5')))
 
     def test_actual_trainer_exports_compatible_checkpoints_and_training_only_normalization(self):
-        from . import train as trainer
-        from . import training_pipeline as pipeline
-        from .policy import PolicyRuntime
+        from .. import train as trainer
+        from .. import training_pipeline as pipeline
+        from ..policy import PolicyRuntime
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); source = self.recording(root)
             validation = source.with_name('validation.h5')
@@ -241,7 +241,7 @@ class PipelineChecks(unittest.TestCase):
             self.assertTrue(np.isfinite(action).all())
 
     def test_evaluation_rejects_mismatched_checkpoint_before_creating_output(self):
-        from . import evaluate as evaluator
+        from .. import evaluate as evaluator
         from types import SimpleNamespace
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);dataset=root/'dataset.json';dataset.write_text('{}')
@@ -282,7 +282,7 @@ class PipelineChecks(unittest.TestCase):
 
     def test_planned_camera_aim_balance_in_every_split(self):
         from collections import Counter,defaultdict
-        from .collect import planned_scenarios
+        from ..collect import planned_scenarios
         counts=defaultdict(Counter)
         for item in planned_scenarios()['episodes']:
             counts[item['role']][item['scenario']['initial_camera_target']]+=1

@@ -1,5 +1,5 @@
 """Recording integrity and rendering equivalence for the optimized collector."""
-from . import paths
+from .. import paths
 import json
 from pathlib import Path
 import tempfile
@@ -7,8 +7,8 @@ import unittest
 from unittest.mock import patch
 import h5py
 import numpy as np
-from .recording import Recorder
-from .collection_benchmark import summarize
+from ..recording import Recorder
+from ..collection_benchmark import summarize
 
 class CollectionChecks(unittest.TestCase):
     def test_buffer_owns_frames_and_flushes_partial_terminal_batch(self):
@@ -48,15 +48,15 @@ class CollectionChecks(unittest.TestCase):
             actual.extend(message.to_dict() for message in buffer_parser.parse_buffer(packet[offset:offset+17]) or ())
         self.assertEqual(actual,expected)
     def test_collection_gate_precedes_worker_and_directory_creation(self):
-        from .collect import collect
+        from ..collect import collect
         with tempfile.TemporaryDirectory() as folder:
             destination=Path(folder)/'must_not_exist'
             with self.assertRaises(PermissionError):collect(folder,destination,2,workers=2)
             self.assertFalse(destination.exists())
     def test_resume_recovers_complete_episode_but_rejects_missing_terminal(self):
         from dataclasses import asdict
-        from .config import Scenario
-        from .collect import _collect_locked
+        from ..config import Scenario
+        from ..collect import _collect_locked
         scenario=asdict(Scenario(name='fixture_resume'))
         item={'scenario':scenario,'role':'training'}
         with tempfile.TemporaryDirectory() as folder:
@@ -82,9 +82,9 @@ class CollectionChecks(unittest.TestCase):
                 self.assertEqual(len(manifest['episodes']),1)
                 self.assertEqual(manifest['episodes'][0]['outcome'],'abort')
     def test_collection_and_review_have_identical_onboard_pixels(self):
-        from .config import Scenario
-        from .environment import Environment
-        from .rendering import ReviewRenderer
+        from ..config import Scenario
+        from ..environment import Environment
+        from ..rendering import ReviewRenderer
         env=Environment(Scenario(kind='city',wave_height=.1,wave_period=4.5,world_rotation_deg=83))
         collector=ReviewRenderer(env,overview=False);review=ReviewRenderer(env)
         try:

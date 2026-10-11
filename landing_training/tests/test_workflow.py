@@ -13,10 +13,10 @@ import unittest
 from unittest.mock import patch
 import torch
 
-from . import workflow as flow,cloud_collection as cloud
-from .collection_session import atomic_json
-from .config import Scenario
-from .gate import file_hash
+from .. import workflow as flow,cloud_collection as cloud
+from ..collection_session import atomic_json
+from ..config import Scenario
+from ..gate import file_hash
 
 
 def plan_fixture():

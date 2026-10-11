@@ -16,8 +16,8 @@ from unittest.mock import patch
 import psutil
 import torch
 
-from .test_training import fixture
-from . import compare_training
+from .test_training_benchmark import fixture
+from ..benchmarks import compare_training
 from ..gate import file_hash
 from ..policy import LandingPolicy
 

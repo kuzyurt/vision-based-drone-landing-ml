@@ -11,8 +11,8 @@ import time
 import unittest
 from unittest.mock import patch
 
-from .autotune import best_result,initial_worker_cap,probe_backends,refinement_counts,prune_recordings,main,requested_worker_counts,TrialStopped
-from .resource_monitor import GIB,ResourceMonitor,nvidia_snapshot,renderer_gpu_indices
+from ..autotune import best_result,initial_worker_cap,probe_backends,refinement_counts,prune_recordings,main,requested_worker_counts,TrialStopped
+from ..resource_monitor import GIB,ResourceMonitor,nvidia_snapshot,renderer_gpu_indices
 
 def result(count,speed):return {'workers':count,'complete_episode_pipeline_per_hour':speed}
 
@@ -89,7 +89,7 @@ class AutoTuneChecks(unittest.TestCase):
             selected,probes=probe_backends()
         self.assertEqual(selected,gpu);self.assertEqual(len(probes),3)
     def test_software_gpu_translation_layers_are_not_acceleration(self):
-        from .collection_benchmark import software_renderer
+        from ..collection_benchmark import software_renderer
         self.assertTrue(software_renderer('zink Vulkan 1.3 (lavapipe)'))
         self.assertTrue(software_renderer('Microsoft Basic Render Driver'))
         self.assertFalse(software_renderer('D3D12 (NVIDIA GeForce RTX 2060)'))

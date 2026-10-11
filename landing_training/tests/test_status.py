@@ -6,9 +6,9 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from .collection_session import atomic_json
-from .progress import export_loss_history, TrainingProgress
-from .status import snapshot, stage_times, display
+from ..collection_session import atomic_json
+from ..progress import export_loss_history, TrainingProgress
+from ..status import snapshot, stage_times, display
 
 
 class StatusChecks(unittest.TestCase):

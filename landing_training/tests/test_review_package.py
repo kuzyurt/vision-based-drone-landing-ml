@@ -7,9 +7,9 @@ import unittest
 from unittest.mock import patch
 from zipfile import ZipFile
 
-from .gate import safe_review_outcome
-from .review_cases import diverse_review_scenarios
-from .review_package import package,digest
+from ..gate import safe_review_outcome
+from ..review_cases import diverse_review_scenarios
+from ..review_package import package,digest
 
 
 class DiverseReviewChecks(unittest.TestCase):
