@@ -1,0 +1,182 @@
+{
+  "status": "completed",
+  "date": "2026-10-11",
+  "upstream_sha": "4811ba48d795197de5621985f404e765c0b7c0ef",
+  "policy_bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+  "pose_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e",
+  "policy_frozen": true,
+  "workers": 3,
+  "outcomes": {
+    "landed": 3,
+    "abort": 1
+  },
+  "unsafe_count": 0,
+  "metrics": [
+    {
+      "name": "tidewater_static_bay",
+      "outcome": "landed",
+      "task_seconds": 25.679999999992443,
+      "metric_fraction": 0.5311526479750779,
+      "mean_learned_visibility": 0.8827038558651157,
+      "median_actual_boat_speed_m_s": 7.891478566445639e-07,
+      "max_actual_boat_speed_m_s": 0.004332209962414882,
+      "median_actual_wind_m_s": 0.0,
+      "video_seconds": 25.72,
+      "video_sha256": "6e197d8116130048c844b503bf0c8f572555716d98d71258ccbc270395e981bf",
+      "video_bytes": 4118504
+    },
+    {
+      "name": "tidewater_moving_daylight",
+      "outcome": "abort",
+      "task_seconds": 85.04000000013262,
+      "metric_fraction": 0.0,
+      "mean_learned_visibility": 0.9997035531311358,
+      "median_actual_boat_speed_m_s": 0.35065375434279455,
+      "max_actual_boat_speed_m_s": 0.4682435927383479,
+      "median_actual_wind_m_s": 1.655699371177087,
+      "video_seconds": 85.08,
+      "video_sha256": "2e1298d66825cb48e98ba29a3004e232083aacb3f02b1eb11e6b4018885dd78d",
+      "video_bytes": 43827782
+    },
+    {
+      "name": "tidewater_windy_reef",
+      "outcome": "landed",
+      "task_seconds": 40.999999999954454,
+      "metric_fraction": 0.2868292682926829,
+      "mean_learned_visibility": 0.8366594467221024,
+      "median_actual_boat_speed_m_s": 0.6576221520446827,
+      "max_actual_boat_speed_m_s": 0.8112651521031726,
+      "median_actual_wind_m_s": 3.656837683744864,
+      "video_seconds": 41.04,
+      "video_sha256": "4dd0b93b72d73915d2ae6e2a9219a9365d95a9a008d626709041748d07f417bd",
+      "video_bytes": 28809991
+    },
+    {
+      "name": "tidewater_far_village",
+      "outcome": "landed",
+      "task_seconds": 61.400000000150776,
+      "metric_fraction": 0.4514657980456026,
+      "mean_learned_visibility": 0.7726140519649402,
+      "median_actual_boat_speed_m_s": 0.8033682093100953,
+      "max_actual_boat_speed_m_s": 0.9784157373601002,
+      "median_actual_wind_m_s": 2.0630051028475993,
+      "video_seconds": 61.44,
+      "video_sha256": "5528460d3a50d9405448a8e057beabf879e633b4954c56adea3e2fe5fccb9af0",
+      "video_bytes": 12121050
+    }
+  ],
+  "originals_preserved": true,
+  "frozen_actor_and_checkpoint_verified": true,
+  "source_extensions_verified": true,
+  "active_flight_processes": [],
+  "camera": {
+    "expected_marker_pixel": [
+      320.220931276024,
+      181.7656473366403
+    ],
+    "tidewater_marker_pixel": [
+      320.22093127602477,
+      181.7656473366403
+    ],
+    "error_px": 7.958078640513122e-13,
+    "fovy_deg": 36.1,
+    "width": 640,
+    "height": 360
+  },
+  "waves": {
+    "points_enu_xy": [
+      [
+        -33.00000641295048,
+        -32.97405247409354
+      ],
+      [
+        -33.00000641295048,
+        -26.97405247409354
+      ],
+      [
+        -27.00000641295048,
+        -32.97405247409354
+      ],
+      [
+        -27.00000641295048,
+        -26.97405247409354
+      ],
+      [
+        -30.00000641295048,
+        -29.97405247409354
+      ],
+      [
+        -20.00000641295048,
+        -29.97405247409354
+      ],
+      [
+        -30.00000641295048,
+        -19.97405247409354
+      ],
+      [
+        -40.00000641295048,
+        -39.97405247409354
+      ]
+    ],
+    "physical_height_m": [
+      0.008822688883668005,
+      0.023093006842643468,
+      0.051041166711635506,
+      -0.021189581109264735,
+      0.04735420935419256,
+      -0.04423456864896373,
+      -0.010048775316859168,
+      -0.018741084168244198
+    ],
+    "gpu_height_m": [
+      0.008822743780910969,
+      0.023092996329069138,
+      0.051041118800640106,
+      -0.021189739927649498,
+      0.04735417664051056,
+      -0.04423460736870766,
+      -0.010048801079392433,
+      -0.01874125748872757
+    ],
+    "max_absolute_error_m": 1.733204833716251e-07,
+    "wave_height_setting_m": 0.12,
+    "period_s": 3.4,
+    "direction_deg": 47,
+    "time_s": 17.3
+  },
+  "vehicle_contacts": {
+    "checked_vehicle_geoms": 933,
+    "checked_fields": [
+      "geom_type",
+      "geom_size",
+      "geom_pos",
+      "geom_quat",
+      "geom_contype",
+      "geom_conaffinity",
+      "geom_friction",
+      "geom_solref",
+      "geom_solimp",
+      "geom_margin",
+      "geom_gap"
+    ],
+    "differences": [],
+    "collision_geometry_and_contact_parameters_identical": true
+  },
+  "vehicle_dynamics": {
+    "vehicle_dynamics_sha256": "bcc7df824c740870c9c31f60707f36327d4063d694fb44b4d504ab3a674613e9",
+    "timestep": 0.001,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.80665
+    ],
+    "terrain_min": -90.0,
+    "terrain_span": 395.7707824707031,
+    "terrain_resolution": 2048,
+    "terrain_colliders": 1083,
+    "physics": "Original MuJoCo and PX4; added Tidewater terrain, pier and village contact geometry"
+  },
+  "media_decode_check": "passed",
+  "scheduling_note": "Cases 0–1 ran sequentially on instance 240. Cases 2–3 used isolated browser/physics workers on instances 241–242 and collector ports 5191–5192. Reserved case directories caused the original sequential driver to stop at its non-overwrite guard after case 1; the original partial report and log remain preserved.",
+  "scope": "Zero-shot Tidewater visual/terrain transfer using original vehicle physics and the shared Airy wave model; not independent validation of Tidewater boat dynamics."
+}
