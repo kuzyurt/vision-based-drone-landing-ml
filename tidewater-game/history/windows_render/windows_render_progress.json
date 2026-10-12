@@ -1,0 +1,16 @@
+{
+  "frames": 200,
+  "total": 1511,
+  "elapsed_seconds": 342.9,
+  "fps": 0.583,
+  "remaining_seconds": 2247.6,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "render_scale": 1,
+  "time_of_day": "15:21",
+  "aa": "TAA4x",
+  "shadows": true,
+  "water_reflections": true
+}

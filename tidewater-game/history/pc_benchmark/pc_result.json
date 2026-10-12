@@ -1,0 +1,41 @@
+{
+  "adapter": {},
+  "format": "bgra8unorm",
+  "resolution": [
+    1280,
+    720
+  ],
+  "renderScale": 1,
+  "ordinaryRenderMs": 15.383333333333333,
+  "ordinaryRenderFps": 65.00541711809318,
+  "cpuMs": 18.476867642693904,
+  "captureStages": [
+    {
+      "cpuMs": 8,
+      "pipelinesMs": 0,
+      "gpuWaitMs": 18.099999997764826,
+      "readbackMs": 9.300000000745058,
+      "uploadMs": 254.80000000074506,
+      "bytes": 3686400
+    },
+    {
+      "cpuMs": 6.200000002980232,
+      "pipelinesMs": 0,
+      "gpuWaitMs": 18,
+      "readbackMs": 7.099999997764826,
+      "uploadMs": 277,
+      "bytes": 3686400
+    },
+    {
+      "cpuMs": 10.599999997764826,
+      "pipelinesMs": 0.20000000298023224,
+      "gpuWaitMs": 20.799999997019768,
+      "readbackMs": 10.100000001490116,
+      "uploadMs": 357.1000000014901,
+      "bytes": 3686400
+    }
+  ],
+  "scope": "Stock pinned Tidewater map, full quality, no PX4, no aircraft CAD; existing background workloads unchanged.",
+  "device": "pc",
+  "receivedBytes": 11059200
+}

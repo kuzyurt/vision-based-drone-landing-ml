@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-11T14:30:56.426367+00:00",
+  "verified_parent_pids": [
+    62386,
+    64628,
+    64630,
+    58329
+  ],
+  "remaining_running": [],
+  "note": "Verified exact parent argv and all child owners, terminated all. psutil wait_procs hit EINVAL; subsequent process audit confirmed shutdown."
+}

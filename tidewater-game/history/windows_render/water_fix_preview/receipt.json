@@ -1,0 +1,14 @@
+{
+  "output": "boat_water_10s_capped.mp4",
+  "frames": 249,
+  "fps": 25.0,
+  "duration_s": 9.96,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "maximum_wave_height_m": 0.05,
+  "water_appearance": "Tidewater FFT normals, surface shading and foam retained",
+  "boat_motion": "recorded Tidewater policy flight excerpt",
+  "render": "normal preset; 10-second excerpt"
+}

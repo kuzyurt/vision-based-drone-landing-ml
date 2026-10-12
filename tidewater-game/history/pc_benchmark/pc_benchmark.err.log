@@ -1,0 +1,12 @@
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+
+page.evaluate: TypeError: Failed to fetch
+    at eval (eval at evaluate (:370:30), <anonymous>:15:30)
+    at async <anonymous>:396:30
+    at D:\Dokumente\CODE_PROJEKTE\SMARTSYSTEMS\schiebel-drone-landing\artifacts\tidewater_pc_benchmark\browser\device_benchmark.mjs:16:26 {
+  log: []
+}
+
+Node.js v22.23.2

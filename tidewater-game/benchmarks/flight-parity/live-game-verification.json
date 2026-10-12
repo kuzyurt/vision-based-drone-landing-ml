@@ -1,0 +1,21 @@
+{
+  "realtime_factor": 0.9842472582245357,
+  "takeoff_climb_m": 1.0061234329193507,
+  "flight_realtime_factor": 0.9919999999995917,
+  "forward_distance_3s_m": 2.466905186347149,
+  "right_strafe_2s_m": 1.5458738369387797,
+  "right_yaw_2s_rad": -0.9863245946672836,
+  "descent_2s_m": 0.5867254027744568,
+  "camera_pan_rad": 0.7580502129687934,
+  "camera_tilt_rad": 0.6059790521336701,
+  "platform_lower_wall_s": 8.311999999999898,
+  "platform_lower_sim_s": 8.015999999981318,
+  "lids_close_wall_s": 5.82799999999952,
+  "lids_close_sim_s": 5.795999999986492,
+  "boat_manual_distance_3s_m": 2.8516442495855476,
+  "max_wave_height_m": 0.05,
+  "verification": "Headless full Tidewater collision scene through Windows localhost WebSocket relay",
+  "controller": "Original PX4 + MuJoCo, 1 ms",
+  "physics_sha256": "c873cd8bb7ab8aa67e15210fea4ba1f1653bb56f0a2413fe0e50f911d8e055f6",
+  "recorded_utc": "2026-10-12T18:17:15.452509+00:00"
+}

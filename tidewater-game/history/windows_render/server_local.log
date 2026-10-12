@@ -1,0 +1,1 @@
+WINDOWS_RENDER_READY {"vendor":"nvidia","architecture":"turing","device":"","description":"","format":"bgra8unorm","quality":{"preset":"full","resolution":"1920x1080","renderScale":1,"cloudCoverage":0.62,"timeOfDay":15.35,"seaState":"Breezy","shadows":true,"waterReflections":true,"spectatorAA":"taa4"}}

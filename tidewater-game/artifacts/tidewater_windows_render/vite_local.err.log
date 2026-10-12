@@ -1,0 +1,29 @@
+20:04:52 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:14:35 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:20:54 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:25:37 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:38:03 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:39:19 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:46:39 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:47:36 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:52:25 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+20:53:07 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+(!) Failed to run dependency scan. Skipping dependency pre-bundling. Error:   Failed to scan for dependencies from entries:
+  D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_windows_render/tidewater/test/game-hud.html
+D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_windows_render/tidewater/test/loader-frame.html
+D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_windows_render/tidewater/test/loader.html
+
+  Build failed with 3 errors:
+
+[31m[UNRESOLVED_ENTRY] [0mCannot resolve entry module test/game-hud.html.
+
+[31m[UNRESOLVED_ENTRY] [0mCannot resolve entry module test/loader-frame.html.
+
+[31m[UNRESOLVED_ENTRY] [0mCannot resolve entry module test/loader.html.
+
+    at aggregateBindingErrorsIntoJsError (file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/rolldown/dist/shared/error-CGhV1ebk.mjs:48:18)
+    at unwrapBindingResult (file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/rolldown/dist/shared/error-CGhV1ebk.mjs:18:128)
+    at scan (file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/rolldown/dist/experimental-index.mjs:238:3)
+    at async Object.build (file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/vite/dist/node/chunks/node.js:27504:3)
+    at async scan (file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/vite/dist/node/chunks/node.js:27443:4)
+    at async file:///D:/Dokumente/CODE_PROJEKTE/SMARTSYSTEMS/schiebel-drone-landing/artifacts/tidewater_pc_benchmark/tidewater/node_modules/vite/dist/node/chunks/node.js:35201:15

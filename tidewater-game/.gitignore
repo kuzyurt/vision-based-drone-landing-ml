@@ -1,0 +1,13 @@
+/simulation/runtime/*
+!/simulation/runtime/.gitkeep
+/simulation/__pycache__/
+/simulation/.venv/
+*.py[cod]
+node_modules/
+__pycache__/
+*.pid
+/wasm/tests/*.mjb
+/app/public/landing/physics/vehicles.mjb.gz
+/history/**/*.mp4
+/history/**/*.webm
+/history/**/*.jsonl.gz

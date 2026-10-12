@@ -1,0 +1,27 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import loadMujoco from '../../app/node_modules/@mujoco/mujoco/mujoco.js';
+import {compileWorld,chooseRoute} from '../../app/src/landing/BrowserWorld.js';
+import {BrowserForces} from '../../app/src/landing/BrowserForces.js';
+import {BrowserGame} from '../../app/src/landing/BrowserGame.js';
+const base=new URL('../../app/public/landing/physics/',import.meta.url),c=JSON.parse(await fs.readFile(new URL('configuration.json',base),'utf8'));
+const meta=JSON.parse(await fs.readFile(new URL('../../simulation/runtime/live-map.json',import.meta.url),'utf8'));
+const raw=await fs.readFile(new URL('../../simulation/runtime/live-heights.bin',import.meta.url)),map={meta,heights:new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength))};
+const mj=await loadMujoco(),begin=performance.now();
+const model=await compileWorld(mj,c,map,base.href,message=>{if(!message.includes('meshes ·'))console.log(message);},async url=>new Uint8Array(await fs.readFile(new URL(url))));
+console.log('Compiled full browser world',model.ngeom,'geoms in',(performance.now()-begin)/1000,'seconds');
+const types=Array.from(model.geom_contype),affinity=Array.from(model.geom_conaffinity);
+c.geom_names.forEach((name,i)=>{const id=mj.mj_name2id(model,mj.mjtObj.mjOBJ_GEOM.value,name);if(id>=0){types[id]=c.geom_contype_initial[i];affinity[id]=c.geom_conaffinity_initial[i];}});c.geom_contype_initial=types;c.geom_conaffinity_initial=affinity;
+const data=new mj.MjData(model),f=new BrowserForces(mj,model,data,c);BrowserGame.initializePose(mj,model,data,c,chooseRoute(map));
+const fake={observation:()=>new Float64Array([1]),armed:false,actuators:new Float64Array(19),advance:()=>{for(let i=0;i<4;i++)f.step(false);},pilot:()=>{},vehicleCommand:()=>{}};
+const game=new BrowserGame(mj,model,data,f,fake,c,map);game.mode='boat';const run=performance.now();
+for(let i=0;i<2500;i++)await game.advance();
+const state=game.state(1,true);console.log('10s water run:',(performance.now()-run)/1000,'wall seconds; speed',state.boat.speed,'course error',state.route.error_m);
+assert(state.boat.speed>1 && state.route.error_m<8);assert(state.views.drone.matrix.every(Number.isFinite));
+assert(state.bodies.length===c.bodies.length && state.geoms.length===c.visual_layout.length);assert(state.radio.connected);
+game.input({action:'autopilot',enabled:false,motors:[0,0]});game.input({action:'platform',raised:false});
+for(let i=0;i<2250;i++)await game.advance();assert(game.state().boat.platform<.03);game.input({action:'lid',open:false});
+for(let i=0;i<1750;i++)await game.advance();assert(game.state().boat.aft_lid<.03 && game.state().boat.fore_lid<.03);
+console.log('Browser boat, water, CAD cameras, radio and mechanisms passed');
+// Keep a compiled test model for closed-loop worker tests without recompiling.
+mj.mj_saveModel(model,'/world.mjb',null);await fs.writeFile(new URL('world-smoke.mjb',import.meta.url),mj.FS.readFile('/world.mjb'));

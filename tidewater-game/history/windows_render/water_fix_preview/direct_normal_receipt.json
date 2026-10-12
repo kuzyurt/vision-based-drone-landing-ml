@@ -1,0 +1,23 @@
+{
+  "frames_rendered": 250,
+  "frames_encoded": 249,
+  "fps": 25,
+  "seconds": 9.96,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "render_scale": 1,
+  "time_of_day": "15:21",
+  "antialiasing": "SMAA normal",
+  "shadows": false,
+  "water_reflections": false,
+  "render_host": "Windows PC NVIDIA RTX 2060",
+  "encoding": "H.264 ultrafast CRF18; direct GPU canvas capture then constant 25fps encode",
+  "bytes": 42603683,
+  "sha256": "89f83324b7e367c737354c62d3282cc95f704bc0841d8e88f0c4c224809d1ae2",
+  "wall_seconds": 128.25,
+  "flight_outcome": "boat-water preview only",
+  "policy_bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+  "source": "saved policy episode replay; no policy rerun"
+}

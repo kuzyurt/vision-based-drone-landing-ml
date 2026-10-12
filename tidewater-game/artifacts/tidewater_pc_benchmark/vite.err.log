@@ -1,0 +1,2 @@
+19:16:38 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead
+19:18:51 [vite] (client) [console.warn] ShoreWaves.buildDirTexture: no shore field data on the terrain; using terrainShoreSample instead

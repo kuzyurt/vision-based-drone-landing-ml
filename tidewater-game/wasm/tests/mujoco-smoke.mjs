@@ -1,0 +1,30 @@
+import fs from 'node:fs/promises';
+import loadMujoco from '../../app/node_modules/@mujoco/mujoco/mujoco.js';
+import { BrowserForces } from '../../app/src/landing/BrowserForces.js';
+const directory = new URL('../../app/public/landing/physics/',import.meta.url);
+const config=JSON.parse(await fs.readFile(new URL('configuration.json',directory),'utf8'));
+const mj=await loadMujoco();
+mj.FS.mkdir('/physics');
+for(const name of config.files) mj.FS.writeFile('/physics/'+name,new Uint8Array(await fs.readFile(new URL(name,directory))));
+const start=performance.now();
+const model=mj.MjModel.from_xml_path('/physics/vehicles.xml');
+console.log('MuJoCo browser CAD loaded:',mj.mj_versionString(),'bodies',model.nbody,'compile ms',performance.now()-start);
+const data=new mj.MjData(model);
+data.qpos.set(config.qpos_initial);data.qvel.set(config.qvel_initial);
+mj.mj_setState(model,data,new Float64Array(config.eq_active_initial),mj.mjtState.mjSTATE_EQ_ACTIVE.value);
+mj.mj_forward(model,data);
+const forces=new BrowserForces(mj,model,data,config);
+const run=performance.now();for(let i=0;i<100;i++) forces.step();
+console.log('100 exact 1 ms browser physics steps:',performance.now()-run,'ms; simulation time',data.time);
+const steady=performance.now();for(let i=0;i<3000;i++) forces.step();
+console.log('Steady 3 seconds:',performance.now()-steady,'ms; simulation time',data.time);
+const costs={};
+for(const name of ['beforeStep','applyBoat','motorTargets','applyDrone','afterStep']) {
+    const original=forces[name].bind(forces);costs[name]=0;
+    forces[name]=(...args)=>{const t=performance.now();const result=original(...args);costs[name]+=performance.now()-t;return result;};
+}
+const originalStep=mj.mj_step;costs.engine=0;
+mj.mj_step=(...args)=>{const t=performance.now();const result=originalStep(...args);costs.engine+=performance.now()-t;return result;};
+const profile=performance.now();for(let i=0;i<1000;i++) forces.step();
+console.log('Profile one simulation second:',costs,'wall ms',performance.now()-profile,'cached views',forces.viewGetters.length);
+data.delete();model.delete();
