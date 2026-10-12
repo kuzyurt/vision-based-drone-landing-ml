@@ -1,0 +1,308 @@
+{
+  "status": "completed",
+  "utc": "2026-10-11T14:25:20.833795+00:00",
+  "upstream_sha": "4811ba48d795197de5621985f404e765c0b7c0ef",
+  "requested": 4,
+  "completed": 4,
+  "workers": 3,
+  "outcomes": {
+    "landed": 3,
+    "abort": 1
+  },
+  "unsafe_count": 0,
+  "policy_frozen": true,
+  "policy_bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+  "episodes": [
+    {
+      "name": "tidewater_static_bay",
+      "outcome": "landed",
+      "failure": null,
+      "events": [
+        {
+          "time_s": 37.19200000000402,
+          "kind": "touchdown",
+          "relative_velocity": [
+            0.0075250244655475935,
+            -0.024689066766869466,
+            -0.12170174321919923
+          ]
+        },
+        {
+          "time_s": 38.43700000000112,
+          "kind": "stable_contact"
+        },
+        {
+          "time_s": 42.93299999999064,
+          "kind": "landed"
+        }
+      ],
+      "records": 643,
+      "wall_seconds": 498.31039310900087,
+      "control_phase_counts": {
+        "acquire": 77,
+        "align": 19,
+        "match": 14,
+        "descend": 382,
+        "touchdown": 1,
+        "touchdown_commit": 98,
+        "confirm": 1,
+        "disarmed": 50
+      },
+      "video_sha256": "6e197d8116130048c844b503bf0c8f572555716d98d71258ccbc270395e981bf",
+      "video_bytes": 4118504,
+      "frozen_policy_metadata": {
+        "schema": "aerodock.landing.pose.v1",
+        "epoch": 12,
+        "dataset_sha256": "5840294d08b700262cfac01480a8e5ee9c40ba29946747f6942db496642e802e",
+        "review_manifest_sha256": "ef5b0dce18357ba4e6d8e0b743ddf00d06a9eeb28ac8c90580940c883193393d",
+        "targets_sha256": "a2643723f387ccfb2a26b37c43478ff45f9e7e79bfed99dcd76ab3dd4cb180f5",
+        "training": {
+          "observation_mode": "periodic_no_action_v1",
+          "encoder_frozen": true,
+          "learning_rate": 0.0001,
+          "sequence_steps": 64,
+          "lanes": 8,
+          "pose_units": "m,m_s,sin_cos_2heading,unit_normal,normalized_pixels",
+          "selection_metric": "near_xy_rms+.3z_rms+.5velocity_rms+.02heading_deg_rms"
+        },
+        "policy_kind": "learned_pose_and_metric_rgb",
+        "bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+        "pose_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
+      },
+      "summary_path": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/tidewater_20261011/pilot_v1/tidewater_static_bay/summary.json"
+    },
+    {
+      "name": "tidewater_moving_daylight",
+      "outcome": "abort",
+      "failure": null,
+      "events": [
+        {
+          "time_s": 104.08000000013291,
+          "kind": "abort"
+        }
+      ],
+      "records": 2127,
+      "wall_seconds": 2354.705340286004,
+      "control_phase_counts": {
+        "acquire": 2126
+      },
+      "video_sha256": "2e1298d66825cb48e98ba29a3004e232083aacb3f02b1eb11e6b4018885dd78d",
+      "video_bytes": 43827782,
+      "frozen_policy_metadata": {
+        "schema": "aerodock.landing.pose.v1",
+        "epoch": 12,
+        "dataset_sha256": "5840294d08b700262cfac01480a8e5ee9c40ba29946747f6942db496642e802e",
+        "review_manifest_sha256": "ef5b0dce18357ba4e6d8e0b743ddf00d06a9eeb28ac8c90580940c883193393d",
+        "targets_sha256": "a2643723f387ccfb2a26b37c43478ff45f9e7e79bfed99dcd76ab3dd4cb180f5",
+        "training": {
+          "observation_mode": "periodic_no_action_v1",
+          "encoder_frozen": true,
+          "learning_rate": 0.0001,
+          "sequence_steps": 64,
+          "lanes": 8,
+          "pose_units": "m,m_s,sin_cos_2heading,unit_normal,normalized_pixels",
+          "selection_metric": "near_xy_rms+.3z_rms+.5velocity_rms+.02heading_deg_rms"
+        },
+        "policy_kind": "learned_pose_and_metric_rgb",
+        "bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+        "pose_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
+      },
+      "summary_path": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/tidewater_20261011/pilot_v1/tidewater_moving_daylight/summary.json"
+    },
+    {
+      "name": "tidewater_windy_reef",
+      "outcome": "landed",
+      "failure": null,
+      "events": [
+        {
+          "time_s": 63.599999999942476,
+          "kind": "touchdown",
+          "relative_velocity": [
+            -0.03239941323363796,
+            0.010749805541418559,
+            -0.14960596959868153
+          ]
+        },
+        {
+          "time_s": 65.94199999995081,
+          "kind": "stable_contact"
+        },
+        {
+          "time_s": 69.05699999996568,
+          "kind": "landed"
+        }
+      ],
+      "records": 1026,
+      "wall_seconds": 1458.1976499289958,
+      "control_phase_counts": {
+        "acquire": 326,
+        "align": 69,
+        "metric_recovery": 35,
+        "match": 20,
+        "descend": 454,
+        "touchdown": 1,
+        "touchdown_commit": 69,
+        "confirm": 1,
+        "disarmed": 50
+      },
+      "video_sha256": "4dd0b93b72d73915d2ae6e2a9219a9365d95a9a008d626709041748d07f417bd",
+      "video_bytes": 28809991,
+      "frozen_policy_metadata": {
+        "schema": "aerodock.landing.pose.v1",
+        "epoch": 12,
+        "dataset_sha256": "5840294d08b700262cfac01480a8e5ee9c40ba29946747f6942db496642e802e",
+        "review_manifest_sha256": "ef5b0dce18357ba4e6d8e0b743ddf00d06a9eeb28ac8c90580940c883193393d",
+        "targets_sha256": "a2643723f387ccfb2a26b37c43478ff45f9e7e79bfed99dcd76ab3dd4cb180f5",
+        "training": {
+          "observation_mode": "periodic_no_action_v1",
+          "encoder_frozen": true,
+          "learning_rate": 0.0001,
+          "sequence_steps": 64,
+          "lanes": 8,
+          "pose_units": "m,m_s,sin_cos_2heading,unit_normal,normalized_pixels",
+          "selection_metric": "near_xy_rms+.3z_rms+.5velocity_rms+.02heading_deg_rms"
+        },
+        "policy_kind": "learned_pose_and_metric_rgb",
+        "bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+        "pose_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
+      },
+      "summary_path": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/tidewater_20261011/pilot_v1/tidewater_windy_reef/summary.json",
+      "worker": {
+        "runner_sha256": "25ce6b3dbbf39ffc8b212cb8d2f17a4a2446d1853ef993794ab2f209ada2dff1",
+        "port": 5191,
+        "px4_instance": 241,
+        "server_sha256": "fe83efff13581184006d3b54b9efca905a8059c211d80cea936871512de0f8c1",
+        "scope": "Same declared case and renderer/vehicle/policy source. Separate browser instance; collector traffic routed to its own loopback port."
+      }
+    },
+    {
+      "name": "tidewater_far_village",
+      "outcome": "landed",
+      "failure": null,
+      "events": [
+        {
+          "time_s": 99.37200000011043,
+          "kind": "touchdown",
+          "relative_velocity": [
+            0.014083905357317999,
+            -0.027797394717954758,
+            -0.11575786094800461
+          ]
+        },
+        {
+          "time_s": 100.84400000011746,
+          "kind": "stable_contact"
+        },
+        {
+          "time_s": 101.70900000012159,
+          "kind": "unstable_contact"
+        },
+        {
+          "time_s": 103.65100000013086,
+          "kind": "stable_contact"
+        },
+        {
+          "time_s": 105.32900000013888,
+          "kind": "landed"
+        }
+      ],
+      "records": 1536,
+      "wall_seconds": 1836.0062880600017,
+      "control_phase_counts": {
+        "acquire": 554,
+        "align": 95,
+        "match": 47,
+        "descend": 681,
+        "touchdown": 1,
+        "touchdown_commit": 106,
+        "confirm": 1,
+        "disarmed": 50
+      },
+      "video_sha256": "5528460d3a50d9405448a8e057beabf879e633b4954c56adea3e2fe5fccb9af0",
+      "video_bytes": 12121050,
+      "frozen_policy_metadata": {
+        "schema": "aerodock.landing.pose.v1",
+        "epoch": 12,
+        "dataset_sha256": "5840294d08b700262cfac01480a8e5ee9c40ba29946747f6942db496642e802e",
+        "review_manifest_sha256": "ef5b0dce18357ba4e6d8e0b743ddf00d06a9eeb28ac8c90580940c883193393d",
+        "targets_sha256": "a2643723f387ccfb2a26b37c43478ff45f9e7e79bfed99dcd76ab3dd4cb180f5",
+        "training": {
+          "observation_mode": "periodic_no_action_v1",
+          "encoder_frozen": true,
+          "learning_rate": 0.0001,
+          "sequence_steps": 64,
+          "lanes": 8,
+          "pose_units": "m,m_s,sin_cos_2heading,unit_normal,normalized_pixels",
+          "selection_metric": "near_xy_rms+.3z_rms+.5velocity_rms+.02heading_deg_rms"
+        },
+        "policy_kind": "learned_pose_and_metric_rgb",
+        "bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+        "pose_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
+      },
+      "summary_path": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/tidewater_20261011/pilot_v1/tidewater_far_village/summary.json",
+      "worker": {
+        "runner_sha256": "25ce6b3dbbf39ffc8b212cb8d2f17a4a2446d1853ef993794ab2f209ada2dff1",
+        "port": 5192,
+        "px4_instance": 242,
+        "server_sha256": "2dcea6ee774906910aae1d88c60ee7b5a966d0c03e5c9db276a5ee90865109c2",
+        "scope": "Same declared case and renderer/vehicle/policy source. Separate browser instance; collector traffic routed to its own loopback port."
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "name": "tidewater_static_bay",
+      "outcome": "landed",
+      "task_seconds": 25.679999999992443,
+      "metric_fraction": 0.5311526479750779,
+      "mean_learned_visibility": 0.8827038558651157,
+      "median_actual_boat_speed_m_s": 7.891478566445639e-07,
+      "max_actual_boat_speed_m_s": 0.004332209962414882,
+      "median_actual_wind_m_s": 0.0,
+      "video_seconds": 25.72,
+      "video_sha256": "6e197d8116130048c844b503bf0c8f572555716d98d71258ccbc270395e981bf",
+      "video_bytes": 4118504
+    },
+    {
+      "name": "tidewater_moving_daylight",
+      "outcome": "abort",
+      "task_seconds": 85.04000000013262,
+      "metric_fraction": 0.0,
+      "mean_learned_visibility": 0.9997035531311358,
+      "median_actual_boat_speed_m_s": 0.35065375434279455,
+      "max_actual_boat_speed_m_s": 0.4682435927383479,
+      "median_actual_wind_m_s": 1.655699371177087,
+      "video_seconds": 85.08,
+      "video_sha256": "2e1298d66825cb48e98ba29a3004e232083aacb3f02b1eb11e6b4018885dd78d",
+      "video_bytes": 43827782
+    },
+    {
+      "name": "tidewater_windy_reef",
+      "outcome": "landed",
+      "task_seconds": 40.999999999954454,
+      "metric_fraction": 0.2868292682926829,
+      "mean_learned_visibility": 0.8366594467221024,
+      "median_actual_boat_speed_m_s": 0.6576221520446827,
+      "max_actual_boat_speed_m_s": 0.8112651521031726,
+      "median_actual_wind_m_s": 3.656837683744864,
+      "video_seconds": 41.04,
+      "video_sha256": "4dd0b93b72d73915d2ae6e2a9219a9365d95a9a008d626709041748d07f417bd",
+      "video_bytes": 28809991
+    },
+    {
+      "name": "tidewater_far_village",
+      "outcome": "landed",
+      "task_seconds": 61.400000000150776,
+      "metric_fraction": 0.4514657980456026,
+      "mean_learned_visibility": 0.7726140519649402,
+      "median_actual_boat_speed_m_s": 0.8033682093100953,
+      "max_actual_boat_speed_m_s": 0.9784157373601002,
+      "median_actual_wind_m_s": 2.0630051028475993,
+      "video_seconds": 61.44,
+      "video_sha256": "5528460d3a50d9405448a8e057beabf879e633b4954c56adea3e2fe5fccb9af0",
+      "video_bytes": 12121050
+    }
+  ],
+  "scheduling_note": "Cases 0\u20131 ran sequentially on instance 240. Cases 2\u20133 used isolated browser/physics workers on instances 241\u2013242 and collector ports 5191\u20135192. Reserved case directories caused the original sequential driver to stop at its non-overwrite guard after case 1; the original partial report and log remain preserved.",
+  "scope": "Zero-shot Tidewater visual/terrain transfer using original vehicle physics and the shared Airy wave model; not independent validation of Tidewater boat dynamics."
+}

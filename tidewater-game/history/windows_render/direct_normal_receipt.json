@@ -1,0 +1,23 @@
+{
+  "frames_rendered": 1511,
+  "frames_encoded": 1510,
+  "fps": 25,
+  "seconds": 60.4,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "render_scale": 1,
+  "time_of_day": "15:21",
+  "antialiasing": "SMAA normal",
+  "shadows": false,
+  "water_reflections": false,
+  "render_host": "Windows PC NVIDIA RTX 2060",
+  "encoding": "H.264 ultrafast CRF18; direct GPU canvas capture then constant 25fps encode",
+  "bytes": 316334842,
+  "sha256": "95536851b4e073f8b4b78a646f6939e41fcf9fc2f9f72f3a0fb729023d571a2a",
+  "wall_seconds": 298.94,
+  "flight_outcome": "collision_failure",
+  "policy_bundle_sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f",
+  "source": "saved policy episode replay; no policy rerun"
+}

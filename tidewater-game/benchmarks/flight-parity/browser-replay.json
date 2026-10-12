@@ -1,0 +1,29 @@
+[
+  {
+    "name": "throttle_steps",
+    "maxPosition": 5.613500167002584e-13,
+    "maxVelocity": 6.001806113914089e-13,
+    "maxRotor": 1.7370069300366087e-11,
+    "maxCamera": 5.571095609772497e-14,
+    "maxVoltage": 2.4868995751603507e-14,
+    "wallSeconds": 1.2131671999999998
+  },
+  {
+    "name": "differential_motors",
+    "maxPosition": 2.8913993327368735e-13,
+    "maxVelocity": 4.852261958635388e-13,
+    "maxRotor": 1.9541327962911847e-11,
+    "maxCamera": 3.4465213840517815e-14,
+    "maxVoltage": 2.1316282072803006e-14,
+    "wallSeconds": 0.8471160999999997
+  },
+  {
+    "name": "camera_ramp",
+    "maxPosition": 1.1388252825342896e-12,
+    "maxVelocity": 1.6355747118285862e-12,
+    "maxRotor": 4.233954391964234e-11,
+    "maxCamera": 1.2086107789561363e-13,
+    "maxVoltage": 1.0302869668521453e-13,
+    "wallSeconds": 1.1946483000000003
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "frames": 1511,
+  "total": 1511,
+  "render_elapsed_seconds": 220.4,
+  "fps": 6.86,
+  "remaining_seconds": 0.0,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "render_scale": 1,
+  "time_of_day": "15:21",
+  "aa": "SMAA normal",
+  "shadows": false,
+  "water_reflections": false
+}
