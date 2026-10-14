@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5189",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-offline.mjs",
     "preview": "vite preview",
-    "test": "node test/game-logic.mjs && node test/engine-smoke.mjs"
+    "test": "node test/game-logic.mjs && node test/engine-smoke.mjs",
+    "start": "node scripts/serve-static.mjs",
+    "test:browser": "node ../wasm/tests/prepare-fixtures.mjs && node ../wasm/tests/browser-replay.mjs && node ../wasm/tests/browser-parameters.mjs && node ../wasm/tests/browser-closed-loop.mjs && node ../wasm/tests/browser-world-smoke.mjs && node ../wasm/tests/browser-drainage.mjs && node ../wasm/tests/browser-environment.mjs && node ../wasm/tests/browser-cache.mjs && node ../wasm/tests/browser-worker-integration.mjs && node test/browser-bridge-lifecycle.mjs && node test/tidewater-controls.mjs && node test/tidewater-pose-timeline.mjs",
+    "test:offline": "node test/offline-hosting.mjs"
   },
   "devDependencies": {
+    "fake-indexeddb": "6.2.5",
     "vite": "^8.3.0",
     "webgpu": "^0.6.1"
   },

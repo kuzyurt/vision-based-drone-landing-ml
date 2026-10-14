@@ -11,3 +11,5 @@ __pycache__/
 /history/**/*.mp4
 /history/**/*.webm
 /history/**/*.jsonl.gz
+
+/wasm/tests/*.mjb.gz

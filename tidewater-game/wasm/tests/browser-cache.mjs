@@ -1,0 +1,16 @@
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import {IDBFactory} from '../../app/node_modules/fake-indexeddb/build/esm/index.js';
+import load from '../../app/node_modules/@mujoco/mujoco/mujoco.js';
+import {compileWorld,cached} from '../../app/src/landing/BrowserWorld.js';
+globalThis.indexedDB=new IDBFactory();
+const base=new URL('../../app/public/landing/physics/',import.meta.url),c=JSON.parse(await fs.readFile(new URL('configuration.json',base),'utf8')),meta=JSON.parse(await fs.readFile(new URL('../../simulation/runtime/live-map.json',import.meta.url),'utf8')),raw=await fs.readFile(new URL('../../simulation/runtime/live-heights.bin',import.meta.url));
+const map={meta,heights:new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength))},mj=await load();let messages=[];
+const compile=()=>compileWorld(mj,c,map,base.href,s=>messages.push(s),async url=>new Uint8Array(await fs.readFile(new URL(url))));
+await assert.rejects(compileWorld(mj,{...c,mujoco_version:'3.13.0'},map,base.href,()=>{}),/version mismatch/);
+let model=await compile();const geoms=model.ngeom;model.delete();messages=[];model=await compile();assert.equal(model.ngeom,geoms);assert(messages.includes('Loading cached Tidewater collision world'));model.delete();
+const db=await new Promise(resolve=>{const request=indexedDB.open('tidewater-physics',1);request.onsuccess=()=>resolve(request.result);});
+const key=await new Promise(resolve=>{const req=db.transaction('models').objectStore('models').getAllKeys();req.onsuccess=()=>resolve(req.result[0]);});db.close();
+await cached(key,new Uint8Array([1,2,3]));messages=[];model=await compile();assert.equal(model.ngeom,geoms);assert(messages.includes('Rebuilding damaged collision cache'));model.delete();
+globalThis.indexedDB={open(){throw new DOMException('Quota exceeded','QuotaExceededError');}};messages=[];model=await compile();assert.equal(model.ngeom,geoms);assert(messages.includes('Compiling original CAD and Tidewater terrain · first load'));model.delete();
+console.log('IndexedDB cache hit, corrupt-cache rebuild and storage-quota fallback passed against full collision world');

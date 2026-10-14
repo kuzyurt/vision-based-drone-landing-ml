@@ -46,7 +46,7 @@ export function coastPoints(map) {
  const cx=points.reduce((s,p)=>s+p[0],0)/points.length,cy=points.reduce((s,p)=>s+p[1],0)/points.length;
  return points.sort((a,b)=>Math.atan2(a[1]-cy,a[0]-cx)-Math.atan2(b[1]-cy,b[0]-cx));
 }
-async function cached(key,value) {
+export async function cached(key,value) {
  if(typeof indexedDB==='undefined')return null;
  const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('tidewater-physics',1);r.onupgradeneeded=()=>r.result.createObjectStore('models');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
  try {return await new Promise((resolve,reject)=>{const transaction=db.transaction('models',value?'readwrite':'readonly'),store=transaction.objectStore('models');
@@ -54,13 +54,15 @@ async function cached(key,value) {
  });}finally{db.close();}
 }
 export async function compileWorld(mj,c,map,base,progress,fetchAsset=async url=>new Uint8Array(await (await fetch(url)).arrayBuffer())) {
+ if(mj.mj_versionString()!==c.mujoco_version)throw new Error(`MuJoCo version mismatch: assets ${c.mujoco_version}, runtime ${mj.mj_versionString()}`);
+ if(map.heights.length!==map.meta.res**2)throw new Error('Terrain heightfield size mismatch');
  const xmlBytes=await fetchAsset(base+'vehicles.xml'),xml=new TextDecoder().decode(xmlBytes);
- const hash=await crypto.subtle.digest('SHA-256',new Uint8Array([...new Uint8Array(await crypto.subtle.digest('SHA-256',map.heights)),...new TextEncoder().encode(JSON.stringify(map.meta)+xml+c.version+c.mujoco_version)]));
+ const hash=await crypto.subtle.digest('SHA-256',new Uint8Array([...new Uint8Array(await crypto.subtle.digest('SHA-256',map.heights)),...new TextEncoder().encode(JSON.stringify(map.meta)+xml+JSON.stringify(c.asset_sha256)+c.version+c.mujoco_version)]));
  const key=Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('');
  let binary=null;try{binary=await cached(key);}catch{/* Storage limits do not stop flight. */}
  if(binary) {
   progress('Loading cached Tidewater collision world');mj.FS.writeFile('/world.mjb',binary);
-  const vfs=new mj.MjVFS();try{return mj.MjModel.from_binary_path('/world.mjb',vfs);}finally{vfs.delete();mj.FS.unlink('/world.mjb');}
+  const vfs=new mj.MjVFS();try{return mj.MjModel.from_binary_path('/world.mjb',vfs);}catch{progress('Rebuilding damaged collision cache');}finally{vfs.delete();mj.FS.unlink('/world.mjb');}
  }
  progress('Loading original collision meshes');let done=0,next=1;
  await Promise.all(Array.from({length:8},async()=>{while(next<c.files.length){const file=c.files[next++];mj.FS.writeFile('/'+file,await fetchAsset(base+file));progress(`Loading original collision meshes · ${++done}/${c.files.length-1}`);}}));
@@ -79,6 +81,18 @@ export async function compileWorld(mj,c,map,base,progress,fetchAsset=async url=>
  progress('Compiling original CAD and Tidewater terrain · first load');
  mj.FS.writeFile('/world.xml',xml.replace('</asset>',assets.join('')+'</asset>').replace('</worldbody>',geoms.join('')+'</worldbody>'));
  let model;try{model=mj.MjModel.from_xml_path('/world.xml');}finally{for(const file of [...temporary,'/world.xml',...c.files.slice(1).map(f=>'/'+f)])mj.FS.unlink(file);}
- try{mj.mj_saveModel(model,'/world.mjb',null);const bytes=mj.FS.readFile('/world.mjb');await cached(key,bytes);mj.FS.unlink('/world.mjb');}catch{/* Flight works even when cache quota is exhausted. */}
+ try{mj.mj_saveModel(model,'/world.mjb',null);const bytes=mj.FS.readFile('/world.mjb');await cached(key,bytes);mj.FS.unlink('/world.mjb');}catch{/* Flight works even when cache quota is exhausted. */}finally{try{mj.FS.unlink('/world.mjb');}catch{}}
  return model;
+}
+
+export function remapConfiguration(mj,model,c) {
+ const required=(kind,name)=>{const id=mj.mj_name2id(model,kind.value,name);if(id<0)throw new Error(`Missing model object: ${name}`);return id;};
+ if(model.nq!==c.qpos_initial.length || model.nv!==c.qvel_initial.length)throw new Error('Articulated model state layout changed');
+ const types=Array.from(model.geom_contype),affinity=Array.from(model.geom_conaffinity);
+ c.geom_names.forEach((name,i)=>{const id=required(mj.mjtObj.mjOBJ_GEOM,name);types[id]=c.geom_contype_initial[i];affinity[id]=c.geom_conaffinity_initial[i];});
+ c.geom_contype_initial=types;c.geom_conaffinity_initial=affinity;
+ c.bodies=c.bodies.map(([name])=>[name,required(mj.mjtObj.mjOBJ_BODY,name)]);
+ c.drone.base=required(mj.mjtObj.mjOBJ_BODY,'drone_base_link');c.boat.body=required(mj.mjtObj.mjOBJ_BODY,'boat');
+ c.hull_geom=required(mj.mjtObj.mjOBJ_GEOM,'hull_contact');c.gps_site=required(mj.mjtObj.mjOBJ_SITE,'drone_gps_antenna');
+ for(const [key,name] of [['drone','drone_onboard'],['boat_nav','NavigationCamera'],['boat_dock','DockCamera']])c.cameras[key]=required(mj.mjtObj.mjOBJ_CAMERA,name);
 }

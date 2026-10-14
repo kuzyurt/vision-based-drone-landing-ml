@@ -4,7 +4,7 @@ import { writeFileSync } from 'node:fs';
 import { deflateSync } from 'node:zlib';
 
 Object.assign( globalThis, globals );
-Object.defineProperty( globalThis, 'navigator', { value: { gpu: create( [] ) }, configurable: true } );
+Object.defineProperty( globalThis, 'navigator', { value: { gpu: create( process.env.TIDEWATER_GPU_BACKEND ? [ `backend=${process.env.TIDEWATER_GPU_BACKEND}` ] : [] ) }, configurable: true } );
 globalThis.location = { search: '' };
 
 // minimal RGBA8 PNG writer

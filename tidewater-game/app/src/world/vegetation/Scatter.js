@@ -25,7 +25,7 @@ export const RULES = {
 // bilinear sample of one channel of the (repeating) detail texture at uv
 function detailSampler() {
 
-	const tex = getDetailTexture();
+	const tex = getDetailTexture(false);
 	const S = tex.image.width, d = tex.image.data;
 	return ( u, v, c ) => {
 

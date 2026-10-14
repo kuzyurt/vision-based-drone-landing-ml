@@ -6,7 +6,7 @@
     "maxRotor": 1.7370069300366087e-11,
     "maxCamera": 5.571095609772497e-14,
     "maxVoltage": 2.4868995751603507e-14,
-    "wallSeconds": 1.2131671999999998
+    "wallSeconds": 0.34200263
   },
   {
     "name": "differential_motors",
@@ -15,7 +15,7 @@
     "maxRotor": 1.9541327962911847e-11,
     "maxCamera": 3.4465213840517815e-14,
     "maxVoltage": 2.1316282072803006e-14,
-    "wallSeconds": 0.8471160999999997
+    "wallSeconds": 0.23919840100000012
   },
   {
     "name": "camera_ramp",
@@ -24,6 +24,6 @@
     "maxRotor": 4.233954391964234e-11,
     "maxCamera": 1.2086107789561363e-13,
     "maxVoltage": 1.0302869668521453e-13,
-    "wallSeconds": 1.1946483000000003
+    "wallSeconds": 0.253002845
   }
 ]

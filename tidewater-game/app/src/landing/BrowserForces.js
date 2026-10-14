@@ -1,3 +1,4 @@
+import {BrowserDrainage} from './BrowserDrainage.js';
 // Double precision translations of simulation/native_forces.py and the original
 // Propulsion class. MuJoCo integrates the existing CAD; no prescribed motion.
 export const clamp = (x,lo,hi) => Math.max(lo,Math.min(hi,x));
@@ -40,10 +41,12 @@ export class BrowserForces {
 		this.failed=[false,false,false,false];this.charge=12;this.voltage=16.8;this.current=0;this.limited=false;
 		this.boatTargets=[.4,.46,.46];this.servos=[...this.boatTargets];this.rps=[0,0];this.power=[0,0];
 		this.tick=0;this.wind=[0,0,0];
+		this.b.act.speed_needle_position=mj.mj_name2id(model,mj.mjtObj.mjOBJ_ACTUATOR.value,'speed_needle_position');
 		this.boatQ=new Float64Array(model.nv);this.boatX=new Float64Array(model.nbody*6);
 		this.droneBodies=[...new Set([...this.u.aero_bodies,...this.u.props,this.u.base])].sort((a,b)=>a-b);
 		this.waterPoints=new Float64Array(this.b.bottom.length*3);this.waterVolumes=new Float64Array(this.b.bottom.length);this.waveResult=new Float64Array(4);
 		this.waveCoefficients=new Float64Array(this.b.waves.flat());
+		this.drainage=new BrowserDrainage(this);
 		this.rotorGeoms=new Map(Object.entries(configuration.rotor_geoms).map(([name,i])=>[mj.mj_name2id(model,mj.mjtObj.mjOBJ_GEOM.value,name),i]));
 	}
 
@@ -216,6 +219,6 @@ export class BrowserForces {
 			d.qfrc_applied.fill(0);d.xfrc_applied.fill(0);this.applyBoat();
 			this.boatQ.set(d.qfrc_applied);this.boatX.set(d.xfrc_applied);this.motorTargets();
 		} else {d.qfrc_applied.set(this.boatQ);d.xfrc_applied.set(this.boatX);}
-		this.applyDrone();this.mj.mj_step(this.m,d);this.afterStep(armed);this.tick++;
+		this.applyDrone();this.mj.mj_step(this.m,d);this.drainage.step(.001);this.afterStep(armed);this.tick++;
 	}
 }

@@ -5,7 +5,7 @@ import loadMujoco from '../../app/node_modules/@mujoco/mujoco/mujoco.js';
 import {BrowserForces} from '../../app/src/landing/BrowserForces.js';
 const directory=new URL('../../app/public/landing/physics/',import.meta.url);
 const c=JSON.parse(await fs.readFile(new URL('configuration.json',directory),'utf8'));
-const mj=await loadMujoco();mj.FS.writeFile('/vehicles.mjb',gunzipSync(await fs.readFile(new URL('vehicles.mjb.gz',directory))));
+const mj=await loadMujoco();mj.FS.writeFile('/vehicles.mjb',gunzipSync(await fs.readFile(new URL('vehicles.mjb.gz',import.meta.url))));
 const vfs=new mj.MjVFS(),m=mj.MjModel.from_binary_path('/vehicles.mjb',vfs);vfs.delete();mj.FS.unlink('/vehicles.mjb');
 const report=[];
 for(const name of ['throttle_steps','differential_motors','camera_ramp']) {

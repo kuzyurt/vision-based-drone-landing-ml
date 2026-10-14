@@ -39,7 +39,7 @@ export class FlightOperations {
 				<button data-action="retry" hidden>Retry simulation</button>
 			</section>
 			<header class="fc-top">
-				<div class="fc-wordmark"><span class="fc-mark">T</span><span><b>Tidewater</b><small>Coastal flight operations · native MuJoCo</small></span></div>
+				<div class="fc-wordmark"><span class="fc-mark">T</span><span><b>Tidewater</b><small>Coastal flight operations · browser PX4 / MuJoCo</small></span></div>
 				<div class="fc-link" data-bind="link" data-state="waiting"><i></i><span data-bind="link-label">Connecting simulator</span><small data-bind="controller-source">Native MuJoCo</small></div>
 				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
 			</header>
@@ -80,7 +80,7 @@ export class FlightOperations {
 				<label><span>Starboard throttle</span><input aria-label="Starboard motor throttle" data-control="starboard" type="range" min="0" max="100" value="0"><b data-bind="starboard">0%</b><small data-bind="starboard-actual">Output 0%</small></label></div>
 				<div class="fc-deck-state"><span data-bind="deck-state">Deck mechanisms ready</span><small>W/S throttle · A/D differential steering · P auto/manual</small></div>
 			</div>
-			<div class="fc-bottom-foot"><span data-bind="route-status">Waiting for terrain collision import</span><span data-bind="performance">WebGPU · native MuJoCo</span></div>
+			<div class="fc-bottom-foot"><span data-bind="route-status">Waiting for terrain collision import</span><span data-bind="performance">WebGPU · browser PX4 / MuJoCo</span></div>
 			</section>
 			<div class="fc-toast" data-bind="toast" role="status"></div>
 		`;

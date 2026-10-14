@@ -1,0 +1,25 @@
+Tidewater browser runtime notices
+
+PX4 v1.16.0, revision 6ea3539157ca358c70a515878b77077af7d4611d:
+Copyright (c) 2012-2023 PX4 Development Team. BSD-3-Clause; see PX4-BSD-3-Clause.txt.
+https://github.com/PX4/PX4-Autopilot/tree/6ea3539157ca358c70a515878b77077af7d4611d
+
+MuJoCo 3.14.0 and official @mujoco/mujoco WebAssembly bindings:
+Copyright DeepMind Technologies Limited. Apache-2.0; see MuJoCo-Apache-2.0.txt.
+https://github.com/google-deepmind/mujoco/tree/3.14.0
+
+BrowserNoise adapts NumPy 2.2.6 PCG64 and Ziggurat routines:
+Copyright NumPy Developers. BSD-3-Clause; see NumPy-BSD-3-Clause.txt. The PCG64 implementation also
+retains its original MIT copyright notice in NumPy-PCG-license.txt.
+The original X500/AERODOCK CAD and source simulator have not been modified by this port.
+
+PX4 platform and transport adapters, JavaScript force translations and build
+scripts are supplied in tidewater-game/wasm and app/src/landing.
+Additional engine/asset notices remain with their bundled models and textures.
+
+PCG64 routines additionally retain Melissa O'Neill's MIT notice in
+NumPy-PCG-license.txt. MAVLink generated-code exceptions, PX4 dependency
+notices, and Emscripten runtime/C library notices accompany this file.
+
+MuJoCo-THIRD-PARTY-LICENSES.md is taken from the official MuJoCo 3.14.0
+distribution and carries its dependency notices.

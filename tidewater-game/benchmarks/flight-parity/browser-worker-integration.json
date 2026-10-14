@@ -1,0 +1,58 @@
+{
+  "kind": "headless Node worker; no browser/render FPS measurement",
+  "sessions": [
+    {
+      "startup_ms": 11316.280387,
+      "simulated_seconds": 72.92799999998417,
+      "realtime_factor": 1.002887621124747,
+      "presentation_samples": 1817,
+      "full": true
+    },
+    {
+      "startup_ms": 11382.454375999994,
+      "simulated_seconds": 7.520000000000846,
+      "realtime_factor": 1.0025205483464765,
+      "presentation_samples": 184,
+      "full": false
+    }
+  ],
+  "cancelled_startups": [
+    {
+      "requested_at": 0,
+      "threads_after_disposal": 0
+    },
+    {
+      "requested_at": 250,
+      "threads_after_disposal": 0
+    },
+    {
+      "requested_at": "px4",
+      "threads_after_disposal": 0
+    }
+  ],
+  "input_latency_ms": [
+    29.64484799999991,
+    29.808240999998816,
+    20.33430600000065,
+    20.178633999999875,
+    20.84207199999946,
+    31.06930000000284,
+    19.4470450000008,
+    29.95582099999592,
+    29.96957100000145,
+    19.968911999996635,
+    29.838897000001452,
+    20.342462999993586,
+    29.778602000005776,
+    30.23845199999778,
+    20.559550999998464,
+    30.590245999999752,
+    29.804645999996865,
+    30.17578899999353,
+    20.005927000005613,
+    29.718808999998146,
+    21.071022000003722,
+    30.372146000008797
+  ],
+  "max_input_latency_ms": 31.06930000000284
+}

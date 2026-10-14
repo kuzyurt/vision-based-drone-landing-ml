@@ -17,6 +17,7 @@ export class SimulationBridge {
 		this.socket = null;
 		this.closed = false;
 		this.connecting = false;
+        this.assetAbort = new AbortController();
 		this.lastInput = 0;
 		this.lastStatus = 0;
 		this.lastMapUpload = 0;
@@ -31,27 +32,30 @@ export class SimulationBridge {
 	}
 
 	async _connect() {
-        if ( this.closed || this.connecting || this.worker ) return;
+        if (this.closed || this.connecting || this.worker) return;
         this.connecting = true;
+        let worker;
         try {
-            this._setStatus( { status: 'Loading original CAD camera and browser physics', ready: false } );
-            this._openWorker();
-            await this._installVehicles();
-            await this._uploadMap();
-        } catch ( error ) {
-            this._setStatus( { status: 'Browser simulation startup failed', ready: false, error: error.message } );
-        }
-        this.connecting = false;
+            this._setStatus({status:'Loading original CAD camera and browser physics',ready:false});
+            worker=this._openWorker();
+            // Reset may happen while CAD downloads are still in flight. Share
+            // that installation and only initialize the worker that owns it.
+            if(!this.vehicleInstallation)this.vehicleInstallation=this._installVehicles().catch(error=>{this.vehicleInstallation=null;throw error;});
+            await this.vehicleInstallation;
+            if(!this.closed && this.worker===worker && !worker.shuttingDown)await this._uploadMap();
+        }catch(error){
+            if(!this.closed && this.worker===worker)this._setStatus({status:'Browser simulation startup failed',ready:false,error:error.message});
+        }finally{this.connecting=false;}
     }
 
 	async _installVehicles() {
 
 		if ( this.installed ) return;
-		const response = await fetch( '/landing/vehicles.json', { cache: 'force-cache' } );
+		const response = await fetch( new URL('landing/vehicles.json', new URL(import.meta.env?.BASE_URL || './', location.href)), { cache: 'force-cache', signal:this.assetAbort.signal } );
 		if ( ! response.ok ) throw new Error( 'The original X500 / AERODOCK CAD manifest is missing' );
 		const payload = await response.json();
 		for ( const item of payload.textures ) {
-			const bytes = new Uint8Array( await ( await fetch( item.url ) ).arrayBuffer() );
+			const bytes = new Uint8Array( await ( await fetch( new URL(item.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer() );
 			this.textures.set( item.id, new Texture( {
 				width: item.width, height: item.height, format: 'rgba8unorm-srgb', data: bytes,
 				usage: [ 'sample', 'copyDst' ], mips: true, label: item.name,
@@ -59,7 +63,7 @@ export class SimulationBridge {
 		}
 		const materials = new Map();
 		for ( const part of payload.geoms ) {
-			const bytes = await ( await fetch( part.url ) ).arrayBuffer();
+			const bytes = await ( await fetch( new URL(part.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer();
 			const count = part.vertex_count;
 			const geometry = new E.BufferGeometry();
 			geometry.setAttribute( 'position', new E.Float32BufferAttribute( new Float32Array( bytes, 0, count * 3 ), 3 ) );
@@ -89,7 +93,7 @@ export class SimulationBridge {
 			this.app.scene.add( mesh );
 		}
 		if ( payload.hull ) {
-			const bytes = await ( await fetch( payload.hull.url ) ).arrayBuffer();
+			const bytes = await ( await fetch( new URL(payload.hull.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer();
 			const geometry = new E.BufferGeometry();
 			geometry.setAttribute( 'position', new E.Float32BufferAttribute( new Float32Array( bytes ), 3 ) );
 			geometry.computeVertexNormals();
@@ -120,7 +124,7 @@ export class SimulationBridge {
 		};
         // The renderer keeps its data while physics receives an owned copy.
         const heights = new Float32Array( terrain.heights ).buffer;
-        const base = new URL( `${ import.meta.env?.BASE_URL || '/' }landing/`, location.href ).href;
+        const base = new URL( 'landing/', new URL(import.meta.env?.BASE_URL || './', location.href) ).href;
         this.worker.postMessage( { type: 'initialize', base, meta: metadata, heights }, [ heights ] );
 		this.lastMapUpload = Date.now();
 
@@ -133,6 +137,7 @@ export class SimulationBridge {
             try {
                 const state = event.data;
                 if ( state.disposed ) { this._disposeResolve?.(); return; }
+                if (this.closed || worker.shuttingDown) return;
                 if ( state.bodies && ! this.layout ) this.send( { mode: this.app.flightOps.mode } );
                 this.timeline.push( state, performance.now() );
                 this._setStatus( state );
@@ -143,7 +148,8 @@ export class SimulationBridge {
                 this._setStatus( { ...this.state, ready: false, status: 'Could not display browser simulation', error: error.message } );
             }
         };
-        worker.onerror = event => this._setStatus( { ...this.state, ready: false, status: 'Browser simulation stopped', error: event.message || 'Physics worker failed' } );
+        worker.onerror = event => { if(!this.closed && this.worker===worker && !worker.shuttingDown)this._setStatus( { ...this.state, ready: false, status: 'Browser simulation stopped', error: event.message || 'Physics worker failed' } ); };
+        return worker;
     }
 
 	_setStatus( state ) {
@@ -270,34 +276,42 @@ export class SimulationBridge {
 
     send( payload ) {
         if ( payload.action === 'reset' ) { this.retry(); return; }
-        this.worker?.postMessage( payload );
+        if(this.worker && !this.worker.shuttingDown)this.worker.postMessage( payload );
     }
 
     async retry() {
         if ( this.restarting ) return;
         this.restarting = true;
         this._setStatus( { ...this.state, ready: false, error: null, status: 'Restarting browser simulation' } );
+        try {
         await this._disposeWorker();
         this.timeline = new PoseTimeline(); this.cameraView = null; this.layout = null;
         this.lastMapUpload = 0; this.connecting = false;
         await this._connect();
-        this.restarting = false;
+        } catch(error) { this._setStatus({...this.state,ready:false,status:'Simulation shutdown failed; reload the page',error:error.message}); }
+        finally { this.restarting = false; }
     }
 
     close() {
         this.closed = true;
-        this._disposeWorker();
+        this.assetAbort.abort();
+        return this._disposeWorker().catch(error => this._setStatus({...this.state, ready:false, error:error.message}));
     }
 
     async _disposeWorker() {
         const worker = this.worker;
-        if ( ! worker ) return;
-        this.worker = null;
-        await new Promise( resolve => {
-            const timer = setTimeout( resolve, 1500 );
-            this._disposeResolve = () => { clearTimeout( timer ); resolve(); };
-            worker.postMessage( { type: 'shutdown' } );
-        } );
-        worker.terminate(); this._disposeResolve = null;
+        if (!worker) return;
+        if (this.disposing) return this.disposing;
+        this.disposing = new Promise((resolve,reject) => {
+            const timer=setTimeout(()=>reject(new Error('PX4 threads did not confirm shutdown')),30000);
+            this._disposeResolve=()=>{clearTimeout(timer);resolve();};
+            worker.shuttingDown=true;
+            worker.postMessage({type:'shutdown'});
+        });
+        try {
+            await this.disposing;
+            worker.terminate();
+            if(this.worker===worker)this.worker=null;
+        } finally {this.disposing=null;this._disposeResolve=null;}
     }
 }

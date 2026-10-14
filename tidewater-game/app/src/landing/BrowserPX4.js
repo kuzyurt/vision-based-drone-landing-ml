@@ -16,10 +16,12 @@ export class BrowserPX4 {
 	buffer() {return this.module.HEAPF64.subarray(this.pointer/8,this.pointer/8+64);}
 	command(command) {return this.module.ccall('tw_command','number',['string'],[command]);}
 	async startCommand(command) {
+		this.checkCancelled?.();
 		this.onStartup?.(command);
 		this.module.ccall('tw_command_async','number',['string'],[command]);
 		const begin=performance.now();let result;
 		while((result=this.module._tw_command_result())===-2147483648) {
+			this.checkCancelled?.();
 			if(performance.now()-begin>10000) throw new Error(`PX4 startup timed out: ${command}`);
 			if(command.startsWith('simulator_mavlink start') || this.simulationStarted) await this.advance();
 			await new Promise(resolve=>setTimeout(resolve,1));
@@ -31,8 +33,9 @@ export class BrowserPX4 {
 		this.module.FS.mkdirTree('/fs/microsd');
 		this.module._tw_init();
 		this.command('param select /fs/microsd/parameters');
-		for(const command of boot) this.command(command);
-		for(const [name,value] of Object.entries(this.configuration.parameters)) this.command(`param set ${name} ${value}`);
+		this.parameterWarnings=[];
+		for(const command of boot){const result=this.command(command);if(result!==0)this.parameterWarnings.push({command,result});}
+		for(const [name,value] of Object.entries(this.configuration.parameters)){const result=this.command(`param set ${name} ${value}`);if(result!==0)throw new Error(`Required reference parameter ${name} failed: ${result}`);}
 		for(const command of ['dataman start','simulator_mavlink start -t 127.0.0.1 4560',
 			'system_power_simulator start','rc_update start','manual_control start','sensors start','commander start',
 			'ekf2 start','pwm_out_sim start -m sim','control_allocator start','mc_rate_control start','mc_att_control start',
@@ -100,6 +103,7 @@ export class BrowserPX4 {
 	async advance() {
 		const begin=performance.now();
 		while(true) {
+			this.checkCancelled?.();
 			const signal=this.module._tw_actuator_signal(),view=new Int32Array(this.module.HEAPU8.buffer),sequence=Atomics.load(view,signal/4);
 			const result=this.module._tw_actuators(this.pointer,this.firstActuator?this.lastSensor:0);
 			if(result===0)break;
