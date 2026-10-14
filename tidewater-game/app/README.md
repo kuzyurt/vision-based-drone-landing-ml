@@ -17,7 +17,7 @@ sell your catch to Joe at the fish stand, and spend it on better gear at Marta's
 real-time tropical island and ocean: swim the reef, drive the boat out to deep water, and watch a humpback
 breach. It runs directly on WebGPU and WGSL with its own small rendering engine, no framework.
 
-**Play it:** https://dgreenheck.github.io/tidewater/
+**Run this PX4/MuJoCo version:** follow [the static hosting instructions](../README.md).
 
 ![Fishing off the pier at golden hour](docs/screenshot.jpg)
 
@@ -25,9 +25,8 @@ breach. It runs directly on WebGPU and WGSL with its own small rendering engine,
 
 ## Requirements
 
-- A browser with WebGPU: a recent Chrome, Edge or Safari.
-- A capable GPU. It targets 60 fps at 2560×1267 on an Apple M5 Pro, and dynamic resolution scales
-  the render down on slower machines.
+- A recent WebGPU browser with cross-origin isolation and SharedArrayBuffer. See [hosting requirements](../README.md).
+- A capable GPU. Dynamic resolution adapts rendering on slower machines. The browser PX4 port has not yet been measured in a real browser on this machine.
 - The first load compiles several hundred shaders, which can take a minute or more. Later visits are
   faster because the browser caches them.
 
@@ -154,12 +153,13 @@ Add these to the URL, for example `?fly&noAudio`:
 ## Running locally
 
 ```sh
-npm install
+npm ci
 npm run dev      # http://127.0.0.1:5189
-npm run build    # static build in dist/
+npm run build    # static build and offline manifest in dist/
+npm start        # production static server on 127.0.0.1:5189
 ```
 
-Every push to `main` deploys to GitHub Pages through `.github/workflows/deploy.yml`.
+Serve `dist/` over HTTPS or localhost with COOP/COEP headers. The included server and Vite supply them. See [browser runtime verification](../wasm/README.md) for headless checks and the manual browser checklist.
 
 ## Project layout
 

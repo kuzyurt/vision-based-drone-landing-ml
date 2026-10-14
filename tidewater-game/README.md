@@ -1,94 +1,96 @@
-# Tidewater game
+# Tidewater — browser PX4 and MuJoCo
 
-The browser game lives in [app](app/README.md). Tidewater-specific code, runtime support, archived
-renders, benchmark captures, and dated update material stay inside this folder. Drone-training and
-landing-policy experiments remain in the repository's root `artifacts/` folder.
+The original Holybro X500 **V2** and AERODOCK models run with MuJoCo 3.14.0
+and the original PX4 v1.16.0 flight stack in browser workers. The player opens
+a static URL. Physics, estimation and controllers run on the player's machine.
+The original drone CAD and source simulator remain the reference.
 
-To run the game locally:
+For local hosting, use Node.js 22 or newer (Node 24 was tested). From the
+repository root, prepare and serve the production package:
 
-Install the app dependencies once, then launch both the browser renderer and the local PX4/MuJoCo
-service from the repository root (Node.js, Python with MuJoCo, and Ubuntu-22.04 in WSL are required):
-
-```powershell
+```sh
 cd tidewater-game/app
 npm ci
-cd ..
-./Start-TidewaterGame.ps1
+npm run build
+npm start
 ```
 
-Open `http://127.0.0.1:5189/` in a WebGPU-capable browser. The first flight session sends the
-generated Tidewater heightfield to MuJoCo so boat routing and SX1262 line-of-sight estimates use the
-same coast and obstacles visible in the game. The on-screen SX1262 figures are estimates; no radio
-hardware is connected.
+Open `http://127.0.0.1:5189/` **manually**. The server serves static files with
+COOP/COEP headers; it does not run a physics process. Players using a hosted
+package only need the browser. On Windows, `./Start-TidewaterGame.ps1` builds a
+missing `dist/` and serves it in the foreground. Use `-Dev` for Vite. After source
+changes, run `npm run build` again. These launchers never open a browser.
 
-The launcher starts the two local services and leaves opening the browser to you. After entering
-the game, wait for the original vehicle camera and physics service. Take off is enabled
-when both are ready. The boat holds still during aircraft launch, then follows its validated
-524 m closed water loop. Switching to the boat also allows starting its route or using manual
-motors. A failed simulation displays its cause and a **Retry simulation** button; **Reset** and
-**Home** also restart a failed simulation.
+Use a recent WebGPU-capable Chrome/Edge and sufficient memory for the original
+CAD world and PX4 pthread pool. SharedArrayBuffer requires HTTPS (or localhost)
+and these response headers on the page, workers, modules and WASM assets:
 
-## Physics and performance
+```text
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+Cross-Origin-Resource-Policy: same-origin
+```
 
-The game uses the original Holybro X500 V2 and AERODOCK CAD models, inertias,
-collision shapes, motor/propeller curves, buoyancy cells and drag coefficients.
-MuJoCo runs locally inside WSL with its original implicitfast solver and 80 iterations.
-Numba compiles the original force equations. A small Windows localhost relay carries
-the game UI traffic; no browser is launched by the scripts.
-The relay also supplies the Windows clock. The service calibrates its WSL clock
-against it so platform speeds and aircraft motion use the browser's real time.
+Static hosting must support those headers. Ordinary GitHub Pages does not
+provide the required header configuration. Vite dev/preview and the included
+Node static server provide it. The package supports a same-origin subdirectory.
 
-The default game runs the original PX4 firmware and estimator with the original
-keyboard pilot code, flight parameters, motor forces and 1 ms MuJoCo integration.
-The sensor/actuator exchange remains in strict 250 Hz lockstep. PX4 logs and its
-working state live on WSL's Linux filesystem to reduce flight-loop I/O stalls.
-Numba compiles the force calculations without fast-math or changed gains.
-Rendering remains independent: CAD poses and camera transforms are interpolated
-from 20 Hz updates. Browser FPS and simulation speed are separate measurements.
+## First load and offline operation
 
-The reference pilot commands 1 m/s horizontal speed (including normalized diagonal
-input), 0.6 m/s climb/descent target changes and 0.5 rad/s yaw. The articulated
-camera uses the original joint damping and actuator law, with a 1 mm near plane.
-The optional legacy local controller is selected with `TIDEWATER_CONTROLLER=native`;
-it is not the reference flight implementation.
+The first visit compiles the rendering shaders and the original collision CAD
+with the actual Tidewater heightfield and obstacles. World compilation runs in
+the simulation worker. IndexedDB stores the compiled model; its key covers map,
+collision asset hashes and model versions. Corrupt entries rebuild; unavailable
+storage or quota exhaustion falls back to compilation.
 
-See [the flight benchmark](benchmarks/flight-parity/README.md) for independent PX4
-traces, original-versus-original repeatability, recorded samples and source hashes.
-The measured flight response difference was at most 19.9 mm displacement,
-0.00593 m/s velocity and 0.064 degrees attitude in the recorded maneuver sequence.
-The original repeat run differed by up to 10.7 mm. Identical calm motor inputs
-agree to floating-point precision; the gust case has a small reported residual.
-These results cover the tested scenarios and do not claim universal exact identity.
+A production build includes a versioned SHA-256 offline asset manifest. The
+service worker caches the app, original CAD/textures, collision meshes, audio,
+PX4 and MuJoCo WASM, worker modules and licenses. Wait for **Offline files ready**
+before disconnecting. The compiled collision cache uses additional storage;
+allow room for it and for updates. Development mode does not register offline
+caching. Failed cache installation preserves the previous complete version.
+Close existing game tabs and reopen to activate a downloaded update. Browser
+storage clearing or eviction requires another complete online load.
 
-The four wave components are shared by rendering and the original buoyancy equations.
-Their maximum combined crest-to-trough height is 0.05 m. Boat roll, pitch and heave
-come from water forces. The original full platform stroke takes 8 simulation seconds
-and each full lid stroke takes 5.75 simulation seconds. Mechanism interlocks prevent
-closing the lids with the platform raised or moving two mechanisms at once.
-Physical mechanism settling can add a small delay to the commanded servo stroke.
-The original short-wave FFT texture also supplies optical ripple normals, gust/slick
-variation and fine reflection detail, updated at 30 Hz in flight mode. These shading
-details add no surface displacement. Shoreline foam follows the shared physical wave
-phase and actual wet depth; the former large breaking-surf displacement stays disabled.
+Simulation runs independently of rendering with 1 ms physics, strict 250 Hz
+sensor/actuator lockstep, and 25 Hz pilot decisions. Timestamped CAD, camera and
+hull poses are interpolated on one presentation clock; physical wave phases use
+that same clock. Reset/retry waits for PX4 pthread shutdown before replacing the
+runtime. A shutdown timeout asks for a page reload rather than creating a
+second unconfirmed runtime.
 
-Use **B** to change vehicle, **U** to change boat camera, **P** for auto/manual boat
-motors, **W/S** for both throttles, **A/D** for differential steering, and the visible
-motor sliders for individual throttle. **Home** resets both vehicles. Drone controls:
-**WASD** horizontal movement, **R/F** climb/descend, **Q/E** yaw, arrow keys or mouse
-for the original articulated camera. **C** retries the estimated SX1262 link.
+## Controls and deck operation
 
-Verification scripts are in `simulation/tests/benchmark_flight.py`,
-`simulation/tests/verify_live.py`, `app/test/tidewater-controls.mjs` and
-`app/test/tidewater-water-shader.mjs`. The benchmark executes the unmodified
-original `Simulation.physics` and `Simulation.setpoints` as its reference,
-audits physical parameters, replays identical motors and runs independent PX4
-maneuvers. Full-scene live checks separately measure simulation pacing, takeoff,
-keyboard and camera movement, boat motors, mechanism timing and reset.
+- **B** switches drone/boat; **U** switches the two original boat cameras.
+- Drone: **WASD** moves, **R/F** climbs/descends, **Q/E** yaws. Arrow keys or mouse
+  move the articulated camera. Use the Take off, Hover and Land controls.
+- Boat: **P** switches automatic/manual motors; **W/S** controls both throttles,
+  **A/D** steers differentially. Sliders set individual motors.
+- Lower the platform before closing the lids; open both lids before raising it.
+  Wait for physical settling between movements. Occupied lids can contact the
+  actual drone geometry; exercise complete mechanism strokes with an empty bay.
+- **C** retries the simulated SX1262 link after restoring range/line of sight.
+  These are estimates, not readings from radio hardware.
+- **Home**, Reset, and Retry replace the browser simulation and restore spawn.
 
-The latest full-scene headless check measured **0.984× real time on the deck** and
-**0.992× in flight**. Forward motion covered 2.47 m in 3 seconds, descent 0.59 m
-in 2 seconds, platform lowering took 8.31 wall seconds (8.02 simulated), and lids
-closed in 5.83 wall seconds (5.80 simulated). Camera movement, repeated camera and
-vehicle switches, manual boat motors, the 5 cm wave limit and reset passed.
-See `benchmarks/flight-parity/live-game-verification.json` for these measurements.
-Performance varies with machine load; this check does not measure browser FPS.
+The boat follows a terrain-validated closed route. Buoyancy, orbital water
+velocity, drag, propellers, cabin drainage, retained-water mass, and lift/lid
+actuators operate on the original physical bodies. The speed needle uses km/h.
+Four physical wave components have a 5 cm combined crest-to-trough bound.
+
+## Verification and developer rebuilds
+
+No browser was opened for this work. See
+[the browser verification notes](wasm/README.md) for reproducible headless tests,
+source-build pins, measured results and a manual browser checklist. Node worker
+pacing and message latency are not browser FPS or rendered visual measurements.
+The Windows PowerShell launcher still needs manual execution on Windows.
+
+The optional native Python/PX4 service and its independent benchmarks remain in
+`simulation/`. They are reference developer tools. Browser gameplay selects the
+WASM worker and reports failures explicitly.
+
+[Flight benchmark reports](benchmarks/flight-parity/) include independently
+computed native and WASM traces. [Distributed licenses](app/public/licenses/)
+cover PX4, MuJoCo and the translated NumPy RNG routines. Additional game/asset
+notices accompany their models and textures.

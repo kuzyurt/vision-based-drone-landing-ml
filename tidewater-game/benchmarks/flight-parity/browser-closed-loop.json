@@ -2,84 +2,84 @@
   "px4_revision": "6ea3539157ca358c70a515878b77077af7d4611d",
   "mujoco": "3.14.0",
   "closed_loop": {
-    "position_max_m": 0.02622062425743647,
-    "velocity_max_m_s": 0.013433588215739775,
-    "attitude_max_deg": 0.6051805985648776,
-    "rotor_max_rpm": 124.8168657144454,
-    "camera_max_deg": 0.0010484142507373943
+    "position_max_m": 0.020317920427913975,
+    "velocity_max_m_s": 0.009216050868599512,
+    "attitude_max_deg": 0.3687191126497261,
+    "rotor_max_rpm": 63.228844132486294,
+    "camera_max_deg": 0.003920577025044777
   },
   "phases": [
     {
       "name": "forward",
-      "position_max_m": 0.012804115936300597,
-      "velocity_max_m_s": 0.013433588215739775,
-      "attitude_max_deg": 0.07908744519166253,
-      "rotor_max_rpm": 9.17922471283113,
-      "camera_max_deg": 0.0005353688768534808
+      "position_max_m": 0.007499726711949476,
+      "velocity_max_m_s": 0.006474821103136403,
+      "attitude_max_deg": 0.29711183286860476,
+      "rotor_max_rpm": 63.228844132486294,
+      "camera_max_deg": 0.003920577025044777
     },
     {
       "name": "brake",
-      "position_max_m": 0.012287768753866118,
-      "velocity_max_m_s": 0.008207751999263723,
-      "attitude_max_deg": 0.06421749092740366,
-      "rotor_max_rpm": 6.108312617492073,
-      "camera_max_deg": 0.00037921959420892596
+      "position_max_m": 0.02011588463476004,
+      "velocity_max_m_s": 0.009195196594436392,
+      "attitude_max_deg": 0.2747512805897886,
+      "rotor_max_rpm": 59.29184694760661,
+      "camera_max_deg": 0.003555702130755605
     },
     {
       "name": "right",
-      "position_max_m": 0.011052654806087404,
-      "velocity_max_m_s": 0.0070262948745858,
-      "attitude_max_deg": 0.06825089948082803,
-      "rotor_max_rpm": 7.1616811333263435,
-      "camera_max_deg": 0.0005405906582317601
+      "position_max_m": 0.020317920427913975,
+      "velocity_max_m_s": 0.006813822218508511,
+      "attitude_max_deg": 0.3687191126497261,
+      "rotor_max_rpm": 62.03693882247603,
+      "camera_max_deg": 0.0006827795750045457
     },
     {
       "name": "yaw",
-      "position_max_m": 0.014344078623131397,
-      "velocity_max_m_s": 0.008475049318121519,
-      "attitude_max_deg": 0.6051805985648776,
-      "rotor_max_rpm": 124.8168657144454,
-      "camera_max_deg": 0.0010484142507373943
+      "position_max_m": 0.01641822641374685,
+      "velocity_max_m_s": 0.009216050868599512,
+      "attitude_max_deg": 0.3000301604259373,
+      "rotor_max_rpm": 61.73685450648301,
+      "camera_max_deg": 0.0005749732077716769
     },
     {
       "name": "climb",
-      "position_max_m": 0.015541930691188808,
-      "velocity_max_m_s": 0.004471549088111479,
-      "attitude_max_deg": 0.24551055663825527,
-      "rotor_max_rpm": 20.229699649637947,
-      "camera_max_deg": 0.0010451706245443167
+      "position_max_m": 0.017015782729999523,
+      "velocity_max_m_s": 0.006126715581814091,
+      "attitude_max_deg": 0.1280037647641841,
+      "rotor_max_rpm": 20.307892740083304,
+      "camera_max_deg": 0.0010515607186585155
     },
     {
       "name": "descend",
-      "position_max_m": 0.021511797083449725,
-      "velocity_max_m_s": 0.011984320691043994,
-      "attitude_max_deg": 0.15306425053403214,
-      "rotor_max_rpm": 15.696215518329172,
-      "camera_max_deg": 0.00042632007815380184
+      "position_max_m": 0.018223719209939433,
+      "velocity_max_m_s": 0.006561378312215714,
+      "attitude_max_deg": 0.058627679579228625,
+      "rotor_max_rpm": 10.817301915297442,
+      "camera_max_deg": 0.0004152112982250396
     },
     {
       "name": "camera",
-      "position_max_m": 0.02615629738294278,
-      "velocity_max_m_s": 0.008579608051369574,
-      "attitude_max_deg": 0.15497621206865184,
-      "rotor_max_rpm": 6.3615559978383995,
-      "camera_max_deg": 0.00034485615891485696
+      "position_max_m": 0.016122928191928943,
+      "velocity_max_m_s": 0.0037766613947909076,
+      "attitude_max_deg": 0.05132814689706248,
+      "rotor_max_rpm": 5.615994795261967,
+      "camera_max_deg": 0.00030740962282449627
     },
     {
       "name": "hover",
-      "position_max_m": 0.02622062425743647,
-      "velocity_max_m_s": 0.008103013511775227,
-      "attitude_max_deg": 0.1647962803586375,
-      "rotor_max_rpm": 8.168509990970493,
-      "camera_max_deg": 0.0004329168448822425
+      "position_max_m": 0.018650390518365437,
+      "velocity_max_m_s": 0.005989349845900052,
+      "attitude_max_deg": 0.06821885705741758,
+      "rotor_max_rpm": 7.389847923486719,
+      "camera_max_deg": 0.00034038875645288314
     }
   ],
   "performance": {
-    "simulated_seconds": 17.000000000006846,
-    "wall_seconds": 7.546538199999999,
-    "compute_realtime_factor": 2.2526885241244585,
-    "arming_delay_sim_s": 0.019999999999988916,
-    "takeoff_to_hover_sim_s": 10.907999999999141
+    "simulated_seconds": 17.000000000005922,
+    "wall_seconds": 2.460932997,
+    "compute_realtime_factor": 6.907949148038475,
+    "arming_delay_sim_s": 0.01199999999999335,
+    "takeoff_to_hover_sim_s": 11.175999999999455
   },
   "passed": true
 }

@@ -1,143 +1,119 @@
-# Browser-only PX4/MuJoCo port — implementation checkpoint
+# Browser-only PX4/MuJoCo port — implementation complete, manual checks pending
 
-## Required outcome
+## Required outcome and constraints
 
-Run the existing Holybro X500 flight model, original PX4 controller and MuJoCo
-physics entirely in the browser. Players must not need WSL, Python, Docker, a
-native simulation service, or a hosted physics service. Keep drone handling as
-close as possible to the original simulator and avoid input stutter.
+The existing Holybro X500 **V2**, original PX4 controller and MuJoCo physics now
+run in browser workers. Players open a static URL; local Node is only a static
+host/build convenience. The default launcher no longer starts WSL/native physics.
+The original drone CAD/source simulator and boat reference code were not edited.
 
-**Do not open or start a browser.** The user explicitly requires opening it
-manually. Do not replace or edit the existing drone CAD/source simulator.
-The local reference model is X500 V2, despite earlier requests calling it V4.
+**Do not open or start a browser.** The user reserves opening it for themselves.
+This remains an explicit constraint. Real browser visuals/FPS, browser storage
+policy and PowerShell execution on Windows are manual checks, not claimed results.
 
-## Completed and measured
+## Completed since the previous checkpoint
 
-- Original PX4 v1.16.0 revision
-  `6ea3539157ca358c70a515878b77077af7d4611d` compiled to WebAssembly, including
-  EKF2, commander, uORB, sensors, multirotor controllers and control allocator.
-  The platform/transport adapters are in `wasm/`; source control algorithms
-  remain upstream. Binaries are in `app/public/landing/wasm/`.
-- Official `@mujoco/mujoco` pinned to **3.14.0**, matching the native reference.
-  Original collision meshes, body inertias, joints, actuator laws and motor
-  curves exported into `app/public/landing/physics/`.
-- `BrowserForces.js` translates the existing forces in double precision with
-  1 ms integration and 250 Hz motor/sensor exchange. Original PCG64/Ziggurat
-  noise matches NumPy exactly across 20,000 normal samples.
-- `BrowserPX4.js` boots PX4 and flies using the original pilot equations.
-  Strict actuator lockstep now waits asynchronously with `Atomics.waitAsync`,
-  so thread proxies and input messages can run while awaiting PX4.
-- `BrowserWorld.js` compiles the actual game heightfield and obstacles in a
-  worker; attempts IndexedDB caching of the compiled world. Actual route
-  candidates are checked against terrain depth and colliders.
-- `BrowserGame.js` adds boat route/manual motors, deck interlocks, radio
-  estimates, HUD packets and original drone/dock/navigation camera transforms.
-- `BrowserSimulationWorker.js` schedules simulation independently of rendering.
-  `SimulationBridge.js` now connects to this worker instead of localhost HTTP
-  and WebSocket physics. It sends keyboard changes immediately and renders
-  timestamp-interpolated CAD/camera/hull poses with synchronized wave phase.
-- Vite has COOP/COEP headers and ES module workers configured.
+1. Shared `BrowserRuntime` initializes and schedules the actual PX4/MuJoCo world,
+   queues early input and cancels startup. Shutdown waits for pending factories,
+   stops PX4 pthreads, joins the loop and frees MuJoCo model/data before acknowledging.
+   The bridge waits for that acknowledgment before replacement, ignores old packets,
+   shares pending CAD installation across resets and aborts downloads on close.
+   A shutdown timeout prevents another unconfirmed runtime from being created.
+2. `BrowserDrainage` ports the original four pickups, dual pumps, ingress/head/flow,
+   retained-water mass and COM changes. MuJoCo state outputs use `DoubleBuffer`;
+   ordinary JS arrays do not receive those output writes. Boat angular/COM velocity
+   was compared against MuJoCo directly. The speed needle now resolves its actuator
+   and uses km/h. Closed routes wrap correctly; spawn rotation preserves drone offset.
+3. The physical asset exporter preserves source XML decimal precision. The former
+   MjSpec serializer rounded it. Original motor replay again agrees to floating-point
+   precision. World compilation remaps geometry masks/IDs, validates versions/state
+   layout and handles IndexedDB hits, corrupted models and unavailable/quota storage.
+   Real tiled terrain owns shoreline collisions; stale shore proxies stay disabled.
+4. Production builds generate an SHA-256 offline manifest and versioned service
+   worker cache. Failed hashes/quota installation preserve the last complete version.
+   All required app, CAD/collision, audio, worker, PX4/MuJoCo and license files are
+   included. The current package is about **144 MiB**; the compiled IDB model needs
+   additional storage. Test-only MJB/gzip fixtures stay outside the player package.
+5. A standalone Node static server supplies COOP `same-origin`, COEP `require-corp`,
+   CORP `same-origin`, correct WASM MIME and safe file paths. The PowerShell launcher
+   runs static hosting or Vite, with manual browser opening. Native simulation remains
+   an optional developer reference. Vite uses the same isolation headers and port 5189.
+6. A clean bootstrap pins PX4 v1.16.0 commit
+   `6ea3539157ca358c70a515878b77077af7d4611d`, Emsdk 4.0.10 commit
+   `62a853cd3b3134398ce85cde8bb5cbb2ef0194cb`, Python build requirements and submodules.
+   A full source build succeeded; repeating it reported `ninja: no work to do`.
+   `app/public/landing/wasm/provenance.json` records source and artifact hashes.
+   Full PX4, MuJoCo, NumPy/PCG, dependency and runtime notices accompany the package.
+7. All **49** explicit original flight/sensor parameters were read back successfully.
+   The optional hardware defaults `TRIG_INTERFACE` and `GPS_UBX_DYNMODEL` are absent
+   and recorded as warnings. The fresh build compiles/links `FlightTaskTransition`
+   and includes its generated task constructor. VTOL operation is not tested.
+8. Both ocean mip passes now fit the minimum four-storage-texture WebGPU limit;
+   the fifth mip write moved to the second pass, preserving its reduction values.
+   The WGSL test captures validation errors and passes with Dawn's null backend.
+   This is shader/resource validation, not rendering/FPS. CPU fixture generation
+   defers decorative GPU uploads and regenerates the actual app world reproducibly.
+9. README, startup instructions, HUD wording and the manual checklist describe the
+   browser default. No unrelated training process was stopped and no training data
+   collection or model training was started.
 
-Recorded results (headless Node; **not a browser FPS measurement**):
+## Latest measured evidence
 
-| Check | Result |
+These are headless Node measurements on this cloud machine, **not browser FPS**.
+Independent native reference traces remain committed.
+
+| Check | Latest result |
 | --- | --- |
-| Original motor replay: throttle, differential motors, camera | Maximum position error about `1.14e-12 m` |
-| Independent native PX4 vs WebAssembly closed-loop sequence | Max displacement error **26.2 mm**, velocity **0.0134 m/s**, attitude **0.605 degrees** |
-| Closed-loop compute throughput | **17 simulated seconds / 7.55 wall seconds**, about **2.25× real time** |
-| Full collision world compilation | **1,676 geoms**, about **10 seconds** on this machine |
-| Boat water/route run | 10 simulated seconds / 6.07 wall seconds; speed **2.48 m/s**, route error **2.12 m** |
-| Platform and lids | Headless lowering/closing assertions passed |
+| Original motor/camera replay | Maximum position error about `1.14e-12 m` |
+| Independent native vs freshly rebuilt WASM PX4 | Max displacement `20.3 mm`, velocity `0.00922 m/s`, attitude `0.369 degrees` |
+| Closed-loop compute | 17 simulated seconds / 2.46 wall seconds, about 6.91× real time |
+| Real full-world worker | 72.93 simulated seconds, about 1.003× paced real time |
+| Cold worker startup | About 11.3 seconds |
+| Keyboard message observation under 25 Hz presentation | Maximum 31.1 ms |
+| Repeated startup/cancellation | Two started sessions and three startup cancellations; zero PX4 pthread workers after disposal |
+| Full boat lap | 534 m travelled, max route error 4.11 m, 214.56 sim seconds / 41.44 wall seconds |
+| Drainage/reference agreement | 120 samples, maximum scalar error about `2.22e-16` |
+| Full collision world | 1,675 geoms; about 2.81 seconds compilation |
 
-Reports: `benchmarks/flight-parity/browser-replay.json`,
-`browser-closed-loop.json`, `browser.csv`. These are independently computed
-traces, not two plots of the same state. They establish tested parity, not a
-universal percentage guarantee.
+Reports are in `benchmarks/flight-parity/browser-*.json` and `browser.csv`.
+The complete worker test covers actual takeoff, hover, forward/brake/return,
+empty-bay platform/lid strokes, mechanism interlocks, repeated camera switches,
+descent, landing/disarming, reset and shutdown during startup (including a pending
+PX4 factory). Other checks cover actual shoreline contacts, waves, radio loss/manual
+reconnect, cache recovery, bridge races, offline version/hash/quota behavior and
+real static-server headers. No rendered video/screenshot was used for these claims.
 
-## Remaining work — in order
+## Reproduce without a browser
 
-1. **Exercise the final worker integration.** The source bridge is switched,
-   but the complete game worker has not been tested end to end after the last
-   asynchronous lockstep change. Check keyboard delivery under a 25 FPS render
-   schedule, takeoff/hover/movement/descent/landing, B/U switching, all CAD poses,
-   wave synchronization, radio dropout/reconnect, mechanism interlocks and reset.
-   Reset/retry must terminate every PX4 pthread worker before starting another
-   runtime. Check shutdown during startup and avoid orphaned workers.
+From the repository root:
 
-2. **Finish boat/environment parity.** Cabin drainage/retained-water mass is
-   not ported yet. The browser disables old procedural shore proxy boxes and
-   uses actual tiled terrain instead; review boat shoreline collision behavior
-   and masks. Check boat angular velocity/force reference points against native
-   MuJoCo, speed-needle units, full closed-route laps and reset placement. The
-   actual world test used the exported terrain/colliders, not an automated game
-   browser capture. Audit configuration fields and IDs after world compilation.
-
-3. **Finish offline support and static hosting.** No service worker, offline
-   asset manifest, offline-registration helper or standalone static server has
-   been implemented. The interrupted attempted patch created **none** of these
-   files. Add offline caching of app, CAD, collision meshes, PX4/MuJoCo WASM and
-   other needed assets. Verify IndexedDB model caching and storage-quota fallback.
-   Serve COOP `same-origin` and COEP `require-corp`; SharedArrayBuffer requires
-   these. Keep all physics local and avoid silent fallback to the native backend.
-
-4. **Replace the default launcher.** `Start-TidewaterGame.ps1` still starts the
-   old WSL backend/relay and Vite. Change it to start only static files or the
-   frontend development server. Players should only open the URL; opening the
-   browser remains manual. Retain native simulation as an optional reference
-   benchmark, not a player dependency. Existing dev server is localhost:5189;
-   legacy relay/backend are localhost:5195 and WSL:5195.
-
-5. **Finish source notices and build reproducibility.** `wasm/NOTICE.md` names
-   PX4 BSD-3-Clause, MuJoCo Apache-2.0 and NumPy BSD-3-Clause, but the actual
-   license/copyright files still need to accompany the distributed assets.
-   The developer build assumes a prepared Emsdk/PX4 cache; add a reproducible
-   bootstrap/pin-check workflow. Review startup parameter extraction (it takes
-   numeric commands from conditional rcS blocks) against effective native
-   parameters. Uncompiled optional parameters and FlightTaskTransition warnings
-   appear in startup logs; resolve or document them accurately.
-
-6. **Rebuild and verify the final package.** The last successful production
-   build predates asynchronous lockstep changes. Run a fresh build and headless
-   checks after fixes. Benchmark startup, deck and flight headroom, input latency,
-   worker resets and longer sessions. Test real browser behavior only if the user
-   changes the explicit prohibition; otherwise provide a manual verification
-   checklist and clearly label unverified browser performance.
-
-7. **Update documentation/UI.** README and launcher instructions still describe
-   WSL/native default operation. Change them after browser integration is stable,
-   explain first-load compilation/offline cache requirements, document current
-   measurements and preserve uncertainty. Some HUD copy still says native MuJoCo.
-
-## Checks and developer environment
-
-Run from repository root, without opening a browser:
-
-```powershell
-node tidewater-game/wasm/tests/browser-replay.mjs
-node tidewater-game/wasm/tests/browser-closed-loop.mjs
-node tidewater-game/wasm/tests/browser-world-smoke.mjs
-node tidewater-game/app/test/tidewater-controls.mjs
-node tidewater-game/app/test/tidewater-pose-timeline.mjs
+```sh
 cd tidewater-game/app
+npm ci --cache /tmp/tidewater-npm-cache
+npm run test:browser
 npm run build
+npm run test:offline
+TIDEWATER_GPU_BACKEND=null node test/tidewater-water-shader.mjs
 ```
 
-Large generated `.mjb` test models and the optional `.mjb.gz` baseline are
-excluded from Git; regenerate them before those tests. Runtime map fixtures are
-also local/ignored: tests currently expect `simulation/runtime/live-map.json`
-and `live-heights.bin`. Make clean-checkout fixture preparation reproducible.
+`test:browser` regenerates ignored fixtures before executing tests. It uses Node
+and committed independent native references. To regenerate the separate drainage
+reference, use the optional native Python environment and `wasm/tests/export-drainage.py`.
+No old WSL cache, pre-existing map file or native simulation server is needed for
+these Node checks. For source rebuild instructions and dependencies see
+[`wasm/README.md`](wasm/README.md).
 
-Existing developer-only WSL cache on this machine:
+## Remaining manual checks
 
-- Emsdk 4.0.10: `/home/gamee/.cache/tidewater-game/emsdk`
-- Pinned PX4 adapter checkout: `/home/gamee/.cache/tidewater-game/px4-wasm-source`
-- Build: `/home/gamee/.cache/tidewater-game/px4-wasm-build`
-- Native reference: `/home/gamee/.cache/smartdrone2/PX4-Autopilot`
-- Python: `/home/gamee/.cache/tidewater-game/python/bin/python`
+The full checklist is in [`wasm/README.md`](wasm/README.md#manual-browser-verification):
+open the production URL manually, verify rendered CAD/cameras and handling on the
+intended GPU, reduced-FPS input/wave synchronization, deck operation with an empty
+bay, landing, radio recovery, repeated resets, and warm/cold offline reloads.
+Execute `Start-TidewaterGame.ps1` on Windows. Record actual browser FPS/startup and
+a longer rendered session before describing the release as browser-verified.
 
-Developer scripts: `wasm/build_px4.sh`, `wasm/export_browser_assets.py`,
-`wasm/tests/export-replay.py`, `wasm/tests/export-closed-model.py`.
-The completed compiled PX4 artifacts are committed; players do not build them.
-Do not stop unrelated training Python processes in this workspace.
-
-This is an **unfinished implementation checkpoint**, not a completed release.
+The cloud configuration draft preserves the landing-training setup, adds the
+tested Node dependency installation/start instructions, and records
+`storage.googleapis.com` for Emsdk artifact downloads; the current source build successfully downloaded them.
+Draft changes still require review/save and publication in environment settings
+for a reusable cloud configuration. No publication or fresh-task restore is claimed.

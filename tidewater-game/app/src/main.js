@@ -1,3 +1,5 @@
+import {registerOffline} from './offline.js';
+registerOffline();
 import './core/BenchSeed.js';
 import { App } from './App.js';
 import { UI } from './ui/UI.js';

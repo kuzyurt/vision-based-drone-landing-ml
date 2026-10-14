@@ -8,22 +8,27 @@ export class BrowserGame {
  constructor(mj,m,d,f,px4,c,map) {
   Object.assign(this,{mj,m,d,f,px4,c,map});this.route=chooseRoute(map);this.coast=coastPoints(map);
   this.mode='drone';this.camera='boat_dock';this.automatic=true;this.keys=[];this.lookX=0;this.lookY=0;this.motors=[0,0];
-  this.progress=0;this.courseError=0;this.targetSpeed=2.8;this.launchComplete=false;this.takeoffPending=false;this.message=null;
+  this.progress=0;this.travelled=0;this.courseError=0;this.targetSpeed=2.8;this.launchComplete=false;this.takeoffPending=false;this.message=null;
   this.nextControl=d.time;this.nextRadio=d.time;this.radio={connected:true,quality:100,status:'stable',simulated:true};
   this.remote=null;this.samples=[];this.tx=0;this.rx=0;this.dropped=0;this.retryTime=0;this.retryPending=false;this.lastRx=0;this.randomState=0x1262;
  }
  static initializePose(mj,m,d,c,route) {
   d.qpos.set(c.qpos_initial);d.qvel.set(c.qvel_initial);mj.mj_setState(m,d,new Float64Array(c.eq_active_initial),mj.mjtState.mjSTATE_EQ_ACTIVE.value);
   const b=c.boat.free_qadr,q=c.drone.free_qadr,yaw=Math.atan2(route.points[1][1]-route.points[0][1],route.points[1][0]-route.points[0][0]);
-  const old=c.qpos_initial.slice(b,b+2),delta=[route.points[0][0]-old[0],route.points[0][1]-old[1]];
+  const old=c.qpos_initial.slice(b,b+3),quaternion=c.qpos_initial.slice(b+3,b+7);
+  const oldYaw=Math.atan2(2*(quaternion[0]*quaternion[3]+quaternion[1]*quaternion[2]),1-2*(quaternion[2]**2+quaternion[3]**2));
+  const angle=yaw-oldYaw,cos=Math.cos(angle),sin=Math.sin(angle),dx=d.qpos[q]-old[0],dy=d.qpos[q+1]-old[1];
   d.qpos.set(route.points[0],b);d.qpos.set([Math.cos(yaw/2),0,0,Math.sin(yaw/2)],b+3);
-  d.qpos[q]+=delta[0];d.qpos[q+1]+=delta[1];d.qpos.set([Math.cos(yaw/2),0,0,Math.sin(yaw/2)],q+3);
+  d.qpos[q]=route.points[0][0]+cos*dx-sin*dy;d.qpos[q+1]=route.points[0][1]+sin*dx+cos*dy;
+  const original=c.qpos_initial.slice(q+3,q+7),h=Math.cos(angle/2),z=Math.sin(angle/2);
+  d.qpos.set([h*original[0]-z*original[3],h*original[1]-z*original[2],h*original[2]+z*original[1],h*original[3]+z*original[0]],q+3);
   // Actual tiled terrain owns shoreline collisions, avoiding stale proxy boxes
   // from the source scene's procedural training island.
   for(let i=0;i<16;i++){const g=mj.mj_name2id(m,mj.mjtObj.mjOBJ_GEOM.value,`shore_contact_${i}`);if(g>=0){m.geom_contype[g]=0;m.geom_conaffinity[g]=0;}}
   mj.mj_forward(m,d);
  }
  input(p) {
+  if(p.sequence!==undefined)this.inputSequence=p.sequence;
   if(p.mode && p.mode!==this.mode){this.mode=p.mode;this.keys=[];this.lookX=this.lookY=0;}
   if(p.keys)this.keys=p.keys;this.lookX+=p.look_x||0;this.lookY+=p.look_y||0;if(p.motors)this.motors=p.motors.map(v=>clamp(v,0,100));
   if(p.action==='camera')this.camera=p.name;
@@ -55,17 +60,17 @@ export class BrowserGame {
  routeControl() {
   const {points,arc,length}=this.route,p=vector(this.d.xpos,this.c.boat.body),speed=this.boatSpeed();let index=0;
   while(index<arc.length && arc[index]<=this.progress)index++;
-  const lo=Math.max(0,Math.min(index-5,points.length-3)),hi=Math.min(points.length-1,lo+30);let distance=Infinity,projected=0;
-  for(let i=lo;i<hi;i++){
+  const count=points.length-1;let distance=Infinity,projected=this.progress;
+  for(let offset=-5;offset<25;offset++){const i=(index-1+offset+count)%count;
    const a=points[i],b=points[i+1],dx=b[0]-a[0],dy=b[1]-a[1],u=clamp(((p[0]-a[0])*dx+(p[1]-a[1])*dy)/(dx*dx+dy*dy),0,1);
    const gap=Math.hypot(a[0]+dx*u-p[0],a[1]+dy*u-p[1]);if(gap<distance){distance=gap;projected=arc[i]+u*(arc[i+1]-arc[i]);}
   }
-  this.progress=Math.max(this.progress,projected)%length;this.courseError=distance;
+  const delta=(projected-this.progress+length*1.5)%length-length*.5;this.travelled+=Math.max(0,delta);this.progress=this.travelled%length;this.courseError=distance;
   const target=(this.progress+Math.max(12,5*speed))%length;index=0;while(index<arc.length-2 && arc[index+1]<target)index++;
   const u=(target-arc[index])/(arc[index+1]-arc[index]),goal=points[index].map((v,i)=>v+u*(points[index+1][i]-v));
   const R=this.d.xmat.subarray(this.c.boat.body*9,this.c.boat.body*9+9),yaw=Math.atan2(R[3],R[0]),desired=Math.atan2(goal[1]-p[1],goal[0]-p[0]);
   const error=Math.atan2(Math.sin(desired-yaw),Math.cos(desired-yaw)),targetSpeed=2.8*Math.max(.35,Math.cos(error));
-  const base=clamp(2.8*targetSpeed**3+4*targetSpeed+12*(targetSpeed-speed),0,78),turn=clamp(60*error-85*this.d.qvel[this.c.boat.free_vadr+5],-base,base);
+  const base=clamp(2.8*targetSpeed**3+4*targetSpeed+12*(targetSpeed-speed),0,78),turn=clamp(60*error-85*this.f.velocity(this.c.boat.body,vector(this.d.xipos,this.c.boat.body))[2],-base,base);
   this.f.power=[clamp(base+turn,0,100),clamp(base-turn,0,100)];this.targetSpeed=targetSpeed;
  }
  control() {
@@ -87,8 +92,8 @@ export class BrowserGame {
  }
  vehicles() {
   const p=this.px4,obs=p.observation(),u=this.c.drone,drone=this.vehicle(u.base),boat=this.vehicle(this.c.boat.body);
-  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,takeoff_pending:this.takeoffPending});
-  Object.assign(boat,this.mechanisms(),{speed:this.boatSpeed(),port_power:this.f.power[0],starboard_power:this.f.power[1]});return {drone,boat};
+  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,landed:p.landed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,takeoff_pending:this.takeoffPending});
+  Object.assign(boat,this.mechanisms(),this.f.drainage.status(),{speed:this.boatSpeed(),port_power:this.f.power[0],starboard_power:this.f.power[1]});return {drone,boat};
  }
  updateRadio() {
   const vehicles=this.vehicles(),a=[...vehicles.boat.position],b=vehicles.drone.position;a[1]+=2.5;
@@ -113,7 +118,7 @@ export class BrowserGame {
   for(const [name,id] of Object.entries(c.cameras))views[name]={matrix:pose(vector(d.cam_xpos,id),d.cam_xmat.subarray(id*9,id*9+9)),fovy:m.cam_fovy[id]};
   const bodies=c.bodies.map(([name,id])=>[name,pose(vector(d.xpos,id),d.xmat.subarray(id*9,id*9+9))]);
   const hull=this.mj.mj_name2id(m,this.mj.mjtObj.mjOBJ_GEOM.value,'hull_contact');
-  const state={...vehicles,ready:!!obs[0],status:p.armed?'Flying · PX4 browser':obs[0]?'PX4 ready · press Take off':'PX4 warming sensors',source:'PX4 v1.16 + MuJoCo 3.14 · WebAssembly',physics_hz:1000,sensor_hz:250,controller_lag_ms:Math.max(0,(p.lastSensor-p.actuators[1])/1000),time_s:d.time,tick:this.f.tick,views,bodies,hull_pose:pose(vector(d.geom_xpos,hull),d.geom_xmat.subarray(hull*9,hull*9+9)),mode:this.mode,boat_camera:this.camera,boat_autopilot:this.automatic,radio:this.radio,remote:this.remote,message:this.message,messages:[],wind:[0,0,0],route:{valid:true,length_m:this.route.length,progress_m:this.progress,error_m:this.courseError,target_speed_m_s:this.targetSpeed},waves:c.boat.waves.map(([kx,ky,a,w,phase])=>[kx,-ky,a,phase-d.time*w]),wave_height_m:.05,realtime_factor:realtimeFactor};
+  const state={...vehicles,ready:!!obs[0],status:p.armed?'Flying · PX4 browser':obs[0]?'PX4 ready · press Take off':'PX4 warming sensors',parameter_warnings:p.parameterWarnings||[],input_sequence:this.inputSequence,source:'PX4 v1.16 + MuJoCo 3.14 · WebAssembly',physics_hz:1000,sensor_hz:250,controller_lag_ms:Math.max(0,(p.lastSensor-p.actuators[1])/1000),time_s:d.time,tick:this.f.tick,views,bodies,hull_pose:pose(vector(d.geom_xpos,hull),d.geom_xmat.subarray(hull*9,hull*9+9)),mode:this.mode,boat_camera:this.camera,boat_autopilot:this.automatic,radio:this.radio,remote:this.remote,message:this.message,messages:[],wind:[0,0,0],route:{valid:true,length_m:this.route.length,progress_m:this.progress,laps:Math.floor(this.travelled/this.route.length),error_m:this.courseError,target_speed_m_s:this.targetSpeed},waves:c.boat.waves.map(([kx,ky,a,w,phase])=>[kx,-ky,a,phase-d.time*w]),wave_height_m:.05,realtime_factor:realtimeFactor};
   if(includeLayout){state.geoms=c.visual_layout;state.coastline=this.coast;state.route.points=this.route.points.map(([x,y])=>[x,-y]);}
   return state;
  }

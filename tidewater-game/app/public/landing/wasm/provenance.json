@@ -1,0 +1,29 @@
+{
+  "px4_revision": "6ea3539157ca358c70a515878b77077af7d4611d",
+  "emsdk_revision": "62a853cd3b3134398ce85cde8bb5cbb2ef0194cb",
+  "emscripten_version": "4.0.10",
+  "mujoco_version": "3.14.0",
+  "source_hashes": {
+    "bootstrap.sh": "808451353b7f8b5c671d62b2af8ea6b1af0abb81db37ccf10ba81aa8ddf22199",
+    "browser_main.cpp": "873f2866b087d0b1f0a511c552135980c477d75ed66e10928b7566439d4f8755",
+    "browser_transport.cpp": "3ba0cf2b2e6a90387ad831e705dc57178d2d0c16279326abc8074958a634628c",
+    "browser_transport.hpp": "f03aed994512331f19a018c253e078dea513ecc9c711a0e4c247dd92b4e35c22",
+    "build_px4.sh": "1eea8702c8b47e2c051875aa7dd1140e6067737c8ed88a658d74e71dca80f2a0",
+    "export_browser_assets.py": "06ff24df321bd142a644cda46d95d2f87eba685d840e44a2737a2291a321bad8",
+    "prepare_noise.py": "2546eaaf01f07f455eefd5e41051853a4c6a2d1566d5395b435482443841e8e4",
+    "prepare_px4.py": "5d9697d6889dd50a0c99120cf17073369b5bf7bb0542e7de8f1a94e8eb08dc06",
+    "record_build.py": "53c373252389d8b14b767782935fb1625a88d3b475025b14368170b642a102c3",
+    "requirements-build.txt": "674b66772b6795ffb9dd039d6b3fce5db7563177cc31270cf59a18530479c7aa",
+    "wire_browser.py": "7be7263444d29a6ac3023812afec0d12a6953053de32d945efa5b46f87459a69"
+  },
+  "artifacts": {
+    "px4.mjs": {
+      "sha256": "374025cb94b8118a4e6992c2745ce3994a8b9e566e69059c92537056c7b2a028",
+      "bytes": 111106
+    },
+    "px4.wasm": {
+      "sha256": "e4b8bea7135f384c0972257e4bf539a506ad0f4d3ba4fa6639341b91da33ab94",
+      "bytes": 1894042
+    }
+  }
+}

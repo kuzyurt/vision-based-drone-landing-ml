@@ -36,7 +36,12 @@ model=spec.compile()
 for attr in ('body_mass','body_inertia','body_ipos','body_iquat','jnt_axis'):
     assert np.array_equal(getattr(source,attr),getattr(model,attr)),attr
 model.opt.timestep=.001
-(out/'vehicles.xml').write_text(spec.to_xml(),encoding='utf-8')
+# Preserve source decimal precision: MjSpec.to_xml() rounds physical values.
+import xml.etree.ElementTree as ET
+xml=ET.parse(server.RUNTIME/'physics-base-linux.xml')
+for mesh in xml.getroot().find('asset').findall('mesh'):
+    source=Path(mesh.get('file'));mesh.set('file',mesh.get('name')+source.suffix)
+xml.write(out/'vehicles.xml',encoding='unicode')
 meta=json.loads((server.RUNTIME/'live-map.json').read_text())
 heights=np.fromfile(server.RUNTIME/'live-heights.bin',dtype='<f4')
 env=server.GameEnvironment(model,meta,heights,visual_layout=json.loads((server.RUNTIME/'visual-layout.json').read_text()))
@@ -63,12 +68,13 @@ config={'version':1,'mujoco_version':mujoco.__version__,'px4_revision':'6ea35391
     'bodies':[[model.body(i).name,int(i)] for i in env.visual_bodies],
     'rotor_geoms':{model.geom(gid).name:index for gid,index in u.rotor_geoms.items()},
     'parameters':json.loads((server.DRONE/'build/px4_configuration.json').read_text())['parameters']}
+config['asset_sha256']={name:hashlib.sha256((out/name).read_bytes()).hexdigest() for name in config['files']}
 (out/'configuration.json').write_text(json.dumps(config,separators=(',',':'),default=lambda v:v.tolist() if hasattr(v,'tolist') else int(v)),encoding='utf-8')
 seed=np.random.PCG64(714).state['state'];config['rng_state']={key:str(value) for key,value in seed.items()}
 (out/'configuration.json').write_text(json.dumps(config,separators=(',',':'),default=lambda v:v.tolist() if hasattr(v,'tolist') else int(v)),encoding='utf-8')
 binary=Path(tempfile.gettempdir())/'tidewater-browser-physics.mjb'
 mujoco.mj_saveModel(model,str(binary),None)
-with binary.open('rb') as original, gzip.open(out/'vehicles.mjb.gz','wb',compresslevel=6) as compressed:
+with binary.open('rb') as original, gzip.open(server.GAME_DIR/'wasm/tests/vehicles.mjb.gz','wb',compresslevel=6) as compressed:
     shutil.copyfileobj(original,compressed)
 binary.unlink()
 print('Browser physics assets:',out,'collision meshes:',len(used),'model bytes:',mujoco.mj_sizeModel(model))

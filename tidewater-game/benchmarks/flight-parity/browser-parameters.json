@@ -1,0 +1,260 @@
+{
+  "reference": "Original X500 effective configuration exported from px4_configuration.json; all explicit flight/sensor parameters override numeric ROMFS defaults",
+  "required": [
+    {
+      "name": "CA_AIRFRAME",
+      "reference": 0,
+      "effective": 0
+    },
+    {
+      "name": "CA_ROTOR_COUNT",
+      "reference": 4,
+      "effective": 4
+    },
+    {
+      "name": "EKF2_MULTI_IMU",
+      "reference": 1,
+      "effective": 1
+    },
+    {
+      "name": "SENS_IMU_MODE",
+      "reference": 1,
+      "effective": 1
+    },
+    {
+      "name": "EKF2_GPS_DELAY",
+      "reference": 20,
+      "effective": 20
+    },
+    {
+      "name": "EKF2_BARO_DELAY",
+      "reference": 0,
+      "effective": 0
+    },
+    {
+      "name": "EKF2_IMU_POS_X",
+      "reference": -0.0008790026219908653,
+      "effective": -0.0009
+    },
+    {
+      "name": "EKF2_IMU_POS_Y",
+      "reference": -0.0005188397504199832,
+      "effective": -0.0005
+    },
+    {
+      "name": "EKF2_IMU_POS_Z",
+      "reference": -0.01855675170437729,
+      "effective": -0.0186
+    },
+    {
+      "name": "MPC_THR_HOVER",
+      "reference": 0.38780358686559474,
+      "effective": 0.3878
+    },
+    {
+      "name": "THR_MDL_FAC",
+      "reference": 0.5593172876610686,
+      "effective": 0.5593
+    },
+    {
+      "name": "MPC_XY_VEL_MAX",
+      "reference": 2,
+      "effective": 2
+    },
+    {
+      "name": "MPC_Z_VEL_MAX_UP",
+      "reference": 1,
+      "effective": 1
+    },
+    {
+      "name": "MPC_Z_VEL_MAX_DN",
+      "reference": 0.7,
+      "effective": 0.7
+    },
+    {
+      "name": "COM_RC_IN_MODE",
+      "reference": 4,
+      "effective": 4
+    },
+    {
+      "name": "COM_DISARM_PRFLT",
+      "reference": 0,
+      "effective": 0
+    },
+    {
+      "name": "COM_OF_LOSS_T",
+      "reference": 1,
+      "effective": 1
+    },
+    {
+      "name": "COM_OBL_RC_ACT",
+      "reference": 4,
+      "effective": 4
+    },
+    {
+      "name": "SIM_BAT_DRAIN",
+      "reference": 3600,
+      "effective": 3600
+    },
+    {
+      "name": "MAV_0_RATE",
+      "reference": 120000,
+      "effective": 120000
+    },
+    {
+      "name": "MC_ROLLRATE_P",
+      "reference": 0.15,
+      "effective": 0.15
+    },
+    {
+      "name": "MC_PITCHRATE_P",
+      "reference": 0.15,
+      "effective": 0.15
+    },
+    {
+      "name": "BAT1_N_CELLS",
+      "reference": 4,
+      "effective": 4
+    },
+    {
+      "name": "BAT1_CAPACITY",
+      "reference": 12000,
+      "effective": 12000
+    },
+    {
+      "name": "BAT1_V_CHARGED",
+      "reference": 4.2,
+      "effective": 4.2
+    },
+    {
+      "name": "BAT1_V_EMPTY",
+      "reference": 3.3,
+      "effective": 3.3
+    },
+    {
+      "name": "EKF2_GPS_POS_X",
+      "reference": 0.09812099737800917,
+      "effective": 0.0981
+    },
+    {
+      "name": "EKF2_GPS_POS_Y",
+      "reference": -0.0005188397504199832,
+      "effective": -0.0005
+    },
+    {
+      "name": "EKF2_GPS_POS_Z",
+      "reference": -0.11480675170437732,
+      "effective": -0.1148
+    },
+    {
+      "name": "CA_ROTOR0_PX",
+      "reference": 0.17612099737800913,
+      "effective": 0.1761
+    },
+    {
+      "name": "CA_ROTOR0_PY",
+      "reference": 0.17648116024958002,
+      "effective": 0.1765
+    },
+    {
+      "name": "CA_ROTOR0_PZ",
+      "reference": -0.0620567517043773,
+      "effective": -0.0621
+    },
+    {
+      "name": "CA_ROTOR0_KM",
+      "reference": -0.014929955420377596,
+      "effective": -0.0149
+    },
+    {
+      "name": "PWM_MAIN_FUNC1",
+      "reference": 101,
+      "effective": 101
+    },
+    {
+      "name": "CA_ROTOR1_PX",
+      "reference": -0.17737900262199088,
+      "effective": -0.1774
+    },
+    {
+      "name": "CA_ROTOR1_PY",
+      "reference": -0.17701883975042,
+      "effective": -0.177
+    },
+    {
+      "name": "CA_ROTOR1_PZ",
+      "reference": -0.0620567517043773,
+      "effective": -0.0621
+    },
+    {
+      "name": "CA_ROTOR1_KM",
+      "reference": -0.014929955420377596,
+      "effective": -0.0149
+    },
+    {
+      "name": "PWM_MAIN_FUNC2",
+      "reference": 102,
+      "effective": 102
+    },
+    {
+      "name": "CA_ROTOR2_PX",
+      "reference": 0.17612099737800913,
+      "effective": 0.1761
+    },
+    {
+      "name": "CA_ROTOR2_PY",
+      "reference": -0.17701883975042,
+      "effective": -0.177
+    },
+    {
+      "name": "CA_ROTOR2_PZ",
+      "reference": -0.0620567517043773,
+      "effective": -0.0621
+    },
+    {
+      "name": "CA_ROTOR2_KM",
+      "reference": 0.014929955420377596,
+      "effective": 0.0149
+    },
+    {
+      "name": "PWM_MAIN_FUNC3",
+      "reference": 103,
+      "effective": 103
+    },
+    {
+      "name": "CA_ROTOR3_PX",
+      "reference": -0.17737900262199088,
+      "effective": -0.1774
+    },
+    {
+      "name": "CA_ROTOR3_PY",
+      "reference": 0.17648116024958002,
+      "effective": 0.1765
+    },
+    {
+      "name": "CA_ROTOR3_PZ",
+      "reference": -0.0620567517043773,
+      "effective": -0.0621
+    },
+    {
+      "name": "CA_ROTOR3_KM",
+      "reference": 0.014929955420377596,
+      "effective": 0.0149
+    },
+    {
+      "name": "PWM_MAIN_FUNC4",
+      "reference": 104,
+      "effective": 104
+    }
+  ],
+  "optional_default_warnings": [
+    {
+      "command": "param set-default TRIG_INTERFACE 3",
+      "result": -1
+    },
+    {
+      "command": "param set-default GPS_UBX_DYNMODEL 6",
+      "result": -1
+    }
+  ]
+}

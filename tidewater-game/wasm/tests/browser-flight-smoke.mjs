@@ -8,7 +8,7 @@ import { BrowserPX4 } from '../../app/src/landing/BrowserPX4.js';
 const directory=new URL('../../app/public/landing/physics/',import.meta.url);
 const config=JSON.parse(await fs.readFile(new URL('configuration.json',directory),'utf8'));
 const boot=JSON.parse(await fs.readFile(new URL('px4-startup.json',directory),'utf8'));
-const mj=await loadMujoco();mj.FS.writeFile('/vehicles.mjb',gunzipSync(await fs.readFile(new URL('vehicles.mjb.gz',directory))));
+const mj=await loadMujoco();mj.FS.writeFile('/vehicles.mjb',gunzipSync(await fs.readFile(new URL('vehicles.mjb.gz',import.meta.url))));
 const start=performance.now();const vfs=new mj.MjVFS();const model=mj.MjModel.from_binary_path('/vehicles.mjb',vfs);vfs.delete();mj.FS.unlink('/vehicles.mjb');
 console.log('Browser binary CAD loaded:',model.nbody,'bodies;',performance.now()-start,'ms');
 const data=new mj.MjData(model);data.qpos.set(config.qpos_initial);data.qvel.set(config.qvel_initial);
