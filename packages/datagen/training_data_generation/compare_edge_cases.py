@@ -602,7 +602,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("datasets/training_data_generation_before_after_20261107"),
+        default=Path("data/generated/training_data_generation_before_after_20261107"),
     )
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--only", action="append", default=None, help="Optional case key(s) to render.")

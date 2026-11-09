@@ -264,7 +264,7 @@ def generate_search_samples(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("datasets/search_samples"))
+    parser.add_argument("--output", type=Path, default=Path("data/generated/search_samples"))
     parser.add_argument("--samples", type=int, default=2)
     parser.add_argument("--seed", type=int, default=20261107)
     parser.add_argument("--profile", choices=tuple(PROFILES), default="far")

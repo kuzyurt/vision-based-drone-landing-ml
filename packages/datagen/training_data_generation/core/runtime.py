@@ -9,11 +9,11 @@ import os
 import sys
 from pathlib import Path
 
-REPO = Path(__file__).resolve().parents[2]
+REPO = Path(__file__).resolve().parents[4]
 LOCAL = REPO / "artifacts/local_curriculum_20261020"
 BASE_XML = REPO / "landing_training/build/combined_1000us.xml"
 BASE_MJB = REPO / "landing_training/build/combined_1000us.mjb"
-RULES = REPO / "training_data_generation/rules/data_collection_rules.json"
+RULES = REPO / "packages/datagen/training_data_generation/rules/data_collection_rules.json"
 
 # These must be set before mujoco creates its first GL context.
 os.environ.setdefault("MUJOCO_GL", "glfw")

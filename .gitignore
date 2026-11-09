@@ -68,9 +68,24 @@ desktop.ini
 !/datasets/**/*.md
 !/datasets/**/*.py
 
-# Future generated data root
-/data/generated/*
-!/data/generated/README.md
+# Future generated data root: keep README, manifests, metadata and generator
+# scripts; ignore the image/archive payloads.
+/data/generated/**
+!/data/generated/
+!/data/generated/**/
+!/data/generated/**/*.json
+!/data/generated/**/*.md
+!/data/generated/**/*.py
+
+# Experiment roots: keep the index documents, ignore future raw output.
+/experiments/runs/*
+!/experiments/runs/README.md
+/experiments/benchmarks/*
+!/experiments/benchmarks/README.md
+/experiments/evidence/*
+!/experiments/evidence/README.md
+/experiments/archive/*
+!/experiments/archive/README.md
 
 # Tidewater local build/runtime output
 /tidewater-game/app/dist/
@@ -79,6 +94,7 @@ desktop.ini
 /tidewater-game/history/**/*.mp4
 /tidewater-game/history/**/*.webm
 /tidewater-game/history/**/*.jsonl.gz
+/tidewater-game/history/pc_benchmark/tidewater/
 
 # Root working notes (moved under docs/operations in the organization pass)
 /guard_support_b_rest.console.log

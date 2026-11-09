@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "landing-training"
+version = "0.1.0"
+description = "Coupled boat-drone landing environment, teachers, training and review"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "mujoco==3.14.0",
+  "numpy>=2,<3",
+  "scipy>=1.14,<2",
+  "Pillow>=10,<13",
+  "pymavlink==2.4.50",
+  "h5py>=3.12,<4",
+  "jsonschema>=4,<5",
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1",
+]
+
+[tool.setuptools]
+packages = ["landing_training"]

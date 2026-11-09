@@ -1,0 +1,23 @@
+{
+  "checked_utc": "2026-10-25T10:45:58.197287+00:00",
+  "disabled_scheduled_tasks": [
+    "PI WSL Watchdog",
+    "WSL KeepAlive",
+    "KuzGen Docker Trash Cleanup"
+  ],
+  "container_restart_policy": "no",
+  "stopped_containers": [
+    "kzy-mobility-minio",
+    "kzy-mobility-redis",
+    "toolrator-postgres",
+    "toolrator-meilisearch"
+  ],
+  "docker_autostart_already_disabled": true,
+  "docker_stopped": true,
+  "wsl_shutdown": true,
+  "nvidia_overlay_disabled_in_app": true,
+  "pending_nvidia_app_update_ran_when_opened": true,
+  "remaining_processes": [],
+  "available_ram_gb": 3.47936768,
+  "nvidia_app_selfupdate_task": "Still enabled: disabling denied by Windows; administrator rights required"
+}

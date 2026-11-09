@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+testpaths = ["benchmark/tests", "landing_training"]
+python_files = ["test_*.py"]
+addopts = "-q"
