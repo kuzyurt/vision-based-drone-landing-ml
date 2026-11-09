@@ -22,16 +22,12 @@ REQUIRED = (
     "artifacts",
     "training_runs",
     "packages/datagen/training_data_generation",
-    "data/curated",
     "data/generated",
-    "experiments/runs",
-    "experiments/benchmarks",
-    "experiments/evidence",
-    "experiments/archive",
     "models",
-    "third_party",
+    "models/registry.json",
     "tools",
     "docs/architecture",
+    "docs/architecture/FOLDER_DISPOSITION.md",
 )
 
 

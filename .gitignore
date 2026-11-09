@@ -77,16 +77,6 @@ desktop.ini
 !/data/generated/**/*.md
 !/data/generated/**/*.py
 
-# Experiment roots: keep the index documents, ignore future raw output.
-/experiments/runs/*
-!/experiments/runs/README.md
-/experiments/benchmarks/*
-!/experiments/benchmarks/README.md
-/experiments/evidence/*
-!/experiments/evidence/README.md
-/experiments/archive/*
-!/experiments/archive/README.md
-
 # Tidewater local build/runtime output
 /tidewater-game/app/dist/
 /tidewater-game/app/node_modules/
