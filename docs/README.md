@@ -8,6 +8,7 @@
 | [Benchmark](../benchmark/README.md) | Evaluation contract, inventory and dashboard |
 | [Verified comparison](../benchmark/reports/2026-10-25/RESULTS.md) | Durable report from the completed 60-flight comparison |
 | [Media](media/README.md) | Recording provenance and asset regeneration |
+| [Repository architecture](architecture/README.md) | Lifecycle layout, dependency direction and the benchmark-pinned boundary |
 | [Workspace notes](maintenance/WORKSPACE.md) | Folder responsibilities and deletion candidates |
 
 `architecture_review_20261024/` preserves the detailed architecture investigation

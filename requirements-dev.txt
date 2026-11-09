@@ -1,0 +1,10 @@
+# From the repository root:
+#   python -m pip install -r requirements-dev.txt
+#
+# Code that the frozen benchmark pins stays at its current path; these editable
+# installs make the same source importable without touching benchmark receipts.
+-e ./AERODOCK_MuJoCo
+-e ./px4-mujoco-drone-simulation
+-e ./landing_training
+-e ./packages/datagen
+-e ./benchmark

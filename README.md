@@ -15,6 +15,18 @@ that transfer without retraining.
 [Tidewater game](tidewater-game/README.md) ·
 [Benchmark results](benchmark/README.md)
 
+## Repository layout
+
+The project is migrating in place. The frozen benchmark pins the current paths
+of the simulator and policy source, so those trees stay where they are until a
+new benchmark snapshot re-bases its receipts. Generated data and operational
+notes are already separated.
+
+- [Architecture and the pinned boundary](docs/architecture/README.md)
+- [Package status](packages/README.md)
+- [Data lifecycle](data/README.md)
+- [Experiment roots](experiments/README.md)
+
 ## Beyond the training scenes
 
 ![Frozen policy landing in situations absent from its training data](docs/media/drone-policy-landing.gif)

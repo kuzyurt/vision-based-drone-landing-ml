@@ -1,7 +1,7 @@
 """Generate both sample sets into one output directory.
 
 Run from the repository root:
-    python -m training_data_generation.generate_samples --output datasets/tdg_samples
+    python -m training_data_generation.generate_samples --output data/generated/tdg_samples
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("datasets/training_data_generation_samples"),
+        default=Path("data/generated/training_data_generation_samples"),
     )
     parser.add_argument("--samples", type=int, default=2, help="samples per task")
     parser.add_argument("--profile", choices=("far", "near"), default="far")

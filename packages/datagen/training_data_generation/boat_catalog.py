@@ -52,7 +52,7 @@ from training_data_generation.core.weather import CLEAR
 WIDTH, HEIGHT = 640, 360
 CARD_HEADER = 70
 PRESENCE_IMAGE = Path(
-    "datasets/training_data_generation_before_after_20261107/cases/search_centre_off/after.png"
+    "data/generated/training_data_generation_before_after_20261107/cases/search_centre_off/after.png"
 )
 
 
@@ -793,7 +793,7 @@ def _write_html(rows: list[dict[str, Any]], output: Path, cards: list[Image.Imag
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("datasets/boat_catalog_20261107"))
+    parser.add_argument("--output", type=Path, default=Path("data/generated/boat_catalog_20261107"))
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--only", action="append", default=None)
     args = parser.parse_args()

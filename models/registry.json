@@ -1,0 +1,683 @@
+{
+  "captured_utc": "2026-10-24T17:18:42.936423+00:00",
+  "future_store": "models/sha256",
+  "generated_from": "benchmark/models/inventory.json",
+  "models": {
+    "candidate-center-only-cb32208a": {
+      "available": true,
+      "identity_sha256": "cb32208a893808dfc48681b4436ee72d4f6303f34068b563e04b46e32d6caffd",
+      "label": "candidate_center_only",
+      "manifest": {
+        "bytes": 9574,
+        "file_modified_utc": "2026-10-16T20:09:44.547737+00:00",
+        "path": "artifacts/spatial_failure_audit_20261016/candidate_center_only/policy.json",
+        "sha256": "a1a06864710e6fe10ed7fe72d8b3652c9d8ec713c5e2c63d94c9b3d85ec288d5"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
+        }
+      }
+    },
+    "candidate-r10-controller-1ce6cd55": {
+      "available": true,
+      "identity_sha256": "1ce6cd55e4fc7ca1081587dc0461b1d5ec1cf8c940e73575d3a779e37ab43b3e",
+      "label": "candidate_r10_controller",
+      "manifest": {
+        "bytes": 20004,
+        "file_modified_utc": "2026-10-18T09:44:46.712677+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r10_controller/policy.json",
+        "sha256": "d8868f20b07b494713d6d1ab08c4d977e56ef5b4622fa251e6cfd7b62175b174"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r11-controller-eaf21bce": {
+      "available": true,
+      "identity_sha256": "eaf21bce34900f69e27905cb0c5125164fc0771e0f509f53a3e639592285b51d",
+      "label": "candidate_r11_controller",
+      "manifest": {
+        "bytes": 20602,
+        "file_modified_utc": "2026-10-18T10:13:25.434102+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r11_controller/policy.json",
+        "sha256": "e9abb801c6fb1b38ce4a090ff732cd3417c64afc1f3ce1834b26d10aea9edfc1"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r12-9d352e2b": {
+      "available": true,
+      "identity_sha256": "9d352e2b19810a8d694ef807492bc1406e2ee12342eaf33a3205612be67354be",
+      "label": "candidate_r12",
+      "manifest": {
+        "bytes": 20664,
+        "file_modified_utc": "2026-10-18T11:44:13.618399+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r12/policy.json",
+        "sha256": "cfae2590824b63296a370e199b7e832a7eee3c34ae0bdd3dc4c5f5d2515deea4"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r14-abe7cdf7": {
+      "available": true,
+      "identity_sha256": "abe7cdf72a8b8c6b6168ef4a9da73628ea95a7f94388f33e97a151e7e3345d80",
+      "label": "candidate_r14",
+      "manifest": {
+        "bytes": 21877,
+        "file_modified_utc": "2026-10-18T12:32:21.090896+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r14/policy.json",
+        "sha256": "34845b34dc9490fddcc411738bd25b83e0d52bf4ab3564bf4aa22c931004c473"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r15-2b7eb82b": {
+      "available": true,
+      "identity_sha256": "2b7eb82b05d46e96a2cdca70bc4984ca0b577599da286c1710fb862ba9bb5e37",
+      "label": "candidate_r15",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-18T12:51:04.838181+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r3-controller-95505dc0": {
+      "available": false,
+      "identity_sha256": "95505dc0b42481fe82146f856f8dcdbf96be0dd93e1067ca4ff7008f2261265f",
+      "label": "candidate_r3_controller",
+      "manifest": {
+        "bytes": 17001,
+        "file_modified_utc": "2026-10-18T02:05:02.568951+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r3_controller/policy.json",
+        "sha256": "67795b8b4c793f3f057bceb76cf3ceaf8b4619594e6946c0837e67bb386a091d"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r4-controller-58979ecd": {
+      "available": false,
+      "identity_sha256": "58979ecd4b918169d81e8cba02032b2e968dc4796cdf91cf6d7dc35f6a28755c",
+      "label": "candidate_r4_controller",
+      "manifest": {
+        "bytes": 17170,
+        "file_modified_utc": "2026-10-18T02:07:24.943063+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r4_controller/policy.json",
+        "sha256": "d289a98a6449d0bb78f9db782df171520e020c733e0f9164df71d78cfd1133e3"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r7-controller-9bde6ad2": {
+      "available": true,
+      "identity_sha256": "9bde6ad23f4d4569b304f07b41b60be39a471d7fc7d361025482d13bb1294ab6",
+      "label": "candidate_r7_controller",
+      "manifest": {
+        "bytes": 18499,
+        "file_modified_utc": "2026-10-18T02:52:01.674237+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r7_controller/policy.json",
+        "sha256": "c32bb34d0f22d7334dda67ea7cca911025c75e56244e95287fefeaed1a450d31"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r8b-controller-34cebff0": {
+      "available": false,
+      "identity_sha256": "34cebff03531239554aef88a30fb6ef8a35ef34ca31e91c760c538fa959465ed",
+      "label": "candidate_r8b_controller",
+      "manifest": {
+        "bytes": 19185,
+        "file_modified_utc": "2026-10-18T07:50:48.626885+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r8b_controller/policy.json",
+        "sha256": "1121b2431961760ff36b240e007d9623cb9ade9f5b1b97566b4e421b7b7ecec6"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r8c-controller-cf8134f3": {
+      "available": true,
+      "identity_sha256": "cf8134f387ad3c052b1c95b44235294d641e894ceb38c660eb6bf16b1a6d35ba",
+      "label": "candidate_r8c_controller",
+      "manifest": {
+        "bytes": 19436,
+        "file_modified_utc": "2026-10-18T08:00:35.186142+00:00",
+        "path": "artifacts/landing_hardening_20261018/candidate_r8c_controller/policy.json",
+        "sha256": "ed6a2a0263ea0265b33cfa2d77aa4ed527d7fd6504d54677d386c5a2fd1a6893"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "candidate-r9-35f127fd": {
+      "available": true,
+      "identity_sha256": "35f127fddd7023afa6b252285af3a3498ebdfa2ff79b3648cd3938210ea23c36",
+      "label": "candidate_r9",
+      "manifest": {
+        "bytes": 20017,
+        "file_modified_utc": "2026-10-18T09:14:59.710005+00:00",
+        "path": "artifacts/landing_hardening_20261018/r9_working_sources_0923/candidate_r9/policy.json",
+        "sha256": "bf2b1c696dd4c5ff5524a8b467ce72f3df081656fda0f950936cb861fc87f380"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "domain-training-20261016-baseline-bundle-70ad7058": {
+      "available": true,
+      "identity_sha256": "70ad7058b3baf3a198debb63e6ac6c24a5804d147ce94953bedcfaf24effb09c",
+      "label": "domain_training_20261016 / baseline_bundle",
+      "manifest": {
+        "bytes": 9245,
+        "file_modified_utc": "2026-10-16T17:45:47.512064+00:00",
+        "path": "artifacts/domain_training_20261016/delivery/baseline_bundle/policy.json",
+        "sha256": "96a874fe62d50b12394c77a5adecbc52f18a85a17ef37ec38f4ee8f36856e5cc"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "pose.pt": {
+          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
+        }
+      }
+    },
+    "experimental-boat-acquisition-bundle-47e3b3bd": {
+      "available": true,
+      "identity_sha256": "47e3b3bd4f84bb9db75bc9421aa094e32a01ea3ce525438e56c2eb31b20e674f",
+      "label": "experimental_boat_acquisition_bundle",
+      "manifest": {
+        "bytes": 11343,
+        "file_modified_utc": "2026-10-16T18:43:46.252280+00:00",
+        "path": "artifacts/domain_training_20261016/delivery/experimental_boat_acquisition_bundle/policy.json",
+        "sha256": "09bcc3b90925f363502a320998e9b71521539cd69bfba0666255db78eabfa562"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
+        }
+      }
+    },
+    "observable-policy-20261016-candidate-7dd1bc6b": {
+      "available": true,
+      "identity_sha256": "7dd1bc6b91e9108c839f8894b276815c7cd2c96979baef5c31b9133e8c0c0146",
+      "label": "observable_policy_20261016 / candidate",
+      "manifest": {
+        "bytes": 12700,
+        "file_modified_utc": "2026-10-17T11:41:19.742787+00:00",
+        "path": "artifacts/observable_policy_20261016/delivery_r8/qualified_delivery_r8/candidate/policy.json",
+        "sha256": "2926eb8c6a10e351f13ce82e2eddf3bad1683ebf1c27d26abf9b48d0fe9f7f78"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "observable-teacher-v39-f65df4c4": {
+      "available": true,
+      "identity_sha256": "f65df4c4bb6decac28ced2a943d072e2b3418fb7cb0fc1830541472e8c8565d6",
+      "label": "Observable teacher v39",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-20T06:31:53.541718+00:00",
+        "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "observable teacher",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "recognizer.pt": {
+          "path": "benchmark/models/weights/52f1c07a09aa781889d6187dab4817047526b0c24234b6ef245920fd709ad588.pt",
+          "sha256": "52f1c07a09aa781889d6187dab4817047526b0c24234b6ef245920fd709ad588"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "observable-teacher-v46-c8e2ff5b": {
+      "available": true,
+      "identity_sha256": "c8e2ff5b8b60d27a48eb1c339de8ac3a63ce2c37143593961a8223a502e19cd6",
+      "label": "Observable teacher v46",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-20T08:00:06.073428+00:00",
+        "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v46/package/base_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "observable teacher",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "recognizer.pt": {
+          "path": "benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
+          "sha256": "fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "observable-teacher-v48-1e92f478": {
+      "available": true,
+      "identity_sha256": "1e92f4783d89582b88e57e7ace98873c5bf4261882a2906fbe2aad986599e715",
+      "label": "Observable teacher v48",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-20T12:08:11.899126+00:00",
+        "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/base_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "observable teacher",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "recognizer.pt": {
+          "path": "benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
+          "sha256": "fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "observable-teacher-v60-v61-recognition-839b717b": {
+      "available": true,
+      "identity_sha256": "839b717b5c5345ba7fe64762c660c4f84056fa2a6ab00627576b0f54fee7ee5a",
+      "label": "Observable teacher v60 + v61 recognition",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-20T12:08:11.899126+00:00",
+        "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/base_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "observable teacher",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "recognizer.pt": {
+          "path": "benchmark/models/weights/5d7df9eb1194654ec3933c0dadf9bc0917f1bfd050361ba6b624996e06f181d8.pt",
+          "sha256": "5d7df9eb1194654ec3933c0dadf9bc0917f1bfd050361ba6b624996e06f181d8"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "policy-bundle-v5-5fbf5a67": {
+      "available": false,
+      "identity_sha256": "5fbf5a6744476b3d34cf00e822c98b5cb45993fb9480ba0fbd924d3c27f5550e",
+      "label": "policy_bundle_v5",
+      "manifest": {
+        "bytes": 4498,
+        "file_modified_utc": "2026-10-11T01:33:25.379608+00:00",
+        "path": "artifacts/marker_iteration_20261011/local_bundle_v5/policy_bundle_v5/policy.json",
+        "sha256": "8531f4ed7da54d899e40e573b0ed672893da85b2e01137676c70ef5bd057a07f"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "pose.pt": {
+          "path": "benchmark/models/weights/795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e.pt",
+          "sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
+        }
+      }
+    },
+    "privileged-teacher-platform-aligned-7ac0a6ff": {
+      "available": true,
+      "identity_sha256": "7ac0a6ff6a20272ec9a18666d2460c79a2ba49be8ec0d245401e34860a501913",
+      "label": "Privileged teacher / platform aligned",
+      "manifest": {
+        "bytes": 420,
+        "file_modified_utc": "2026-10-24T17:15:26.109863+00:00",
+        "path": "benchmark/teacher_policy.json",
+        "sha256": "7cb148a145dd8a4d1006354218f968c552f2318f84d96d53622b6c05a00d4c45"
+      },
+      "role": "privileged teacher",
+      "status": "not_run",
+      "weights": {}
+    },
+    "privileged-teacher-wave-gate-50298ac0": {
+      "available": true,
+      "identity_sha256": "50298ac0683fa24023f3d9766f66961ddd120d5b868221de79ddd17aa7306670",
+      "label": "Privileged teacher / wave-aware gate",
+      "manifest": {
+        "bytes": 657,
+        "file_modified_utc": "2026-11-04T14:47:57.964792+00:00",
+        "path": "benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
+        "sha256": "a5418343a1981226fbec4e746b2e713892144f42b8071857d77c3d663585934b"
+      },
+      "role": "privileged teacher",
+      "status": "not_run",
+      "weights": {}
+    },
+    "privileged-teacher-wave-gate-74cfb67e": {
+      "available": true,
+      "identity_sha256": "74cfb67e5838c3ca0677e7a8b4bc4bb69b9268a70b6a087e9df48823b2200278",
+      "label": "Privileged teacher / wave-aware gate",
+      "manifest": {
+        "bytes": 657,
+        "file_modified_utc": "2026-11-04T14:47:57.964792+00:00",
+        "path": "benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
+        "sha256": "a5418343a1981226fbec4e746b2e713892144f42b8071857d77c3d663585934b"
+      },
+      "role": "privileged teacher",
+      "status": "full 20-case benchmark: 20/20 landed; 99.17/100",
+      "weights": {}
+    },
+    "r15-archived-export-67a80a63": {
+      "available": true,
+      "identity_sha256": "67a80a637b03d28b08321544b1f9202ffdeffff6e278dc31da4c131089547ca4",
+      "label": "R15 / archived export",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-20T06:31:53.541718+00:00",
+        "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "r15-verification-snapshot-41ef7039": {
+      "available": false,
+      "identity_sha256": "41ef7039ad740ec22bee93281b5ca593fbd2ea02f9047e91c5617e07152b2dd7",
+      "label": "R15 / verification snapshot",
+      "manifest": {
+        "bytes": 22615,
+        "file_modified_utc": "2026-10-18T12:51:04.838181+00:00",
+        "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/candidate_r15/policy.json",
+        "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    },
+    "radio-robust-20261015-policy-bundle-44826e5a": {
+      "available": true,
+      "identity_sha256": "44826e5a3df8aecafd8bbc85b3e88247b6c2dd9310f4e46b33574870e20ce0ed",
+      "label": "radio_robust_20261015 / policy_bundle",
+      "manifest": {
+        "bytes": 8252,
+        "file_modified_utc": "2026-10-15T19:17:10.424468+00:00",
+        "path": "artifacts/radio_robust_20261015/policy_bundle/policy.json",
+        "sha256": "7b2b4ce5ac8aec4a260b632a9d84518b75b7591112a2fa06a52b4d5388a85d70"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "pose.pt": {
+          "path": "benchmark/models/weights/20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749.pt",
+          "sha256": "20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749"
+        }
+      }
+    },
+    "vision-first-fusion-20261017-candidate-c5ddb2f8": {
+      "available": true,
+      "identity_sha256": "c5ddb2f855bb30d63048cdc5cefe15f5b82cd4e103e48b28a5e804745d32d00e",
+      "label": "vision_first_fusion_20261017 / candidate",
+      "manifest": {
+        "bytes": 20084,
+        "file_modified_utc": "2026-10-17T18:48:26.332593+00:00",
+        "path": "artifacts/vision_first_fusion_20261017/vision_first_fusion_delivery/candidate/policy.json",
+        "sha256": "5748013cfbc0011b6264b6096d58ffa5c8ba8bdf05931238125de144b309753c"
+      },
+      "role": "flight policy",
+      "status": "not_run",
+      "weights": {
+        "acquisition.pt": {
+          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
+        },
+        "pose.pt": {
+          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
+        },
+        "spatial_acquisition.pt": {
+          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
+        }
+      }
+    }
+  },
+  "schema_version": 1,
+  "weight_store": "benchmark/models/weights"
+}
