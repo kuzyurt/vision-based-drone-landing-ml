@@ -7,8 +7,15 @@
     "preview": "vite preview",
     "test": "node test/game-logic.mjs && node test/engine-smoke.mjs",
     "start": "node scripts/serve-static.mjs",
-    "test:browser": "node ../wasm/tests/prepare-fixtures.mjs && node ../wasm/tests/browser-replay.mjs && node ../wasm/tests/browser-parameters.mjs && node ../wasm/tests/browser-closed-loop.mjs && node ../wasm/tests/browser-world-smoke.mjs && node ../wasm/tests/browser-drainage.mjs && node ../wasm/tests/browser-environment.mjs && node ../wasm/tests/browser-cache.mjs && node ../wasm/tests/browser-worker-integration.mjs && node test/browser-bridge-lifecycle.mjs && node test/tidewater-controls.mjs && node test/tidewater-pose-timeline.mjs",
-    "test:offline": "node test/offline-hosting.mjs"
+    "test:browser": "node ../wasm/tests/prepare-fixtures.mjs && node ../wasm/tests/browser-replay.mjs && node ../wasm/tests/browser-parameters.mjs && node ../wasm/tests/browser-closed-loop.mjs && node ../wasm/tests/browser-world-smoke.mjs && node ../wasm/tests/browser-drainage.mjs && node ../wasm/tests/browser-environment.mjs && node ../wasm/tests/browser-cache.mjs && node ../wasm/tests/browser-worker-integration.mjs && node test/browser-bridge-lifecycle.mjs && node test/world-preparation.mjs && node test/tidewater-controls.mjs && node test/tidewater-pose-timeline.mjs",
+    "test:offline": "node test/offline-hosting.mjs",
+    "test:memory": "node test/world-preparation.mjs && node test/material-pipeline-sharing.mjs && node ../wasm/tests/world-preparation-memory.mjs",
+    "test:flight": "node test/flight-request-lifecycle.mjs && node ../wasm/tests/browser-flight-button.mjs",
+    "test:ml": "node test/policy-control.mjs && node test/policy-pipeline.mjs && node test/policy-clock-transition.mjs && node test/frame-pacing.mjs && node test/policy-telemetry.mjs && node test/policy-camera.mjs && node test/policy-inference.mjs",
+    "test:ml:gpu": "node test/policy-gpu.mjs --texture --auto-layout && node test/marker-kernel.mjs",
+    "test:ml:cache": "node test/draw-bundle-cache.mjs && node test/camera-transform-cache.mjs",
+    "test:ml:shared": "node test/policy-shared-path.mjs",
+    "test:ml:radio": "node test/ml-boat-radio.mjs && node test/visual-acquisition.mjs && node test/radio-dropout.mjs --live-neural --record browser-performance-2026-10-15T17-11-51-750Z-ml.json --steps 16 --expect-acquire"
   },
   "devDependencies": {
     "fake-indexeddb": "6.2.5",
@@ -19,6 +26,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@mujoco/mujoco": "3.14.0"
+    "@mujoco/mujoco": "3.14.0",
+    "onnxruntime-web": "1.30.0",
+    "pyodide": "314.0.7"
   }
 }

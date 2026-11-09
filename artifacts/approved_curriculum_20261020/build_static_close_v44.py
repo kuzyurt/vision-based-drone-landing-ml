@@ -1,0 +1,11 @@
+from pathlib import Path
+p=Path(__file__).parent;s=(p/'render_static_repair_v38.py').read_text().replace("ROOT/'static_repair_v38'","ROOT/'static_repair_v44'")
+s=s.replace("distance=float([5,8,12,20,28,40,52,60][(i//len(subjects)+i)%8]);height=float(rng.uniform(4,8))","near=bool(i%3==0);distance=float(rng.choice([.15,.4,.8,1.5,3.]))if near else float(rng.choice([5,8,12,20,28,40,52,60]));height=float(point[2]+rng.uniform(.7,2.5))if near else float(rng.uniform(4,8));pan=float(np.deg2rad(rng.choice([-140,-90,-45,0,0,0,45,90,140])))")
+s=s.replace("distance=float(rng.choice([.15,.4,.8,1.5,3.]))if near", "distance=float(rng.choice([.15,.4,.8,1.5,3.]))if near")
+s=s.replace("env.data.qpos[env.drone.camera_qpos]=[0,tilt];env.data.time=i*.04;mujoco.mj_forward(env.model,env.data)","env.data.qpos[env.drone.camera_qpos]=[pan,tilt];env.data.time=i*.04;mujoco.mj_forward(env.model,env.data)\n                # Static image placement aligns the actual camera heading, including pan.\n                # This is not a task command or an expert trajectory.\n                ray=-env.data.cam_xmat[env.model.camera('drone_onboard').id].reshape(3,3)[:,2];delta=(math.atan2(point[1]-xy[1],point[0]-xy[0])-math.atan2(ray[1],ray[0])+math.pi)%(2*math.pi)-math.pi\n                yaw+=delta;env.data.qpos[q+3:q+7]=quaternion(0.,0.,yaw);mujoco.mj_forward(env.model,env.data)\n                contact=any((int(env.model.geom_bodyid[c.geom1])in env.drone.bodies)!=(int(env.model.geom_bodyid[c.geom2])in env.drone.bodies)for c in env.data.contact[:env.data.ncon])")
+s=s.replace("view_pan_rad=pan,", "view_pan_rad=pan,")
+s=s.replace("palette=job['palette'])","palette=job['palette'],view_pan_rad=pan,near_view=near,static_view_contact_excluded=bool(contact))")
+(p/'render_static_repair_v44.py').write_text(s)
+s=(p/'queue_static_repair_v38.py').read_text().replace('static_repair_v38','static_repair_v44').replace("+100000+palette","+200000+palette")
+(p/'queue_static_repair_v44.py').write_text(s);(p/'launch_static_repair_v44.py').write_text((p/'launch_static_repair_v38.py').read_text().replace('static_repair_v38','static_repair_v44'))
+for n in ['render_static_repair_v44.py','queue_static_repair_v44.py','launch_static_repair_v44.py']:compile((p/n).read_text(),n,'exec')

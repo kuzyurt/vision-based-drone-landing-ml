@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import loadMujoco from '../../app/node_modules/@mujoco/mujoco/mujoco.js';
+import {prepareBrowserWorld} from '../../app/src/landing/PrepareBrowserWorld.js';
+import {loadCompiledWorld} from '../../app/src/landing/BrowserWorld.js';
+import {createCompilerWorker} from './world-compiler-adapter.mjs';
+const root=new URL('../../',import.meta.url),base=new URL('app/public/landing/physics/',root).href;
+const c=JSON.parse(await fs.readFile(new URL('configuration.json',base))),meta=JSON.parse(await fs.readFile(new URL('simulation/runtime/live-map.json',root)));
+const raw=await fs.readFile(new URL('simulation/runtime/live-heights.bin',root)),heights=new Float32Array(raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength));
+let terminated=false;
+const binary=await prepareBrowserWorld({base,c,map:{meta,heights},progress:()=>{},createWorker:()=>{const worker=createCompilerWorker(),terminate=worker.terminate;worker.terminate=async()=>{await terminate();terminated=true;};return worker;}});
+assert(terminated,'Compiler must exit before allocating the live physics model');
+const hash=createHash('sha256').update(binary).digest('hex');if(process.argv[2])assert.equal(hash,process.argv[2],'Compiled model must match the exact pre-change binary');
+const mj=await loadMujoco(),model=loadCompiledWorld(mj,binary),data=new mj.MjData(model),heapMiB=data.qpos.buffer.byteLength/2**20;
+assert(heapMiB<400,`Flight runtime retained ${heapMiB} MiB`);assert.equal(model.nq,c.qpos_initial.length);assert.equal(model.nv,c.qvel_initial.length);
+console.log(JSON.stringify({hash,heapMiB,modelBytes:model.nbuffer,arenaBytes:data.narena,compilerTerminatedBeforeLoad:terminated}));data.delete();model.delete();

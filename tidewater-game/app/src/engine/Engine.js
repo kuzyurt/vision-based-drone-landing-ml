@@ -79,14 +79,21 @@ export class Engine {
 
 	start( update ) {
 
+		this.stop();
+		const generation=this._loopGeneration;
 		const loop = ( t ) => {
 
+			if(generation!==this._loopGeneration)return;
 			this.clock.update( t );
 			let dt = this.clock.getDelta();
 			if ( dt > 0.1 ) dt = 0.1;
 			this.frame ++;
-			update( dt, this.clock.getElapsed() );
-			this._raf = requestAnimationFrame( loop );
+			const completed=update( dt, this.clock.getElapsed() );
+			const next=()=>{if(generation===this._loopGeneration)this._raf=requestAnimationFrame(loop);};
+			// A GPU completion promise bounds queued display frames. The next
+			// frame still uses the full elapsed time and unchanged render settings.
+			if(completed?.then)completed.then(next,error=>{console.error('Frame completion failed:',error);this.stop();});
+			else next();
 
 		};
 
@@ -96,6 +103,7 @@ export class Engine {
 
 	stop() {
 
+		this._loopGeneration=(this._loopGeneration||0)+1;
 		cancelAnimationFrame( this._raf );
 
 	}

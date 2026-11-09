@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1910" viewBox="0 0 1800 1910" role="img" aria-labelledby="title desc">
+<title id="title">From camera pixels to rotor thrust</title><desc id="desc">Architecture of the local v60 teacher with v61 recognition, its shared R15 learner runtime, six command outputs, PX4, gimbal and simulated aircraft. Amber is explicit logic; teal is learned; blue is flight hardware or physics. This is a dependency overview, not literal execution order.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#61777e"/></marker></defs>
+<style>text{font-family:'Segoe UI',Arial,sans-serif;fill:#142e38}.title{font-size:43px;font-weight:700;letter-spacing:-1px}.sub{font-size:21px;fill:#536b73}.heading{font-size:25px;font-weight:650}.body{font-size:21px}.small{font-size:18px;fill:#536b73}.tag{font-size:16px;font-weight:700;letter-spacing:1.4px}</style>
+<rect width="1800" height="1910" fill="#f5f4ee"/>
+<text x="60" y="70" class="title">From camera pixels to rotor thrust</text>
+<text x="60" y="111" class="sub">Local review teacher: v60 protocol + v61 recognition • shared R15 perception / landing runtime</text>
+<circle cx="67" cy="151" r="7" fill="#087f79"/>
+<text x="85" y="157" class="tag" style="fill:#087f79">LEARNED NETWORK</text>
+<circle cx="397" cy="151" r="7" fill="#a96112"/>
+<text x="415" y="157" class="tag" style="fill:#a96112">EXPLICIT LOGIC</text>
+<circle cx="707" cy="151" r="7" fill="#315eaa"/>
+<text x="725" y="157" class="tag" style="fill:#315eaa">FLIGHT / PHYSICS</text>
+<text x="1070" y="157" class="small">Grouped dependencies; some recurrent / feedback paths omitted.</text>
+<rect x="60" y="190" width="390" height="155" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="83" y="228" class="heading">Onboard camera</text>
+<text x="83" y="263" class="body">640 × 360 RGB + capture time</text>
+<text x="83" y="290" class="body">Pan / tilt change the next view</text>
+<text x="83" y="317" class="body">One image stream; no depth map</text>
+<rect x="480" y="190" width="390" height="155" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="503" y="228" class="heading">Own aircraft state</text>
+<text x="503" y="263" class="body">PX4 position, velocity, attitude</text>
+<text x="503" y="290" class="body">Angular rates + gimbal encoders</text>
+<text x="503" y="317" class="body">Freshness / validity / armed state</text>
+<rect x="900" y="190" width="390" height="155" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="923" y="228" class="heading">Optional boat radio</text>
+<text x="923" y="263" class="body">1 Hz position + velocity packet</text>
+<text x="923" y="290" class="body">Age, uncertainty, dock status</text>
+<text x="923" y="317" class="body">Missing / stale = invalid</text>
+<rect x="1320" y="190" width="420" height="155" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="1343" y="228" class="heading">Declared mission priors</text>
+<text x="1343" y="263" class="body">Search height + boat-height plane</text>
+<text x="1343" y="290" class="body">Camera calibration / size bounds</text>
+<text x="1343" y="317" class="body">Corridor permissions + budget</text>
+<path d="M255 345 V375" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M675 345 V375" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M1095 345 V375" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M1530 345 V375" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M255 375 H1530" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<path d="M900 375 V410" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="415" width="1680" height="450" rx="22" fill="#e8f4f1" stroke="#b4d7d0"/>
+<text x="85" y="450" class="tag" style="fill:#087f79">PERCEPTION • NETWORKS ESTIMATE THE SCENE</text>
+<rect x="85" y="525" width="390" height="190" rx="16" fill="white" stroke="#087f79" stroke-width="1.8"/>
+<text x="108" y="563" class="heading">Shared image encoder</text>
+<text x="108" y="598" class="body">MobileNetV3-Small CNN</text>
+<text x="108" y="625" class="body">Learns visual features from RGB</text>
+<text x="108" y="652" class="body">Fine + context feature maps</text>
+<text x="108" y="679" class="body">Spatial summary for recurrence</text>
+<path d="M475 620 H525 V520 H575" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M525 620 H575" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M525 620 V770 H575" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="575" y="475" width="1135" height="115" rx="16" fill="white" stroke="#087f79" stroke-width="1.8"/>
+<text x="598" y="513" class="heading">Object detector + RGB crop verifier</text>
+<text x="598" y="548" class="body">Boat boxes → 96 × 96 crop CNN → target / wrong design / unknown + marker confidence</text>
+<rect x="575" y="615" width="1135" height="115" rx="16" fill="white" stroke="#087f79" stroke-width="1.8"/>
+<text x="598" y="653" class="heading">Visual memory: telemetry MLP + GRU</text>
+<text x="598" y="688" class="body">256 image features + 64 telemetry features → GRU(128) → 15-value deck-state estimate</text>
+<rect x="575" y="755" width="1135" height="85" rx="16" fill="white" stroke="#087f79" stroke-width="1.8"/>
+<text x="598" y="793" class="heading">Spatial pad localizer</text>
+<text x="598" y="828" class="body">Predicts marker pixel location inside the recognised object’s box (teacher path)</text>
+<text x="85" y="810" class="small">RGB feeds the CNN. Own telemetry feeds recurrence.</text>
+<text x="85" y="838" class="small">Boat radio is masked out of visual recurrence.</text>
+<path d="M340 865 V910" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M900 865 V910" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1460 865 V910" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="915" width="520" height="185" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="83" y="945" class="tag" style="fill:#a96112">TEACHER OVERLAY</text>
+<text x="83" y="980" class="heading">Tracks + identity memory</text>
+<text x="83" y="1015" class="body">Pixels + own pose → bearing / range interval</text>
+<text x="83" y="1040" class="body">Boat-height plane supplies rough distance</text>
+<text x="83" y="1065" class="body">Multiple captures establish target identity</text>
+<text x="83" y="1090" class="body">Track aliases / rejection memory persist</text>
+<rect x="640" y="915" width="520" height="185" rx="16" fill="white" stroke="#087f79" stroke-width="1.8"/>
+<text x="663" y="945" class="tag" style="fill:#087f79">SHARED RUNTIME</text>
+<text x="663" y="980" class="heading">Bounded radio fusion</text>
+<text x="663" y="1015" class="body">Small MLP: 13 → 48 → 2 blend weights</text>
+<text x="663" y="1040" class="body">Position + relative-velocity adjustment</text>
+<text x="663" y="1065" class="body">Each weight ≤ 0.35; invalid radio = 0</text>
+<text x="663" y="1090" class="body">No raw-radio steering shortcut</text>
+<rect x="1220" y="915" width="520" height="185" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="1243" y="945" class="tag" style="fill:#a96112">SHARED RUNTIME</text>
+<text x="1243" y="980" class="heading">Metric marker registration</text>
+<text x="1243" y="1015" class="body">RGB + seed + camera calibration</text>
+<text x="1243" y="1040" class="body">Fit known pad pattern → metric pose</text>
+<text x="1243" y="1065" class="body">Relative motion / clearance + uncertainty</text>
+<text x="1243" y="1090" class="body">Geometric tracking bridges brief loss</text>
+<path d="M320 1100 V1140" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M900 1100 V1120 H1180 V1225 H1220" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1480 1100 V1140" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<rect x="60" y="1145" width="1100" height="160" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="83" y="1183" class="heading">Teacher search / target-selection protocol</text>
+<text x="83" y="1218" class="body">Scan → inspect a plausible boat → confirm or reject → retain the same target</text>
+<text x="83" y="1245" class="body">Rules choose the object, search height, view direction, approach / descent permissions</text>
+<text x="83" y="1272" class="body">Used by the review expert; these search rules are not a newly trained student network</text>
+<rect x="1220" y="1145" width="520" height="160" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="1243" y="1183" class="heading">Landing controller</text>
+<text x="1243" y="1218" class="body">Track deck motion; align and brake</text>
+<text x="1243" y="1245" class="body">Fresh pose + stable alignment gate descent</text>
+<text x="1243" y="1272" class="body">Local recovery when geometry disappears</text>
+<path d="M610 1305 V1350 H900 V1385" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1480 1305 V1350 H900" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<rect x="60" y="1390" width="1680" height="135" rx="16" fill="white" stroke="#a96112" stroke-width="1.8"/>
+<text x="83" y="1428" class="heading">Action selection + limits + mission safety</text>
+<text x="83" y="1463" class="body">Teacher intents can replace the shared runtime command; guards limit speed, acceleration, stale-state motion and descent.</text>
+<text x="83" y="1490" class="body">Output at 25 Hz: [forward m/s, right m/s, down m/s, yaw rad/s, camera pan rad/s, camera tilt rad/s]</text>
+<path d="M505 1525 V1570" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1470 1525 V1570" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<text x="525" y="1555" class="small">First four values</text>
+<text x="1490" y="1555" class="small">Last two values</text>
+<rect x="60" y="1575" width="1100" height="115" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="83" y="1613" class="heading">PX4 offboard control → motor commands → four rotors</text>
+<text x="83" y="1648" class="body">Velocity / yaw setpoints → flight-control loops → actuator allocation → motor / thrust dynamics</text>
+<rect x="1220" y="1575" width="520" height="115" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="1243" y="1613" class="heading">Camera gimbal control</text>
+<text x="1243" y="1648" class="body">Integrate pan / tilt rates → servo joints</text>
+<text x="1243" y="1675" class="body">Moves the camera independently</text>
+<path d="M610 1690 V1730 H900 V1760" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round" marker-end="url(#arrow)"/>
+<path d="M1480 1690 V1730 H900" fill="none" stroke="#61777e" stroke-width="2.3" stroke-linejoin="round"/>
+<rect x="60" y="1765" width="1680" height="85" rx="16" fill="white" stroke="#315eaa" stroke-width="1.8"/>
+<text x="83" y="1803" class="heading">MuJoCo aircraft + boat + environment</text>
+<text x="83" y="1838" class="body">Thrust changes aircraft motion; sensors and camera produce the next observation. Repeat.</text>
+<text x="60" y="1888" class="small">Scope: v61 is a review recogniser; the student in DAgger mode is the frozen R15 runtime. City80 uses a separate scripted teacher.</text>
+</svg>

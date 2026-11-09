@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {Worker} from 'node:worker_threads';
+import {FlightOperations} from '../../app/src/game/FlightOperations.js';
+const base=new URL('../../app/public/landing/',import.meta.url).href;
+const meta=JSON.parse(await fs.readFile(new URL('../../simulation/runtime/live-map.json',import.meta.url)));
+const raw=await fs.readFile(new URL('../../simulation/runtime/live-heights.bin',import.meta.url));
+const worker=new Worker(new URL('runtime-worker.mjs',import.meta.url));
+let latest,error,disposed,sequence=0,lastAction;
+worker.on('message',p=>{if(p.error)error=new Error(p.error);if(p.disposed)disposed=p;else if(p.bodies)latest=p;});worker.on('error',e=>error=e);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const wait=async(predicate,timeout=90000)=>{const start=performance.now();while(!predicate()){if(error)throw error;if(performance.now()-start>timeout)throw new Error('Flight button timed out: '+JSON.stringify({time:latest?.time_s,drone:latest?.drone,status:latest?.status}));await sleep(10);}};
+const send=p=>worker.postMessage({...p,sequence:++sequence});
+const input=async p=>{send(p);const n=sequence;await wait(()=>latest?.input_sequence===n,5000);};
+const op=Object.assign(Object.create(FlightOperations.prototype),{_toast(){},bridge:{installed:true,cameraView:'drone',send:p=>{lastAction=p.action;send(p);}}});
+const click=async expected=>{op.state=latest;op.toggleFlight();assert.equal(lastAction,expected);const n=sequence;await wait(()=>latest?.input_sequence===n,5000);};
+worker.postMessage({type:'initialize',base,meta,heights:raw.buffer.slice(raw.byteOffset,raw.byteOffset+raw.byteLength)});
+try {
+ await wait(()=>latest?.ready&&latest.drone.px4_ready);await input({action:'autopilot',enabled:false,motors:[0,0]});
+ await click('takeoff');await wait(()=>latest.drone.flight_requested&&!latest.drone.armed);await click('land');
+ const cancelledAt=latest.time_s;await wait(()=>latest.time_s>cancelledAt+1);
+ assert(latest.drone.landed&&!latest.drone.armed,'Cancelled launch must remain grounded');
+ console.log('After grounded cancellation:',JSON.stringify(latest.drone));
+ await click('takeoff');await wait(()=>latest.drone.armed&&latest.drone.position[1]>1.2);console.log('First takeoff verified:',latest.drone.position[1]);
+ await click('land');await wait(()=>latest.drone.landed&&!latest.drone.armed);const landedAt=latest.time_s;
+ await wait(()=>latest.time_s>landedAt+3);assert(!latest.drone.armed&&!latest.drone.flight_requested,'Landed drone must stay disarmed and ready for a new takeoff');
+ await click('takeoff');await wait(()=>latest.drone.armed&&latest.drone.position[1]>1.2);console.log('Second takeoff verified:',latest.drone.position[1]);
+ await click('land');await wait(()=>latest.drone.landed&&!latest.drone.armed&&!latest.drone.flight_requested);
+ console.log('Real UI commands: grounded cancellation, takeoff, landing, idle without rearming, second takeoff and second landing passed');
+}finally{worker.postMessage({type:'shutdown'});try{await wait(()=>disposed,60000);assert.equal(disposed.threads,0);}finally{await worker.terminate();}}

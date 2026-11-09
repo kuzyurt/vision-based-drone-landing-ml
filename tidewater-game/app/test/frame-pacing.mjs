@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {Engine} from '../src/engine/Engine.js';
+let sequence=0;const frames=new Map();
+globalThis.requestAnimationFrame=callback=>{const id=++sequence;frames.set(id,callback);return id;};
+globalThis.cancelAnimationFrame=id=>frames.delete(id);
+const fire=time=>{assert.equal(frames.size,1);const [id,callback]=frames.entries().next().value;frames.delete(id);callback(time);};
+const engine=new Engine(null);let release,calls=0;
+engine.start(()=>{calls++;return new Promise(resolve=>{release=resolve;});});
+fire(16);assert.equal(calls,1);assert.equal(frames.size,0,'No next frame while GPU completion is pending');
+release();await Promise.resolve();assert.equal(frames.size,1);
+fire(32);assert.equal(calls,2);engine.stop();release();await Promise.resolve();assert.equal(frames.size,0,'Stop must prevent pending completion from restarting the loop');
+engine.start(()=>{calls++;});fire(48);assert.equal(frames.size,1,'Normal rendering keeps the existing rAF schedule');
+engine.stop();assert.equal(frames.size,0);
+engine.start(()=>new Promise(resolve=>{release=resolve;}));fire(64);const oldRelease=release;
+engine.start(()=>{});oldRelease();await Promise.resolve();assert.equal(frames.size,1,'Restart must not retain an old loop');engine.stop();
+console.log('Bounded GPU frame pacing, synchronous rendering, stop and restart passed.');

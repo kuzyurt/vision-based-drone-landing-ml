@@ -1,0 +1,68 @@
+{
+  "key": "pad_corner_sliver",
+  "title": "PAD 02 \u2014 CENTRE AT FRAME CORNER, 56% OF PAD VISIBLE",
+  "bug": "Old path: centre-in-frame plus any visible probe was enough. The pad is clipped by two edges, only 55.7% visible, and it still emits a centre heat cell.",
+  "fix": "A pad centre now needs at least 60% of the projected pad visible. This frame keeps presence=1, drops the centre, masks the visible footprint, and R013 sends it to review.",
+  "spec": {
+    "seed": 20261107,
+    "map_kind": "island",
+    "distance_m": 12.0,
+    "height_m": 4.5,
+    "bearing_deg": 32.0,
+    "decoy_layout": [
+      [
+        60.0,
+        180.0
+      ],
+      [
+        65.0,
+        90.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": -13.0,
+    "yaw_offset_deg": 31.0,
+    "weather": "sunlit"
+  },
+  "before": {
+    "presence": 1.0,
+    "center": true,
+    "class": "center",
+    "extent_px": 30.88914409043713,
+    "visible_fraction": 0.5572998449350606,
+    "ignore": 0,
+    "rule_error": null,
+    "training_eligible": true,
+    "pad": {
+      "pad_presence": 1.0,
+      "pad_valid": true,
+      "pad_pixel": [
+        638.2300568334413,
+        334.20594673244926
+      ],
+      "pad_extent_px": 30.88914409043713,
+      "pad_in_frame": true
+    }
+  },
+  "after": {
+    "presence": 1.0,
+    "center": false,
+    "class": "presence_only",
+    "extent_px": 30.88914409043713,
+    "visible_fraction": 0.5572998449350606,
+    "ignore": 8,
+    "rule_error": "R013: pad is only 56% visible; need at least 60% of the pad pattern",
+    "training_eligible": false,
+    "pad": {
+      "pad_presence": 1.0,
+      "pad_center_valid": false,
+      "pad_label_class": "presence_only",
+      "pad_visible": true,
+      "pad_center_visible": true,
+      "pad_visible_fraction": 0.5572998449350606,
+      "pad_frame_coverage": 0.0023079064271858186,
+      "pad_ignore_cells": 8
+    }
+  },
+  "stats_line": "BEFORE  presence=1  center=1  visible=56%  ignore=0  class=center  eligible=1   \u00b7   AFTER  presence=1  center=0  visible=56%  ignore=8  class=presence_only  eligible=0"
+}

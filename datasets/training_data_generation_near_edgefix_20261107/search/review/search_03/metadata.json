@@ -1,0 +1,199 @@
+{
+  "task": "search",
+  "profile": "near",
+  "case": "half_visible_overcast",
+  "sample": 3,
+  "seed": 20261307,
+  "map_kind": "gravel",
+  "distance_m": 6.6,
+  "height_m": 3.0,
+  "bearing_deg": 17.0,
+  "camera_pan_deg": 0.0,
+  "yaw_offset_deg": -30.0,
+  "weather": {
+    "name": "overcast",
+    "wave_height_m": 0.13,
+    "wave_period_s": 4.8,
+    "wind_profile": "gusty",
+    "wind_direction_deg": 155.0,
+    "sun_elevation_deg": 14.0,
+    "sun_offset_deg": 4.0,
+    "fog_start_m": 42.0,
+    "fog_end_m": 125.0,
+    "glare_strength": 0.0,
+    "glare_note": "deterministic camera/sensor pass; segmentation untouched"
+  },
+  "pad_pixel": [
+    33.19282893308986,
+    202.9782038879647
+  ],
+  "pad_depth_m": 6.353437537177074,
+  "pad_visible": true,
+  "pad_extent_px": 52.1616035365553,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "target_label_class": "ignore",
+  "center_supervised": false,
+  "evidence_supervised": false,
+  "visible_fraction": 0.18125809818041125,
+  "clipped_fraction": 0.8187419018195887,
+  "target_full_bbox": [
+    -116.05346867050703,
+    84.38992356476332,
+    182.80002546750868,
+    353.1752884975841
+  ],
+  "target_center_in_frame": true,
+  "ignore_cells": 291,
+  "evidence_cells": 0,
+  "training_eligible": false,
+  "review_only": true,
+  "rule_error": "R005: target is not labelable: 0.18 visible, 130 px",
+  "rules_checked": [],
+  "labels": {
+    "heat_shape": [
+      45,
+      80
+    ],
+    "evidence_classes": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "presence": 1.0,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          0,
+          162,
+          112,
+          292
+        ],
+        "full_bbox": [
+          -116.05346867050703,
+          84.38992356476332,
+          182.80002546750868,
+          353.1752884975841
+        ],
+        "center_px": [
+          39.066753269477715,
+          217.97796697820493
+        ],
+        "visible_center_px": [
+          56.0,
+          227.0
+        ],
+        "extent_px": 130,
+        "full_extent_px": 298,
+        "depth_m": 6.543683327676165,
+        "clipped": true,
+        "center_in_frame": true,
+        "visible_fraction": 0.18125809818041125,
+        "clipped_fraction": 0.8187419018195887,
+        "frame_coverage": 0.06319444444444444,
+        "label_class": "ignore",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": true,
+        "pad_extent_px": 52.1616035365553,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          129,
+          24,
+          168,
+          53
+        ],
+        "full_bbox": [
+          116.30246920400626,
+          12.309748261560511,
+          180.128768053122,
+          76.13604711067626
+        ],
+        "center_px": [
+          148.21561862856413,
+          44.22289768611839
+        ],
+        "visible_center_px": [
+          148.5,
+          38.5
+        ],
+        "extent_px": 39,
+        "full_extent_px": 63,
+        "depth_m": 17.301575446532603,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.27762801133638204,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.004908854166666666,
+        "label_class": "overlap",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_dark",
+        "bbox": [
+          118,
+          35,
+          175,
+          54
+        ],
+        "full_bbox": [
+          98.21835700637651,
+          -5.1319665793286475,
+          196.8892755071028,
+          93.53895192139764
+        ],
+        "center_px": [
+          147.55381625673965,
+          44.203492671034496
+        ],
+        "visible_center_px": [
+          146.5,
+          44.5
+        ],
+        "extent_px": 57,
+        "full_extent_px": 98,
+        "depth_m": 17.305341207031052,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.11123721695872811,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.0047005208333333335,
+        "label_class": "overlap",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      }
+    ],
+    "pad_pixel": [
+      33.19282893308986,
+      202.9782038879647
+    ],
+    "pad_visible": true,
+    "target_label_class": "ignore",
+    "center_supervised": false,
+    "evidence_supervised": false,
+    "visible_fraction": 0.18125809818041125,
+    "clipped_fraction": 0.8187419018195887,
+    "ignore_cells": 291,
+    "evidence_cells": 0
+  }
+}

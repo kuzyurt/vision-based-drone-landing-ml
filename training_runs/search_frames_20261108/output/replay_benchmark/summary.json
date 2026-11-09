@@ -1,0 +1,82 @@
+[
+  {
+    "key": "target_behind_decoy",
+    "title": "Target stationary directly behind one other boat",
+    "expectation": "confirm_target",
+    "other_boats": 1,
+    "frames": 101,
+    "teacher_confirmed_at_s": 0.2,
+    "heads": {
+      "old_oct25": {
+        "success": 1.0,
+        "valid": true,
+        "good_frames": 99,
+        "counted_frames": 99,
+        "confirmed_at_s": 0.0,
+        "confirmed_on": {
+          "target": 101
+        }
+      },
+      "frozen_ft": {
+        "success": 1.0,
+        "valid": true,
+        "good_frames": 99,
+        "counted_frames": 99,
+        "confirmed_at_s": 0.0,
+        "confirmed_on": {
+          "target": 101
+        }
+      },
+      "balanced": {
+        "success": 1.0,
+        "valid": true,
+        "good_frames": 99,
+        "counted_frames": 99,
+        "confirmed_at_s": 0.0,
+        "confirmed_on": {
+          "target": 101
+        }
+      }
+    }
+  },
+  {
+    "key": "slow_drift",
+    "title": "Target drifts across the frame at constant speed, never stopping",
+    "expectation": "confirm_target",
+    "other_boats": 0,
+    "frames": 141,
+    "teacher_confirmed_at_s": 2.1,
+    "heads": {
+      "old_oct25": {
+        "success": 0.9417,
+        "valid": true,
+        "good_frames": 113,
+        "counted_frames": 120,
+        "confirmed_at_s": 2.8,
+        "confirmed_on": {
+          "target": 113
+        }
+      },
+      "frozen_ft": {
+        "success": 0.9417,
+        "valid": true,
+        "good_frames": 113,
+        "counted_frames": 120,
+        "confirmed_at_s": 2.8,
+        "confirmed_on": {
+          "target": 113
+        }
+      },
+      "balanced": {
+        "success": 0.9417,
+        "valid": true,
+        "good_frames": 113,
+        "counted_frames": 120,
+        "confirmed_at_s": 2.8,
+        "confirmed_on": {
+          "target": 113
+        }
+      }
+    }
+  }
+]

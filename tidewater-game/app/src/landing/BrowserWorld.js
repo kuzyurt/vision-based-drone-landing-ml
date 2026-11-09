@@ -53,6 +53,20 @@ export async function cached(key,value) {
   const r=value?store.put(value,key):store.get(key);r.onsuccess=()=>{if(!value)resolve(r.result||null);};r.onerror=()=>reject(r.error);transaction.oncomplete=()=>{if(value)resolve(value);};transaction.onabort=()=>reject(transaction.error);
  });}finally{db.close();}
 }
+export function loadCompiledWorld(mj,bytes) {
+ mj.FS.writeFile('/prepared-world.mjb',bytes);
+ const vfs=new mj.MjVFS();
+ try{return mj.MjModel.from_binary_path('/prepared-world.mjb',vfs);}
+ finally{vfs.delete();mj.FS.unlink('/prepared-world.mjb');}
+}
+
+// Run this in a disposable compiler worker: XML compilation's peak WASM heap
+// must not become the flight runtime's permanently retained allocation.
+export async function compileWorldBinary(mj,c,map,base,progress,fetchAsset) {
+ const model=await compileWorld(mj,c,map,base,progress,fetchAsset);
+ try{mj.mj_saveModel(model,'/prepared-world.mjb',null);return mj.FS.readFile('/prepared-world.mjb');}
+ finally{model.delete();try{mj.FS.unlink('/prepared-world.mjb');}catch{}}
+}
 export async function compileWorld(mj,c,map,base,progress,fetchAsset=async url=>new Uint8Array(await (await fetch(url)).arrayBuffer())) {
  if(mj.mj_versionString()!==c.mujoco_version)throw new Error(`MuJoCo version mismatch: assets ${c.mujoco_version}, runtime ${mj.mj_versionString()}`);
  if(map.heights.length!==map.meta.res**2)throw new Error('Terrain heightfield size mismatch');

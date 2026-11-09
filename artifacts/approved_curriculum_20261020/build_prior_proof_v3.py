@@ -1,0 +1,7 @@
+from pathlib import Path
+p=Path(__file__).parent;s=(p/'prove_own_cad_prior_v2.py').read_text().replace('env.boat_yaw+math.pi if False else env.boat_yaw+np.pi','float(np.arctan2(env.pad_position[1]-env.task_start_xy[1],env.pad_position[0]-env.task_start_xy[0]))').replace('from own_cad_occlusion_v2 import OwnCadOcclusion','from own_cad_occlusion_v2 import OwnCadOcclusion\nfrom target_learning.scenes import annotation_groups')
+s=s.replace('results=[];images=[];samples=[];start=time.monotonic()','results=[];images=[];samples=[];target_tested=0;start=time.monotonic()')
+s=s.replace('for pixels,is_self in [(owncoords,True),(worldcoords,False)]:',"targetcoords=np.column_stack(np.nonzero(np.isin(seg[...,0],annotation_groups(env.model)['target'])&(seg[...,1]==int(mujoco.mjtObj.mjOBJ_GEOM))))[:,::-1];target_tested+=min(100,len(targetcoords))\n            for pixels,is_self in [(owncoords,True),(worldcoords,False),(targetcoords,False)]:")
+s=s.replace("assert sum(x['own_hits']for x in results)>100","assert sum(x['own_hits']for x in results)>100 and target_tested>=100")
+s=s.replace("actual_self_projection_proof.jpg","actual_self_projection_proof_v3.jpg").replace("PRIOR/'proof.json'","PRIOR/'proof_v3.json'").replace("static_fixed_own_geometry_only=True,world_or_target_geometry_in_prior=False","static_fixed_own_geometry_only=True,target_pixel_checks=target_tested,world_or_target_geometry_in_prior=False")
+(p/'prove_own_cad_prior_v3.py').write_text(s);compile(s,'prove_own_cad_prior_v3.py','exec')

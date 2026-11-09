@@ -1,0 +1,9 @@
+{
+  "schema": "aerodock.benchmark.privileged_teacher.v1",
+  "label": "Privileged teacher / platform aligned",
+  "actor": "privileged_teacher",
+  "privileged_reference": true,
+  "neural_network_used": false,
+  "truth_access": "Only visible instances may steer search; exact pad control requires identified target and visible marker, or existing physical contact.",
+  "slew_limits": [0.15, 0.15, 0.12, 0.08, 0.15, 0.15]
+}

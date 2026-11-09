@@ -1,0 +1,83 @@
+{
+  "task": "search",
+  "sample": 1,
+  "seed": 20261107,
+  "map_kind": "beach",
+  "distance_m": 26.0,
+  "height_m": 7.5,
+  "bearing_deg": 18.0,
+  "pad_pixel": [
+    320.01922425000777,
+    177.78084052853177
+  ],
+  "pad_depth_m": 26.984038829292132,
+  "pad_visible": true,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "rules_checked": [
+    "R001",
+    "R005",
+    "R006",
+    "R007"
+  ],
+  "labels": {
+    "heat_shape": [
+      45,
+      80
+    ],
+    "evidence_classes": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "presence": 1.0,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          305,
+          170,
+          334,
+          194
+        ],
+        "center_px": [
+          319.5,
+          182.0
+        ],
+        "extent_px": 29,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          383,
+          249,
+          449,
+          286
+        ],
+        "center_px": [
+          416.0,
+          267.5
+        ],
+        "extent_px": 66,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null
+      }
+    ],
+    "pad_pixel": [
+      320.01922425000777,
+      177.78084052853177
+    ],
+    "pad_visible": true
+  }
+}

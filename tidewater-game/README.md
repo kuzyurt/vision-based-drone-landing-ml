@@ -1,12 +1,18 @@
-# Tidewater — browser PX4 and MuJoCo
+# Tidewater
 
-The original Holybro X500 **V2** and AERODOCK models run with MuJoCo 3.14.0
-and the original PX4 v1.16.0 flight stack in browser workers. The player opens
-a static URL. Physics, estimation and controllers run on the player's machine.
-The original drone CAD and source simulator remain the reference.
+[![A MuJoCo-trained policy landing in Tidewater without retraining](../docs/media/tidewater-landing-preview.gif)](../docs/media/tidewater-landing-1080p.mp4)
 
-For local hosting, use Node.js 22 or newer (Node 24 was tested). From the
-repository root, prepare and serve the production package:
+Tidewater puts the boat–drone system into a richer coastal environment and turns
+it into a small playable game. Pilot either vehicle, change conditions, or hand
+the drone to the trained landing policy.
+
+**The models train only in MuJoCo. They never train on Tidewater scenes.**
+The opening flight shows a frozen policy landing in Tidewater without retraining:
+new scenery and camera images, the same learned policy.
+
+## Run locally
+
+Use Node.js 22+ and a WebGPU-capable Chrome or Edge. From the repository root:
 
 ```sh
 cd tidewater-game/app
@@ -15,82 +21,57 @@ npm run build
 npm start
 ```
 
-Open `http://127.0.0.1:5189/` **manually**. The server serves static files with
-COOP/COEP headers; it does not run a physics process. Players using a hosted
-package only need the browser. On Windows, `./Start-TidewaterGame.ps1` builds a
-missing `dist/` and serves it in the foreground. Use `-Dev` for Vite. After source
-changes, run `npm run build` again. These launchers never open a browser.
+Open **http://127.0.0.1:5189/** manually. On Windows,
+[`Start-TidewaterGame.ps1`](Start-TidewaterGame.ps1) builds a missing package and
+serves it; `-Dev` starts Vite. Rebuild after source changes. First load prepares
+the collision world and shaders. Wait for **Offline files ready** for offline play.
 
-Use a recent WebGPU-capable Chrome/Edge and sufficient memory for the original
-CAD world and PX4 pthread pool. SharedArrayBuffer requires HTTPS (or localhost)
-and these response headers on the page, workers, modules and WASM assets:
+## Play with the policy
 
-```text
-Cross-Origin-Opener-Policy: same-origin
-Cross-Origin-Embedder-Policy: require-corp
-Cross-Origin-Resource-Policy: same-origin
-```
+1. Take off near a visible boat in mild conditions.
+2. Switch to the boat with **B**. Slow or stop it, open both lids, then raise
+   the landing platform.
+3. Return to the drone and press **ML landing**. Press **Manual control** to
+   take over; **Land** also cancels policy control.
 
-Static hosting must support those headers. Ordinary GitHub Pages does not
-provide the required header configuration. Vite dev/preview and the included
-Node static server provide it. The package supports a same-origin subdirectory.
+| Control | Action |
+|---|---|
+| B / U | Switch vehicle / boat camera |
+| Drone: WASD, R/F, Q/E | Translate, climb/descend, yaw |
+| Arrows or mouse | Aim the camera |
+| Boat: P, W/S, A/D | Auto/manual motors, throttle, steering |
+| Disable / Enable SX1262 | Remove / restore simulated boat radio |
+| Home, Reset, Retry | Return to spawn |
 
-## First load and offline operation
+The boat remains independently controllable during landing. Its normal
+2.8 m/s cruise exceeds the policy's nominal 2 m/s horizontal limit, so slow it
+for an initial trial. Lower the platform before closing the lids.
 
-The first visit compiles the rendering shaders and the original collision CAD
-with the actual Tidewater heightfield and obstacles. World compilation runs in
-the simulation worker. IndexedDB stores the compiled model; its key covers map,
-collision asset hashes and model versions. Corrupt entries rebuild; unavailable
-storage or quota exhaustion falls back to compilation.
+## What the game adds
 
-A production build includes a versioned SHA-256 offline asset manifest. The
-service worker caches the app, original CAD/textures, collision meshes, audio,
-PX4 and MuJoCo WASM, worker modules and licenses. Wait for **Offline files ready**
-before disconnecting. The compiled collision cache uses additional storage;
-allow room for it and for updates. Development mode does not register offline
-caching. Failed cache installation preserves the previous complete version.
-Close existing game tabs and reopen to activate a downloaded update. Browser
-storage clearing or eviction requires another complete online load.
+WebGPU renders the coastal world and the onboard camera. Browser WASM workers
+run MuJoCo vehicle physics and PX4; the policy runs locally with ONNX/WebGPU
+inference and a Python controller. No server-side flight process is needed.
 
-Simulation runs independently of rendering with 1 ms physics, strict 250 Hz
-sensor/actuator lockstep, and 25 Hz pilot decisions. Timestamped CAD, camera and
-hull poses are interpolated on one presentation clock; physical wave phases use
-that same clock. Reset/retry waits for PX4 pthread shutdown before replacing the
-runtime. A shutdown timeout asks for a page reload rather than creating a
-second unconfirmed runtime.
+The policy must work from the images Tidewater actually renders. It is not a
+different background placed behind a prerecorded landing. This makes the game
+an interactive visual-transfer experiment as well as a way to explore the system.
 
-## Controls and deck operation
+Finding a distant or obscured target remains difficult.
+[Integration results](benchmarks/flight-parity/landing-hardening-20261018.md) and
+[stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md)
+document successful flights and failures.
 
-- **B** switches drone/boat; **U** switches the two original boat cameras.
-- Drone: **WASD** moves, **R/F** climbs/descends, **Q/E** yaws. Arrow keys or mouse
-  move the articulated camera. Use the Take off, Hover and Land controls.
-- Boat: **P** switches automatic/manual motors; **W/S** controls both throttles,
-  **A/D** steers differentially. Sliders set individual motors.
-- Lower the platform before closing the lids; open both lids before raising it.
-  Wait for physical settling between movements. Occupied lids can contact the
-  actual drone geometry; exercise complete mechanism strokes with an empty bay.
-- **C** retries the simulated SX1262 link after restoring range/line of sight.
-  These are estimates, not readings from radio hardware.
-- **Home**, Reset, and Retry replace the browser simulation and restore spawn.
+## Explore the implementation
 
-The boat follows a terrain-validated closed route. Buoyancy, orbital water
-velocity, drag, propellers, cabin drainage, retained-water mass, and lift/lid
-actuators operate on the original physical bodies. The speed needle uses km/h.
-Four physical wave components have a 5 cm combined crest-to-trough bound.
+| Read | Purpose |
+|---|---|
+| [Training and architecture](../landing_training/README.md) | MuJoCo world, teacher and learned policy |
+| [Runtime reference](docs/RUNTIME_REFERENCE.md) | Hosting headers, offline caching and policy export |
+| [WASM integration](wasm/README.md) | PX4/MuJoCo builds and parity tests |
+| [Recording details](../docs/media/README.md) | Demo source, model version and 1080p export |
 
-## Verification and developer rebuilds
-
-No browser was opened for this work. See
-[the browser verification notes](wasm/README.md) for reproducible headless tests,
-source-build pins, measured results and a manual browser checklist. Node worker
-pacing and message latency are not browser FPS or rendered visual measurements.
-The Windows PowerShell launcher still needs manual execution on Windows.
-
-The optional native Python/PX4 service and its independent benchmarks remain in
-`simulation/`. They are reference developer tools. Browser gameplay selects the
-WASM worker and reports failures explicitly.
-
-[Flight benchmark reports](benchmarks/flight-parity/) include independently
-computed native and WASM traces. [Distributed licenses](app/public/licenses/)
-cover PX4, MuJoCo and the translated NumPy RNG routines. Additional game/asset
-notices accompany their models and textures.
+The game extends [dgreenheck/tidewater](https://github.com/dgreenheck/tidewater).
+[Asset credits](app/CREDITS.md) and [runtime licenses](app/public/licenses/)
+are retained. Custom hosts must support the COOP/COEP headers configured by the
+included server.

@@ -1,7 +1,7 @@
 const scope=self.registration.scope;
 const PREFIX='tidewater-offline-'+scope+'-';
 const VERSION='__BUILD_VERSION__',CACHE=PREFIX+VERSION;
-async function notify(packet){for(const client of await self.clients.matchAll({includeUncontrolled:true}))client.postMessage({offline:packet});}
+async function notify(packet){for(const client of await self.clients.matchAll({includeUncontrolled:true}))client.postMessage({offline:{...packet,version:VERSION}});}
 async function manifest(){const response=await fetch(new URL('offline-manifest.json',scope),{cache:'no-store'});if(!response.ok)throw new Error('Offline manifest unavailable');return response.json();}
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const m=await manifest(),name=CACHE,cache=await caches.open(name);let complete=0;
@@ -31,6 +31,8 @@ self.addEventListener('fetch',event=>{
   return fetch(event.request);
  })());
 });
-self.addEventListener('message',event=>{if(event.data?.type==='offline-status')event.waitUntil((async()=>{
- const ready=await (await caches.open(CACHE)).match(new URL('offline-manifest.json',scope));event.source?.postMessage({offline:{status:ready?'ready':'loading'}});
+self.addEventListener('message',event=>{
+ if(event.data?.type==='activate-update'){event.waitUntil(self.skipWaiting());return;}
+ if(event.data?.type==='offline-status')event.waitUntil((async()=>{
+ const ready=await (await caches.open(CACHE)).match(new URL('offline-manifest.json',scope));event.source?.postMessage({offline:{status:ready?'ready':'loading',version:VERSION}});
 })());});

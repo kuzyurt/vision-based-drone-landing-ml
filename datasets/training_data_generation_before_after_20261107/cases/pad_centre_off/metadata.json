@@ -1,0 +1,72 @@
+{
+  "key": "pad_centre_off",
+  "title": "PAD 01 \u2014 PAD VISIBLE, TRUE CENTRE OFF-FRAME",
+  "bug": "Old path: a centre outside the image forced pad_presence=0, so the pad vanished from the presence target even while its corner was visible.",
+  "fix": "Pad presence and centre validity are separate. Presence=1 from the visible pad; the centre heat stays empty and pad_ignore covers the visible footprint.",
+  "spec": {
+    "seed": 20261107,
+    "map_kind": "island",
+    "distance_m": 12.0,
+    "height_m": 4.5,
+    "bearing_deg": 32.0,
+    "decoy_layout": [
+      [
+        30.0,
+        180.0
+      ],
+      [
+        35.0,
+        90.0
+      ],
+      [
+        40.0,
+        270.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": 0.0,
+    "yaw_offset_deg": -32.5,
+    "weather": "sunlit"
+  },
+  "before": {
+    "presence": 0.0,
+    "center": false,
+    "class": "absent",
+    "extent_px": 30.204770868383857,
+    "visible_fraction": 0.3499259687034737,
+    "ignore": 0,
+    "rule_error": "R013: pad center is not visible and resolvable",
+    "training_eligible": false,
+    "pad": {
+      "pad_presence": 0.0,
+      "pad_valid": false,
+      "pad_pixel": [
+        -4.5329517286062355,
+        207.93059362276134
+      ],
+      "pad_extent_px": 30.204770868383857,
+      "pad_in_frame": false
+    }
+  },
+  "after": {
+    "presence": 1.0,
+    "center": false,
+    "class": "presence_only",
+    "extent_px": 30.204770868383857,
+    "visible_fraction": 0.3499259687034737,
+    "ignore": 4,
+    "rule_error": "R013: pad centre is outside the image",
+    "training_eligible": false,
+    "pad": {
+      "pad_presence": 1.0,
+      "pad_center_valid": false,
+      "pad_label_class": "presence_only",
+      "pad_visible": true,
+      "pad_center_visible": false,
+      "pad_visible_fraction": 0.3499259687034737,
+      "pad_frame_coverage": 0.0013856220628723477,
+      "pad_ignore_cells": 4
+    }
+  },
+  "stats_line": "BEFORE  presence=0  center=0  visible=35%  ignore=0  class=absent  eligible=0   \u00b7   AFTER  presence=1  center=0  visible=35%  ignore=4  class=presence_only  eligible=0"
+}

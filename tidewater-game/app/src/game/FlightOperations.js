@@ -1,4 +1,5 @@
 import { SimulationBridge } from '../landing/SimulationBridge.js';
+import { recordPerformance } from '../landing/PerformanceRecording.js';
 
 const MAP = { xMin: - 250, xMax: 330, zMin: - 125, zMax: 285 };
 const clamp = ( value, low, high ) => Math.max( low, Math.min( high, value ) );
@@ -41,7 +42,7 @@ export class FlightOperations {
 			<header class="fc-top">
 				<div class="fc-wordmark"><span class="fc-mark">T</span><span><b>Tidewater</b><small>Coastal flight operations · browser PX4 / MuJoCo</small></span></div>
 				<div class="fc-link" data-bind="link" data-state="waiting"><i></i><span data-bind="link-label">Connecting simulator</span><small data-bind="controller-source">Native MuJoCo</small></div>
-				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
+				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="timing">Record timing (10 s)</button><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
 			</header>
 			<aside class="fc-map-panel fc-panel">
 				<div class="fc-panel-head"><span>Live telemetry map</span><small>Shared MuJoCo frame</small></div>
@@ -64,6 +65,7 @@ export class FlightOperations {
 					<div class="fc-radio-grid"><div><small>RSSI</small><b data-bind="rssi">— <em>dBm</em></b></div><div><small>SNR</small><b data-bind="snr">— <em>dB</em></b></div><div><small>Latency</small><b data-bind="latency">— <em>ms</em></b></div><div><small>Packet loss</small><b data-bind="loss">— <em>%</em></b></div></div>
 					<div class="fc-packet-line"><span>TX <b data-bind="tx">0</b></span><span>RX <b data-bind="rx">0</b></span><span>Dropped <b data-bind="dropped">0</b></span><span>868 MHz · SF7</span></div>
 					<div class="fc-radio-note" data-bind="radio-note">RSSI, SNR and packet delivery are simulated; no radio hardware is connected.</div>
+					<button class="fc-reconnect" data-action="radio" aria-pressed="true">Disable SX1262</button>
 					<button class="fc-reconnect" data-action="reconnect">Retry connection <kbd>C</kbd></button>
 				</section>
 			</aside>
@@ -72,7 +74,7 @@ export class FlightOperations {
 				<div class="fc-bottom-main">
 					<div class="fc-vehicle-summary"><span class="fc-summary-symbol" data-bind="vehicle-symbol">⌖</span><span><small data-bind="vehicle-type">X500 aircraft</small><b data-bind="vehicle-name">Holybro X500 V2</b></span></div>
 					<div class="fc-controls-copy"><small>Controls</small><b data-bind="controls">WASD flight · R/F altitude · Q/E yaw · arrows/mouse camera · B boat</b></div>
-					<div class="fc-bottom-actions"><button class="fc-flight-button" data-action="flight">Take off</button><button class="fc-autopilot is-on" data-action="autopilot"><span class="fc-switch-dot"></span><span data-bind="autopilot-label">Route following</span><kbd>P</kbd></button><button data-action="camera">Dock camera <kbd>U</kbd></button><button data-action="lid"><span data-bind="lid-label">Close lids</span></button><button data-action="platform"><span data-bind="platform-label">Lower platform</span></button></div>
+					<div class="fc-bottom-actions"><button class="fc-flight-button" data-action="flight">Take off</button><button data-action="ml" aria-pressed="false">ML landing</button><button class="fc-autopilot is-on" data-action="autopilot"><span class="fc-switch-dot"></span><span data-bind="autopilot-label">Route following</span><kbd>P</kbd></button><button data-action="camera">Dock camera <kbd>U</kbd></button><button data-action="lid"><span data-bind="lid-label">Close lids</span></button><button data-action="platform"><span data-bind="platform-label">Lower platform</span></button></div>
 				</div>
 			<div class="fc-manual-controls" data-bind="manual-controls" hidden>
 				<div class="fc-motor-mode"><span data-bind="motor-mode">Route following</span><button data-action="manual">Manual motors</button><button data-action="automatic">Auto route</button><button data-action="stop">Stop motors</button></div>
@@ -96,7 +98,10 @@ export class FlightOperations {
 			else if ( action === 'retry' ) this.bridge?.retry();
 			else if ( action === 'reset' ) this.resetVehicles();
 			else if ( action === 'reconnect' ) this.reconnect();
+			else if ( action === 'radio' ) this.toggleRadio();
 			else if ( action === 'flight' ) this.toggleFlight();
+			else if ( action === 'ml' ) this.toggleML();
+			else if ( action === 'timing' ) this.recordTiming();
 			else if ( action === 'autopilot' ) this.setAutopilot( ! this.autopilot );
 			else if ( action === 'manual' ) this.setAutopilot( false );
 			else if ( action === 'automatic' ) this.setAutopilot( true );
@@ -216,17 +221,56 @@ export class FlightOperations {
 
 	toggleFlight() {
 
-		if ( ! this.state?.ready || ! this.state?.drone?.px4_ready || ! this.bridge?.cameraView || ! this.bridge?.installed ) return;
-		const flying = !! this.state?.drone?.flight_requested;
-		this.bridge?.send( { action: flying ? 'land' : 'takeoff' } );
-		this._toast( flying ? 'Landing target set' : 'Takeoff requested' );
+		if ( ! this.state?.ready || ! this.state?.drone?.px4_ready || ! this.bridge?.cameraView || ! this.bridge?.installed || this.state?.error ) return;
+		const control = this._flightControl();
+		if ( control.busy ) return;
+		this.bridge?.send( { action: control.action } );
+		this._toast( control.action === 'takeoff' ? 'Takeoff requested' : this.state.drone.armed ? 'Landing target set' : 'Takeoff cancelled' );
+
+	}
+
+	async recordTiming() {
+		const button=this._ui.root.querySelector('[data-action="timing"]');if(button.disabled||!this.bridge)return;
+		button.disabled=true;
+		try {
+			const report=await recordPerformance(this.app,{onProgress:seconds=>{button.textContent=`Recording ${seconds} s…`;}});
+			const response=await fetch(new URL('__timing',location.href),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(report)}).catch(()=>null);
+			if(response?.ok){button.textContent='Timing saved locally';this._toast('Timing saved to the local Tidewater server');}
+			else {const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='tidewater-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);button.textContent='Timing report downloaded';}
+		}catch(error){button.textContent='Record timing (10 s)';this._toast(error.message);}
+		finally{button.disabled=false;}
+	}
+
+	toggleML() {
+		const policy=this.bridge?.policy;if(!policy)return;
+		if(policy.status.enabled||policy.status.loading)policy.disable();
+		else policy.enable().catch(error=>this._toast(error.message));
+	}
+
+	_flightControl() {
+
+		const drone = this.state?.drone;
+		if ( drone?.takeoff_pending ) return { label: 'Stopping boat…', action: 'land', busy: true };
+		if ( drone?.landing_requested ) return { label: 'Landing…', action: 'land', busy: true };
+		if ( drone?.armed ) return { label: 'Land', action: 'land', busy: false };
+		if ( drone?.flight_requested ) return { label: 'Cancel takeoff', action: 'land', busy: false };
+		return { label: 'Take off', action: 'takeoff', busy: false };
 
 	}
 
 	reconnect() {
 
+		if ( ( this.state?.radio || this.radio )?.enabled === false ) return;
 		this.bridge?.send( { action: 'reconnect' } );
 		this._toast( 'Retrying SX1262 telemetry handshake' );
+
+	}
+
+	toggleRadio() {
+
+		const enabled = ( this.state?.radio || this.radio )?.enabled === false;
+		this.bridge?.send( { action: 'radio', enabled } );
+		this._toast( enabled ? 'Enabling SX1262 telemetry link' : 'SX1262 disabled · radio inputs to ML are zero' );
 
 	}
 
@@ -342,10 +386,15 @@ export class FlightOperations {
 		this._text( 'rx', link.rx ?? 0 );
 		this._text( 'dropped', link.dropped ?? 0 );
 		this._text( 'link-label', ! state.ready ? ( state.status || 'Connecting simulator' ) :
-			link.status === 'handshake' ? 'Pairing…' : link.connected ? `${ link.status } link` : 'Telemetry link lost' );
-		this._text( 'radio-note', link.connected
+			link.enabled === false ? 'SX1262 disabled' : link.status === 'handshake' ? 'Pairing…' : link.connected ? `${ link.status } link` : 'Telemetry link lost' );
+		this._text( 'radio-note', link.enabled === false ? 'Manually disabled · radio inputs to ML are zero · video stays local' : link.connected
 			? `Estimated line of sight · last packet ${ link.telemetry_age_s ?? '—' } s ago · video stays local`
 			: 'Telemetry is stale. Move closer or clear the obstruction, then press C to retry.' );
+		const radioButton = this._ui.root.querySelector( '[data-action="radio"]' );
+		radioButton.textContent = link.enabled === false ? 'Enable SX1262' : 'Disable SX1262';
+		radioButton.setAttribute( 'aria-pressed', String( link.enabled !== false ) );
+		radioButton.disabled = ! state.ready || !! state.error;
+		this._ui.root.querySelector( '[data-action="reconnect"]' ).disabled = link.enabled === false || ! state.ready || !! state.error;
 		this._bind( 'link' ).dataset.state = ! state.ready ? 'waiting' : ( link.status || 'waiting' );
 		this._bind( 'bars' ).style.setProperty( '--fc-quality', `${ link.quality ?? 0 }%` );
 		this._bind( 'horizon' ).style.transform = `translateY(${ clamp( ( pitch || 0 ) * 180 / Math.PI * .45, - 26, 26 ) }px) rotate(${ -( roll || 0 ) * 180 / Math.PI }deg)`;
@@ -374,19 +423,24 @@ export class FlightOperations {
 		const cameraButton = this._ui.root.querySelector( '[data-action="camera"]' );
 		cameraButton.innerHTML = `${ this.boatCamera === 'boat_dock' ? 'Dock camera' : 'Navigation camera' } <kbd>U</kbd>`;
 		cameraButton.hidden = ! isBoat;
-		this._ui.root.querySelector( '[data-action="flight"]' ).textContent = drone?.takeoff_pending ? 'Stopping boat…' : drone?.flight_requested ? 'Land' : 'Take off';
+		const flightControl = this._flightControl();
+		const ml=this.bridge?.policy?.status||{},mlButton=this._ui.root.querySelector('[data-action="ml"]');
+		mlButton.textContent=ml.loading?'Cancel ML loading':ml.enabled?'Manual control':'ML landing';mlButton.setAttribute('aria-pressed',String(!!ml.enabled));
+		mlButton.disabled=!(ml.loading||ml.enabled)&&(!state.ready||!cameraReady||!drone?.armed||drone.landed||drone.landing_requested||!!state.error);
+		this._ui.root.querySelector( '[data-action="flight"]' ).textContent = flightControl.label;
 		this._ui.root.querySelector( '[data-action="flight"]' ).hidden = isBoat;
-		this._ui.root.querySelector( '[data-action="flight"]' ).disabled = ! state.ready || ! drone?.px4_ready || ! cameraReady || !! state.error || !! drone?.takeoff_pending;
+		this._ui.root.querySelector( '[data-action="flight"]' ).disabled = ! state.ready || ! drone?.px4_ready || ! cameraReady || !! state.error || flightControl.busy;
 		for ( const action of [ 'switch', 'autopilot', 'camera', 'lid', 'platform' ] ) this._ui.root.querySelector( `[data-action="${ action }"]` ).disabled = ! state.ready || ! cameraReady || !! state.error;
 		if ( boat?.mechanism_busy ) {
 			for ( const action of [ 'lid', 'platform' ] ) this._ui.root.querySelector( `[data-action="${ action }"]` ).disabled = true;
 			this._text( 'deck-state', `Mechanism moving · platform ${ Math.round( boat.platform * 100 ) }% · lids ${ Math.round( boat.aft_lid * 100 ) }% / ${ Math.round( boat.fore_lid * 100 ) }%` );
 		}
-		this._bind( 'route-status' ).textContent = state.error || state.message ||
+		const mlCommand=state.ml?.action?.slice(0,3).map(v=>v.toFixed(2)).join(', ');
+		this._bind( 'route-status' ).textContent = state.error || ml.error || state.ml?.error || (ml.loading?'Loading trained ML policy…':ml.enabled?`ML · ${state.ml?.phase||'acquire'} · ${state.ml?.intervention||'no override'} · ${link.connected?'radio on':'radio 0'}${mlCommand?` · velocity ${mlCommand} m/s`:''} · boat ${this.autopilot?'auto':'manual'}`:null) || state.message ||
 			( state.route?.valid === false ? 'No safe water route found · manual mode only' :
 				state.route ? `Closed water loop · ${ state.route.length_m.toFixed( 0 )} m · ${ state.route.error_m.toFixed( 1 )} m cross-track` :
 				state.status || 'Importing Tidewater terrain' );
-		this._text( 'performance', `Physics ${ ( state.realtime_factor ?? 1 ).toFixed( 2 ) }× real time · ${ ( this.app.fps || 0 ).toFixed( 0 )} FPS · waves ≤5 cm` );
+		this._text( 'performance', `GPU ${ this.app.gpu?.adapter?.info?.vendor || 'WebGPU' } · Physics ${ ( state.realtime_factor ?? 1 ).toFixed( 2 ) }× real time · ${ ( this.app.fps || 0 ).toFixed( 0 )} FPS · waves ≤5 cm` );
 		this._text( 'controller-source', state.source || 'Native MuJoCo' );
 		this._ui.root.querySelector( '[data-action="switch"]' ).innerHTML = `${ isBoat ? 'Switch to drone' : 'Switch to boat' } <kbd>B</kbd>`;
 		this._ui.root.classList.toggle( 'is-boat', isBoat );

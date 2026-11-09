@@ -1,0 +1,40 @@
+{
+  "task": "pad_finder",
+  "sample": 2,
+  "seed": 20261207,
+  "map_kind": "rock",
+  "distance_m": 9.2,
+  "height_m": 4.4,
+  "bearing_deg": -64.0,
+  "pad_pixel": [
+    320.05133751196377,
+    174.50606693904876
+  ],
+  "pad_depth_m": 10.104656202040227,
+  "pad_visible": true,
+  "pad_extent_px": 32.79730485452686,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "rules_checked": [
+    "R001",
+    "R012",
+    "R013"
+  ],
+  "labels": {
+    "pad_heat_shape": [
+      45,
+      80
+    ],
+    "pad_presence": 1.0,
+    "pad_pixel": [
+      320.05133751196377,
+      174.50606693904876
+    ],
+    "pad_visible": true,
+    "pad_extent_px": 32.79730485452686,
+    "pad_in_frame": true,
+    "pad_valid": true
+  }
+}

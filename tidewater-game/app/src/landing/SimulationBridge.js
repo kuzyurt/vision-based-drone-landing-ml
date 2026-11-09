@@ -3,6 +3,7 @@ import { standard } from '../materials/Materials.js';
 import { Texture } from '../engine/gpu/Texture.js';
 import { landingWaveParams } from './PhysicsWaves.js';
 import { PoseTimeline } from './PoseTimeline.js';
+import { PolicyControl } from './PolicyControl.js';
 
 
 export class SimulationBridge {
@@ -27,6 +28,7 @@ export class SimulationBridge {
 		this.cameraTarget = { position: new E.Vector3(), quaternion: new E.Quaternion(), scale: new E.Vector3() };
 		this.lastPacketTime = performance.now();
 		this.timeline = new PoseTimeline();
+		this.policy = new PolicyControl(this);
 		this._connect();
 
 	}
@@ -70,7 +72,8 @@ export class SimulationBridge {
 			geometry.setAttribute( 'normal', new E.Float32BufferAttribute( new Float32Array( bytes, count * 12, count * 3 ), 3 ) );
 			geometry.setAttribute( 'uv', new E.Float32BufferAttribute( new Float32Array( bytes, count * 24, count * 2 ), 2 ) );
 			geometry.setIndex( new E.Uint32BufferAttribute( new Uint32Array( bytes, count * 32, part.index_count ), 1 ) );
-			const materialKey = JSON.stringify( part.material );
+			// CAD names identify source parts, not different visual properties.
+			const materialKey = JSON.stringify( { rgba: part.material.rgba, roughness: part.material.roughness, texture: part.material.texture } );
 			let material = materials.get( materialKey );
 			if ( ! material ) {
 				const data = part.material;
@@ -136,11 +139,15 @@ export class SimulationBridge {
         worker.onmessage = event => {
             try {
                 const state = event.data;
+                if(state.type==='policy_control'){if(state.ml.enabled)this.policy.awaitActivation=false;else if(this.policy.status.enabled)this.policy.disable(state.ml.error||state.message);return;}
+                if(state.type==='policy_capture'){if(!this.closed&&!worker.shuttingDown)this.policy.capture(state);return;}
                 if ( state.disposed ) { this._disposeResolve?.(); return; }
                 if (this.closed || worker.shuttingDown) return;
                 if ( state.bodies && ! this.layout ) this.send( { mode: this.app.flightOps.mode } );
                 this.timeline.push( state, performance.now() );
                 this._setStatus( state );
+                if(state.ml?.enabled)this.policy.awaitActivation=false;
+                if(state.ml && !state.ml.enabled && this.policy.status.enabled && !this.policy.awaitActivation)this.policy.disable(state.ml.error);
                 if ( state.geoms ) this._applyTransforms( state.geoms );
                 if ( state.bodies ) this._applyBodies( state.bodies );
                 if ( state.views ) this._applyCamera( state );
@@ -148,7 +155,7 @@ export class SimulationBridge {
                 this._setStatus( { ...this.state, ready: false, status: 'Could not display browser simulation', error: error.message } );
             }
         };
-        worker.onerror = event => { if(!this.closed && this.worker===worker && !worker.shuttingDown)this._setStatus( { ...this.state, ready: false, status: 'Browser simulation stopped', error: event.message || 'Physics worker failed' } ); };
+        worker.onerror = event => { if(!this.closed && this.worker===worker && !worker.shuttingDown){this.policy.disable();this._setStatus( { ...this.state, ready: false, status: 'Browser simulation stopped', error: event.message || 'Physics worker failed' } );} };
         return worker;
     }
 
@@ -275,6 +282,7 @@ export class SimulationBridge {
 	}
 
     send( payload ) {
+        if(payload.action==='land'||payload.action==='takeoff')this.policy?.disable();
         if ( payload.action === 'reset' ) { this.retry(); return; }
         if(this.worker && !this.worker.shuttingDown)this.worker.postMessage( payload );
     }
@@ -282,6 +290,7 @@ export class SimulationBridge {
     async retry() {
         if ( this.restarting ) return;
         this.restarting = true;
+        this.policy.disable();
         this._setStatus( { ...this.state, ready: false, error: null, status: 'Restarting browser simulation' } );
         try {
         await this._disposeWorker();
@@ -293,6 +302,7 @@ export class SimulationBridge {
     }
 
     close() {
+        this.policy.close();
         this.closed = true;
         this.assetAbort.abort();
         return this._disposeWorker().catch(error => this._setStatus({...this.state, ready:false, error:error.message}));

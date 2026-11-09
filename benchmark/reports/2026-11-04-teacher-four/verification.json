@@ -1,0 +1,79 @@
+{
+  "schema": "aerodock.benchmark.targeted_teacher_verification.v1",
+  "created_utc": "2026-11-04T16:55:41.126288+00:00",
+  "policy": "privileged-teacher-wave-gate-74cfb67e",
+  "policy_identity_sha256": "74cfb67e5838c3ca0677e7a8b4bc4bb69b9268a70b6a087e9df48823b2200278",
+  "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+  "checks": {
+    "four_unique_cases": true,
+    "all_policy_identity_match": true,
+    "all_plan_match": true,
+    "all_status_completed": true,
+    "all_condition_valid": true,
+    "all_strict_landings": true,
+    "no_unsafe_outcomes": true,
+    "zero_false_acquisitions": true,
+    "combined_audit_valid": true,
+    "frozen_teacher_preserved": true
+  },
+  "results": [
+    {
+      "case_id": "acquisition-far-visual-traffic-city-r0-bounded-v1",
+      "run": "rest_v2",
+      "result_path": "benchmark/revisions/teacher_four_20261104/runs/rest_v2/privileged-teacher-wave-gate-74cfb67e/acquisition-far-visual-traffic-city-r0-bounded-v1/result.json",
+      "result_sha256": "aa8cfe069a98dce3845a7ea7d556deab28750296952b57dd5222d73fbe5aee5a",
+      "trace_sha256": "112315e862a42d7278159907e015846b9e4dd21aeb14c30cc7c24fd3c8c5ed25"
+    },
+    {
+      "case_id": "acquisition-far-visual-traffic-rock-r1-bounded-v1",
+      "run": "rest_v2",
+      "result_path": "benchmark/revisions/teacher_four_20261104/runs/rest_v2/privileged-teacher-wave-gate-74cfb67e/acquisition-far-visual-traffic-rock-r1-bounded-v1/result.json",
+      "result_sha256": "a9b9305d3dc974a3fd76de5132a1b096692f6f17596d724ab34f951604c287b9",
+      "trace_sha256": "20df1de435da941c50304aef38248241557db88dd15c397c5b3e06f5e5f0690e"
+    },
+    {
+      "case_id": "combined-stress-visual-traffic-rock-r0-bounded-v1",
+      "run": "combined_v2",
+      "result_path": "benchmark/revisions/teacher_four_20261104/runs/combined_v2/privileged-teacher-wave-gate-74cfb67e/combined-stress-visual-traffic-rock-r0-bounded-v1/result.json",
+      "result_sha256": "a5770f2e4b70593ddf2ad4e176fa81769d46b33e36b1c2ba11c40ea037027330",
+      "trace_sha256": "985025ab0b463beee8278686fa979cba7050fc4ac10f78f8677847381e5107ea"
+    },
+    {
+      "case_id": "waves-waves-moderate-gravel-r0",
+      "run": "rest_v2",
+      "result_path": "benchmark/revisions/teacher_four_20261104/runs/rest_v2/privileged-teacher-wave-gate-74cfb67e/waves-waves-moderate-gravel-r0/result.json",
+      "result_sha256": "22b4392518eb11b87fd86e67428ebb469dccbfd615a12e924e03ceeb3f5ab166",
+      "trace_sha256": "e90c66a54e1a8cd5cc0dbbf8e577af0b542f99626b265588507d7f3803d275b8"
+    }
+  ],
+  "artifacts": {
+    "policy_id": {
+      "path": "benchmark/revisions/teacher_four_20261104/policy_id.json",
+      "sha256": "6e0993d782ceae688beef47a46e136993ee132c7c848c0245ad48e39c10b9dfd"
+    },
+    "source_receipts": {
+      "path": "benchmark/revisions/teacher_four_20261104/source_receipts.json",
+      "sha256": "b73ae65789dbc80c6e5243f5b57ec2011d2ace7ec7294e2cbe7bdf896d278c78"
+    },
+    "suite": {
+      "path": "benchmark/revisions/teacher_four_20261104/suite.json",
+      "sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946"
+    },
+    "audit": {
+      "path": "benchmark/revisions/teacher_four_20261104/audits/combined_v5/audit.json",
+      "sha256": "3f2248362b084135705970c989b7823718f77b0390d6a3c7b6b4bf38a22b3477"
+    },
+    "combined_summary": {
+      "path": "benchmark/revisions/teacher_four_20261104/runs/combined_v2/summary.json",
+      "sha256": "5e44c3a4d29abc57c2d461c324c344f8861b3d895b85621cd3f905fb92e3ae71"
+    },
+    "rest_summary": {
+      "path": "benchmark/revisions/teacher_four_20261104/runs/rest_v2/summary.json",
+      "sha256": "aa7ba7d5d9e14e3d0337c17c5e74aaa0e9f7a516a809bd22ccea75fdc149b7e4"
+    }
+  },
+  "excluded_attempt": {
+    "path": "benchmark/revisions/teacher_four_20261104/runs/teacher_combined_lowgate_20261104_v2",
+    "reason": "Windows path-length error before takeoff; no flight result."
+  }
+}

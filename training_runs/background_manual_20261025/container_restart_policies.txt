@@ -1,0 +1,4 @@
+/kzy-mobility-minio restart=always
+/kzy-mobility-redis restart=always
+/toolrator-postgres restart=unless-stopped
+/toolrator-meilisearch restart=unless-stopped

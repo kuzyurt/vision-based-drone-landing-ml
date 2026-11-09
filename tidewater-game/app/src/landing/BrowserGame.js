@@ -1,16 +1,20 @@
 import {clamp} from './BrowserForces.js';
 import {heightAt,chooseRoute,coastPoints} from './BrowserWorld.js';
+import {PolicyRecoveryClearance} from './PolicyRecoveryClearance.js';
+import {PolicyTelemetry} from './PolicyTelemetry.js';
+import {PolicyLandingResult} from './PolicyLandingResult.js';
 const vector=(a,i)=>Array.from(a.subarray(i*3,i*3+3));
 const viewPosition=p=>[p[0],p[2],-p[1]];
 export function pose(p,R) {return [R[0],R[1],R[2],p[0],R[6],R[7],R[8],p[2],-R[3],-R[4],-R[5],-p[1],0,0,0,1];}
 
 export class BrowserGame {
  constructor(mj,m,d,f,px4,c,map) {
-  Object.assign(this,{mj,m,d,f,px4,c,map});this.route=chooseRoute(map);this.coast=coastPoints(map);
+  Object.assign(this,{mj,m,d,f,px4,c,map});this.policyRecoveryClearance=new PolicyRecoveryClearance(map);this.route=chooseRoute(map);this.coast=coastPoints(map);
   this.mode='drone';this.camera='boat_dock';this.automatic=true;this.keys=[];this.lookX=0;this.lookY=0;this.motors=[0,0];
   this.progress=0;this.travelled=0;this.courseError=0;this.targetSpeed=2.8;this.launchComplete=false;this.takeoffPending=false;this.message=null;
-  this.nextControl=d.time;this.nextRadio=d.time;this.radio={connected:true,quality:100,status:'stable',simulated:true};
+  this.nextControl=d.time;this.nextRadio=d.time;this.radio={enabled:true,connected:true,quality:100,status:'stable',simulated:true};
   this.remote=null;this.samples=[];this.tx=0;this.rx=0;this.dropped=0;this.retryTime=0;this.retryPending=false;this.lastRx=0;this.randomState=0x1262;
+  this.ml={enabled:false,phase:'manual',error:null};this.mlGeneration=0;
  }
  static initializePose(mj,m,d,c,route) {
   d.qpos.set(c.qpos_initial);d.qvel.set(c.qvel_initial);mj.mj_setState(m,d,new Float64Array(c.eq_active_initial),mj.mjtState.mjSTATE_EQ_ACTIVE.value);
@@ -28,15 +32,18 @@ export class BrowserGame {
   mj.mj_forward(m,d);
  }
  input(p) {
+  if(p.action==='ml') {this.setPolicy(!!p.enabled);return;}
+  if(p.action==='land'||p.action==='takeoff')this.setPolicy(false);
   if(p.sequence!==undefined)this.inputSequence=p.sequence;
   if(p.mode && p.mode!==this.mode){this.mode=p.mode;this.keys=[];this.lookX=this.lookY=0;}
   if(p.keys)this.keys=p.keys;this.lookX+=p.look_x||0;this.lookY+=p.look_y||0;if(p.motors)this.motors=p.motors.map(v=>clamp(v,0,100));
   if(p.action==='camera')this.camera=p.name;
   if(p.action==='autopilot')this.automatic=!!p.enabled;
   if(p.action==='takeoff'){this.mode='drone';this.takeoffPending=true;this.launchComplete=false;}
-  if(p.action==='land'){this.px4.targetHeight=.204;this.px4.vehicleCommand(21,[0,0,0,NaN,NaN,NaN,NaN]);this.keys=[];}
+  if(p.action==='land'){this.takeoffPending=false;this.px4.landingRequested=true;this.px4.targetHeight=.204;this.px4.vehicleCommand(21,[0,0,0,NaN,NaN,NaN,NaN]);this.keys=[];}
   if(p.action==='hover')this.keys=[];
-  if(p.action==='reconnect'){this.retryTime=this.d.time+1.2;this.retryPending=true;}
+  if(p.action==='radio')this.setRadioEnabled(!!p.enabled);
+  if(p.action==='reconnect' && this.radio.enabled!==false){this.retryTime=this.d.time+1.2;this.retryPending=true;}
   if(p.action==='lid' || p.action==='platform') {
    const s=this.mechanisms();
    if(s.mechanism_busy){this.message='Wait for the current mechanism movement to finish';return;}
@@ -49,6 +56,14 @@ export class BrowserGame {
    }
    this.message=null;
   }
+ }
+ setPolicy(enabled) {
+  if(enabled===this.ml.enabled)return;
+  if(enabled && (!this.px4.armed || this.px4.landed || this.px4.landingRequested || !this.px4.observation()[0])){this.message='Take off before handing control to ML';return;}
+  this.mlGeneration++;this.cancelPolicy?.();this.policyFrame=null;if(this.mode==='drone')this.keys=[];this.lookX=this.lookY=0;
+  this.ml={enabled,phase:enabled?'acquire':'manual',error:null};
+  if(enabled){this.policyTelemetry=new PolicyTelemetry(this);this.landingResult=new PolicyLandingResult(this);this.mlStarted=this.d.time;this.mlGroundedAt=null;this.mlWasAirborne=true;this.px4.vehicleCommand(176,[1,6]);this.px4.policyPilot([0,0,0,0,0,0]);}
+  else {this.px4.manualHold();this.policyTelemetry=null;}
  }
  mechanisms() {
   const names=['platform_slide','aft_lid_slide','fore_lid_slide'],positions=names.map(n=>this.d.qpos[this.c.boat.qadr[n]]),limits=[.4,.46,.46];
@@ -75,15 +90,43 @@ export class BrowserGame {
  }
  control() {
   const p=this.px4,obs=p.observation();
-  if(this.takeoffPending && this.boatSpeed()<.15 && obs[0]) {this.takeoffPending=false;p.flightRequested=true;p.targetHeight=1.5;p.armRequestTime=this.d.time;p.lastArmTry=0;}
+  if(this.takeoffPending && this.boatSpeed()<.15 && obs[0]) {this.takeoffPending=false;p.landingRequested=false;p.flightRequested=true;p.targetHeight=1.5;p.armRequestTime=this.d.time;p.lastArmTry=0;}
   if(p.armed && this.d.xpos[this.c.drone.base*3+2]>this.d.site_xpos[this.c.pad_site*3+2]+1)this.launchComplete=true;
   const hold=this.takeoffPending || (!this.launchComplete && this.mode==='drone');
   if(hold || !obs[0])this.f.power=[0,0];else if(this.automatic)this.routeControl();else this.f.power=[...this.motors];
-  p.pilot(this.mode==='drone'?this.keys:[],this.mode==='drone'?this.lookX:0,this.mode==='drone'?this.lookY:0);this.lookX=this.lookY=0;
+  if(!this.ml.enabled)p.pilot(this.mode==='drone'?this.keys:[],this.mode==='drone'?this.lookX:0,this.mode==='drone'?this.lookY:0);this.lookX=this.lookY=0;
  }
  async advance() {
-  if(this.d.time+1e-8>=this.nextControl){this.control();this.nextControl+=.04;}
+  if(this.d.time+1e-8>=this.nextControl){
+   this.control();
+   if(this.ml.enabled){
+    const generation=this.mlGeneration;
+    if(this.px4.landed && this.mlWasAirborne){
+     if(this.px4.armed){if(this.d.time-this.px4.lastDisarmTry>1){this.px4.vehicleCommand(400,[0]);this.px4.lastDisarmTry=this.d.time;}this.px4.policyPilot([0,0,0,0,0,0]);}
+     else {this.px4.flightRequested=false;this.ml.phase='confirming deck contact';this.mlGroundedAt??=this.d.time;if(this.ml.outcome?.landed){this.setPolicy(false);this.ml.phase='landed on boat';this.px4.targetHeight=.204;}else if(this.d.time-this.mlGroundedAt>5){this.setPolicy(false);this.ml.phase='landing not confirmed on boat';}}
+    }else {
+     try {
+      // A complete, timestamped decision is computed while the next 40 ms of
+      // physics advances. At its boundary we wait for any overrun, never drop
+      // a frame, lower the policy rate or apply a result after manual takeover.
+      const frame=this.policyFrame;
+      if(frame){const {result,error}=await frame.promise;if(error)throw error;
+       if(result && this.ml.enabled && generation===this.mlGeneration){
+        if(result.intervention==='mission_deadline'||result.intervention==='bounded_recovery_exhausted'){const exhausted=result.intervention==='bounded_recovery_exhausted';this.setPolicy(false);this.ml.phase=exhausted?'recovery exhausted · manual hold':'mission deadline · manual hold';this.message=exhausted?'ML could not recover a safe landing view · manual control restored':'ML search timed out · manual control restored';}
+        else {this.px4.policyPilot(result.action,frame.yaw);this.policyTelemetry.previous=[...result.action];this.ml.action=[...result.action];this.ml.phase=result.diagnostics?.control_phase||'tracking';this.ml.diagnostics=result.diagnostics;this.ml.timings={...result.timings,command_age_s:this.d.time-frame.time};this.ml.intervention=result.intervention;}
+       }
+      }
+      if(this.ml.enabled&&generation===this.mlGeneration){
+       const observation=this.policyTelemetry.sample(),payload={state:this.state(),observation,elapsed:this.d.time-this.mlStarted,generation};
+       this.policyFrame={time:this.d.time,yaw:observation.px4.attitude_ned_rad[2],promise:Promise.resolve(this.requestPolicy(payload)).then(result=>({result}),error=>({error}))};
+      }
+     }catch(error){if(this.ml.enabled&&generation===this.mlGeneration){this.setPolicy(false);this.ml.error=error.message;this.message='ML stopped: '+error.message;}}
+    }
+   }
+   this.nextControl+=.04;
+  }
   await this.px4.advance();
+  if(this.ml.enabled&&this.landingResult){this.ml.outcome=this.landingResult.update(.004);if(this.ml.outcome.collision_failure){this.setPolicy(false);this.ml.phase='collision';this.ml.error='ML landing stopped after drone collision';}}
   if(this.d.time>=this.nextRadio){this.updateRadio();this.nextRadio=this.d.time+.25;}
  }
  vehicle(body) {
@@ -92,10 +135,17 @@ export class BrowserGame {
  }
  vehicles() {
   const p=this.px4,obs=p.observation(),u=this.c.drone,drone=this.vehicle(u.base),boat=this.vehicle(this.c.boat.body);
-  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,landed:p.landed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,takeoff_pending:this.takeoffPending});
+  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,landed:p.landed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,landing_requested:p.landingRequested,takeoff_pending:this.takeoffPending});
   Object.assign(boat,this.mechanisms(),this.f.drainage.status(),{speed:this.boatSpeed(),port_power:this.f.power[0],starboard_power:this.f.power[1]});return {drone,boat};
  }
+ setRadioEnabled(enabled) {
+  if(enabled===(this.radio.enabled!==false))return;
+  this.retryPending=enabled;this.retryTime=enabled?this.d.time+1.2:0;
+  if(enabled)this.samples=[];
+  this.radio={...this.radio,enabled,connected:false,status:enabled?'handshake':'disabled',quality:0,rssi:undefined,snr:undefined,latency:undefined,packet_loss:undefined,telemetry_age_s:this.d.time-this.lastRx};
+ }
  updateRadio() {
+  if(this.radio.enabled===false){this.radio.telemetry_age_s=this.d.time-this.lastRx;return;}
   const vehicles=this.vehicles(),a=[...vehicles.boat.position],b=vehicles.drone.position;a[1]+=2.5;
   const distance=Math.hypot(...a.map((v,i)=>v-b[i])),steps=Math.max(4,Math.min(80,Math.trunc(distance/4)));let blocked=false;
   for(let i=0;i<steps;i++) {
@@ -111,7 +161,7 @@ export class BrowserGame {
   let connected=this.radio.connected;
   if(this.d.time>=this.retryTime && (quality<8 || this.samples.length>=4 && loss>78))connected=false;
   else if(this.retryPending && this.d.time>=this.retryTime && quality>24 && loss<62){connected=true;this.retryPending=false;}
-  this.radio={status:this.d.time<this.retryTime?'handshake':!connected?'lost':quality<30?'critical':quality<62?'degraded':'stable',connected,quality,rssi:-42-20*Math.log10(Math.max(distance,1))-(blocked?38:0),snr:clamp(10.5-(100-quality)*.38,-20,10.5),latency:Math.trunc(36+(100-quality)*1.2),packet_loss:loss,distance,tx:this.tx,rx:this.rx,dropped:this.dropped,simulated:true,frequency_mhz:868,spreading_factor:7,telemetry_age_s:this.d.time-this.lastRx};
+  this.radio={enabled:true,status:this.d.time<this.retryTime?'handshake':!connected?'lost':quality<30?'critical':quality<62?'degraded':'stable',connected,quality,rssi:-42-20*Math.log10(Math.max(distance,1))-(blocked?38:0),snr:clamp(10.5-(100-quality)*.38,-20,10.5),latency:Math.trunc(36+(100-quality)*1.2),packet_loss:loss,distance,tx:this.tx,rx:this.rx,dropped:this.dropped,simulated:true,frequency_mhz:868,spreading_factor:7,telemetry_age_s:this.d.time-this.lastRx};
  }
  state(realtimeFactor=1,includeLayout=false) {
   const {d,m,c,px4:p}=this,vehicles=this.vehicles(),obs=p.observation(),views={};
@@ -119,6 +169,7 @@ export class BrowserGame {
   const bodies=c.bodies.map(([name,id])=>[name,pose(vector(d.xpos,id),d.xmat.subarray(id*9,id*9+9))]);
   const hull=this.mj.mj_name2id(m,this.mj.mjtObj.mjOBJ_GEOM.value,'hull_contact');
   const state={...vehicles,ready:!!obs[0],status:p.armed?'Flying · PX4 browser':obs[0]?'PX4 ready · press Take off':'PX4 warming sensors',parameter_warnings:p.parameterWarnings||[],input_sequence:this.inputSequence,source:'PX4 v1.16 + MuJoCo 3.14 · WebAssembly',physics_hz:1000,sensor_hz:250,controller_lag_ms:Math.max(0,(p.lastSensor-p.actuators[1])/1000),time_s:d.time,tick:this.f.tick,views,bodies,hull_pose:pose(vector(d.geom_xpos,hull),d.geom_xmat.subarray(hull*9,hull*9+9)),mode:this.mode,boat_camera:this.camera,boat_autopilot:this.automatic,radio:this.radio,remote:this.remote,message:this.message,messages:[],wind:[0,0,0],route:{valid:true,length_m:this.route.length,progress_m:this.progress,laps:Math.floor(this.travelled/this.route.length),error_m:this.courseError,target_speed_m_s:this.targetSpeed},waves:c.boat.waves.map(([kx,ky,a,w,phase])=>[kx,-ky,a,phase-d.time*w]),wave_height_m:.05,realtime_factor:realtimeFactor};
+  state.ml={...this.ml};
   if(includeLayout){state.geoms=c.visual_layout;state.coastline=this.coast;state.route.points=this.route.points.map(([x,y])=>[x,-y]);}
   return state;
  }

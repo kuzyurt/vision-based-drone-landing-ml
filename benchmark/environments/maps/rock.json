@@ -1,0 +1,29 @@
+{
+  "kind": "rock",
+  "generator": "AERODOCK_MuJoCo/usv/procedural_world.py \u2192 BoatSim.new_world",
+  "scene_receipt": "../runtime.json",
+  "worlds": {
+    "1": {
+      "world_seed": 827401,
+      "path_seed": 828401,
+      "world_rotation_deg": 233,
+      "reverse": true
+    },
+    "0": {
+      "world_seed": 827400,
+      "path_seed": 828400,
+      "world_rotation_deg": 172,
+      "reverse": false
+    }
+  },
+  "cases": [
+    "acquisition-far-radio-clear-rock-r1",
+    "acquisition-far-visual-clear-rock-r1",
+    "acquisition-far-radio-traffic-rock-r1",
+    "acquisition-far-visual-traffic-rock-r1",
+    "waves-waves-moderate-rock-r1",
+    "combined-stress-visual-traffic-rock-r0"
+  ],
+  "plan_sha256": "858cd9e7da39c86dc72e0635289af03b2e908a1807ef2804f3152705afbee737",
+  "procedural_not_static_xml": true
+}

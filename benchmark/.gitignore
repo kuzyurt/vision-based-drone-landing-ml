@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+# Preserve benchmark definitions, inventory and actual weights. Future per-flight
+# traces and duplicated runtime staging bundles are large local run artifacts.
+runs/

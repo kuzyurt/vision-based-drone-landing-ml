@@ -1,0 +1,298 @@
+{
+  "description": "Real MuJoCo camera frames with search and pad-finder labels.",
+  "profile": "near",
+  "search": {
+    "task": "search",
+    "profile": "near",
+    "input": {
+      "width": 640,
+      "height": 360,
+      "channels": 3,
+      "encoding": "RGB"
+    },
+    "target": {
+      "grid": [
+        45,
+        80
+      ],
+      "heat": "boat-center presence",
+      "offset": "sub-cell x/y correction",
+      "evidence": [
+        "unknown_boat",
+        "target_or_similar",
+        "different_boat",
+        "target_boat"
+      ],
+      "identity": "target-vs-different for valid cells"
+    },
+    "samples": [
+      {
+        "sample": 1,
+        "case": "very_close_sunlit",
+        "path": "search\\eligible\\search_01",
+        "split": "eligible",
+        "seed": 20261107,
+        "map_kind": "beach",
+        "distance_m": 8.0,
+        "weather": "sunlit",
+        "pad_visible": true,
+        "training_eligible": true,
+        "target_label_class": "full",
+        "center_supervised": true,
+        "evidence_supervised": true,
+        "review_only": false,
+        "rule_error": null,
+        "target": {
+          "key": "target",
+          "bbox": [
+            267,
+            145,
+            365,
+            234
+          ],
+          "full_bbox": [
+            211.75652410218726,
+            85.82598114437413,
+            430.15998760913305,
+            286.52039106341294
+          ],
+          "center_px": [
+            322.9165977943003,
+            185.28858826209134
+          ],
+          "visible_center_px": [
+            316.0,
+            189.5
+          ],
+          "extent_px": 98,
+          "full_extent_px": 218,
+          "depth_m": 8.79663000458311,
+          "clipped": false,
+          "center_in_frame": true,
+          "visible_fraction": 0.19898543330974258,
+          "clipped_fraction": 0.0,
+          "frame_coverage": 0.037855902777777777,
+          "label_class": "full",
+          "detection_valid": true,
+          "evidence": "target_boat",
+          "identity_valid": true,
+          "pad_visible": true,
+          "pad_extent_px": 38.519208175591245,
+          "overlap": false,
+          "occluded_by": null
+        },
+        "rules_checked": [
+          "R001",
+          "R004",
+          "R005",
+          "R006",
+          "R007"
+        ]
+      },
+      {
+        "sample": 2,
+        "case": "close_hazy",
+        "path": "search\\eligible\\search_02",
+        "split": "eligible",
+        "seed": 20261207,
+        "map_kind": "island",
+        "distance_m": 14.0,
+        "weather": "hazy",
+        "pad_visible": true,
+        "training_eligible": true,
+        "target_label_class": "full",
+        "center_supervised": true,
+        "evidence_supervised": true,
+        "review_only": false,
+        "rule_error": null,
+        "target": {
+          "key": "target",
+          "bbox": [
+            281,
+            148,
+            365,
+            210
+          ],
+          "full_bbox": [
+            259.72553641209834,
+            125.39789538376411,
+            381.82840545902843,
+            244.51938633595358
+          ],
+          "center_px": [
+            322.40999669773424,
+            185.90229715430556
+          ],
+          "visible_center_px": [
+            323.0,
+            179.0
+          ],
+          "extent_px": 84,
+          "full_extent_px": 122,
+          "depth_m": 14.851390855762487,
+          "clipped": false,
+          "center_in_frame": true,
+          "visible_fraction": 0.35805932316093597,
+          "clipped_fraction": 0.0,
+          "frame_coverage": 0.022604166666666668,
+          "label_class": "full",
+          "detection_valid": true,
+          "evidence": "target_boat",
+          "identity_valid": true,
+          "pad_visible": true,
+          "pad_extent_px": 22.316188780571625,
+          "overlap": false,
+          "occluded_by": null
+        },
+        "rules_checked": [
+          "R001",
+          "R004",
+          "R005",
+          "R006",
+          "R007"
+        ]
+      },
+      {
+        "sample": 3,
+        "case": "half_visible_overcast",
+        "path": "search\\review\\search_03",
+        "split": "review",
+        "seed": 20261307,
+        "map_kind": "gravel",
+        "distance_m": 6.6,
+        "weather": "overcast",
+        "pad_visible": true,
+        "training_eligible": false,
+        "target_label_class": "ignore",
+        "center_supervised": false,
+        "evidence_supervised": false,
+        "review_only": true,
+        "rule_error": "R005: target is not labelable: 0.18 visible, 130 px",
+        "target": {
+          "key": "target",
+          "bbox": [
+            0,
+            162,
+            112,
+            292
+          ],
+          "full_bbox": [
+            -116.05346867050703,
+            84.38992356476332,
+            182.80002546750868,
+            353.1752884975841
+          ],
+          "center_px": [
+            39.066753269477715,
+            217.97796697820493
+          ],
+          "visible_center_px": [
+            56.0,
+            227.0
+          ],
+          "extent_px": 130,
+          "full_extent_px": 298,
+          "depth_m": 6.543683327676165,
+          "clipped": true,
+          "center_in_frame": true,
+          "visible_fraction": 0.18125809818041125,
+          "clipped_fraction": 0.8187419018195887,
+          "frame_coverage": 0.06319444444444444,
+          "label_class": "ignore",
+          "detection_valid": false,
+          "evidence": "unknown_boat",
+          "identity_valid": false,
+          "pad_visible": true,
+          "pad_extent_px": 52.1616035365553,
+          "overlap": false,
+          "occluded_by": null
+        },
+        "rules_checked": []
+      }
+    ]
+  },
+  "pad_finder": {
+    "task": "pad_finder",
+    "profile": "near",
+    "input": {
+      "width": 640,
+      "height": 360,
+      "channels": 3,
+      "encoding": "RGB"
+    },
+    "target": {
+      "grid": [
+        45,
+        80
+      ],
+      "pad_heat": "pad-center presence",
+      "pad_offset": "sub-cell x/y correction",
+      "pad_presence": "scalar"
+    },
+    "samples": [
+      {
+        "sample": 1,
+        "case": "very_close_sunlit",
+        "path": "pad_finder\\review\\pad_01",
+        "split": "review",
+        "seed": 20261107,
+        "map_kind": "island",
+        "distance_m": 4.8,
+        "weather": "sunlit",
+        "pad_pixel": [
+          320.0975961450134,
+          169.7613144967419
+        ],
+        "pad_extent_px": 62.3499347377532,
+        "training_eligible": false,
+        "pad_label_class": "center",
+        "pad_center_valid": true,
+        "review_only": true,
+        "rule_error": "R012: pad range 4.80 m is outside 10-20 m",
+        "rules_checked": []
+      },
+      {
+        "sample": 2,
+        "case": "close_hazy",
+        "path": "pad_finder\\review\\pad_02",
+        "split": "review",
+        "seed": 20261207,
+        "map_kind": "beach",
+        "distance_m": 7.2,
+        "weather": "hazy",
+        "pad_pixel": [
+          320.06521269383916,
+          173.09095533963716
+        ],
+        "pad_extent_px": 41.6615554276492,
+        "training_eligible": false,
+        "pad_label_class": "center",
+        "pad_center_valid": true,
+        "review_only": true,
+        "rule_error": "R012: pad range 7.20 m is outside 10-20 m",
+        "rules_checked": []
+      },
+      {
+        "sample": 3,
+        "case": "half_visible_overcast",
+        "path": "pad_finder\\review\\pad_03",
+        "split": "review",
+        "seed": 20261307,
+        "map_kind": "gravel",
+        "distance_m": 5.4,
+        "weather": "overcast",
+        "pad_pixel": [
+          61.98312267702204,
+          199.58099485524727
+        ],
+        "pad_extent_px": 61.08818673734776,
+        "training_eligible": false,
+        "pad_label_class": "center",
+        "pad_center_valid": true,
+        "review_only": true,
+        "rule_error": "R012: pad range 5.40 m is outside 10-20 m",
+        "rules_checked": []
+      }
+    ]
+  }
+}

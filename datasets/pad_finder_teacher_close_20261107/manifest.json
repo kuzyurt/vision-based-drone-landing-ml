@@ -1,0 +1,147 @@
+{
+  "task": "pad_finder_teacher_heat_review",
+  "model": "Observable teacher v60 + v61 recognition",
+  "pad_head": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/base_r15/spatial_acquisition.pt",
+  "pad_head_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+  "encoder_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+  "scene": {
+    "map_kind": "island",
+    "range_m": 0.95,
+    "altitude_m": 0.45,
+    "weather": "overcast"
+  },
+  "heat": {
+    "grid": [
+      45,
+      80
+    ],
+    "activation": "sigmoid(logits)",
+    "overlay_alpha": 0.55
+  },
+  "cases": [
+    {
+      "key": "center",
+      "title": "Centered \u2014 hull 91%",
+      "subtitle": "No lateral push; the pad is fully where it should be.",
+      "lateral": 0.0,
+      "pan": 0.0,
+      "boat": 0.911,
+      "true": [
+        320.5,
+        121.9
+      ],
+      "pred": [
+        322.6,
+        123.1
+      ],
+      "pad_class": "center",
+      "visible": 0.853,
+      "presence": 0.7365,
+      "error_px": 2.418677324489579,
+      "dataset_presence": 1.0,
+      "dataset_center_valid": true,
+      "dataset_label_class": "center",
+      "dataset_visible_fraction": 0.8525671755390899,
+      "dataset_ignore_cells": 0,
+      "dataset_heat_cells": 1,
+      "dataset_pad_pixel": [
+        320.5413874356368,
+        121.94202103356398
+      ],
+      "dataset_rgb_max_diff": 0.0
+    },
+    {
+      "key": "push_025",
+      "title": "Pushed 0.25 m \u2014 presence 0.25",
+      "subtitle": "A small lateral nudge; pad still visible at the left, but the scalar presence collapses.",
+      "lateral": 0.25,
+      "pan": 0.0,
+      "boat": 0.84,
+      "true": [
+        176.4,
+        121.9
+      ],
+      "pred": [
+        178.7,
+        122.1
+      ],
+      "pad_class": "center",
+      "visible": 0.853,
+      "presence": 0.2545,
+      "error_px": 2.308679276123021,
+      "dataset_presence": 1.0,
+      "dataset_center_valid": true,
+      "dataset_label_class": "center",
+      "dataset_visible_fraction": 0.8525671755390923,
+      "dataset_ignore_cells": 0,
+      "dataset_heat_cells": 1,
+      "dataset_pad_pixel": [
+        176.42934594181386,
+        121.94202103356594
+      ],
+      "dataset_rgb_max_diff": 0.0
+    },
+    {
+      "key": "push_pan",
+      "title": "Pushed + camera 20\u00b0 \u2014 presence 0.31",
+      "subtitle": "Hull fills the view; camera points across the deck and the pad is visibly off-centre.",
+      "lateral": 0.25,
+      "pan": 20.0,
+      "boat": 0.884,
+      "true": [
+        371.1,
+        116.7
+      ],
+      "pred": [
+        371.0,
+        116.2
+      ],
+      "pad_class": "center",
+      "visible": 0.846,
+      "presence": 0.3104,
+      "error_px": 0.509901951359283,
+      "dataset_presence": 1.0,
+      "dataset_center_valid": true,
+      "dataset_label_class": "center",
+      "dataset_visible_fraction": 0.8462941558133488,
+      "dataset_ignore_cells": 0,
+      "dataset_heat_cells": 1,
+      "dataset_pad_pixel": [
+        371.0784668624283,
+        116.67159091847942
+      ],
+      "dataset_rgb_max_diff": 0.0
+    },
+    {
+      "key": "edge",
+      "title": "Pad at frame edge \u2014 46% visible",
+      "subtitle": "Panned away from the pad; only a strip remains at the right edge, with the hull filling the rest.",
+      "lateral": 0.0,
+      "pan": 30.0,
+      "boat": 0.633,
+      "true": [
+        631.8,
+        149.7
+      ],
+      "pred": [
+        630.5,
+        147.4
+      ],
+      "pad_class": "presence_only",
+      "visible": 0.459,
+      "presence": 0.0921,
+      "error_px": 2.641968962724544,
+      "dataset_presence": 1.0,
+      "dataset_center_valid": false,
+      "dataset_label_class": "presence_only",
+      "dataset_visible_fraction": 0.45877687840760034,
+      "dataset_ignore_cells": 1118,
+      "dataset_heat_cells": 0,
+      "dataset_pad_pixel": [
+        631.8253444280025,
+        149.72797181832084
+      ],
+      "dataset_rgb_max_diff": 0.0
+    }
+  ]
+}

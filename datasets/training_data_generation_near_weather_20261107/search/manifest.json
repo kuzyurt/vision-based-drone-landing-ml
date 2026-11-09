@@ -1,0 +1,136 @@
+{
+  "task": "search",
+  "profile": "near",
+  "input": {
+    "width": 640,
+    "height": 360,
+    "channels": 3,
+    "encoding": "RGB"
+  },
+  "target": {
+    "grid": [
+      45,
+      80
+    ],
+    "heat": "boat-center presence",
+    "offset": "sub-cell x/y correction",
+    "evidence": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "identity": "target-vs-different for valid cells"
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "case": "very_close_sunlit",
+      "path": "search\\search_01",
+      "seed": 20261107,
+      "map_kind": "beach",
+      "distance_m": 8.0,
+      "weather": "sunlit",
+      "pad_visible": true,
+      "training_eligible": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          267,
+          145,
+          365,
+          234
+        ],
+        "center_px": [
+          316.0,
+          189.5
+        ],
+        "extent_px": 98,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true
+      },
+      "rules_checked": [
+        "R001",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 2,
+      "case": "close_hazy",
+      "path": "search\\search_02",
+      "seed": 20261207,
+      "map_kind": "island",
+      "distance_m": 14.0,
+      "weather": "hazy",
+      "pad_visible": true,
+      "training_eligible": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          281,
+          148,
+          365,
+          210
+        ],
+        "center_px": [
+          323.0,
+          179.0
+        ],
+        "extent_px": 84,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true
+      },
+      "rules_checked": [
+        "R001",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 3,
+      "case": "half_visible_overcast",
+      "path": "search\\search_03",
+      "seed": 20261307,
+      "map_kind": "gravel",
+      "distance_m": 6.6,
+      "weather": "overcast",
+      "pad_visible": true,
+      "training_eligible": false,
+      "review_only": true,
+      "rule_error": "R005: target boat is clipped by the image edge",
+      "target": {
+        "key": "target",
+        "bbox": [
+          0,
+          162,
+          112,
+          292
+        ],
+        "center_px": [
+          56.0,
+          227.0
+        ],
+        "extent_px": 130,
+        "clipped": true,
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": true
+      },
+      "rules_checked": []
+    }
+  ]
+}

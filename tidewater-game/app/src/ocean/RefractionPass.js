@@ -43,13 +43,14 @@ const _v = new Vector3();
 
 export class RefractionPass {
 
-	constructor( { meshRenderer, scene, camera, sceneRenderer, scale = 0.5 } ) {
+	constructor( { meshRenderer, scene, camera, sceneRenderer, scale = 0.5, frameBlock = FrameUniforms } ) {
 
 		this.meshRenderer = meshRenderer;
 		this.scene = scene;
 		this.camera = camera;
 		this.sceneRenderer = sceneRenderer;
 		this.scale = scale;
+		this.frameBlock = frameBlock;
 		this.enabled = true;
 		this.guard = REFRACTION_GUARD;
 		// the wider view: the main camera with the guard applied to its projection (culling uses it),
@@ -143,7 +144,7 @@ export class RefractionPass {
 		const rt = this.target;
 		// this frame's camera (with its jitter, so the temporal resolve sees the seabed as in the scene)
 		// through the guard band
-		const F = FrameUniforms.fields;
+		const F = this.frameBlock.fields;
 		const cam = this._camera;
 		cam.projectionMatrix.multiplyMatrices( _guard, this.camera.projectionMatrix );
 		_prevVP.multiplyMatrices( _guard, F.prevViewProjNoJitter.value );

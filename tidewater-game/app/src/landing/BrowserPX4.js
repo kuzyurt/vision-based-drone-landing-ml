@@ -1,5 +1,6 @@
 import { BrowserNoise } from './BrowserNoise.js';
 import { clamp } from './BrowserForces.js';
+import {velocityPacket,estimatorObservation} from './PolicyTelemetry.js';
 
 const FRD = [1,-1,-1];
 const NED = vector => [vector[1],vector[0],-vector[2]];
@@ -10,8 +11,9 @@ export class BrowserPX4 {
 		this.pointer=module._malloc(64*8);this.raw=module._malloc(4096);
 		this.noise=new BrowserNoise(configuration.rng_state.state,configuration.rng_state.inc);
 		this.sensorCount=0;this.lastSensor=0;this.firstActuator=false;this.armed=false;this.landed=true;
-		this.flightRequested=false;this.targetHeight=0;this.armRequestTime=0;this.lastArmTry=0;this.lastDisarmTry=0;
-		this.lastPowerReport=-1e9;this.status=new Float64Array(16);this.actuators=new Float64Array(19);
+		this.flightRequested=false;this.landingRequested=false;this.targetHeight=0;this.armRequestTime=0;this.lastArmTry=0;this.lastDisarmTry=0;
+		this.lastPowerReport=-1e9;this.status=new Float64Array(20);this.actuators=new Float64Array(19);
+		this.originENU=Array.from(data.site_xpos.subarray(configuration.gps_site*3,configuration.gps_site*3+3));this.policySequence=0;
 	}
 	buffer() {return this.module.HEAPF64.subarray(this.pointer/8,this.pointer/8+64);}
 	command(command) {return this.module.ccall('tw_command','number',['string'],[command]);}
@@ -47,24 +49,41 @@ export class BrowserPX4 {
 		}
 	}
 	observation() {
-		this.module._tw_observation(this.pointer);this.status.set(this.buffer().subarray(0,16));
-		this.landed=!!this.status[12];return this.status;
+		this.module._tw_observation(this.pointer);this.status.set(this.buffer().subarray(0,20));
+		this.landed=!!this.status[12];
+		// A flight request is intent, not proof that the aircraft is airborne.
+		// Only confirmed landing/disarming ends it; a grounded arming sequence
+		// with a takeoff target must remain active until PX4 actually arms.
+		if(this.landed && !this.armed && !this.status[11] && (this.landingRequested || this.flightRequested && this.targetHeight<.23)) {
+			this.flightRequested=false;this.landingRequested=false;
+		}
+		return this.status;
 	}
 	vehicleCommand(command,parameters=[]) {
 		const values=this.buffer();values.fill(0);values[0]=command;values.set(parameters,1);
 		this.module._tw_vehicle_command(this.pointer);
 	}
+	policyPilot(action,yawNed) {
+		if(action.length!==6 || !action.every(Number.isFinite))throw new Error('Invalid ML action');
+		const yaw=yawNed??estimatorObservation(this).attitude_ned_rad[2],packet=velocityPacket(action,yaw,this.data.time,this.policySequence++);
+		this.module.HEAPU8.set(packet,this.raw);this.module._tw_offboard_write(this.raw,packet.length);this.module._tw_heartbeat();
+		this.forces.pan+=action[4]*.04;this.forces.tilt=clamp(this.forces.tilt+action[5]*.04,-61*Math.PI/180,140*Math.PI/180);
+		if(this.data.time-this.lastPowerReport>.2){const values=this.buffer();values[0]=this.forces.voltage;values[1]=this.forces.current;values[2]=this.forces.charge;values[3]=this.forces.current>.1?Math.trunc(3600*this.forces.charge/this.forces.current):0;this.module._tw_battery(this.pointer);this.lastPowerReport=this.data.time;}
+	}
+	manualHold() {this.targetHeight=Math.max(.205,.216-this.observation()[3]);this.landingRequested=false;}
 	pilot(keys,lookX=0,lookY=0) {
 		const t=this.data.time,f=this.forces,held=key=>keys.includes(key);
 		f.pan+=lookX*.0022+((held('ArrowLeft')?1:0)-(held('ArrowRight')?1:0))*Math.PI/180*50*.04;
 		f.tilt-=lookY*.0022;f.tilt+=((held('ArrowDown')?1:0)-(held('ArrowUp')?1:0))*Math.PI/180*40*.04;
 		f.tilt=clamp(f.tilt,-61*Math.PI/180,140*Math.PI/180);
-		this.targetHeight=clamp(this.targetHeight+((held('KeyR')?1:0)-(held('KeyF')?1:0))*.6*.04,.205,8);
+		this.targetHeight=clamp(this.targetHeight+((held('KeyR')?1:0)-(held('KeyF')?1:0))*.6*.04,.205,Math.max(8,this.targetHeight));
 		this.module._tw_heartbeat();
 		if(t-this.lastPowerReport>.2) {
 			const values=this.buffer();values[0]=f.voltage;values[1]=f.current;values[2]=f.charge;values[3]=f.current>.1?Math.trunc(3600*f.charge/f.current):0;
 			this.module._tw_battery(this.pointer);this.lastPowerReport=t;
 		}
+		// Also disarm a late arming response after a grounded takeoff cancellation.
+		if(this.armed && this.targetHeight<.23 && this.landed && t-this.lastDisarmTry>1) {this.vehicleCommand(400,[0]);this.lastDisarmTry=t;}
 		if(!this.flightRequested) return;
 		const d=this.data,b=this.configuration.drone.base,R=d.xmat.subarray(b*9,b*9+9);
 		let x=(held('KeyW')?1:0)-(held('KeyS')?1:0),y=(held('KeyA')?1:0)-(held('KeyD')?1:0);
@@ -74,10 +93,9 @@ export class BrowserPX4 {
 		values[5]=((held('KeyE')?1:0)-(held('KeyQ')?1:0))*.5;
 		this.module._tw_setpoint(this.pointer);
 		const observation=this.observation();
-		if(!this.armed && observation[0] && t>=8 && t-this.armRequestTime>2 && t-this.lastArmTry>2) {
+		if(!this.landingRequested && this.flightRequested && !this.armed && observation[0] && t>=8 && t-this.armRequestTime>2 && t-this.lastArmTry>2) {
 			this.vehicleCommand(176,[1,6]);this.vehicleCommand(400,[1]);this.lastArmTry=t;
 		}
-		if(this.armed && this.targetHeight<.23 && this.landed && t-this.lastDisarmTry>1) {this.vehicleCommand(400,[0]);this.lastDisarmTry=t;}
 	}
 	sensors() {
 		const d=this.data,c=this.configuration,b=c.drone.base,R=d.xmat.subarray(b*9,b*9+9),s=d.sensordata;

@@ -1,4 +1,5 @@
 import { GPU } from '../gpu/GPU.js';
+import { FrameUniforms } from './Frame.js';
 import { RenderTarget } from '../gpu/Texture.js';
 import { Material } from './Material.js';
 import { FullscreenPass } from './FullscreenPass.js';
@@ -34,11 +35,12 @@ export const DEPTH_FORMAT = 'depth32float';
 // (r = the visible surface is seen from below, g = a water surface is the visible surface).
 export class SceneRenderer {
 
-	constructor( meshRenderer, scene, camera ) {
+	constructor( meshRenderer, scene, camera, { frameBlock = FrameUniforms } = {} ) {
 
 		this.meshRenderer = meshRenderer;
 		this.scene = scene;
 		this.camera = camera;
+		this.frameBlock = frameBlock;
 		this.scale = 1;
 		this.width = 1;
 		this.height = 1;
@@ -108,7 +110,7 @@ export class SceneRenderer {
 		if ( ! active ) return;
 		const rt = this.hullMaskRT;
 		this.meshRenderer.render( this.hullMaskScene, {
-			label: 'hull mask', kind: 'color', camera, colorViews: [ rt.texture.view() ], colorFormats: rt.formats,
+			label: 'hull mask', kind: 'color', camera, frameBlock:this.frameBlock, colorViews: [ rt.texture.view() ], colorFormats: rt.formats,
 			clearColors: [ [ 0, 0, 0, 0 ] ], depthView: rt.depthTexture.view(), depthFormat: DEPTH_FORMAT, clearDepth: 0, cull: false,
 		} );
 
@@ -119,13 +121,13 @@ export class SceneRenderer {
 		const { scene, camera, meshRenderer: mr } = this;
 		const rt = this.sceneRT;
 		const views = rt.textures.map( ( t ) => t.view() );
-		const common = { camera, colorViews: views, colorFormats: rt.formats, depthView: rt.depthTexture.view(), depthFormat: DEPTH_FORMAT, kind: 'main' };
+		const common = { camera, frameBlock:this.frameBlock, colorViews: views, colorFormats: rt.formats, depthView: rt.depthTexture.view(), depthFormat: DEPTH_FORMAT, kind: 'main' };
 
 		// 1. opaques + background
 		mr.render( scene, {
 			...common, label: 'opaque', layerMask: 1 << LAYERS.OPAQUE,
 			clearColors: [ this.clearColor, [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ] ], clearDepth: 0,
-			after: this.background ? ( rp ) => this.background.draw( rp ) : null,
+			after: this.background ? ( rp ) => this.background.draw( rp, this.frameBlock ) : null,
 		} );
 
 		// 2. copies for refraction
@@ -138,7 +140,7 @@ export class SceneRenderer {
 			bindings: { srcDepth: { texture: () => this.opaqueCopy.depthTexture } },
 			code: 'fn fragment( in: FSIn ) -> vec4f { return vec4f( textureLoad( srcDepth, vec2i( in.pos.xy ), 0 ), 0.0, 0.0, 1.0 ); }',
 		} );
-		this._depthHalfPass.render( { colorViews: [ this.opaqueDepthHalf.texture ], clear: [ 0, 0, 0, 0 ] } );
+		this._depthHalfPass.render( { colorViews: [ this.opaqueDepthHalf.texture ], clear: [ 0, 0, 0, 0 ], frameBlock:this.frameBlock } );
 
 		// 3. hull interiors
 		if ( this.hullMasks.length > 0 ) this._renderHullMasks( camera );

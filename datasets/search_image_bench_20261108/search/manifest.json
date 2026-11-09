@@ -1,0 +1,225 @@
+{
+  "task": "search",
+  "profile": "far",
+  "input": {
+    "width": 640,
+    "height": 360,
+    "channels": 3,
+    "encoding": "RGB"
+  },
+  "target": {
+    "grid": [
+      45,
+      80
+    ],
+    "heat": "boat-center presence",
+    "offset": "sub-cell x/y correction",
+    "evidence": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "identity": "target-vs-different for valid cells"
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "case": "wide_beach",
+      "path": "search\\eligible\\search_01",
+      "split": "eligible",
+      "seed": 20261107,
+      "map_kind": "beach",
+      "distance_m": 26.0,
+      "weather": "clear",
+      "pad_visible": true,
+      "training_eligible": true,
+      "target_label_class": "full",
+      "center_supervised": true,
+      "evidence_supervised": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          305,
+          170,
+          334,
+          194
+        ],
+        "full_bbox": [
+          304.95235852461667,
+          165.82035946880836,
+          334.21928500412434,
+          195.50660610598072
+        ],
+        "center_px": [
+          319.5858217643705,
+          180.66348278739454
+        ],
+        "visible_center_px": [
+          319.5,
+          182.0
+        ],
+        "extent_px": 29,
+        "full_extent_px": 29,
+        "depth_m": 26.769907791970947,
+        "min_depth_m": 25.811681847915285,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.8010817386239191,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.0030208333333333333,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 12.28153768993048,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": [
+        "R001",
+        "R004",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 2,
+      "case": "wide_gravel",
+      "path": "search\\eligible\\search_02",
+      "split": "eligible",
+      "seed": 20261207,
+      "map_kind": "gravel",
+      "distance_m": 31.5,
+      "weather": "clear",
+      "pad_visible": true,
+      "training_eligible": true,
+      "target_label_class": "full",
+      "center_supervised": true,
+      "evidence_supervised": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          300,
+          172,
+          338,
+          191
+        ],
+        "full_bbox": [
+          300.46564917405215,
+          168.43963666954005,
+          338.3164872271517,
+          192.49170611944135
+        ],
+        "center_px": [
+          319.3910682006019,
+          180.4656713944907
+        ],
+        "visible_center_px": [
+          319.0,
+          181.5
+        ],
+        "extent_px": 38,
+        "full_extent_px": 37,
+        "depth_m": 32.53256062654393,
+        "min_depth_m": 31.51200018035604,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.7930658490999867,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.0031336805555555554,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 10.180654079035506,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": [
+        "R001",
+        "R004",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 3,
+      "case": "wide_beach",
+      "path": "search\\eligible\\search_03",
+      "split": "eligible",
+      "seed": 20261307,
+      "map_kind": "beach",
+      "distance_m": 26.0,
+      "weather": "clear",
+      "pad_visible": true,
+      "training_eligible": true,
+      "target_label_class": "full",
+      "center_supervised": true,
+      "evidence_supervised": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          300,
+          170,
+          340,
+          194
+        ],
+        "full_bbox": [
+          299.8912439626671,
+          165.93314140721483,
+          340.3591710937847,
+          195.74701608170597
+        ],
+        "center_px": [
+          320.1252075282259,
+          180.8400787444604
+        ],
+        "visible_center_px": [
+          320.0,
+          182.0
+        ],
+        "extent_px": 40,
+        "full_extent_px": 40,
+        "depth_m": 26.877901777495396,
+        "min_depth_m": 25.904820822969924,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.7956862481253796,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.004166666666666667,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 12.281537689930486,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": [
+        "R001",
+        "R004",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    }
+  ]
+}

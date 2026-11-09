@@ -1,0 +1,149 @@
+{
+  "description": "Real MuJoCo camera frames with search and pad-finder labels.",
+  "search": {
+    "task": "search",
+    "input": {
+      "width": 640,
+      "height": 360,
+      "channels": 3,
+      "encoding": "RGB"
+    },
+    "target": {
+      "grid": [
+        45,
+        80
+      ],
+      "heat": "boat-center presence",
+      "offset": "sub-cell x/y correction",
+      "evidence": [
+        "unknown_boat",
+        "target_or_similar",
+        "different_boat",
+        "target_boat"
+      ],
+      "identity": "target-vs-different for valid cells"
+    },
+    "samples": [
+      {
+        "sample": 1,
+        "path": "search\\search_01",
+        "seed": 20261107,
+        "map_kind": "beach",
+        "distance_m": 26.0,
+        "pad_visible": true,
+        "target": {
+          "key": "target",
+          "bbox": [
+            305,
+            170,
+            334,
+            194
+          ],
+          "center_px": [
+            319.5,
+            182.0
+          ],
+          "extent_px": 29,
+          "clipped": false,
+          "detection_valid": true,
+          "evidence": "target_boat",
+          "identity_valid": true,
+          "pad_visible": true
+        },
+        "rules_checked": [
+          "R001",
+          "R005",
+          "R006",
+          "R007"
+        ]
+      },
+      {
+        "sample": 2,
+        "path": "search\\search_02",
+        "seed": 20261207,
+        "map_kind": "gravel",
+        "distance_m": 31.5,
+        "pad_visible": true,
+        "target": {
+          "key": "target",
+          "bbox": [
+            300,
+            172,
+            338,
+            191
+          ],
+          "center_px": [
+            319.0,
+            181.5
+          ],
+          "extent_px": 38,
+          "clipped": false,
+          "detection_valid": true,
+          "evidence": "target_boat",
+          "identity_valid": true,
+          "pad_visible": true
+        },
+        "rules_checked": [
+          "R001",
+          "R005",
+          "R006",
+          "R007"
+        ]
+      }
+    ]
+  },
+  "pad_finder": {
+    "task": "pad_finder",
+    "input": {
+      "width": 640,
+      "height": 360,
+      "channels": 3,
+      "encoding": "RGB"
+    },
+    "target": {
+      "grid": [
+        45,
+        80
+      ],
+      "pad_heat": "pad-center presence",
+      "pad_offset": "sub-cell x/y correction",
+      "pad_presence": "scalar"
+    },
+    "samples": [
+      {
+        "sample": 1,
+        "path": "pad_finder\\pad_01",
+        "seed": 20261107,
+        "map_kind": "island",
+        "distance_m": 10.5,
+        "pad_pixel": [
+          320.0449658348826,
+          175.18339219589888
+        ],
+        "pad_extent_px": 28.726717331055404,
+        "rules_checked": [
+          "R001",
+          "R012",
+          "R013"
+        ]
+      },
+      {
+        "sample": 2,
+        "path": "pad_finder\\pad_02",
+        "seed": 20261207,
+        "map_kind": "rock",
+        "distance_m": 9.2,
+        "pad_pixel": [
+          320.05133751196377,
+          174.50606693904876
+        ],
+        "pad_extent_px": 32.79730485452686,
+        "rules_checked": [
+          "R001",
+          "R012",
+          "R013"
+        ]
+      }
+    ]
+  }
+}

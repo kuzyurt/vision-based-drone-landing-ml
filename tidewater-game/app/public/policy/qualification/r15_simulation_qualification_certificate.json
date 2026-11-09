@@ -1,0 +1,186 @@
+{
+  "schema": "aerodock.finite_simulation_qualification.v1",
+  "status": "passed_predeclared_simulation_and_two_actual_game_stack_gates",
+  "created_utc": "2026-10-18T15:00:37.078920+00:00",
+  "native_candidate_policy_sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35",
+  "native_bundle_unchanged": true,
+  "qualification_is_external_to_frozen_bundle": true,
+  "neural_weights_unchanged": true,
+  "new_training": false,
+  "new_teacher_collection": false,
+  "description": "Hybrid learned vision, geometric registration and persistent tracking, explicit controller and PX4; no boat radio position or velocity in these flights.",
+  "fresh_suite": {
+    "plan_sha256": "5b7840f36870a384adb9c83011f6329effa210b53bea19de900396ed05c5c33a",
+    "independent_worlds": 60,
+    "outcomes": {
+      "landed": 58,
+      "home_landed": 2
+    },
+    "collision_count": 0,
+    "water_strike_count": 0,
+    "optical_fault_cases_exercised": 15,
+    "maps": {
+      "island": {
+        "landed": 12
+      },
+      "beach": {
+        "landed": 12
+      },
+      "city": {
+        "landed": 11,
+        "home_landed": 1
+      },
+      "gravel": {
+        "landed": 12
+      },
+      "rock": {
+        "landed": 11,
+        "home_landed": 1
+      }
+    },
+    "median_successful_flight_s": 71.60000000005874,
+    "range_successful_flight_s": [
+      34.99999999997229,
+      143.00000000042004
+    ],
+    "sample_landing_fraction": 0.9666666666666667,
+    "wilson_95_interval": [
+      0.886362257256914,
+      0.9908106807438021
+    ]
+  },
+  "safe_home_suite": {
+    "plan_sha256": "4e122bb9289d8e9602af024ba65b0490df8c3b0d9d958ad31523ab57fa24b6cd",
+    "outcomes": {
+      "home_landed": 10
+    },
+    "actual_camera_fault_cases": 5,
+    "known_launch_home_required": true
+  },
+  "actual_tidewater_stack_flights": [
+    {
+      "scenario": "Stationary boat, physical manual takeoff and3s backward flight before camera-only handoff",
+      "flight_seconds": 40.38799999994595,
+      "wall_seconds": 108.77266092900001,
+      "frames": 957,
+      "physical": {
+        "support_count": 4,
+        "stable": true,
+        "landed": true,
+        "collision_failure": false,
+        "disarmed_contact_s": 2.0240000000000014
+      },
+      "boat_motion": null
+    },
+    {
+      "scenario": "Moving boat following its independent static coastal route with declared0.6m/s scenario setpoint; physical manual takeoff/3s backward flight before no-radio handoff",
+      "flight_seconds": 47.66399999998805,
+      "wall_seconds": 126.481296958,
+      "frames": 1139,
+      "physical": {
+        "support_count": 4,
+        "stable": true,
+        "landed": true,
+        "collision_failure": false,
+        "disarmed_contact_s": 2.0160000000000013
+      },
+      "boat_motion": {
+        "scenario_setpoint_m_s": 0.6,
+        "mean_speed_m_s": 0.6295338361687106,
+        "maximum_speed_m_s": 0.6468083827980032,
+        "displacement_m": 29.825706600402608
+      }
+    }
+  ],
+  "controller_portability": {
+    "frames": 1810,
+    "source": "browser_r15_controller_portability.json",
+    "fixed_observed_nn_outputs_and_fits": true,
+    "not_a_new_neural_or_fitter_accuracy_test": true
+  },
+  "verified_runtime_files": {
+    "browser_r15_controller_portability.json": "46fbe0a851da17e288e0b7359f160039e8fec6d5e956bcfaf72232262e65e7dd",
+    "queue_r15_browser_gate_v2.log": "6181712cfc0360a12a6c8fc5a4859d72be81836e3fef798dff970b55980f9c1f",
+    "queue_r15_browser_gate_v3.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "queue_r15_browser_gate_v3.py": "bf00750d0913618c0069c95976cf5a2c8af8c02104dcaeb3ff11d61fbaf3f59b",
+    "r15_browser_gate_v2_state.json": "c8418133366e55aaffe6d0ac5eba4648aed0c0bfc729631f8b27a8774a1f4495",
+    "r15_browser_gate_v3_receipt.json": "f55d2e560f699395d426c3a754ff9bcfbe103951e51c13594dce167e7fc92fac",
+    "r15_browser_gate_v3_state.json": "126e36da084e3cf0d520e73a27a9a71bb420eeec6e4b1c89e257ca8f4afb11dc",
+    "r15_native_completion_archive_receipt.json": "24fcc818132225094f5aa8bc651ffd792d274ad9615fd59d9d6d8da81ea9aaad",
+    "r15_safe_handoff_boundary.json": "42bf6885d121121b525539522cc6e0a43c5ae05630ad65453d52435a0991145c",
+    "resumed_r15_state.json": "d0cdcc3f37841291d2f32169fdc9f500b676ee8f3a35bd06f9e8d7283cd2aea1",
+    "tidewater_moving_r15_browser.log": "2d963aed4623004078f5020334212e75c833ca416a96e962117a22a9f8b0a843",
+    "tidewater_moving_r15_browser/camera-0000.png": "3d779402170f75a801e09207d4fa33dcba954473720fcb4104cf76897a3d7d01",
+    "tidewater_moving_r15_browser/camera-0250.png": "2a08dd11b14cdf3a0f61dbcfae06b74c05447c5740cc199f32550d37fefa961d",
+    "tidewater_moving_r15_browser/camera-0500.png": "4cd736e21100d0b7fe534dc4450b1b889f1db5c996f6bd79c5fec876cda1dcd0",
+    "tidewater_moving_r15_browser/camera-0750.png": "f3623c06a9bc86bd9faa8d942a9a4a003a10e0e37fa0f8193b40cf43dd1f39ea",
+    "tidewater_moving_r15_browser/camera-1000.png": "d08885ed5f87836ac871f37bc024cf364b97222ea625310cbdb246cf839ca2d4",
+    "tidewater_moving_r15_browser/policy.json": "a7f9df169cd5ee970704b3334813979623249fd5bd77483499211cd8d367d8b5",
+    "tidewater_moving_r15_browser/report.json": "a3d9cf9e08bba9a2a4e89b306239de68bfcc0b19fee7792d06bc822f342fd444",
+    "tidewater_moving_r15_browser/steps.jsonl": "8327d23a31ba0a57baed2ec85fd79e7ea44a255b58cfa3c74e17e58090d8db98",
+    "tidewater_runtime/app/public/policy_r15_staging/export_receipt.json": "ad5f60d59fd5fad4848e6c2a13f607fb786ba524e17e326ec014e8c6e4733f0f",
+    "tidewater_runtime/app/public/policy_r15_staging/manifest.json": "b6e3a4562cb908dcdeb3a2b099513ab26d197807d90d05cd985be138edb2fe98",
+    "tidewater_runtime/app/public/policy_r15_staging/marker_kernel.wasm": "ec6f9a2f1147323ecab27d5add5f13abdbab5ad965df2047c24af9bdc124f1ba",
+    "tidewater_runtime/app/public/policy_r15_staging/pose.onnx": "350584d6b5a9c464c22f8bfe59fd94c5543527ce3af2afd439453a061ac40420",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/browser_api.py": "432b1cd89d5d2dcffbab98fcb4f401e2f147b1650cdf21f59b7576bfb74a283d",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/camera_obstruction_map.json": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/marker_geometry.py": "f533d1aa07f818773bb79feb35a883106d6afb34aedda32a33bfb752d89b0d4d",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/marker_policy.py": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/nearfield_visibility.py": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
+    "tidewater_runtime/app/public/policy_r15_staging/reference/visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095",
+    "tidewater_runtime/app/src/landing/BrowserForces.js": "e2018d2ba977d8d914c2672d29624a41c24b7989d4c41083be15bda0ab67e807",
+    "tidewater_runtime/app/src/landing/BrowserGame.js": "f327eee704c5c1355eaca98f2713a2d4637a853d49b7516f412c9401bfdd80fc",
+    "tidewater_runtime/app/src/landing/BrowserPX4.js": "0a4c8625fa188af4d2e2807f75686f595dd6910cac624ff576f9059103034d14",
+    "tidewater_runtime/app/src/landing/BrowserWorld.js": "00abb4bbf5cbcd18e3abfc847215c0ad39ec54ffb1bca634258cadf469128975",
+    "tidewater_runtime/app/src/landing/GpuPolicyModel.js": "cc586032b8b5f972169a0e05e61708623d3e451eb23014d0dc46cbe87434a130",
+    "tidewater_runtime/app/src/landing/MarkerKernel.js": "e0c035df79b25497c8bfa8201bca2ec3a898b0de5a6efeecf89f453421366428",
+    "tidewater_runtime/app/src/landing/PolicyInference.js": "74059c5925fc7f7344ced9e6ce99df427a1df432a0b13b434c4d7acd22e0b21f",
+    "tidewater_runtime/app/src/landing/PolicyLandingResult.js": "ba53b5f9399998bfd4f4cb159a8235aef01cbdf6c5d0522139d984cda029e665",
+    "tidewater_runtime/app/src/landing/PolicyTelemetry.js": "e0c96a09746580f1c0b4bc482614607d39ac0115447c2f3f59c89e353f93e362",
+    "tidewater_runtime/app/test/PolicyRecoveryClearance.mjs": "3673dd9d67115ca7610b30b2588b6619159dbfcaa3b9ae0e33214b5d775a0794",
+    "tidewater_runtime/app/test/probe_r15_safe_handoff.mjs": "9ef96cb2f2d5e6667d70fdc56c4c239bafee6697234978b515b7048f1b53ff61",
+    "tidewater_runtime/app/test/probe_r15_vm_controller.mjs": "d9634908e1403d45e49bde87a4e87e5ec6b6812c0ca02a26eee1083a4c84500f",
+    "tidewater_runtime/app/test/r15_game/BrowserGame.js": "7dbec8fafb0597bb8577de3b36a8cf17e95664ff868fdba40dfc946e2b61d416",
+    "tidewater_runtime/app/test/r15_game/BrowserPX4.js": "486494eba388447c40d798e508ecf6442115f23e44f1a99c64f970638160c35d",
+    "tidewater_runtime/app/test/r15_game/PolicyRecoveryClearance.js": "cf723c1ef5ebf2d665e82f4908f8a7d07e4fe8e22f43115f223da769603e1dfd",
+    "tidewater_runtime/app/test/r15_game/PolicyTelemetry.js": "3a91bc48807fb6e69aed64960b9e1ba98e808b3a870a49fae61743240a4a1e13",
+    "tidewater_runtime/app/test/tidewater_headless_world.mjs": "ea2dda5aa218604438ad95aec1bd6b110ab8d4f225e1939c7e98680d891c3ba7",
+    "tidewater_runtime/app/test/tidewater_landing_r15_browser.mjs": "7f926f572b9fbceebb8780da6e1a53d52dcfd1de2557fcdf480626cd60394b32",
+    "tidewater_runtime/app/test/tidewater_landing_r15_moving_browser.mjs": "e0f7f2a96a471c3f8f6dbfbcd88ced4fcdffdc230a0173623f072e75722eb541",
+    "tidewater_stationary_r15_browser.log": "671e3fd5efae872b014c7296cee285e8ee2e4ccc1f8c92579c38127db7035b02",
+    "tidewater_stationary_r15_browser/camera-0000.png": "5bd92d7532dcac33fe17b5dd04a9582e37b78037e1a1371e3c2747d700049c1c",
+    "tidewater_stationary_r15_browser/camera-0250.png": "c383f7a6a76ffce75093e51a9cc54f9f6f78aa5859df12f5b17c978995aab3bf",
+    "tidewater_stationary_r15_browser/camera-0500.png": "ee59f52916fe2c0a0b96051d3ce37f70d462d2708cd163136e87353a3d14cee0",
+    "tidewater_stationary_r15_browser/camera-0750.png": "9aaf19c92bbb2ef31799ec0fbd72f3b9f0b4907cefc0e5cb1f845ed7a42ecb26",
+    "tidewater_stationary_r15_browser/policy.json": "a7f9df169cd5ee970704b3334813979623249fd5bd77483499211cd8d367d8b5",
+    "tidewater_stationary_r15_browser/report.json": "5d7e97495347ff57615ee4c7d4222bafb63df21abde701f907976b9816f6ac10",
+    "tidewater_stationary_r15_browser/steps.jsonl": "c56f20948fac664a56db789f10b26ed97f48b4b6dbca190c4ba1b1f933559e86",
+    "vm_r15_browser_stage_v2_receipt.json": "24061283ef176fb4bc621b34904c079a3fb0d32a1f6bde8d274bf8845d110c75"
+  },
+  "limitations": [
+    "Finite simulation evidence; 58/60 is not a hardware guarantee or proof of 95% population reliability.",
+    "Two fresh flights returned to their authorized home instead of landing on the boat.",
+    "Native qualification spans five maps, moving boats through0.9m/s,3\u201360m starts, own telemetry/static map priors, wind and waves<=5cm; not arbitrary sea states or mission geometry.",
+    "Actual Tidewater checks use production ONNX-WebGPU/WASM/Pyodide components with Node headless scheduling, not the browser-worker UI scheduler.",
+    "Tidewater has no authorized home landing site; bounded exhaustion restores manual altitude hold rather than native home landing.",
+    "Static recovery-corridor checks are not full dynamic obstacle avoidance.",
+    "Production boat cruise remains2.8m/s; policy horizontal commands cap at2m/s, so arbitrary pursuit at default cruise is not established.",
+    "Bounded terminal contact commit may continue from a recent accepted visual motion estimate and own odometry; do not claim vision is freshly measured on every final-centimetre step.",
+    "Controller port camera optimizer differs by about1e-9rad/s; documented1e-8camera tolerance, unchanged physical scoring."
+  ]
+}
