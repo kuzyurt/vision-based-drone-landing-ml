@@ -14,9 +14,9 @@ policy ID, label, role, availability, identity SHA-256,
 manifest path, weights -> SHA-256 + repository-relative path
 ```
 
-The physical store is not duplicated into `models/sha256/` yet; that directory
-is reserved for the future canonical store. A run must reference a hash, never
-copy a weight into its own directory.
+The canonical store is not created yet. `models/sha256/` is the reserved target
+for one file per unique hash; the current weights remain in the benchmark store.
+A run references a hash and never copies a weight into its own directory.
 
 Do not commit a new weight without adding its registry entry and verifying its
 SHA-256.

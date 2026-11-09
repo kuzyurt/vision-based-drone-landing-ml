@@ -25,6 +25,10 @@ explicit through packages and removes implicit path coupling where it is safe.
 
 ## Target layout
 
+The tree below is the destination, not a claim that every folder exists today.
+Paths marked *future* are documented contracts; create them only when real
+content can move there.
+
 ```text
 packages/          installable Python distributions
   aerodock/        boat simulator
@@ -34,23 +38,29 @@ packages/          installable Python distributions
   benchmark/       evaluation harness
   runtime-support/ promoted Windows/mission runtime helpers
   target-learning/ promoted label and teacher adapters
-apps/
+apps/              future; browser app after a benchmark re-base
   tidewater/       browser game and Python bridge
 data/
-  curated/         reviewed inputs and manifests
+  curated/         future; reviewed inputs and manifests
   generated/       reproducible outputs, ignored by default
 models/
   registry.json    policy ID -> SHA-256
-  sha256/          one copy per unique weight
-experiments/
+  sha256/          future; one copy per unique weight
+experiments/       future; created after receipts are re-based
   runs/            training runs
   benchmarks/      benchmark episodes
   evidence/        reports, media and raw evidence
   archive/         superseded policies and frozen revisions
-third_party/       pinned external checkouts
+third_party/       future; pinned external checkouts
 docs/              cross-cutting documentation
 tools/             repository maintenance checks
 ```
+
+Only the roots with real content are materialized today: `data/generated/`,
+`models/registry.json`, `packages/datagen/`, `docs/operations/` and `tools/`.
+The other paths above are target contracts documented in
+[FOLDER_DISPOSITION.md](FOLDER_DISPOSITION.md); no empty placeholder
+directories are kept.
 
 ## The pinned boundary
 
