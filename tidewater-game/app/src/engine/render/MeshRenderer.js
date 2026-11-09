@@ -4,6 +4,7 @@ import { buildMeshShader } from './MeshShader.js';
 import { blendState } from './Material.js';
 import { SceneLighting } from './wgsl/lighting.js';
 import { FrameUniforms } from './Frame.js';
+import { DrawBundleCache } from './DrawBundleCache.js';
 import { Frustum, Matrix4, Sphere, Vector3 } from '../math/index.js';
 
 // Draws scene meshes: geometry upload, pipeline cache, per-draw uniforms, culling and sorting.
@@ -37,7 +38,9 @@ export class MeshRenderer {
 	constructor() {
 
 		this.pipelines = new Map();
+		this.sharedPipelines = new WeakMap();
 		this.geometries = new WeakMap();
+		this.drawStates = new WeakMap();
 		this.capacity = 8192;
 		this.drawBuffer = null;
 		this.drawData = null;
@@ -91,8 +94,8 @@ export class MeshRenderer {
 	// per-object slot in this frame's draw buffer (shared by every pass that draws it this frame)
 	_slot( obj ) {
 
-		let g = obj.__draw;
-		if ( ! g ) g = obj.__draw = { frame: - 1, slot: 0, cur: new Float32Array( 16 ), prev: new Float32Array( 16 ), has: false };
+		let g = this.drawStates.get(obj);
+		if ( ! g ) {g = { frame: - 1, slot: 0, cur: new Float32Array( 16 ), prev: new Float32Array( 16 ), has: false };this.drawStates.set(obj,g);}
 		if ( g.frame === GPU.frame ) return g.slot;
 		if ( this.drawCount >= this.capacity ) throw new Error( 'MeshRenderer: draw buffer full' );
 		g.frame = GPU.frame;
@@ -339,7 +342,6 @@ export class MeshRenderer {
 		const c = composeShader( { modules: src.modules, bindings: src.bindings, code: src.code, defines: src.defines, stage: 'render', label: material.name } );
 		const module = createShaderModule( c.code, material.name );
 		this._ensureDrawBuffer();
-		const layout = GPU.device.createPipelineLayout( { bindGroupLayouts: [ c.group0.layout, c.bindings.layout, this.drawLayout ] } );
 
 		const blend = blendState( material.blending );
 		let targets = [];
@@ -362,7 +364,6 @@ export class MeshRenderer {
 		const depthCompare = material.depthTest ? ( material.depthCompare || pass.depthCompare ) : 'always';
 		const desc = {
 			label: material.name + ' ' + pass.kind,
-			layout,
 			vertex: { module, entryPoint: 'vs', buffers: vl.buffers.map( ( b ) => b.layout ) },
 			primitive: { topology: material.topology, cullMode, frontFace: 'ccw' },
 		};
@@ -374,8 +375,25 @@ export class MeshRenderer {
 			depthBias: pass.kind === 'depth' ? ( pass.depthBias || 0 ) : material.depthBias,
 			depthBiasSlopeScale: pass.kind === 'depth' ? ( pass.depthBiasSlopeScale || 0 ) : material.depthBiasSlopeScale,
 		};
+		// Share only the immutable pipeline. Each material keeps its own BindingSet,
+		// so different colors, textures and mutable uniforms remain independent.
+		const stateKey = JSON.stringify( {
+			vertex: { entryPoint: desc.vertex.entryPoint, buffers: desc.vertex.buffers },
+			fragment: desc.fragment && { entryPoint: desc.fragment.entryPoint, targets: desc.fragment.targets },
+			primitive: desc.primitive, depthStencil: desc.depthStencil,
+		} );
+		let shared = this.sharedPipelines.get( module );
+		if ( ! shared ) this.sharedPipelines.set( module, shared = [] );
+		let entry = shared.find( e => e.stateKey === stateKey && e.frameLayout === c.group0.layout && e.materialLayout === c.bindings.layout && e.drawLayout === this.drawLayout );
+		if ( ! entry ) {
+
+			desc.layout = GPU.device.createPipelineLayout( { bindGroupLayouts: [ c.group0.layout, c.bindings.layout, this.drawLayout ] } );
+			entry = { stateKey, frameLayout: c.group0.layout, materialLayout: c.bindings.layout, drawLayout: this.drawLayout, handle: GPU.renderPipeline( desc ) };
+			shared.push( entry );
+
+		}
 		// compiled in the background: the draw is skipped until it is ready (see GPU.renderPipeline)
-		const p = { handle: GPU.renderPipeline( desc ), bindings: c.bindings, label: desc.label };
+		const p = { handle: entry.handle, bindings: c.bindings, label: desc.label };
 		this.pipelines.set( key, p );
 		this.stats.pipelines = this.pipelines.size;
 		return p;
@@ -418,7 +436,7 @@ export class MeshRenderer {
 
 		};
 
-		scene.updateMatrixWorld();
+		if ( this.updateSceneMatrices !== false ) scene.updateMatrixWorld();
 		visit( scene );
 		opaque.sort( ( a, b ) => a.renderOrder - b.renderOrder || a.pipeKey - b.pipeKey || a.z - b.z );
 		transparent.sort( ( a, b ) => a.renderOrder - b.renderOrder || b.z - a.z );
@@ -507,9 +525,12 @@ export class MeshRenderer {
 		if ( pass.timestampWrites ) desc.timestampWrites = pass.timestampWrites;
 		const rp = enc.beginRenderPass( desc );
 		if ( pass.viewport ) rp.setViewport( ...pass.viewport );
-		rp.setBindGroup( 0, group0ForBlock( pass.frameBlock, 'render' ).getBindGroup() );
+		pass.frameGroup0=group0ForBlock( pass.frameBlock, 'render' ).getBindGroup();
+		rp.setBindGroup( 0, pass.frameGroup0 );
+		pass.bundleList=0;
 		this.drawItems( rp, lists.opaque, pass );
 		if ( pass.betweenLists ) pass.betweenLists( rp );
+		pass.bundleList=1;
 		this.drawItems( rp, lists.transparent, pass );
 		if ( pass.after ) pass.after( rp );
 		rp.end();
@@ -517,6 +538,14 @@ export class MeshRenderer {
 	}
 
 	drawItems( rp, items, pass ) {
+		if(this.useRenderBundles&&items.length>=16&&!this.precompiling&&pass.frameGroup0){
+			this.bundleCache??=new DrawBundleCache();
+			this.bundleCache.draw(rp,pass,stream=>this._drawItems(stream,items,pass));return;
+		}
+		this._drawItems(rp,items,pass);
+	}
+
+	_drawItems( rp, items, pass ) {
 
 		let lastPipeline = null, lastGroup = null;
 		const token = ++ _listToken;

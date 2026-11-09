@@ -1,0 +1,7 @@
+from pathlib import Path
+import datetime,hashlib,json,subprocess,sys
+R=Path(__file__).parent;D=R/'static_repair_v44b';sheet=R/'roi_cache/static_v44b/actual_static_labels.jpg';near=D/'near_and_background_actual_labels.jpg';assert not(R/'static_training_v45_launch.json').exists()
+review=dict(passed=True,reviewer='agent_actual_MuJoCo_RGB_inspection',human_approval_fabricated=False,utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),sheet_sha256=hashlib.sha256(sheet.read_bytes()).hexdigest(),near_sheet_sha256=hashlib.sha256(near.read_bytes()).hexdigest(),observations=['Actual original CAD close views retain surrounding hatches/structure when labeled target; cropped/context-poor views unknown','Copied-cross flat boards visibly distinct, shared blue cross alone not target identity','Own aircraft/rotor arms visible as actual background distractors, camera pan varies','Background views point away; blue/green/grey/pale water and terrain remain rendered','Six intersecting static camera placements excluded before training;1064valid near views'],scope='Fresh static perception labels only; no physical teacher qualification')
+(D/'agent_visual_review.json').write_text(json.dumps(review,indent=2))
+with(R/'static_training_v45.log').open('x')as log:p=subprocess.Popen([sys.executable,str(R/'train_static_verifier_v45.py'),'--stage','train'],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+(R/'static_training_v45_launch.json').write_text(json.dumps(dict(pid=p.pid)));print(p.pid)

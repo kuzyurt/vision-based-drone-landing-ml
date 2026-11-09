@@ -1,0 +1,29 @@
+{
+  "kind": "city",
+  "generator": "AERODOCK_MuJoCo/usv/procedural_world.py \u2192 BoatSim.new_world",
+  "scene_receipt": "../runtime.json",
+  "worlds": {
+    "0": {
+      "world_seed": 827200,
+      "path_seed": 828200,
+      "world_rotation_deg": 86,
+      "reverse": false
+    },
+    "1": {
+      "world_seed": 827201,
+      "path_seed": 828201,
+      "world_rotation_deg": 147,
+      "reverse": true
+    }
+  },
+  "cases": [
+    "acquisition-far-radio-clear-city-r0",
+    "acquisition-far-visual-clear-city-r0",
+    "acquisition-far-radio-traffic-city-r0",
+    "acquisition-far-visual-traffic-city-r0",
+    "landing-landing-fast-boat-city-r1",
+    "wind-wind-crosswind-city-r0"
+  ],
+  "plan_sha256": "858cd9e7da39c86dc72e0635289af03b2e908a1807ef2804f3152705afbee737",
+  "procedural_not_static_xml": true
+}

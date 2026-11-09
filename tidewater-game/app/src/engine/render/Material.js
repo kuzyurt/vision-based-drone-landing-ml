@@ -88,7 +88,9 @@ export class Material {
 
 		const fields = { ...BUILTIN_UNIFORMS };
 		for ( const k in o.uniforms || {} ) fields[ k ] = o.uniforms[ k ];
-		this.uniformBlock = new UniformBlock( 'MaterialParams' + this.id, fields, { label: this.name } );
+		// The schema belongs to the shader; material identity and values belong
+		// to its separate uniform buffer. Stable names allow identical shaders to share.
+		this.uniformBlock = new UniformBlock( 'MaterialParams', fields, { label: this.name } );
 		this.uniforms = this.uniformBlock.fields;
 		const u = this.uniforms;
 		u.color.value = toColor( o.color, new Color( 1, 1, 1 ) );
@@ -201,7 +203,7 @@ export class Material {
 		m.version = 0;
 		m.defines = { ...this.defines };
 		m.bindings = { ...this.bindings };
-		m.uniformBlock = new UniformBlock( 'MaterialParams' + m.id, Object.fromEntries( this.uniformBlock.order.map( ( k ) => [ k, [ this.uniformBlock.layout[ k ].typeStr, cloneValue( this.uniforms[ k ].value ) ] ] ) ), { label: m.name } );
+		m.uniformBlock = new UniformBlock( 'MaterialParams', Object.fromEntries( this.uniformBlock.order.map( ( k ) => [ k, [ this.uniformBlock.layout[ k ].typeStr, cloneValue( this.uniforms[ k ].value ) ] ] ) ), { label: m.name } );
 		m.uniforms = m.uniformBlock.fields;
 		m._listeners = [];
 		return m;

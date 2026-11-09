@@ -1,0 +1,14 @@
+from pathlib import Path
+import json
+HERE=Path(__file__).resolve().parent;OUT=HERE/'delivery_v31';m=json.loads((OUT/'corrected_expert_review_v31_manifest.json').read_text());assert len(m['cases'])==12
+titles={'E01':'Nominal approach and steady final alignment','E02':'Hard scene: search, approach and alignment','E03':'Physical camera-yaw disturbance and resynchronization','E04':'Close-range tilt loss and recovery','E05':'Initially visible boat, acquisition and camera disturbance','E06':'Search and inspection of plausible boat candidates','E07':'Nominal teacher alignment in the original E07 scene','E08':'Nominal teacher alignment in the original E08 scene','E09':'Teacher terminal alignment in the original E09 scene','E10':'Teacher close-loss recovery in the original E10 scene','E11':'Teacher close-loss recovery in the original E11 scene','E12':'Target absent: bounded search and physical return home'}
+lines=['# Replacement expert videos — E01–E12','','These primary videos show the observable expert driving in MuJoCo, with no radio. They contain actual newly flown onboard and overview recordings; the footage has not been stabilized, warped, or cosmetically corrected. Physical camera disturbances are labelled separately. All recordings remain **review only / excluded from training**.','','E09–E11 are explicit **expert-only demonstrations in the same original scenarios**, replacing the old mixed learner/teacher videos. They show how the repaired teacher drives; they are not claimed as observed learner rescues. E04a is a close-up window from E04, not another independent flight.','','Full flights are time-compressed to about 30 seconds; the additional alignment and fault windows retain normal speed when their source duration fits. The playback multiplier and actual task clock appear in every video.','','Source and command audits, exact capture joins, source hashes and per-video playback/SHA receipts are included in this folder. These developmental demonstrations do not establish policy reliability.','']
+for case in m['cases']:
+    c=case['case'];assert case['teacher_only']and not case['training_eligible'];clips=case['clips'];primary=next(x for x in clips if x['path'].endswith('_full.mp4'));path=OUT/primary['path']
+    lines+=['## '+c+' — '+titles[c],'',f"Physical result: **{case['outcome']}**. Executed disturbance frames: {case['actual_fault_frames']}.",'',f'![{c} corrected expert — actual cameras]({path.as_posix()})','']
+    for clip in clips:
+        if clip is primary:continue
+        label='Normal-speed final alignment'if'_alignment_1x'in clip['path']else'Normal-speed disturbance and recovery'
+        if c=='E04'and'_fault_recovery_1x'in clip['path']:label='E04a — close-range recovery detail'
+        lines += [f'[{label}]({(OUT/clip["path"]).as_posix()})','']
+p=OUT/'EXPERT_REPLACEMENT_REVIEW_E01_E12.md';assert not p.exists();p.write_text('\n'.join(lines),encoding='utf-8');print(p)

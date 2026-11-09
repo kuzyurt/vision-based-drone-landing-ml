@@ -1,0 +1,11 @@
+from pathlib import Path
+import datetime,hashlib,json,subprocess,sys
+import psutil
+R=Path(__file__).parent;D=R/'static_repair_v52';sheet=R/'roi_cache/static_v52/actual_static_labels.jpg';coverage=D/'basic_hard_actual_labels.jpg';assert not(R/'static_training_v53_launch.json').exists()
+assert json.loads((R/'roi_cache/static_v52/manifest.json').read_text())['status']=='completed'
+training_bytes=sum((R/'roi_cache'/n/'training/rgb.npy').stat().st_size for n in ['static_v38','static_v44b','static_v52']);old_bytes=sum((R/'roi_cache'/n/'training/rgb.npy').stat().st_size for n in ['static_v38','static_v44b']);assert psutil.virtual_memory().available>training_bytes+old_bytes+6*1024**3
+free=float(subprocess.check_output(['nvidia-smi','--query-gpu=memory.free','--format=csv,noheader,nounits'],text=True).splitlines()[0]);assert free>1536
+review=dict(passed=True,reviewer='agent_actual_MuJoCo_RGB_inspection',human_approval_fabricated=False,utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),sheet_sha256=hashlib.sha256(sheet.read_bytes()).hexdigest(),coverage_sheet_sha256=hashlib.sha256(coverage.read_bytes()).hexdigest(),observations=['Both basic and hard dark flat-deck boats visibly differ from target CAD; labelled other or context-unknown, never target by cross alone','All five maps and water/sky colours present in both cached scene variants','Original boat retains hatch structure; marker-hidden target remains same design','Own-aircraft occlusion and close camera pan retained as actual RGB;33static contacting views excluded','Background camera faces away; no task-world target hiding/removed target or failed-camera-pose copying'],scope='Fresh static perception labels only; no teacher/source/physical qualification')
+(D/'agent_visual_review.json').write_text(json.dumps(review,indent=2))
+with(R/'static_training_v53.log').open('x')as log:p=subprocess.Popen([sys.executable,str(R/'train_static_verifier_v53b.py'),'--stage','train'],stdin=subprocess.DEVNULL,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
+(R/'static_training_v53_launch.json').write_text(json.dumps(dict(pid=p.pid,source='train_static_verifier_v53b.py',source_sha256=hashlib.sha256((R/'train_static_verifier_v53b.py').read_bytes()).hexdigest(),cached_training_rgb_bytes=training_bytes)));print(p.pid)

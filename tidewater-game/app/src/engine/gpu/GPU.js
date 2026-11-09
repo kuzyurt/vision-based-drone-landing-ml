@@ -28,7 +28,8 @@ export const GPU = {
 	async init( { canvas = null, requiredLimits = {}, headless = false } = {} ) {
 
 		if ( ! navigator.gpu ) throw new Error( 'WebGPU is not available in this browser.' );
-		const adapter = await navigator.gpu.requestAdapter( { powerPreference: 'high-performance' } );
+		this.powerPreference=new URLSearchParams(globalThis.location?.search||'').get('gpu')==='integrated'?'low-power':'high-performance';
+		const adapter = await navigator.gpu.requestAdapter( { powerPreference: this.powerPreference } );
 		if ( ! adapter ) throw new Error( 'No WebGPU adapter found.' );
 		this.adapter = adapter;
 
@@ -38,7 +39,13 @@ export const GPU = {
 			maxSamplersPerShaderStage: 16,
 			maxStorageBuffersPerShaderStage: 10,
 			maxStorageTexturesPerShaderStage: 8,
-			maxComputeWorkgroupStorageSize: 32768,
+			// The shared FP32 policy uses the adapter's available compute limits.
+			maxComputeWorkgroupStorageSize: L.maxComputeWorkgroupStorageSize,
+			maxComputeInvocationsPerWorkgroup: L.maxComputeInvocationsPerWorkgroup,
+			maxComputeWorkgroupSizeX: L.maxComputeWorkgroupSizeX,
+			maxComputeWorkgroupSizeY: L.maxComputeWorkgroupSizeY,
+			maxComputeWorkgroupSizeZ: L.maxComputeWorkgroupSizeZ,
+			maxComputeWorkgroupsPerDimension: L.maxComputeWorkgroupsPerDimension,
 			maxColorAttachmentBytesPerSample: 64,
 			maxStorageBuffersInVertexStage: 4,
 			maxStorageBuffersInFragmentStage: 8,
@@ -51,7 +58,7 @@ export const GPU = {
 		const limits = {};
 		for ( const k in want ) if ( L[ k ] !== undefined ) limits[ k ] = Math.min( want[ k ], L[ k ] );
 
-		const optional = [ 'float32-filterable', 'timestamp-query', 'rg11b10ufloat-renderable', 'float32-blendable', 'shader-f16', 'clip-distances' ];
+		const optional = [ 'float32-filterable', 'timestamp-query', 'rg11b10ufloat-renderable', 'float32-blendable', 'shader-f16', 'clip-distances', 'subgroups' ];
 		const requiredFeatures = optional.filter( ( f ) => adapter.features.has( f ) );
 		this.features = new Set( requiredFeatures );
 		this.hasTimestamp = this.features.has( 'timestamp-query' );

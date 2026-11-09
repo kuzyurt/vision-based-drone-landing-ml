@@ -599,7 +599,12 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		const t0 = performance.now();
 		this._frame( dt );
 		const ms = performance.now() - t0;
+		this.onFrameTiming?.( ms );
 		this.cpuMs = this.cpuMs === undefined ? ms : this.cpuMs * 0.95 + ms * 0.05;
+		// During ML, prevent old operator frames from accumulating in front
+		// of the onboard camera and inference readbacks. This adds no FPS cap
+		// and leaves every render pass and simulation/control rate intact.
+		if(this.flightOps?.bridge?.policy?.status.enabled)return GPU.queue.onSubmittedWorkDone();
 
 	}
 

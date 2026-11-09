@@ -1,0 +1,40 @@
+{
+  "task": "pad_finder",
+  "sample": 1,
+  "seed": 20261107,
+  "map_kind": "island",
+  "distance_m": 10.5,
+  "height_m": 5.0,
+  "bearing_deg": 32.0,
+  "pad_pixel": [
+    320.0449658348826,
+    175.18339219589888
+  ],
+  "pad_depth_m": 11.536490093500118,
+  "pad_visible": true,
+  "pad_extent_px": 28.726717331055404,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "rules_checked": [
+    "R001",
+    "R012",
+    "R013"
+  ],
+  "labels": {
+    "pad_heat_shape": [
+      45,
+      80
+    ],
+    "pad_presence": 1.0,
+    "pad_pixel": [
+      320.0449658348826,
+      175.18339219589888
+    ],
+    "pad_visible": true,
+    "pad_extent_px": 28.726717331055404,
+    "pad_in_frame": true,
+    "pad_valid": true
+  }
+}

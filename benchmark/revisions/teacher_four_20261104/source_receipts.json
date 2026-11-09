@@ -1,0 +1,36 @@
+{
+  "created_utc": "2026-11-04T16:11:29.243105+00:00",
+  "original_runtime_sha256": "ad76eab0aa441e7a52932c82572decc62a45259f796a5727ae7cc126a603d3cd",
+  "sources": [
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/__main__.py",
+      "sha256": "5dfedbdc1dc8cf2d3b4ce725bee65df0eebe80d1651d0c17e8b01a9be74b1a8c"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/register.py",
+      "sha256": "28b50fdffca4060c4b7006dbb7a2bedd4ad46d01546ded921191bf51ad64fc6a"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/routes.py",
+      "sha256": "bf9d50c470db2474d3f0a0a94704a20af565b67044f6b558d834df480f1f114c"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/run.py",
+      "sha256": "3f0acef76e4738bf2751338b1f4135e3dff7145ba31672fccde1fdc72265684a"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/spec.py",
+      "sha256": "e4e8cf997d95740d3de5b1f24be555d9c9c2e1af8da96bbc9725d859a148fc59"
+    },
+    {
+      "path": "benchmark/revisions/teacher_four_20261104/validate.py",
+      "sha256": "89f7cec3492352d5d708316d15cedcccec5b8931a584a257ed232ead08e9cd9b"
+    }
+  ],
+  "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+  "calibration_sha256": "30e8948a294ab9fffab9b42d3e8e0aed95b6fa8ffd5bd05fb45189490a4f5268"
+}

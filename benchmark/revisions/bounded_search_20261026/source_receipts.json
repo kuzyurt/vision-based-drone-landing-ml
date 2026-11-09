@@ -1,0 +1,36 @@
+{
+  "created_utc": "2026-11-09T18:54:32.638355+00:00",
+  "original_runtime_sha256": "ad76eab0aa441e7a52932c82572decc62a45259f796a5727ae7cc126a603d3cd",
+  "sources": [
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/__init__.py",
+      "sha256": "10b32d63d348fb58e38a7e04583a8a35aae06a962e98cc53d5057d2267198b85"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/__main__.py",
+      "sha256": "04031aafaa4989b8d9f2e4f068e4b35ba4e47a2ad27b71b97deaff3e707ce411"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/calibrate.py",
+      "sha256": "64497e9f42c8014cea8f5d2b1ee93324831a434a76b3b237c527b660ffe60c8f"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/routes.py",
+      "sha256": "d518cb1952a2d7278aeab833c26abee95fd59b41bc4fc605792d654f2d5a1125"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/spec.py",
+      "sha256": "aad7062a11a5043b70c314274c100b1208969dd914ab0aec99aa5e601c38790f"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/student.py",
+      "sha256": "70891786e7cd236392b1b358adedda5b36187eb1440dc804cc71012f6d1bec90"
+    },
+    {
+      "path": "benchmark/revisions/bounded_search_20261026/validate.py",
+      "sha256": "89f7cec3492352d5d708316d15cedcccec5b8931a584a257ed232ead08e9cd9b"
+    }
+  ],
+  "suite_sha256": "69a4c8c4b8d78e16510909539016bf1db0cf90154bd94ecb164cb0ac1597cab9",
+  "calibration_sha256": "30e8948a294ab9fffab9b42d3e8e0aed95b6fa8ffd5bd05fb45189490a4f5268"
+}

@@ -13,6 +13,7 @@
 #include <chrono>
 #include <modules/mavlink/mavlink_main.h>
 #include <uORB/Subscription.hpp>
+#include <uORB/topics/vehicle_angular_velocity.h>
 
 static std::mutex sim_mutex;
 static std::condition_variable sim_available;
@@ -178,12 +179,13 @@ extern "C" EMSCRIPTEN_KEEPALIVE void tw_sensors(const double *values, int gps)
 extern "C" EMSCRIPTEN_KEEPALIVE void tw_observation(double *values)
 {
     static uORB::Subscription position_sub{ORB_ID(vehicle_local_position)},attitude_sub{ORB_ID(vehicle_attitude)},
-        status_sub{ORB_ID(vehicle_status)},land_sub{ORB_ID(vehicle_land_detected)};
+        status_sub{ORB_ID(vehicle_status)},land_sub{ORB_ID(vehicle_land_detected)},rate_sub{ORB_ID(vehicle_angular_velocity)};
     static vehicle_local_position_s position{};
     static vehicle_attitude_s attitude{};
     static vehicle_status_s status{};
     static vehicle_land_detected_s land{};
-    position_sub.update(&position);attitude_sub.update(&attitude);status_sub.update(&status);land_sub.update(&land);
+    static vehicle_angular_velocity_s rate{};
+    position_sub.update(&position);attitude_sub.update(&attitude);status_sub.update(&status);land_sub.update(&land);rate_sub.update(&rate);
     values[0]=position.timestamp && attitude.timestamp?1:0;
     values[1]=position.x;values[2]=position.y;values[3]=position.z;
     values[4]=position.vx;values[5]=position.vy;values[6]=position.vz;
@@ -191,4 +193,6 @@ extern "C" EMSCRIPTEN_KEEPALIVE void tw_observation(double *values)
     values[11]=status.arming_state==vehicle_status_s::ARMING_STATE_ARMED;
     values[12]=land.landed;values[13]=static_cast<double>(position.timestamp);values[14]=static_cast<double>(attitude.timestamp);
     values[15]=status.nav_state;
+    for(int i=0;i<3;++i) { values[16+i]=rate.xyz[i]; }
+    values[19]=static_cast<double>(rate.timestamp);
 }

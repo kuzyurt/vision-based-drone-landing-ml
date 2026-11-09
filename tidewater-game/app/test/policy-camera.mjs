@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import './headless.mjs';
+import * as E from '../src/engine/index.js';
+import {GPU} from '../src/engine/gpu/GPU.js';
+import {ShaderModule} from '../src/engine/gpu/Shader.js';
+import {MeshRenderer} from '../src/engine/render/MeshRenderer.js';
+import {Material} from '../src/engine/render/Material.js';
+import {SunShadows} from '../src/engine/render/Shadows.js';
+import {PolicyCamera} from '../src/landing/PolicyCamera.js';
+import {G} from '../src/engine/render/Frame.js';
+await GPU.init({headless:true});new SunShadows();const errors=[];GPU.device.addEventListener('uncapturederror',e=>errors.push(e.error.message));
+const group=new E.Group(),scene=new E.Scene(),mr=new MeshRenderer(),green=new E.Mesh(new E.PlaneGeometry(.06,.06),new Material({lit:false,color:0x00ff00})),red=new E.Mesh(new E.PlaneGeometry(.06,.06),new Material({lit:false,color:0xff0000}));
+green.position.set(.2,.1,-2);red.position.set(-.2,-.1,-2);group.add(green,red);scene.add(group);group.position.set(9,3,1);
+const blue=new Material({lit:false,color:0x0000ff});for(let i=0;i<18;i++){const extra=new E.Mesh(new E.PlaneGeometry(.01,.01),blue);extra.position.set(-.35+i*.035,-.3,-2.1);group.add(extra);}
+const water={uniforms:{}},operator=new E.PerspectiveCamera(75,2,.1,100);operator.position.set(80,90,100);
+const bridge={groups:new Map([['test',group]]),app:{camera:operator,engine:{meshRenderer:mr},scene,sceneRenderer:{hullMasks:[]},ocean:{material:water},sky:{module:new ShaderModule({name:'test sensor sky',code:'fn skyRadianceWithClouds(dir:vec3f,withSun:bool)->vec3f{return vec3f(0.0);}'})}}};
+const sensor=new PolicyCamera(bridge),identity=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],state={bodies:[['test',identity]],views:{drone:{matrix:identity,fovy:36.1}}};
+G.exposure.value=1;sensor.meshRenderer.useRenderBundles=false;const a=await sensor.capture(state),f=180/Math.tan(36.1*Math.PI/360);
+const find=channel=>{let sx=0,sy=0,n=0;for(let y=0;y<360;y++)for(let x=0;x<640;x++){const i=(y*640+x)*3;if(a[i+channel]>100&&a[i+channel]>a[i+(channel===0?1:0)]*1.3){sx+=x+.5;sy+=y+.5;n++;}}assert(n>50,`Missing channel ${channel}, maximum ${a.reduce((x,y)=>Math.max(x,y),0)}`);return [sx/n,sy/n];};
+const g=find(1),r=find(0);assert(Math.abs(g[0]-(320+f*.1))<1);assert(Math.abs(g[1]-(180-f*.05))<1);assert(Math.abs(r[0]-(320-f*.1))<1);assert(Math.abs(r[1]-(180+f*.05))<1);
+operator.fov=12;operator.position.set(-4,0,30);sensor.meshRenderer.useRenderBundles=true;const b=await sensor.capture(state);assert.deepEqual(a,b,'Bundled draws and operator view must preserve every onboard RGB pixel');await sensor.capture(state);assert(sensor.meshRenderer.bundleCache.stats.hits>0,'Stable draw commands must reuse their bundle');assert.deepEqual(group.position.toArray(),[9,3,1]);assert.equal(bridge.app.ocean.material,water);
+green.position.x+=.02;const movedBundle=await sensor.capture(state);sensor.meshRenderer.useRenderBundles=false;const movedDirect=await sensor.capture(state);assert.deepEqual(movedBundle,movedDirect,'Reused bundle must read updated transforms');assert.notDeepEqual(movedBundle,a);sensor.meshRenderer.useRenderBundles=true;
+for(let i=0;i<20;i++)await sensor.capture(state);assert.equal(sensor.renderer.width,640);assert.equal(sensor.renderer.height,360);assert.equal(sensor.busy,false);assert.equal(sensor.readback.mapState,'unmapped');assert.deepEqual(errors,[]);sensor.destroy();
+console.log('Real GPU: 640×360 FoV, RGB channel order, top-down rows and optical projection verified; operator camera and body transforms preserved; bounded readback unmapped.');process.exit(0);

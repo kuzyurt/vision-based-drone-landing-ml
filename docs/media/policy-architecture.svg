@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="800" viewBox="0 0 1600 800" role="img" aria-labelledby="title">
+<title id="title">R15 landing policy: learned vision, pad localization, landing control and PX4</title>
+<rect width="1600" height="800" fill="#ffffff"/>
+<text x="64" y="87.64" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="56" font-weight="600" fill="#163b50">How the policy lands</text>
+<text x="64" y="182.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Onboard RGB + own telemetry</text>
+<polyline points="285,203 285,260" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="285,260 277.80861692093697,246.8362615716444 292.19138307906303,246.8362615716444" fill="#163b50"/>
+<text x="688.5" y="182.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Boat radio (optional)</text>
+<polyline points="846,203 846,260" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="846,260 838.808616920937,246.8362615716444 853.191383079063,246.8362615716444" fill="#163b50"/>
+<polygon points="64,260 510,260 550,420 510,580 64,580" fill="#163b50"/>
+<polygon points="535,260 1003,260 1043,420 1003,580 535,580 575,420" fill="#246b95"/>
+<polygon points="1028,260 1496,260 1536,420 1496,580 1028,580 1068,420" fill="#087e82"/>
+<text x="94" y="343.42" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="43" font-weight="600" fill="#ffffff">Learned vision</text>
+<text x="94" y="423.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">MobileNetV3 + GRU</text>
+<text x="94" y="482.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Spatial target head</text>
+<text x="609" y="342.48" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="42" font-weight="600" fill="#ffffff">Pad localization</text>
+<text x="609" y="423.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Bounded radio fusion</text>
+<text x="609" y="482.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Marker fit + tracking</text>
+<text x="1102" y="340.6" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="40" font-weight="600" fill="#ffffff">Landing control</text>
+<text x="1102" y="421.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Align · match · descend</text>
+<text x="1102" y="482.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Confirm touchdown</text>
+<polyline points="1312,580 1312,625 650,625" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polyline points="650,625 650,682" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="650,682 642.808616920937,668.8362615716444 657.191383079063,668.8362615716444" fill="#163b50"/>
+<polyline points="1312,625 1312,682" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="1312,682 1304.8086169209369,668.8362615716444 1319.1913830790631,668.8362615716444" fill="#163b50"/>
+<text x="502.5" y="735.72" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" fill="#163b50">PX4 flight control</text>
+<text x="1183" y="735.72" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="38" font-weight="600" fill="#163b50">Camera gimbal</text>
+</svg>

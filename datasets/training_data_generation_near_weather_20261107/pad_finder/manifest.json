@@ -1,0 +1,75 @@
+{
+  "task": "pad_finder",
+  "profile": "near",
+  "input": {
+    "width": 640,
+    "height": 360,
+    "channels": 3,
+    "encoding": "RGB"
+  },
+  "target": {
+    "grid": [
+      45,
+      80
+    ],
+    "pad_heat": "pad-center presence",
+    "pad_offset": "sub-cell x/y correction",
+    "pad_presence": "scalar"
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "case": "very_close_sunlit",
+      "path": "pad_finder\\pad_01",
+      "seed": 20261107,
+      "map_kind": "island",
+      "distance_m": 4.8,
+      "weather": "sunlit",
+      "pad_pixel": [
+        320.0975961450134,
+        169.7613144967419
+      ],
+      "pad_extent_px": 62.3499347377532,
+      "training_eligible": false,
+      "review_only": true,
+      "rule_error": "R012: pad range 4.80 m is outside 8-20 m",
+      "rules_checked": []
+    },
+    {
+      "sample": 2,
+      "case": "close_hazy",
+      "path": "pad_finder\\pad_02",
+      "seed": 20261207,
+      "map_kind": "beach",
+      "distance_m": 7.2,
+      "weather": "hazy",
+      "pad_pixel": [
+        320.06521269383916,
+        173.09095533963716
+      ],
+      "pad_extent_px": 41.6615554276492,
+      "training_eligible": false,
+      "review_only": true,
+      "rule_error": "R012: pad range 7.20 m is outside 8-20 m",
+      "rules_checked": []
+    },
+    {
+      "sample": 3,
+      "case": "half_visible_overcast",
+      "path": "pad_finder\\pad_03",
+      "seed": 20261307,
+      "map_kind": "gravel",
+      "distance_m": 5.4,
+      "weather": "overcast",
+      "pad_pixel": [
+        61.98312267702204,
+        199.58099485524727
+      ],
+      "pad_extent_px": 61.08818673734776,
+      "training_eligible": false,
+      "review_only": true,
+      "rule_error": "R012: pad range 5.40 m is outside 8-20 m",
+      "rules_checked": []
+    }
+  ]
+}

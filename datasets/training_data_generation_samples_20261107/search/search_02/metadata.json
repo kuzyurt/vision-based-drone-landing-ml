@@ -1,0 +1,83 @@
+{
+  "task": "search",
+  "sample": 2,
+  "seed": 20261207,
+  "map_kind": "gravel",
+  "distance_m": 31.5,
+  "height_m": 8.5,
+  "bearing_deg": -38.0,
+  "pad_pixel": [
+    320.01593574389426,
+    178.1492698370259
+  ],
+  "pad_depth_m": 32.55247524723829,
+  "pad_visible": true,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "rules_checked": [
+    "R001",
+    "R005",
+    "R006",
+    "R007"
+  ],
+  "labels": {
+    "heat_shape": [
+      45,
+      80
+    ],
+    "evidence_classes": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "presence": 1.0,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          300,
+          172,
+          338,
+          191
+        ],
+        "center_px": [
+          319.0,
+          181.5
+        ],
+        "extent_px": 38,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          201,
+          236,
+          257,
+          262
+        ],
+        "center_px": [
+          229.0,
+          249.0
+        ],
+        "extent_px": 56,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null
+      }
+    ],
+    "pad_pixel": [
+      320.01593574389426,
+      178.1492698370259
+    ],
+    "pad_visible": true
+  }
+}

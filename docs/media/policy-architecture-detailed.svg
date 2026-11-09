@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2240" height="1750" viewBox="0 0 2240 1750" role="img" aria-labelledby="title">
+<title id="title">R15 system data flow: camera and PX4 telemetry to perception, radio fusion, metric tracking, landing control, PX4 motor commands and camera gimbal</title>
+<rect width="2240" height="1750" fill="#ffffff"/>
+<text x="64" y="89.52" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="58" font-weight="600" fill="#163b50">R15: sensors to flight commands</text>
+<polyline points="1952,1610 1952,1690 24,1690 24,345 64,345" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1952,1610 1952,1690 24,1690 24,345 64,345" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="64,345 50.83626157164441,352.19138307906303 50.83626157164441,337.80861692093697" fill="#163b50"/>
+<polyline points="24,1125 64,1125" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="24,1125 64,1125" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="64,1125 50.83626157164441,1132.1913830790631 50.83626157164441,1117.8086169209369" fill="#163b50"/>
+<circle cx="24" cy="1125" r="7" fill="#163b50" stroke="#163b50" stroke-width="3"/>
+<polyline points="1952,250 1952,140 140,140 140,250" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1952,250 1952,140 140,140 140,250" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="140,250 132.80861692093694,236.8362615716444 147.19138307906303,236.8362615716444" fill="#163b50"/>
+<polyline points="254,250 254,195 1376,195 1376,250" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="254,250 254,195 1376,195 1376,250" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1376,250 1368.8086169209369,236.8362615716444 1383.1913830790631,236.8362615716444" fill="#246b95"/>
+<polyline points="444,345 580,345" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="444,345 580,345" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="580,345 566.8362615716444,352.19138307906303 566.8362615716444,337.80861692093697" fill="#246b95"/>
+<polyline points="800,440 800,640" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="800,440 800,640" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="800,640 792.808616920937,626.8362615716444 807.191383079063,626.8362615716444" fill="#246b95"/>
+<polyline points="650,440 650,485 540,485 540,1090 580,1090" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="650,440 650,485 540,485 540,1090 580,1090" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="580,1090 566.8362615716444,1097.1913830790631 566.8362615716444,1082.8086169209369" fill="#246b95"/>
+<polyline points="444,1125 580,1125" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="444,1125 580,1125" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="580,1125 566.8362615716444,1132.1913830790631 566.8362615716444,1117.8086169209369" fill="#163b50"/>
+<polyline points="444,1080 500,1080 500,915 1670,915 1670,790 1732,790" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="444,1080 500,1080 500,915 1670,915 1670,790 1732,790" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1732,790 1718.8362615716444,797.191383079063 1718.8362615716444,782.808616920937" fill="#163b50"/>
+<polyline points="1376,915 1376,830" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1376,915 1376,830" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1376,830 1383.1913830790631,843.1637384283556 1368.8086169209369,843.1637384283556" fill="#163b50"/>
+<circle cx="1376" cy="915" r="7" fill="#163b50" stroke="#163b50" stroke-width="3"/>
+<polyline points="1020,735 1156,735" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1020,735 1156,735" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1156,735 1142.8362615716444,742.191383079063 1142.8362615716444,727.808616920937" fill="#246b95"/>
+<polyline points="1020,1125 1156,1125" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1020,1125 1156,1125" fill="none" stroke="#246b95" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1156,1125 1142.8362615716444,1132.1913830790631 1142.8362615716444,1117.8086169209369" fill="#246b95"/>
+<polyline points="444,1515 1376,1515 1376,1220" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="444,1515 1376,1515 1376,1220" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1376,1220 1383.1913830790631,1233.1637384283556 1368.8086169209369,1233.1637384283556" fill="#087e82"/>
+<polyline points="1596,1125 1656,1125 1656,345 1596,345" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1596,1125 1656,1125 1656,345 1596,345" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1596,345 1609.1637384283556,337.80861692093697 1609.1637384283556,352.19138307906303" fill="#087e82"/>
+<polyline points="444,1575 1700,1575 1700,650 1732,650" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="444,1575 1700,1575 1700,650 1732,650" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1732,650 1718.8362615716444,657.191383079063 1718.8362615716444,642.808616920937" fill="#087e82"/>
+<polyline points="1596,690 1732,690" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1596,690 1732,690" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1732,690 1718.8362615716444,697.191383079063 1718.8362615716444,682.808616920937" fill="#087e82"/>
+<polyline points="1952,640 1952,440" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1952,640 1952,440" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1952,440 1959.1913830790631,453.1637384283556 1944.8086169209369,453.1637384283556" fill="#087e82"/>
+<polyline points="1952,830 1952,1030" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1952,830 1952,1030" fill="none" stroke="#087e82" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1952,1030 1944.8086169209369,1016.8362615716444 1959.1913830790631,1016.8362615716444" fill="#087e82"/>
+<polyline points="1952,1220 1952,1420" fill="none" stroke="#ffffff" stroke-width="14" stroke-linejoin="round"/>
+<polyline points="1952,1220 1952,1420" fill="none" stroke="#163b50" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1952,1420 1944.8086169209369,1406.8362615716444 1959.1913830790631,1406.8362615716444" fill="#163b50"/>
+<polygon points="64,250 444,250 444,440 64,440" fill="#163b50"/>
+<text x="88" y="302.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Onboard camera</text>
+<text x="88" y="363.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">RGB · 640 x 360</text>
+<text x="88" y="407.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Capture timestamp</text>
+<polygon points="580,250 1020,250 1020,440 580,440" fill="#246b95"/>
+<text x="604" y="305.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Image encoder</text>
+<text x="604" y="363.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">MobileNetV3-Small</text>
+<text x="604" y="407.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Feature maps</text>
+<polygon points="580,640 1020,640 1020,830 580,830" fill="#246b95"/>
+<text x="604" y="695.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Spatial acquisition</text>
+<text x="604" y="753.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Heatmap + offsets</text>
+<text x="604" y="797.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Bearing + presence</text>
+<polygon points="580,1030 1020,1030 1020,1220 580,1220" fill="#246b95"/>
+<text x="604" y="1085.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Visual pose + GRU</text>
+<text x="604" y="1143.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Image features + state</text>
+<text x="604" y="1187.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Pose + motion estimates</text>
+<polygon points="64,1030 444,1030 444,1220 64,1220" fill="#163b50"/>
+<text x="88" y="1082.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Own telemetry</text>
+<text x="88" y="1143.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">PX4 pose + velocity</text>
+<text x="88" y="1187.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Attitude + gimbal</text>
+<polygon points="64,1420 444,1420 444,1610 64,1610" fill="#163b50"/>
+<text x="88" y="1472.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Boat radio</text>
+<text x="88" y="1533.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Position + velocity</text>
+<text x="88" y="1577.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Quality + dock status</text>
+<polygon points="1156,1030 1596,1030 1596,1220 1156,1220" fill="#087e82"/>
+<text x="1180" y="1082.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Bounded radio fusion</text>
+<text x="1180" y="1143.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Visual + radio estimates</text>
+<text x="1180" y="1187.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Weights capped at 0.35</text>
+<polygon points="1732,640 2172,640 2172,830 1732,830" fill="#087e82"/>
+<text x="1756" y="695.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Landing controller</text>
+<text x="1756" y="753.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Pad pose + own state</text>
+<text x="1756" y="797.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">6 bounded commands</text>
+<polygon points="1732,1030 2172,1030 2172,1220 1732,1220" fill="#163b50"/>
+<text x="1756" y="1085.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">PX4 flight control</text>
+<text x="1756" y="1143.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Velocity + yaw input</text>
+<text x="1756" y="1187.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Motor commands</text>
+<polygon points="1732,250 2172,250 2172,440 1732,440" fill="#163b50"/>
+<text x="1756" y="305.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Camera gimbal</text>
+<text x="1756" y="363.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Pan + tilt rate input</text>
+<text x="1756" y="407.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Camera orientation</text>
+<polygon points="1732,1420 2172,1420 2172,1610 1732,1610" fill="#163b50"/>
+<text x="1756" y="1475.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Drone + motors</text>
+<text x="1756" y="1533.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Motor actuation</text>
+<text x="1756" y="1577.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Motion + sensor update</text>
+<polygon points="1156,250 1596,250 1596,830 1156,830" fill="#246b95"/>
+<text x="1180" y="307.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Metric localization</text>
+<text x="1180" y="375.02" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="33" font-weight="400" fill="#ffffff">RGB + calibration</text>
+<text x="1180" y="429.02" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="33" font-weight="400" fill="#ffffff">Marker registration</text>
+<polyline points="1376,464 1376,568" fill="none" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"/>
+<polygon points="1376,568 1368.8086169209369,554.8362615716444 1383.1913830790631,554.8362615716444" fill="#ffffff"/>
+<text x="1180" y="634.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Accepted fits + tracking</text>
+<text x="1180" y="712.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Pad pose + deck motion</text>
+<text x="1180" y="786.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#ffffff">Own-motion correction</text>
+<polygon points="1272.5,82 1587.5,82 1587.5,131 1272.5,131" fill="#ffffff"/>
+<text x="1282.5" y="116.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Camera orientation</text>
+<polygon points="757.0,145 943.0,145 943.0,194 757.0,194" fill="#ffffff"/>
+<text x="767" y="179.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#246b95">RGB frame</text>
+<polygon points="469.0,290 555.0,290 555.0,339 469.0,339" fill="#ffffff"/>
+<text x="479" y="324.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#246b95">RGB</text>
+<polygon points="639.0,509 961.0,509 961.0,558 639.0,558" fill="#ffffff"/>
+<text x="649" y="543.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#246b95">Fine / context maps</text>
+<polygon points="424.0,847 656.0,847 656.0,896 424.0,896" fill="#ffffff"/>
+<text x="434" y="881.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#246b95">Final features</text>
+<polygon points="714.0,919 886.0,919 886.0,968 714.0,968" fill="#ffffff"/>
+<text x="724" y="953.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Own state</text>
+<polygon points="462.5,1150 561.5,1150 561.5,1199 462.5,1199" fill="#ffffff"/>
+<text x="472.5" y="1184.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">State</text>
+<polygon points="1025.5,741 1150.5,741 1150.5,786 1025.5,786" fill="#ffffff"/>
+<text x="1035.5" y="772.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#246b95">Bearing</text>
+<polygon points="1044.5,1134 1131.5,1134 1131.5,1179 1044.5,1179" fill="#ffffff"/>
+<text x="1054.5" y="1165.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#246b95">Pose</text>
+<polygon points="1565.0,969 1747.0,969 1747.0,1018 1565.0,1018" fill="#ffffff"/>
+<text x="1575" y="1003.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#087e82">Pose prior</text>
+<polygon points="1579.0,1370 1821.0,1370 1821.0,1417 1579.0,1417" fill="#ffffff"/>
+<text x="1589" y="1403.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#087e82">Dock readiness</text>
+<polygon points="1830.0,517 2074.0,517 2074.0,566 1830.0,566" fill="#ffffff"/>
+<text x="1840" y="551.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#087e82">Pan + tilt rates</text>
+<polygon points="1798.5,917 2105.5,917 2105.5,966 1798.5,966" fill="#ffffff"/>
+<text x="1808.5" y="951.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#087e82">Velocity + yaw rate</text>
+<polygon points="1808.5,1303 2095.5,1303 2095.5,1352 1808.5,1352" fill="#ffffff"/>
+<text x="1818.5" y="1337.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Motor commands</text>
+<polygon points="729.0,1452 1159.0,1452 1159.0,1501 729.0,1501" fill="#ffffff"/>
+<text x="739" y="1486.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#087e82">Position / velocity + quality</text>
+<polygon points="656.0,1637 1204.0,1637 1204.0,1686 656.0,1686" fill="#ffffff"/>
+<text x="666" y="1671.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">Drone motion + simulated sensors</text>
+</svg>

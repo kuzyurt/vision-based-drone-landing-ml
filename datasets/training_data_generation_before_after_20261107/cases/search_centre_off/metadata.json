@@ -1,0 +1,163 @@
+{
+  "key": "search_centre_off",
+  "title": "SEARCH 02 \u2014 HALF-VISIBLE TARGET, TRUE CENTRE OFF-FRAME",
+  "bug": "Old path: a clipped target cannot own a heat cell; with no valid decoy, presence collapses to 0 and the visible hull has no evidence label.",
+  "fix": "The target is still visibly present, so presence=1 and evidence covers the visible hull. The true centre is outside the frame, so the heat cell stays empty instead of inventing a partial centre.",
+  "spec": {
+    "seed": 20261307,
+    "map_kind": "gravel",
+    "distance_m": 6.6,
+    "height_m": 3.0,
+    "bearing_deg": 17.0,
+    "decoy_layout": [
+      [
+        60.0,
+        180.0
+      ],
+      [
+        65.0,
+        170.0
+      ],
+      [
+        70.0,
+        190.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": 0.0,
+    "yaw_offset_deg": -32.5,
+    "weather": "overcast"
+  },
+  "before": {
+    "heat": 0,
+    "presence": 0.0,
+    "evidence": 0,
+    "ignore": 1,
+    "identity": 0,
+    "class": "clipped",
+    "visible_fraction": 0.0,
+    "center_in_frame": false,
+    "rule_error": "R005: target boat is clipped by the image edge",
+    "training_eligible": false,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          0,
+          165,
+          86,
+          298
+        ],
+        "center_px": [
+          43.0,
+          231.5
+        ],
+        "extent_px": 133,
+        "clipped": true,
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": true
+      }
+    ]
+  },
+  "after": {
+    "heat": 0,
+    "presence": 1.0,
+    "evidence": 147,
+    "ignore": 0,
+    "identity": 0,
+    "class": "presence_only",
+    "visible_fraction": 0.415223484729291,
+    "center_in_frame": false,
+    "rule_error": null,
+    "training_eligible": true,
+    "target": {
+      "key": "target",
+      "bbox": [
+        0,
+        165,
+        86,
+        298
+      ],
+      "full_bbox": [
+        -99.22153370311122,
+        156.96185218470458,
+        86.46556898833998,
+        305.3114739609505
+      ],
+      "center_px": [
+        -6.377982357385619,
+        231.13666307282753
+      ],
+      "visible_center_px": [
+        43.0,
+        231.5
+      ],
+      "extent_px": 133,
+      "full_extent_px": 185,
+      "depth_m": 6.080975826803289,
+      "min_depth_m": 5.08785181274358,
+      "too_close": false,
+      "too_close_reason": null,
+      "clipped": true,
+      "center_in_frame": false,
+      "visible_fraction": 0.415223484729291,
+      "clipped_fraction": 0.584776515270709,
+      "frame_coverage": 0.049644097222222225,
+      "label_class": "presence_only",
+      "detection_valid": false,
+      "evidence": "target_or_similar",
+      "identity_valid": false,
+      "pad_visible": true,
+      "pad_extent_px": 53.30253564570557,
+      "overlap": false,
+      "occluded_by": null
+    },
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          0,
+          165,
+          86,
+          298
+        ],
+        "full_bbox": [
+          -99.22153370311122,
+          156.96185218470458,
+          86.46556898833998,
+          305.3114739609505
+        ],
+        "center_px": [
+          -6.377982357385619,
+          231.13666307282753
+        ],
+        "visible_center_px": [
+          43.0,
+          231.5
+        ],
+        "extent_px": 133,
+        "full_extent_px": 185,
+        "depth_m": 6.080975826803289,
+        "min_depth_m": 5.08785181274358,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": true,
+        "center_in_frame": false,
+        "visible_fraction": 0.415223484729291,
+        "clipped_fraction": 0.584776515270709,
+        "frame_coverage": 0.049644097222222225,
+        "label_class": "presence_only",
+        "detection_valid": false,
+        "evidence": "target_or_similar",
+        "identity_valid": false,
+        "pad_visible": true,
+        "pad_extent_px": 53.30253564570557,
+        "overlap": false,
+        "occluded_by": null
+      }
+    ]
+  },
+  "stats_line": "BEFORE  heat=0  presence=0  evidence=0  ignore=1  identity=0  class=clipped  eligible=0   \u00b7   AFTER  heat=0  presence=1  evidence=147  ignore=0  identity=0  class=presence_only  eligible=1"
+}

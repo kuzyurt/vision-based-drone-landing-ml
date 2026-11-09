@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {GPU} from '../src/engine/gpu/GPU.js';
+import {DrawBundleCache} from '../src/engine/render/DrawBundleCache.js';
+let builds=0,executed=0,offset=0,count=6,pipeline={};const group={},vertex={},index={};
+const methods=['setPipeline','setBindGroup','setVertexBuffer','setIndexBuffer','drawIndexed','draw','drawIndexedIndirect','drawIndirect'];
+const sink=()=>Object.fromEntries(methods.map(name=>[name,()=>{}]));
+GPU.device={createRenderBundleEncoder(){builds++;return {...sink(),finish:()=>({})};}};
+const pass={passKey:'main',layerMask:1,bundleList:0,frameGroup0:{},colorFormats:['rgba8unorm'],depthFormat:'depth32float'};
+const rp={...sink(),executeBundles(){executed++;}},cache=new DrawBundleCache();
+const record=e=>{e.setPipeline(pipeline);e.setBindGroup(1,group);e.setBindGroup(2,group,[offset]);e.setVertexBuffer(0,vertex);e.setIndexBuffer(index,'uint32');e.drawIndexed(count,1,0,0,0);};
+cache.draw(rp,pass,record);assert.equal(builds,0,'New streams retain direct rendering');
+cache.draw(rp,pass,record);cache.draw(rp,pass,record);assert.equal(builds,1);assert.equal(executed,2);
+offset=256;cache.draw(rp,pass,record);assert.equal(builds,1,'Changed offsets invalidate cached commands');cache.draw(rp,pass,record);assert.equal(builds,2);
+pipeline={};cache.draw(rp,pass,record);assert.equal(builds,2,'Changed resources invalidate cached commands');
+count=12;cache.draw(rp,pass,record);assert.equal(builds,2,'Changed draw counts invalidate cached commands');
+for(let i=0;i<20;i++)cache.draw(rp,{...pass,passKey:'pass'+i},record);
+assert.equal(cache.entries.size,8);cache.clear();assert.equal(cache.entries.size,0);assert.equal(cache.scratch.length,0);
+console.log('Exact draw-stream reuse, offset/resource/count invalidation, direct fallback and eight-entry cleanup passed.');

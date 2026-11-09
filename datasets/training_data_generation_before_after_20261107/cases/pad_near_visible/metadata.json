@@ -1,0 +1,68 @@
+{
+  "key": "pad_near_visible",
+  "title": "PAD 03 \u2014 CAMERA TOO NEAR, PAD STILL FULLY VISIBLE",
+  "bug": "Old path: the 8\u201320 m range check rejected a 4.8 m view even though the pad centre was visible and 100% of the pad pattern was in frame.",
+  "fix": "Close range is not a rejection by itself. The pad is fully visible and the centre is resolvable, so the far-limit check admits it; clipped or overfilled pads still fail R013.",
+  "spec": {
+    "seed": 20261107,
+    "map_kind": "island",
+    "distance_m": 4.8,
+    "height_m": 2.5,
+    "bearing_deg": 31.0,
+    "decoy_layout": [
+      [
+        8.0,
+        205.0
+      ],
+      [
+        14.0,
+        155.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": 0.0,
+    "yaw_offset_deg": 0.0,
+    "weather": "sunlit"
+  },
+  "before": {
+    "presence": 1.0,
+    "center": true,
+    "class": "center",
+    "extent_px": 62.3499347377532,
+    "visible_fraction": 0.9999999999999996,
+    "ignore": 0,
+    "rule_error": "R012: pad range 4.80 m is outside 8-20 m",
+    "training_eligible": false,
+    "pad": {
+      "pad_presence": 1.0,
+      "pad_valid": true,
+      "pad_pixel": [
+        320.0975961450134,
+        169.7613144967419
+      ],
+      "pad_extent_px": 62.3499347377532,
+      "pad_in_frame": true
+    }
+  },
+  "after": {
+    "presence": 1.0,
+    "center": true,
+    "class": "center",
+    "extent_px": 62.3499347377532,
+    "visible_fraction": 0.9999999999999996,
+    "ignore": 0,
+    "rule_error": null,
+    "training_eligible": true,
+    "pad": {
+      "pad_presence": 1.0,
+      "pad_center_valid": true,
+      "pad_label_class": "center",
+      "pad_visible": true,
+      "pad_center_visible": true,
+      "pad_visible_fraction": 0.9999999999999996,
+      "pad_frame_coverage": 0.016872892195321534,
+      "pad_ignore_cells": 0
+    }
+  },
+  "stats_line": "BEFORE  presence=1  center=1  visible=100%  ignore=0  class=center  eligible=0   \u00b7   AFTER  presence=1  center=1  visible=100%  ignore=0  class=center  eligible=1"
+}

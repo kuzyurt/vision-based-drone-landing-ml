@@ -33,7 +33,7 @@ const CLR = [ 0, 0, 0, 0 ];
 
 // three's ACES fitted curve (sRGB => XYZ => D65_2_D60 => AP1 => RRT_SAT, RRT + ODT fit,
 // ODT_SAT => XYZ => D60_2_D65 => sRGB), clamped
-const ACES = /* wgsl */`
+export const ACES = /* wgsl */`
 fn RRTAndODTFit( v: vec3f ) -> vec3f {
 	let a = v * ( v + 0.0245786 ) - 0.000090537;
 	let b = v * ( 0.983729 * v + 0.4329510 ) + 0.238081;

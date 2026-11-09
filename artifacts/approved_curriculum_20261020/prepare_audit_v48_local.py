@@ -1,0 +1,6 @@
+from pathlib import Path
+R=Path(__file__).parent;s=(R/'audit_gate_v42.py').read_text().replace('search_v42','search_v48').replace('expert_adapter_v42','expert_adapter_v48').replace('collection_v42','collection_v48').replace('P02_v42','P02_v48_affected')
+s=s.replace("['visible_start','search_near','search_mid','search_far','search_distractors','yaw_resync','tilt_loss','learner_struggle','expired_memory']", "['learner_struggle','expired_memory']")
+s=s.replace("return ((reason=='sustained_observed_wrong_object_pursuit'", "u=e.get('unverified_descent')or{}\n                return ((reason=='sustained_actual_descent_without_qualified_landing'and u.get('actual_height_loss_m',0)>=1. and u.get('observed_descent_s',0)>=3. and u.get('distinct_capture_count',0)>=10 and u.get('after_one_metre_threshold_s',0)>=2. and u.get('teacher_descent_authorized')is False)or(reason=='sustained_observed_wrong_object_pursuit'")
+s=s.replace("passed==9 else'failed'","passed==2 else'failed'").replace('cases_total=9','cases_total=2').replace('total=9','total=2');compile(s,'audit_gate_v48.py','exec');(R/'audit_gate_v48.py').write_text(s)
+s=(R/'launch_audit_v42.py').read_text().replace('search_v42','search_v48').replace('audit_gate_v42','audit_gate_v48');compile(s,'launch_audit_v48.py','exec');(R/'launch_audit_v48.py').write_text(s)

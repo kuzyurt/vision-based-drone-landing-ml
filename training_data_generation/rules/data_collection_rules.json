@@ -1,0 +1,716 @@
+{
+  "schema_version": 1,
+  "artifact": "synthetic_data_collection_rules",
+  "status": "complete",
+  "purpose": "Rules for generating and labeling synthetic MuJoCo frames for the search network and the R15 pad finder, plus radio-first policy evaluation.",
+  "conventions": {
+    "rule_batch_size": 3,
+    "severity": "hard means the scene, frame, or label must be rejected, masked, or relabeled; soft means a required dataset property or composition target.",
+    "label_actions": [
+      "accept",
+      "reject_scene",
+      "reject_frame",
+      "mask_label",
+      "ignore_region",
+      "relabel_unknown_boat",
+      "relabel_target_or_similar",
+      "mark_identity_unsupervised"
+    ],
+    "parameter_rule": "Numeric defaults are starting points. Calibrate them from projected pixel size, camera intrinsics, and held-out validation; they are not universal physical constants."
+  },
+  "rules": [
+    {
+      "id": "R001",
+      "title": "Keep the drone body above the boat and the camera above the deck",
+      "scope": [
+        "shared"
+      ],
+      "phase": [
+        "scene_generation",
+        "scene_admission"
+      ],
+      "severity": "hard",
+      "condition": "At spawn and for every recorded approach frame, the drone's lowest physical point is not strictly above the target boat's highest point, excluding only the thin camera rod from the boat-height measurement; or the camera is below the deck plane.",
+      "action": "reject_scene",
+      "label_instruction": "Do not emit frames or labels for the scene.",
+      "rationale": "Below-deck and collision-invalid views are not representative of the intended approach and can teach pad or boat appearance from impossible angles.",
+      "prevents": [
+        "below-deck viewpoints",
+        "collision-invalid synthetic scenes",
+        "impossible pad perspectives"
+      ],
+      "parameters": {
+        "minimum_vertical_clearance_m": 0,
+        "camera_rod_excluded_from_boat_height": true,
+        "camera_rod_still_counts_for_collision": true
+      }
+    },
+    {
+      "id": "R002",
+      "title": "Do not require identity when the target and similar boats are not visually distinguishable",
+      "scope": [
+        "shared",
+        "search_network"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "The only difference between the target boat and a similar boat is hidden metadata, a map or scene seed, or a visual signature that is not resolvable at the rendered range and angle.",
+      "action": [
+        "mark_identity_unsupervised",
+        "relabel_target_or_similar",
+        "relabel_unknown_boat"
+      ],
+      "label_instruction": "Do not force target_boat or different_boat. Keep detection labels if the boats are visible, but remove identity supervision and use target_or_similar or unknown_boat for the ambiguous case.",
+      "rationale": "An identity label that cannot be inferred from the image teaches noise and makes the model appear wrong when the task is actually impossible.",
+      "prevents": [
+        "impossible identity labels",
+        "identity noise from appearance-matched decoys",
+        "false confidence at long range"
+      ],
+      "parameters": {
+        "minimum_signature_extent_px": null,
+        "must_be_resolvable_in_single_frame": true,
+        "distance_alone_is_not_a_valid_identity_cue": true
+      }
+    },
+    {
+      "id": "R003",
+      "title": "Only label what is actually visible and resolvable in the rendered frame",
+      "scope": [
+        "shared"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "The boat or pad is outside the image, fully occluded, below the minimum projected size, or below the minimum contrast or sharpness threshold.",
+      "action": [
+        "mask_label",
+        "ignore_region",
+        "relabel_unknown_boat"
+      ],
+      "label_instruction": "Mask the affected heat, offset, evidence, identity, presence, or pad-center label, or mark the region as ignore. Do not treat missing visibility as a negative or background label.",
+      "rationale": "The absence of a label must mean the object is not there, not that the camera was pointed badly or the object was too small to see.",      "prevents": ["label noise from invisible objects", "false negatives caused by bad framing"],
+      "parameters": {
+        "minimum_projected_extent_px": null,
+        "minimum_visible_fraction": null,
+        "requires_calibration": true
+      }
+    },
+    {
+      "id": "R004",
+      "title": "Exclude search frames where the target boat overwhelms the frame",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "frame_admission"
+      ],
+      "severity": "hard",
+      "condition": "The projected target boat covers more than the maximum allowed fraction of the image, or there is too little surrounding context to learn search behavior. Camera distance alone is not a rejection: a close view that still shows enough of the hull and its centre is usable.",
+      "action": [
+        "reject_frame",
+        "mask_label"
+      ],
+      "label_instruction": "Exclude the frame from search-network training. Mask the visible hull so it is not taught as background; do not reuse the frame as a negative example.",
+      "rationale": "The search network is trained for acquisition in a wider scene, not for close-up texture recognition. Extreme close-ups teach the wrong scale and remove the context needed to distinguish a boat from background.",
+      "prevents": [
+        "texture overfitting",
+        "scale bias toward extreme close-ups",
+        "search behavior learned from non-search views"
+      ],
+      "parameters": {
+        "max_target_frame_coverage_fraction": 0.75,
+        "min_context_margin_px": 8,
+        "calibration_required": true
+      }
+    },
+    {
+      "id": "R005",
+      "title": "Require enough of the target boat to be visible for search",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "frame_admission"
+      ],
+      "severity": "hard",
+      "condition": "Less than 40 percent of the target boat's projected visible mask is inside the image, or truncation makes the boat center or extent ambiguous.",
+      "action": "reject_frame",
+      "label_instruction": "Exclude the frame from search training. If it is kept for robustness analysis, mask the boat label rather than teaching a partial center.",
+      "rationale": "A boat that is mostly outside the frame cannot support a reliable center, scale, or identity label, and the missing part creates an unlearnable target.",
+      "prevents": [
+        "labels from mostly off-screen boats",
+        "ambiguous centers",
+        "truncated-boat bias"
+      ],
+      "parameters": {
+        "min_visible_fraction_of_projected_target_mask": 0.4,
+        "max_clipped_fraction_of_bbox": 0.5,
+        "calibration_note": "Raised from 0.25 after the 6.6 m half-visible case measured 57% bbox visible with the true centre in frame.",
+        "calibration_required": true
+      }
+    },
+    {
+      "id": "R006",
+      "title": "Reject search frames where the boat is too small or degraded to detect",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "A boat's projected extent is below the minimum detectable size, or the boat is present but contrast, blur, or resolution makes it unreliable to detect.",
+      "action": [
+        "reject_frame",
+        "relabel_unknown_boat"
+      ],
+      "label_instruction": "Do not label empty sea when a boat is present but unresolvable. Exclude the frame from detection training or mark the boat region as unknown or ignore.",
+      "rationale": "Distance alone does not decide whether a boat is learnable; projected size and image quality do. Labeling an unresolvable boat as absent creates false negatives.",
+      "prevents": [
+        "impossible far-range labels",
+        "false negatives from tiny boats",
+        "range-only labeling mistakes"
+      ],
+      "parameters": {
+        "min_projected_boat_extent_px": 16,
+        "use_projected_size_not_range_alone": true,
+        "calibration_required": true
+      }
+    },
+    {
+      "id": "R007",
+      "title": "Use ambiguous identity labels when the target signature is not resolvable",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "The target or similar boat is detectable, but the visible feature that distinguishes target_boat from different_boat is below the resolvable pixel, contrast, or occlusion limit.",
+      "action": [
+        "mark_identity_unsupervised",
+        "relabel_target_or_similar",
+        "relabel_unknown_boat"
+      ],
+      "label_instruction": "Keep heat, offset, and evidence labels if the boat is visible. Do not set identity to target or different, and do not count the frame as a target-confirmation example. Use target_or_similar or unknown_boat.",
+      "rationale": "Detection and identity have different resolution requirements. A boat can be easy to see while its identity cue is impossible to read, and forcing the identity label creates contradictory supervision.",
+      "prevents": [
+        "impossible long-range identity labels",
+        "identity noise in distant frames",
+        "false target confirmation"
+      ],
+      "parameters": {
+        "identity_signature_must_be_resolvable": true,
+        "min_signature_extent_px": 10,
+        "min_target_boat_extent_px": 24,
+        "min_decoy_boat_extent_px": 48,
+        "min_target_pad_extent_px": 10,
+        "identity_supervision_valid": false
+      }
+    },
+    {
+      "id": "R008",
+      "title": "Handle overlapping boats without inventing a clean label",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "Two boats' projected centers land in the same heat cell, or their visible masks overlap enough that their centers or identities are ambiguous.",
+      "action": [
+        "ignore_region",
+        "relabel_unknown_boat",
+        "mask_label"
+      ],
+      "label_instruction": "Do not choose target versus decoy using hidden simulator identity. Mark the affected cells or regions ignore, or label both as unknown until they are visually separable.",
+      "rationale": "A heat cell can hold only one positive. Choosing a winner from privileged truth teaches the network to guess and makes tracker identity unstable.",
+      "prevents": [
+        "arbitrary target assignment in crowds",
+        "overlapping labels",
+        "tracker identity hops"
+      ],
+      "parameters": {
+        "one_positive_per_heat_cell": true,
+        "max_overlap_fraction_for_separate_labels": null,
+        "use_occlusion_masks": true
+      }
+    },
+    {
+      "id": "R009",
+      "title": "Require matched hard negatives and remove shortcut correlations",
+      "scope": [
+        "search_network"
+      ],
+      "phase": [
+        "dataset_composition"
+      ],
+      "severity": "soft",
+      "condition": "The dataset lacks similar-but-different boats, or target labels correlate with map, background, weather, time, boat color, or scene position.",
+      "action": "require_dataset_property",
+      "label_instruction": "Add matched target and similar-boat pairs that differ only by a visible signature. Randomize nuisance factors and keep target labels independent of scene identity. If the only difference is hidden, apply R002.",
+      "rationale": "The search network must learn the boat and its visible identity cue, not the map or the weather. Matched hard negatives expose the real decision boundary.",
+      "prevents": [
+        "false positives",
+        "map and background shortcuts",
+        "target-color bias"
+      ],
+      "parameters": {
+        "hard_negative_fraction": 0.3,
+        "split_by_map_and_boat_instance": true,
+        "nuisance_factors_randomized": [
+          "map",
+          "lighting",
+          "weather",
+          "sea_state",
+          "boat_color",
+          "scene_position",
+          "time_of_day"
+        ]
+      }
+    },
+    {
+      "id": "R010",
+      "title": "Do not turn unresolvable degradation into a negative example",
+      "scope": [
+        "search_network",
+        "pad_finder"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "Blur, glare, underexposure, rain, spray, compression, or horizon washout makes a boat or pad present but unresolvable.",
+      "action": [
+        "reject_frame",
+        "mask_label",
+        "relabel_unknown_boat"
+      ],
+      "label_instruction": "If the object cannot be resolved, mask its labels or exclude the frame. Include mild realistic degradation separately with clean labels; do not label degraded-but-present objects as absent.",
+      "rationale": "Robustness comes from learning to detect under realistic degradation, not from calling invisible objects background.",
+      "prevents": [
+        "degradation-induced false negatives",
+        "label noise under glare or blur",
+        "domain-gap overfitting"
+      ],
+      "parameters": {
+        "max_blur_px": null,
+        "max_glare_fraction": null,
+        "mild_degradation_should_be_included": true
+      }
+    },
+    {
+      "id": "R011",
+      "title": "Evaluate search lock on sequences, not independent frames",
+      "scope": [
+        "search_network",
+        "policy_evaluation"
+      ],
+      "phase": [
+        "dataset_composition",
+        "evaluation"
+      ],
+      "severity": "soft",
+      "condition": "The dataset or evaluation contains only independent frames, or target lock, confirmation, and handoff are judged from a single image.",
+      "action": "require_sequence_data",
+      "label_instruction": "Generate sequences covering approach, range change, camera motion, occlusion, reacquisition, and multiple boats. Keep per-frame labels, but judge lock and confirmation over time.",
+      "rationale": "The search network is per-frame, but permission to approach or land depends on track stability and state-machine confirmation.",
+      "prevents": [
+        "good heatmaps that never confirm",
+        "unstable track behavior",
+        "single-frame overfitting"
+      ],
+      "parameters": {
+        "min_sequence_length_frames": 20,
+        "must_include_occlusion_and_reacquisition": true,
+        "must_include_radio_failure_modes": true
+      }
+    },
+    {
+      "id": "R012",
+      "title": "Keep pad-finder views within the resolvable range and avoid overfilled pad frames",
+      "scope": [
+        "pad_finder"
+      ],
+      "phase": [
+        "frame_admission"
+      ],
+      "severity": "hard",
+      "condition": "The frame is beyond the maximum pad-finder range, or the pad overfills the frame so its center is not visible. Close-range views are allowed while the pad pattern and center remain visible.",
+      "action": "reject_frame",
+      "label_instruction": "Exclude from pad-finder training when the pad is too far or an unusable close-up. Do not use distant boat-scale views as pad negatives, and do not use overfilled close-ups where the center is outside the image.",
+      "rationale": "The pad finder is not a boat detector. It should learn the pad pattern at acquisition and landing ranges. A close view with a visible, well-framed pad is a valid landing sample, not a reject; only overfilled or unresolvable close-ups are excluded.",
+      "prevents": [
+        "pad finder learning boat appearance",
+        "tiny-pad labels",
+        "center labels from outside the frame"
+      ],
+      "parameters": {
+        "max_range_m": 20,
+        "close_range_allowed_when_resolvable": true,
+        "outer_limit_defined_by_pad_extent_px": true,
+        "min_pad_extent_px": null,
+        "max_pad_frame_coverage_fraction": 0.8
+      }
+    },
+    {
+      "id": "R013",
+      "title": "Label the pad center only when the pad pattern is resolvable",
+      "scope": [
+        "pad_finder"
+      ],
+      "phase": [
+        "frame_admission",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "The pad center or enough of the pad pattern is outside the image, occluded, below the minimum projected size, or below the contrast or sharpness threshold.",
+      "action": [
+        "reject_frame",
+        "mask_label"
+      ],
+      "label_instruction": "Do not emit a center or offset label from an unresolvable pad. Presence may stay true only if the pad is visibly present; otherwise exclude the frame.",
+      "rationale": "A pad center is a geometric label. If the geometry is not visible, the network cannot learn it and will memorize noise.",
+      "prevents": [
+        "impossible center labels",
+        "false pad centers",
+        "tiny-pad overfitting"
+      ],
+      "parameters": {
+        "min_pad_extent_px": 4.0,
+        "min_visible_pad_fraction": 0.6,
+        "center_must_be_in_frame": true
+      }
+    },
+    {
+      "id": "R014",
+      "title": "Teach the pad finder that boats, decks, and pad-like objects are not the pad",
+      "scope": [
+        "pad_finder"
+      ],
+      "phase": [
+        "dataset_composition"
+      ],
+      "severity": "soft",
+      "condition": "The pad-finder dataset lacks boats without pads, decoy pads, pad-like markings, shadows, deck equipment, people, or other objects near the pad.",
+      "action": "require_dataset_property",
+      "label_instruction": "Label true pad centers positively. Label boats without pads and other objects as negatives. Do not teach the network that every boat or every bright rectangle is a pad.",
+      "rationale": "The pad finder must discriminate the actual landing pattern from visually similar structures on the boat and in the background.",
+      "prevents": [
+        "boat-equals-pad bias",
+        "false pad detections",
+        "decoy-pad confusion"
+      ],
+      "parameters": {
+        "hard_negative_fraction": 0.3,
+        "include_other_boats_without_pads": true,
+        "include_pad_like_deck_objects": true
+      }
+    },
+    {
+      "id": "R015",
+      "title": "Separate pad presence from an inferable pad center",
+      "scope": [
+        "pad_finder"
+      ],
+      "phase": [
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "The pad is visibly present but its center or geometry is occluded by equipment, water spray, people, or the frame edge.",
+      "action": [
+        "mask_label",
+        "ignore_region"
+      ],
+      "label_instruction": "Presence may remain true if the pad is visibly present, but mask the center and offset when the center is not inferable. Do not invent a center from the visible edge.",
+      "rationale": "Presence and localization are different targets. A partially visible pad can prove existence without supporting a precise center.",
+      "prevents": [
+        "hallucinated pad centers",
+        "false offsets from occlusion",
+        "presence-center label conflict"
+      ],
+      "parameters": {
+        "presence_can_remain_true": true,
+        "center_label_requires_visible_center": true
+      }
+    },
+    {
+      "id": "R016",
+      "title": "Cover pad-finder range, bearing, tilt, lighting, and sea-state bins",
+      "scope": [
+        "pad_finder"
+      ],
+      "phase": [
+        "dataset_composition"
+      ],
+      "severity": "soft",
+      "condition": "Pad-finder data is concentrated at one distance, bearing, camera tilt, lighting condition, or approach direction.",
+      "action": "require_dataset_property",
+      "label_instruction": "Sample the full acquisition envelope, including pad near image borders, different deck angles, and realistic glare and spray. Reject bins whose labels are not resolvable.",
+      "rationale": "The pad finder must acquire the pad from whatever approach the search handoff produces, not only from a centered ideal view.",
+      "prevents": [
+        "single-approach overfitting",
+        "center bias",
+        "lighting overfitting"
+      ],
+      "parameters": {
+        "required_bins": [
+          "range",
+          "bearing",
+          "camera_tilt",
+          "lighting",
+          "sea_state",
+          "pad_visibility"
+        ],
+        "min_samples_per_bin": null
+      }
+    },
+    {
+      "id": "R017",
+      "title": "Generate labels from the exact rendered camera and timestamp",
+      "scope": [
+        "shared"
+      ],
+      "phase": [
+        "label_generation"
+      ],
+      "severity": "hard",
+      "condition": "Labels are not derived from the same frame's camera intrinsics, extrinsics, drone pose, gimbal pose, boat pose, and capture or delivery timestamp.",
+      "action": [
+        "reject_frame",
+        "reject_dataset"
+      ],
+      "label_instruction": "Recompute labels from the exact frame. Do not reuse labels after camera motion, boat motion, image delay, or a changed gimbal command.",
+      "rationale": "Heatmap cells and offsets are only valid for the image they were projected into. A stale pose creates systematically shifted labels.",
+      "prevents": [
+        "misaligned heatmaps",
+        "offset drift",
+        "labels from stale poses"
+      ],
+      "parameters": {
+        "label_must_use_capture_pose": true,
+        "max_label_time_offset_s": 0.0,
+        "apply_camera_delay": true
+      }
+    },
+    {
+      "id": "R018",
+      "title": "Define target identity by a visible signature, not hidden simulator identity",
+      "scope": [
+        "shared",
+        "search_network"
+      ],
+      "phase": [
+        "scene_generation",
+        "labeling"
+      ],
+      "severity": "hard",
+      "condition": "Target identity is defined by a hidden ID, map, scene seed, or a visual feature that is not guaranteed visible at the range where identity is required.",
+      "action": [
+        "reject_dataset",
+        "redesign_scene"
+      ],
+      "label_instruction": "Give the target a persistent visible signature, and generate matched decoys that share hull, color, lighting, and context except for that signature. If the signature is not visible, apply R002 and R007.",
+      "rationale": "The model can only learn what the camera can see. Hidden identity training is label leakage and produces brittle confidence.",
+      "prevents": [
+        "hidden-ID leakage",
+        "unlearnable target definitions",
+        "arbitrary identity labels"
+      ],
+      "parameters": {
+        "signature_must_be_visible_at_identity_range": true,
+        "decoys_share_hull_geometry_and_color": true
+      }
+    },
+    {
+      "id": "R019",
+      "title": "Split by map, boat instance, and scenario seed",
+      "scope": [
+        "shared"
+      ],
+      "phase": [
+        "dataset_split",
+        "evaluation"
+      ],
+      "severity": "hard",
+      "condition": "Train, validation, or test share a map, boat instance, scenario seed, or near-duplicate frames.",
+      "action": "reject_dataset",
+      "label_instruction": "Split by map and boat instance before frame sampling. Hold out maps and boats entirely. Do not tune thresholds on the test split.",
+      "rationale": "Random frame splits leak the same scene into train and test and make synthetic results look better than deployment.",
+      "prevents": [
+        "scene memorization",
+        "leakage-inflated metrics",
+        "overfitting to one map"
+      ],
+      "parameters": {
+        "split_keys": [
+          "map_id",
+          "boat_instance_id",
+          "scenario_seed"
+        ],
+        "no_near_duplicate_frames_across_splits": true
+      }
+    },
+    {
+      "id": "R020",
+      "title": "Use radio first when usable, and fall back to search on failure",
+      "scope": [
+        "radio_policy",
+        "policy_evaluation"
+      ],
+      "phase": [
+        "policy_behavior",
+        "evaluation"
+      ],
+      "severity": "hard",
+      "condition": "Usable radio is available but the search head is still run, or radio is absent, invalid, contradicted, or points to an empty location and the search head is not activated.",
+      "action": "require_policy_mode_switch",
+      "label_instruction": "No image labels. Evaluate behavior: usable radio skips search and approaches the radio point, but still requires visual pad confirmation. Invalid, stale, contradicted, or empty-arrival radio activates search and marks radio untrusted.",
+      "rationale": "Radio can remove the need for a search phase, but it cannot authorize landing by itself. Vision remains the authority for the boat and pad.",
+      "prevents": [
+        "radio-first policy never falling back",
+        "searching when radio is good",
+        "landing on a radio ghost"
+      ],
+      "parameters": {
+        "radio_primary_mode": true,
+        "search_head_on_radio_failure": true,
+        "radio_alone_may_not_authorize_landing": true
+      }
+    },
+    {
+      "id": "R021",
+      "title": "Gate radio on validity, consistency, and persistence",
+      "scope": [
+        "radio_policy"
+      ],
+      "phase": [
+        "policy_behavior",
+        "evaluation"
+      ],
+      "severity": "hard",
+      "condition": "Radio is used without checking freshness, plausibility, visual agreement, or persistence; or a single bad packet triggers a mode switch.",
+      "action": "require_gate_and_hysteresis",
+      "label_instruction": "Use radio only if valid, fresh, plausible, consistent with visual or own-state evidence, and not contradicted. Require a sustained failure before switching to search, and a sustained recovery before switching back.",
+      "rationale": "A valid-looking packet can still be stale or wrong. Immediate switching causes flapping; blind trust causes landing on a ghost.",
+      "prevents": [
+        "spoofed-radio landings",
+        "mode flapping",
+        "transient-dropout search activation"
+      ],
+      "parameters": {
+        "max_beacon_age_s": null,
+        "max_position_innovation_m": null,
+        "mode_switch_hysteresis_s": null,
+        "truth_requires_visual_or_arrival_check": true
+      }
+    },
+    {
+      "id": "R022",
+      "title": "Do not supervise permission to land from a single frame",
+      "scope": [
+        "search_network",
+        "policy_evaluation"
+      ],
+      "phase": [
+        "labeling",
+        "evaluation"
+      ],
+      "severity": "hard",
+      "condition": "A single-frame label is used to supervise target confirmation, permission to approach, handoff, or permission to land.",
+      "action": [
+        "reject_label",
+        "require_sequence_label"
+      ],
+      "label_instruction": "Perception labels are per-frame. Confirmation and landing permission are state-machine decisions from track stability, evidence, identity, and R15 metric confirmation. Label them on sequences, not stills.",
+      "rationale": "A frame can look like the target while the track is unstable, the boat is a decoy, or R15 has not confirmed the pad. A still-image permission label teaches shortcuts.",
+      "prevents": [
+        "single-frame landing shortcuts",
+        "premature confirmation",
+        "unstable handoff behavior"
+      ],
+      "parameters": {
+        "min_track_support_s": null,
+        "min_metric_fits_for_handoff": 3,
+        "permission_label_scope": "sequence"
+      }
+    },
+    {
+      "id": "R023",
+      "title": "Evaluate detection, identity, tracking, handoff, and landing separately",
+      "scope": [
+        "shared",
+        "policy_evaluation"
+      ],
+      "phase": [
+        "evaluation"
+      ],
+      "severity": "hard",
+      "condition": "Acceptance uses only aggregate loss or only final landing rate, without stage-wise metrics and radio-mode breakdowns.",
+      "action": "require_stage_metrics",
+      "label_instruction": "Report recall and false positives by range and visibility; evidence and identity accuracy; track stability; confirmation rate; handoff rate; and landing rate. Validate on held-out real or benchmark episodes separately for good, bad, absent, and lying radio.",
+      "rationale": "A landing failure can come from perception, tracking, handoff, or R15. One aggregate number cannot tell which stage to fix.",
+      "prevents": [
+        "misattributed failures",
+        "aggregate-metric hiding",
+        "untested radio fallback"
+      ],
+      "parameters": {
+        "required_metrics": [
+          "detection_recall",
+          "false_positive_rate",
+          "evidence_accuracy",
+          "identity_accuracy",
+          "track_stability",
+          "confirmation_rate",
+          "handoff_rate",
+          "landing_rate"
+        ],
+        "radio_modes": [
+          "good",
+          "bad",
+          "absent",
+          "lying"
+        ]
+      }
+    },
+    {
+      "id": "R024",
+      "title": "Balance easy negatives, hard negatives, and edge cases",
+      "scope": [
+        "shared"
+      ],
+      "phase": [
+        "dataset_composition"
+      ],
+      "severity": "soft",
+      "condition": "The dataset is dominated by easy empty sea or large centered boats, or hard negatives and edge cases are too rare to learn.",
+      "action": "require_dataset_property",
+      "label_instruction": "Set coverage targets by range, visibility, occlusion, boat count, target identity resolvability, and pad visibility. Include hard cases with correct labels or masks, not as label noise.",
+      "rationale": "A model trained mostly on easy frames looks good in aggregate and fails exactly when search or landing is difficult.",
+      "prevents": [
+        "easy-negative dominance",
+        "rare-edge-case failure",
+        "misleading aggregate accuracy"
+      ],
+      "parameters": {
+        "max_empty_frame_fraction": 0.5,
+        "min_hard_negative_fraction": 0.2,
+        "min_edge_case_fraction": 0.2,
+        "balance_by_range_and_visibility": true
+      }
+    }
+  ],
+  "rule_count": 24
+}

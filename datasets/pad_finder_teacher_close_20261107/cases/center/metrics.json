@@ -1,0 +1,31 @@
+{
+  "key": "center",
+  "title": "Centered \u2014 hull 91%",
+  "subtitle": "No lateral push; the pad is fully where it should be.",
+  "lateral": 0.0,
+  "pan": 0.0,
+  "boat": 0.911,
+  "true": [
+    320.5,
+    121.9
+  ],
+  "pred": [
+    322.6,
+    123.1
+  ],
+  "pad_class": "center",
+  "visible": 0.853,
+  "presence": 0.7365,
+  "error_px": 2.418677324489579,
+  "dataset_presence": 1.0,
+  "dataset_center_valid": true,
+  "dataset_label_class": "center",
+  "dataset_visible_fraction": 0.8525671755390899,
+  "dataset_ignore_cells": 0,
+  "dataset_heat_cells": 1,
+  "dataset_pad_pixel": [
+    320.5413874356368,
+    121.94202103356398
+  ],
+  "dataset_rgb_max_diff": 0.0
+}

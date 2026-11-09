@@ -1,0 +1,88 @@
+# Python caches and local environments
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+
+# Local secrets and imported conversation artifacts
+.env
+.env.*
+!.env.example
+/.cloud-attachments/
+
+# Raw experiment evidence: keep code and notes, not media/replays.
+/artifacts/**
+!/artifacts/
+!/artifacts/**/
+!/artifacts/**/*.py
+!/artifacts/**/*.md
+
+# Training runs: keep scripts and small run metadata, not frames/checkpoints.
+/training_runs/**
+!/training_runs/
+!/training_runs/**/
+!/training_runs/**/*.py
+!/training_runs/**/*.md
+!/training_runs/**/*.txt
+!/training_runs/**/run.json
+!/training_runs/**/summary.json
+!/training_runs/**/RESULTS.md
+
+# Benchmark raw outputs; definitions, reports and figures stay tracked.
+/benchmark/runs/
+/benchmark/probes/
+/benchmark/audits/
+/benchmark/models/
+/benchmark/_superseded_inventory/
+/benchmark/revisions/*/runs/
+/benchmark/revisions/*/audits/
+/benchmark/revisions/*/operations/
+
+# Generated datasets: manifests and generator scripts are source; media is not.
+/datasets/**
+!/datasets/
+!/datasets/**/
+!/datasets/**/*.json
+!/datasets/**/*.md
+!/datasets/**/*.py
+
+# Future generated data root
+/data/generated/*
+!/data/generated/README.md
+
+# Tidewater local build/runtime output
+/tidewater-game/app/dist/
+/tidewater-game/app/node_modules/
+/tidewater-game/simulation/runtime/
+/tidewater-game/history/**/*.mp4
+/tidewater-game/history/**/*.webm
+/tidewater-game/history/**/*.jsonl.gz
+
+# Root working notes (moved under docs/operations in the organization pass)
+/guard_support_b_rest.console.log
+/job20_manual.log
+/latch_check_20261104_v1.log
+/student20_latched_20261104_v1.scheduler.log
+/handoff_investigation_20261108_v2.txt

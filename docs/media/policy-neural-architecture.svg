@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1440" viewBox="0 0 1600 1440" role="img" aria-labelledby="title">
+<title id="title">R15 neural architecture: shared image encoder, spatial acquisition, visual memory and bounded radio fusion</title>
+<rect width="1600" height="1440" fill="#ffffff"/>
+<text x="64" y="87.64" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="56" font-weight="600" fill="#163b50">Inside the R15 policy</text>
+<text x="64" y="159.96" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="34" font-weight="400" fill="#163b50">RGB camera · 640 x 360</text>
+<text x="1120" y="158.08" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="32" font-weight="400" fill="#163b50">Numeric observation</text>
+<polygon points="64,195 1040,195 1040,350 64,350" fill="#163b50"/>
+<text x="92" y="252.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Shared MobileNetV3-Small</text>
+<text x="92" y="304.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Final feature map: 576 channels</text>
+<polygon points="1120,195 1536,195 1536,350 1120,350" fill="#163b50"/>
+<text x="1148" y="249.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Telemetry MLP</text>
+<text x="1148" y="304.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">32 inputs / 64 features</text>
+<polyline points="285,350 285,435" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="285,435 277.80861692093697,421.8362615716444 292.19138307906303,421.8362615716444" fill="#163b50"/>
+<polyline points="815,350 815,435" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="815,435 807.808616920937,421.8362615716444 822.191383079063,421.8362615716444" fill="#163b50"/>
+<polygon points="64,435 520,435 520,630 64,630" fill="#246b95"/>
+<text x="92" y="489.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Spatial acquisition</text>
+<text x="92" y="544.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Fine + context maps</text>
+<text x="92" y="587.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Heatmap, offsets, presence</text>
+<polygon points="600,435 1040,435 1040,630 600,630" fill="#246b95"/>
+<text x="628" y="489.84" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="36" font-weight="600" fill="#ffffff">Visual embedding</text>
+<text x="628" y="544.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">1728 spatial moments</text>
+<text x="628" y="587.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">256 visual features</text>
+<polyline points="285,630 285,715" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="285,715 277.80861692093697,701.8362615716444 292.19138307906303,701.8362615716444" fill="#163b50"/>
+<text x="64" y="781.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#163b50">Target bearing</text>
+<text x="64" y="832.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#163b50">Presence + image center</text>
+<polyline points="815,630 815,715" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="815,715 807.808616920937,701.8362615716444 822.191383079063,701.8362615716444" fill="#163b50"/>
+<polyline points="1328,350 1328,797 1040,797" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="1040,797 1053.1637384283556,789.808616920937 1053.1637384283556,804.191383079063" fill="#163b50"/>
+<polygon points="600,715 1040,715 1040,885 600,885" fill="#163b50"/>
+<text x="628" y="772.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">GRU memory</text>
+<text x="628" y="824.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">320 inputs / 128 hidden</text>
+<polyline points="815,885 815,970" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="815,970 807.808616920937,956.8362615716444 822.191383079063,956.8362615716444" fill="#163b50"/>
+<polygon points="600,970 1040,970 1040,1140 600,1140" fill="#246b95"/>
+<text x="628" y="1027.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Pose readout</text>
+<text x="628" y="1079.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Visibility, pose, motion</text>
+<polygon points="1120,970 1536,970 1536,1140 1120,1140" fill="#163b50"/>
+<text x="1148" y="1027.66" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="39" font-weight="600" fill="#ffffff">Boat radio</text>
+<text x="1148" y="1079.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Position + velocity</text>
+<text x="1148" y="1122.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Age + uncertainty</text>
+<polyline points="815,1140 815,1225" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="815,1225 807.808616920937,1211.8362615716444 822.191383079063,1211.8362615716444" fill="#163b50"/>
+<polyline points="1328,1140 1328,1225" fill="none" stroke="#163b50" stroke-width="4" stroke-linejoin="round"/>
+<polygon points="1328,1225 1320.8086169209369,1211.8362615716444 1335.1913830790631,1211.8362615716444" fill="#163b50"/>
+<polygon points="600,1225 1536,1225 1536,1380 600,1380" fill="#087e82"/>
+<text x="628" y="1280.78" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="37" font-weight="600" fill="#ffffff">Bounded position / velocity fusion</text>
+<text x="628" y="1334.2" font-family="Bahnschrift, Segoe UI, Arial, sans-serif" font-size="30" font-weight="400" fill="#ffffff">Two learned weights, each capped at 0.35</text>
+</svg>

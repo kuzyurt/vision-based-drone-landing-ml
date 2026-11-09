@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>Drone policy · Benchmark observatory</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="#comparison" aria-label="Drone policy benchmark comparison">
+      <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true"><path d="M3 29h36M9 29l4 7h16l5-7M21 4v13M15 10h12M15 17l6 5 6-5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="21" cy="10" r="8" fill="none" stroke="currentColor"/></svg>
+      <span>Drone policy<span class="brand-sub">Benchmark observatory</span></span>
+    </a>
+    <a href="../README.md">Method &amp; commands</a>
+  </header>
+  <main>
+    <section class="intro">
+      <div><h1>Find the boat.<br>Match its motion. Land.</h1>
+        <p>Compare complete policies on the same MuJoCo worlds, sensor conditions and physical landing criteria.</p></div>
+      <aside class="mission"><span class="mission-line">5 coastal maps</span><span class="mission-line">30–100 m acquisition starts</span><span class="mission-line">Radio on / off · Decoys on / off</span><span class="mission-note" id="plan-count"></span></aside>
+    </section>
+    <div class="status" role="status"><span class="status-dot"></span><p id="status-text">Loading the local inventory…</p></div>
+    <section id="comparison" class="comparison" aria-labelledby="comparison-title">
+      <div class="section-top"><div><h2 id="comparison-title">Overall mission score</h2><p>A weighted sum of six benchmark categories. Only a complete suite earns a total.</p></div>
+        <label>Comparison run<select id="run-select" aria-label="Comparison run"></select></label></div>
+      <div class="filters"><label>Policy role<select id="role"><option value="all">All policies &amp; teacher references</option><option value="flight policy">Flight policies</option><option value="observable teacher">Observable teachers</option><option value="privileged teacher">Privileged teacher reference</option></select></label>
+        <label class="search-label">Find a model<input id="search" type="search" placeholder="Policy name or revision"></label><span id="visible-count"></span></div>
+      <div id="overall-chart" class="chart-scroll"></div>
+      <div class="legend"><span><i class="swatch measured"></i>Complete, measured score</span><span><i class="swatch unrun"></i>Not scored</span><span id="coverage"></span></div>
+      <details class="method"><summary>How the score is calculated</summary>
+        <div id="weights" class="weight-list"></div>
+        <p>Landing, wind, waves and combined conditions use strict target-landing success rates. Acquisition uses a correct pad estimate sustained for 0.4 s within 120 s, with no false acquisition or collision. Mission speed gives credit only after a strict target landing, using a shared distance and descent reference.</p>
+        <p>Incomplete or invalid trials never become zero-valued results. Each policy must finish the full frozen suite before its total is shown. Speed averages the five source categories equally. Observable teachers are separate actors; an assisted learner flight cannot earn an unaided policy score.</p>
+      </details>
+    </section>
+    <section aria-labelledby="details-title"><div class="section-top"><div><h2 id="details-title">Inside each policy</h2><p>Category scores, coverage and the exact model snapshot.</p></div><span class="unit-note">All chart axes: 0–100%</span></div><div id="policy-grid" class="policy-grid"></div></section>
+    <section class="inventory" aria-labelledby="inventory-title"><div class="section-top"><div><h2 id="inventory-title">Weights &amp; architectures</h2><p id="inventory-count"></p></div><a href="../models/INVENTORY.md">Full inventory</a></div>
+      <p class="timestamp-note">Dates are preserved file modification times in UTC. They are not verified training timestamps. Identical hashes share a stored weight file; controller and search revisions remain separate policy identities.</p>
+      <details><summary>Browse every local weight file</summary><div class="table-scroll"><table><thead><tr><th>Weight location</th><th>Architecture family</th><th>File modified (UTC)</th><th>SHA-256</th></tr></thead><tbody id="weight-rows"></tbody></table></div></details>
+      <details><summary>Architecture sources and archived weights</summary><div id="architectures"></div><div id="archives"></div></details>
+    </section>
+    <section id="receipts" hidden><h2>Excluded receipts</h2><p>These records cannot be compared with the active suite and runtime.</p><ul id="rejected"></ul></section>
+  </main>
+  <footer><span>Simulation benchmark · No hardware qualification implied</span><span id="generated"></span></footer>
+  <noscript>This dashboard needs JavaScript to read the local benchmark inventory. See ../models/INVENTORY.md.</noscript>
+</body>
+</html>

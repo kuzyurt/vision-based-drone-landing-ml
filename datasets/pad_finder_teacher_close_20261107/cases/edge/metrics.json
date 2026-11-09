@@ -1,0 +1,31 @@
+{
+  "key": "edge",
+  "title": "Pad at frame edge \u2014 46% visible",
+  "subtitle": "Panned away from the pad; only a strip remains at the right edge, with the hull filling the rest.",
+  "lateral": 0.0,
+  "pan": 30.0,
+  "boat": 0.633,
+  "true": [
+    631.8,
+    149.7
+  ],
+  "pred": [
+    630.5,
+    147.4
+  ],
+  "pad_class": "presence_only",
+  "visible": 0.459,
+  "presence": 0.0921,
+  "error_px": 2.641968962724544,
+  "dataset_presence": 1.0,
+  "dataset_center_valid": false,
+  "dataset_label_class": "presence_only",
+  "dataset_visible_fraction": 0.45877687840760034,
+  "dataset_ignore_cells": 1118,
+  "dataset_heat_cells": 0,
+  "dataset_pad_pixel": [
+    631.8253444280025,
+    149.72797181832084
+  ],
+  "dataset_rgb_max_diff": 0.0
+}

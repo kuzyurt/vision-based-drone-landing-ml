@@ -1,0 +1,172 @@
+{
+  "task": "search",
+  "profile": "far",
+  "case": "wide_beach",
+  "sample": 1,
+  "seed": 20261107,
+  "map_kind": "beach",
+  "distance_m": 26.0,
+  "height_m": 7.5,
+  "bearing_deg": 18.0,
+  "camera_pan_deg": 0.0,
+  "yaw_offset_deg": 0.0,
+  "weather": {
+    "name": "clear",
+    "wave_height_m": 0.02,
+    "wave_period_s": 3.0,
+    "wind_profile": "calm",
+    "wind_direction_deg": 35.0,
+    "sun_elevation_deg": 20.0,
+    "sun_offset_deg": 0.0,
+    "fog_start_m": 90.0,
+    "fog_end_m": 160.0,
+    "glare_strength": 0.0,
+    "glare_note": "deterministic camera/sensor pass; segmentation untouched"
+  },
+  "pad_pixel": [
+    320.01922425000777,
+    177.78084052853177
+  ],
+  "pad_depth_m": 26.984038829292132,
+  "pad_visible": true,
+  "pad_extent_px": 12.28153768993048,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "target_label_class": "full",
+  "center_supervised": true,
+  "evidence_supervised": true,
+  "visible_fraction": 0.8010817386239191,
+  "clipped_fraction": 0.0,
+  "target_full_bbox": [
+    304.95235852461667,
+    165.82035946880836,
+    334.21928500412434,
+    195.50660610598072
+  ],
+  "target_center_in_frame": true,
+  "ignore_cells": 0,
+  "evidence_cells": 45,
+  "training_eligible": true,
+  "review_only": false,
+  "rule_error": null,
+  "rules_checked": [
+    "R001",
+    "R004",
+    "R005",
+    "R006",
+    "R007"
+  ],
+  "labels": {
+    "heat_shape": [
+      45,
+      80
+    ],
+    "evidence_classes": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "presence": 1.0,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          305,
+          170,
+          334,
+          194
+        ],
+        "full_bbox": [
+          304.95235852461667,
+          165.82035946880836,
+          334.21928500412434,
+          195.50660610598072
+        ],
+        "center_px": [
+          319.5858217643705,
+          180.66348278739454
+        ],
+        "visible_center_px": [
+          319.5,
+          182.0
+        ],
+        "extent_px": 29,
+        "full_extent_px": 29,
+        "depth_m": 26.769907791970947,
+        "min_depth_m": 25.811681847915285,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.8010817386239191,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.0030208333333333333,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 12.28153768993048,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          383,
+          249,
+          449,
+          286
+        ],
+        "full_bbox": [
+          381.6986058343245,
+          249.36709378920523,
+          449.5294655895236,
+          287.6402014552143
+        ],
+        "center_px": [
+          415.6140357119241,
+          268.50364762220977
+        ],
+        "visible_center_px": [
+          416.0,
+          267.5
+        ],
+        "extent_px": 66,
+        "full_extent_px": 67,
+        "depth_m": 17.719821749682524,
+        "min_depth_m": 16.962568893142112,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.9406425295000806,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.010598958333333333,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": false,
+        "occluded_by": null
+      }
+    ],
+    "pad_pixel": [
+      320.01922425000777,
+      177.78084052853177
+    ],
+    "pad_visible": true,
+    "target_label_class": "full",
+    "center_supervised": true,
+    "evidence_supervised": true,
+    "visible_fraction": 0.8010817386239191,
+    "clipped_fraction": 0.0,
+    "ignore_cells": 0,
+    "evidence_cells": 45
+  }
+}

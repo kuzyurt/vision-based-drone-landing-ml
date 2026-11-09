@@ -1,0 +1,26 @@
+{
+  "kind": "beach",
+  "generator": "AERODOCK_MuJoCo/usv/procedural_world.py \u2192 BoatSim.new_world",
+  "scene_receipt": "../runtime.json",
+  "worlds": {
+    "1": {
+      "world_seed": 827101,
+      "path_seed": 828101,
+      "world_rotation_deg": 104,
+      "reverse": true
+    },
+    "0": {
+      "world_seed": 827100,
+      "path_seed": 828100,
+      "world_rotation_deg": 43,
+      "reverse": false
+    }
+  },
+  "cases": [
+    "acquisition-near-radio-clear-beach-r1",
+    "landing-landing-cruise-beach-r1",
+    "landing-landing-fast-boat-beach-r0"
+  ],
+  "plan_sha256": "858cd9e7da39c86dc72e0635289af03b2e908a1807ef2804f3152705afbee737",
+  "procedural_not_static_xml": true
+}

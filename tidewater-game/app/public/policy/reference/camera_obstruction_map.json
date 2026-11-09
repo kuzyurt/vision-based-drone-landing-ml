@@ -1,0 +1,1190 @@
+{
+  "central_region_pixels": [
+    240,
+    120,
+    400,
+    240
+  ],
+  "static_cad": true,
+  "flight_run": false,
+  "policy_changed": false,
+  "seconds": 4.911791828999412,
+  "measurements": [
+    {
+      "pan_deg": -180,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.21384114583333333,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.3008810763888889,
+      "centre_aircraft_fraction": 1.0,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link007"
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.18585069444444444,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.21751302083333332,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.30203125,
+      "centre_aircraft_fraction": 1.0,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid003"
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.18161458333333333,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 0,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.005525173611111111,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.011827256944444444,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.007864583333333333,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.23420572916666665,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.24286024305555556,
+      "centre_aircraft_fraction": 0.9390625,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link007"
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.21401475694444444,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.00798611111111111,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.012044270833333334,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0057465277777777775,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.005616319444444445,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.011879340277777779,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.007838541666666667,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.2368359375,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.24371527777777777,
+      "centre_aircraft_fraction": 0.9284895833333333,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid003"
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.21083333333333334,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.007717013888888889,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.011749131944444444,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0054600694444444445,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 15,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.00015190972222222222,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.07151041666666667,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.14015625,
+      "centre_aircraft_fraction": 0.4089583333333333,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link011"
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.20502604166666666,
+      "centre_aircraft_fraction": 0.36973958333333334,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link011"
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.4279253472222222,
+      "centre_aircraft_fraction": 0.055,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link011"
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.4132855902777778,
+      "centre_aircraft_fraction": 0.8110416666666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link007"
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.4253125,
+      "centre_aircraft_fraction": 0.063125,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link010"
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.20098090277777778,
+      "centre_aircraft_fraction": 0.38885416666666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link010"
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.13776041666666666,
+      "centre_aircraft_fraction": 0.38598958333333333,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link010"
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.06829861111111112,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.00026475694444444447,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0716970486111111,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.14014322916666666,
+      "centre_aircraft_fraction": 0.4124479166666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link"
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.20548611111111112,
+      "centre_aircraft_fraction": 0.365,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link"
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.42868055555555556,
+      "centre_aircraft_fraction": 0.052395833333333336,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link"
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.41453559027777775,
+      "centre_aircraft_fraction": 0.8102083333333333,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid003"
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.42542100694444446,
+      "centre_aircraft_fraction": 0.0596875,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid006"
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.20006944444444444,
+      "centre_aircraft_fraction": 0.38354166666666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid006"
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.1370529513888889,
+      "centre_aircraft_fraction": 0.38546875,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid006"
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0681423611111111,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 30,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.05987413194444444,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.12700520833333334,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.19582899305555557,
+      "centre_aircraft_fraction": 0.0018229166666666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link011"
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.30799913194444445,
+      "centre_aircraft_fraction": 0.11442708333333333,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link011"
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.29979600694444447,
+      "centre_aircraft_fraction": 0.11666666666666667,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link008"
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.3074609375,
+      "centre_aircraft_fraction": 0.109375,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link010"
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.19002604166666667,
+      "centre_aircraft_fraction": 0.00026041666666666666,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link010"
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.12340277777777778,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.05619357638888889,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.060217013888888886,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.12680121527777777,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.1961892361111111,
+      "centre_aircraft_fraction": 0.0021354166666666665,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link"
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.30778645833333335,
+      "centre_aircraft_fraction": 0.11796875,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Link"
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.3004904513888889,
+      "centre_aircraft_fraction": 0.125,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid004"
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.30734809027777776,
+      "centre_aircraft_fraction": 0.11328125,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid006"
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.18956163194444445,
+      "centre_aircraft_fraction": 0.00046875,
+      "dominant_centre_aircraft_geom": "drone_LinkGroup005__Solid006"
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.12301649305555555,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.05633680555555556,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 45,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 60,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 75,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -180,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -165,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -150,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -135,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -120,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -105,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -90,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -75,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -60,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -45,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -30,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": -15,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 0,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 15,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 30,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 45,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 60,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 75,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 90,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 105,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 120,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 135,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 150,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    },
+    {
+      "pan_deg": 165,
+      "tilt_deg": 90,
+      "whole_frame_aircraft_fraction": 0.0,
+      "centre_aircraft_fraction": 0.0,
+      "dominant_centre_aircraft_geom": null
+    }
+  ]
+}

@@ -1,0 +1,244 @@
+{
+  "task": "search",
+  "profile": "near",
+  "case": "very_close_sunlit",
+  "sample": 1,
+  "seed": 20261107,
+  "map_kind": "beach",
+  "distance_m": 8.0,
+  "height_m": 3.4,
+  "bearing_deg": 21.0,
+  "camera_pan_deg": 0.0,
+  "yaw_offset_deg": 0.0,
+  "weather": {
+    "name": "sunlit",
+    "wave_height_m": 0.055,
+    "wave_period_s": 3.4,
+    "wind_profile": "breeze",
+    "wind_direction_deg": 65.0,
+    "sun_elevation_deg": 7.0,
+    "sun_offset_deg": -12.0,
+    "fog_start_m": 72.0,
+    "fog_end_m": 175.0,
+    "glare_strength": 0.92,
+    "glare_note": "deterministic camera/sensor pass; segmentation untouched"
+  },
+  "pad_pixel": [
+    320.06029398815963,
+    173.39381148887983
+  ],
+  "pad_depth_m": 8.603642328206089,
+  "pad_visible": true,
+  "pad_extent_px": 38.519208175591245,
+  "image": "input.png",
+  "overlay": "overlay.png",
+  "annotated": "annotated.png",
+  "labels_file": "labels.npz",
+  "target_label_class": "full",
+  "center_supervised": true,
+  "evidence_supervised": true,
+  "visible_fraction": 0.19898543330974258,
+  "clipped_fraction": 0.0,
+  "target_full_bbox": [
+    211.75652410218726,
+    85.82598114437413,
+    430.15998760913305,
+    286.52039106341294
+  ],
+  "target_center_in_frame": true,
+  "ignore_cells": 48,
+  "evidence_cells": 150,
+  "training_eligible": true,
+  "review_only": false,
+  "rule_error": null,
+  "rules_checked": [
+    "R001",
+    "R004",
+    "R005",
+    "R006",
+    "R007"
+  ],
+  "labels": {
+    "heat_shape": [
+      45,
+      80
+    ],
+    "evidence_classes": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "presence": 1.0,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          267,
+          145,
+          365,
+          234
+        ],
+        "full_bbox": [
+          211.75652410218726,
+          85.82598114437413,
+          430.15998760913305,
+          286.52039106341294
+        ],
+        "center_px": [
+          322.9165977943003,
+          185.28858826209134
+        ],
+        "visible_center_px": [
+          316.0,
+          189.5
+        ],
+        "extent_px": 98,
+        "full_extent_px": 218,
+        "depth_m": 8.79663000458311,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.19898543330974258,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.037855902777777777,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 38.519208175591245,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          456,
+          32,
+          515,
+          56
+        ],
+        "full_bbox": [
+          446.4013272517435,
+          11.479505079012249,
+          521.5468932368086,
+          86.62507106407736
+        ],
+        "center_px": [
+          483.97411024427606,
+          49.05228807154481
+        ],
+        "visible_center_px": [
+          485.5,
+          44.0
+        ],
+        "extent_px": 59,
+        "full_extent_px": 75,
+        "depth_m": 21.297861329479588,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.25075900255467104,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.006145833333333333,
+        "label_class": "overlap",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_similar",
+        "bbox": [
+          206,
+          23,
+          241,
+          96
+        ],
+        "full_bbox": [
+          187.70189379853178,
+          23.79749749011177,
+          259.42068326485116,
+          121.91246539241074
+        ],
+        "center_px": [
+          222.6718448371596,
+          73.20026875663484
+        ],
+        "visible_center_px": [
+          223.5,
+          59.5
+        ],
+        "extent_px": 73,
+        "full_extent_px": 98,
+        "depth_m": 15.556212549955564,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.3630970226918463,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.011089409722222223,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_dark",
+        "bbox": [
+          455,
+          42,
+          511,
+          54
+        ],
+        "full_bbox": [
+          448.4516344822193,
+          13.636054411222041,
+          519.5889309122106,
+          84.77335084121339
+        ],
+        "center_px": [
+          484.02028269721495,
+          49.20470262621771
+        ],
+        "visible_center_px": [
+          483.0,
+          48.0
+        ],
+        "extent_px": 56,
+        "full_extent_px": 71,
+        "depth_m": 21.26810984258801,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.1327928101231321,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.002916666666666667,
+        "label_class": "overlap",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      }
+    ],
+    "pad_pixel": [
+      320.06029398815963,
+      173.39381148887983
+    ],
+    "pad_visible": true,
+    "target_label_class": "full",
+    "center_supervised": true,
+    "evidence_supervised": true,
+    "visible_fraction": 0.19898543330974258,
+    "clipped_fraction": 0.0,
+    "ignore_cells": 48,
+    "evidence_cells": 150
+  }
+}

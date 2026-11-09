@@ -1,0 +1,159 @@
+{
+  "key": "search_too_close",
+  "title": "SEARCH 04 \u2014 CAMERA TOO NEAR, MOST OF THE HULL STILL VISIBLE",
+  "bug": "Old path: a clipped target is discarded. At 1.4 m the hull is close, but 72% of it and its true centre are still in frame; presence collapses to 0 and only one cell is ignored.",
+  "fix": "Near distance alone is not overfill: 72% of the hull is visible and frame coverage is 53%, below the 75% limit. The frame is now a truncated positive with its centre and identity supervised.",
+  "spec": {
+    "seed": 20261407,
+    "map_kind": "beach",
+    "distance_m": 1.4,
+    "height_m": 2.2,
+    "bearing_deg": 17.0,
+    "decoy_layout": [
+      [
+        60.0,
+        180.0
+      ],
+      [
+        65.0,
+        160.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": 0.0,
+    "yaw_offset_deg": 0.0,
+    "weather": "clear"
+  },
+  "before": {
+    "heat": 0,
+    "presence": 0.0,
+    "evidence": 0,
+    "ignore": 1,
+    "identity": 0,
+    "class": "clipped",
+    "visible_fraction": 0.0,
+    "center_in_frame": false,
+    "rule_error": "R005: target boat is clipped by the image edge",
+    "training_eligible": false,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          120,
+          0,
+          461,
+          360
+        ],
+        "center_px": [
+          290.5,
+          180.0
+        ],
+        "extent_px": 360,
+        "clipped": true,
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": true
+      }
+    ]
+  },
+  "after": {
+    "heat": 1,
+    "presence": 1.0,
+    "evidence": 1500,
+    "ignore": 0,
+    "identity": 1,
+    "class": "truncated",
+    "visible_fraction": 0.7228553191371639,
+    "center_in_frame": true,
+    "rule_error": null,
+    "training_eligible": true,
+    "target": {
+      "key": "target",
+      "bbox": [
+        120,
+        0,
+        461,
+        360
+      ],
+      "full_bbox": [
+        120.39117585606223,
+        -17.93736237618441,
+        461.1906104117566,
+        480.3807044915305
+      ],
+      "center_px": [
+        290.79089313390944,
+        231.22167105767303
+      ],
+      "visible_center_px": [
+        290.5,
+        180.0
+      ],
+      "extent_px": 360,
+      "full_extent_px": 498,
+      "depth_m": 2.6601438733831504,
+      "min_depth_m": 1.4744419882619684,
+      "too_close": false,
+      "too_close_reason": null,
+      "clipped": true,
+      "center_in_frame": true,
+      "visible_fraction": 0.7228553191371639,
+      "clipped_fraction": 0.27714468086283606,
+      "frame_coverage": 0.5328125,
+      "label_class": "truncated",
+      "detection_valid": true,
+      "evidence": "target_boat",
+      "identity_valid": true,
+      "pad_visible": true,
+      "pad_extent_px": 134.19203920281439,
+      "overlap": false,
+      "occluded_by": null
+    },
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          120,
+          0,
+          461,
+          360
+        ],
+        "full_bbox": [
+          120.39117585606223,
+          -17.93736237618441,
+          461.1906104117566,
+          480.3807044915305
+        ],
+        "center_px": [
+          290.79089313390944,
+          231.22167105767303
+        ],
+        "visible_center_px": [
+          290.5,
+          180.0
+        ],
+        "extent_px": 360,
+        "full_extent_px": 498,
+        "depth_m": 2.6601438733831504,
+        "min_depth_m": 1.4744419882619684,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": true,
+        "center_in_frame": true,
+        "visible_fraction": 0.7228553191371639,
+        "clipped_fraction": 0.27714468086283606,
+        "frame_coverage": 0.5328125,
+        "label_class": "truncated",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 134.19203920281439,
+        "overlap": false,
+        "occluded_by": null
+      }
+    ]
+  },
+  "stats_line": "BEFORE  heat=0  presence=0  evidence=0  ignore=1  identity=0  class=clipped  eligible=0   \u00b7   AFTER  heat=1  presence=1  evidence=1500  ignore=0  identity=1  class=truncated  eligible=1"
+}

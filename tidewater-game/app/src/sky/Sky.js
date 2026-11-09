@@ -237,7 +237,7 @@ struct SkyOut {
 }
 `,
 			} );
-			this._background = { pass, draw: ( rp ) => pass.draw( rp ) };
+			this._background = { pass, draw: ( rp, frameBlock ) => pass.draw( rp, frameBlock ) };
 
 		}
 

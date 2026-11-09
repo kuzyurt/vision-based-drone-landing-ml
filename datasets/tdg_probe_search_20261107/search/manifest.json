@@ -1,0 +1,210 @@
+{
+  "task": "search",
+  "profile": "near",
+  "input": {
+    "width": 640,
+    "height": 360,
+    "channels": 3,
+    "encoding": "RGB"
+  },
+  "target": {
+    "grid": [
+      45,
+      80
+    ],
+    "heat": "boat-center presence",
+    "offset": "sub-cell x/y correction",
+    "evidence": [
+      "unknown_boat",
+      "target_or_similar",
+      "different_boat",
+      "target_boat"
+    ],
+    "identity": "target-vs-different for valid cells"
+  },
+  "samples": [
+    {
+      "sample": 1,
+      "case": "very_close_sunlit",
+      "path": "search\\eligible\\search_01",
+      "split": "eligible",
+      "seed": 20261107,
+      "map_kind": "beach",
+      "distance_m": 8.0,
+      "weather": "sunlit",
+      "pad_visible": true,
+      "training_eligible": true,
+      "target_label_class": "full",
+      "center_supervised": true,
+      "evidence_supervised": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          267,
+          145,
+          365,
+          234
+        ],
+        "full_bbox": [
+          267.05368879379904,
+          135.7303891718223,
+          364.7432059271612,
+          238.5511762983282
+        ],
+        "center_px": [
+          315.89844736048013,
+          187.14078273507525
+        ],
+        "visible_center_px": [
+          316.0,
+          189.5
+        ],
+        "extent_px": 98,
+        "full_extent_px": 102,
+        "depth_m": 8.470937241558023,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.8683347774403128,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.037855902777777777,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 38.519208175591245,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": [
+        "R001",
+        "R004",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 2,
+      "case": "close_hazy",
+      "path": "search\\eligible\\search_02",
+      "split": "eligible",
+      "seed": 20261207,
+      "map_kind": "island",
+      "distance_m": 14.0,
+      "weather": "hazy",
+      "pad_visible": true,
+      "training_eligible": true,
+      "target_label_class": "full",
+      "center_supervised": true,
+      "evidence_supervised": true,
+      "review_only": false,
+      "rule_error": null,
+      "target": {
+        "key": "target",
+        "bbox": [
+          281,
+          148,
+          365,
+          210
+        ],
+        "full_bbox": [
+          281.071509600685,
+          147.87667974076012,
+          365.0064416823509,
+          213.58181419010768
+        ],
+        "center_px": [
+          323.03897564151794,
+          180.7292469654339
+        ],
+        "visible_center_px": [
+          323.0,
+          179.0
+        ],
+        "extent_px": 84,
+        "full_extent_px": 83,
+        "depth_m": 15.014802412929003,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.9443411701623433,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.022604166666666668,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 22.316188780571625,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": [
+        "R001",
+        "R004",
+        "R005",
+        "R006",
+        "R007"
+      ]
+    },
+    {
+      "sample": 3,
+      "case": "half_visible_overcast",
+      "path": "search\\review\\search_03",
+      "split": "review",
+      "seed": 20261307,
+      "map_kind": "gravel",
+      "distance_m": 6.6,
+      "weather": "overcast",
+      "pad_visible": true,
+      "training_eligible": false,
+      "target_label_class": "ignore",
+      "center_supervised": false,
+      "evidence_supervised": false,
+      "review_only": true,
+      "rule_error": "R005: target is not labelable: 0.57 visible, 130 px",
+      "target": {
+        "key": "target",
+        "bbox": [
+          0,
+          162,
+          112,
+          292
+        ],
+        "full_bbox": [
+          -66.75325980458052,
+          152.02203762266262,
+          111.97950887915266,
+          295.3182969600346
+        ],
+        "center_px": [
+          22.61312453728607,
+          223.6701672913486
+        ],
+        "visible_center_px": [
+          56.0,
+          227.0
+        ],
+        "extent_px": 130,
+        "full_extent_px": 178,
+        "depth_m": 6.216083273531095,
+        "clipped": true,
+        "center_in_frame": true,
+        "visible_fraction": 0.5684893571033157,
+        "clipped_fraction": 0.4315106428966843,
+        "frame_coverage": 0.06319444444444444,
+        "label_class": "ignore",
+        "detection_valid": false,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": true,
+        "pad_extent_px": 52.1616035365553,
+        "overlap": false,
+        "occluded_by": null
+      },
+      "rules_checked": []
+    }
+  ]
+}

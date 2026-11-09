@@ -8,19 +8,22 @@ const files=new Map([['index.html','<html>Tidewater</html>'],['landing/wasm/px4.
 const assets=[...files].map(([url,text])=>({url,bytes:text.length,sha256:createHash('sha256').update(text).digest('hex')}));
 const cacheStores=new Map();const caches={async open(name){if(!cacheStores.has(name))cacheStores.set(name,new Map());const data=cacheStores.get(name);return {async put(url,response){if(name.endsWith('-quota'))throw new DOMException('Quota exceeded','QuotaExceededError');data.set(String(url),response.clone());},async match(url){return data.get(String(url))?.clone();}};},async keys(){return [...cacheStores.keys()];},async delete(name){return cacheStores.delete(name);}};
 async function runtime(version,bad=false) {
- const handlers={},notifications=[];let offline=false;
- const context={self:{registration:{scope},clients:{matchAll:async()=>[{postMessage:p=>notifications.push(p)}],claim:async()=>{}},addEventListener:(kind,fn)=>handlers[kind]=fn},crypto:webcrypto,caches,URL,Response,console,fetch:async url=>{
+ const handlers={},notifications=[];let offline=false,activationRequested=false;
+ const context={self:{registration:{scope},skipWaiting:async()=>{activationRequested=true;},clients:{matchAll:async()=>[{postMessage:p=>notifications.push(p)}],claim:async()=>{}},addEventListener:(kind,fn)=>handlers[kind]=fn},crypto:webcrypto,caches,URL,Response,console,fetch:async url=>{
   if(offline)throw new Error('network unavailable');const file=String(url).slice(scope.length);
   if(file==='offline-manifest.json')return new Response(JSON.stringify({version,assets,bytes:40}));
   if(!files.has(file))return new Response('',{status:404});return new Response(bad?'bad hash':files.get(file),{headers:{'Cross-Origin-Opener-Policy':'same-origin','Cross-Origin-Embedder-Policy':'require-corp'}});
  }};
  vm.runInNewContext(source.replace('__BUILD_VERSION__',version),context);
  const event=async(kind,props={})=>{let promise;handlers[kind]({...props,waitUntil:p=>promise=p,respondWith:p=>promise=p});return promise;};
- return {event,notifications,setOffline:()=>offline=true};
+ return {event,notifications,get activationRequested(){return activationRequested;},setOffline:()=>offline=true};
 }
 const old=await runtime('previous');await old.event('install');await old.event('activate');
 const bad=await runtime('bad',true);await assert.rejects(bad.event('install'),/changed/);assert(cacheStores.has('tidewater-offline-'+scope+'-previous'));assert(!cacheStores.has('tidewater-offline-'+scope+'-bad'));
 const next=await runtime('current');await next.event('install');assert(next.notifications.some(p=>p.offline.status==='ready'));await next.event('activate');assert(!cacheStores.has('tidewater-offline-'+scope+'-previous'));const quota=await runtime('quota');await assert.rejects(quota.event('install'),/Quota exceeded/);assert(cacheStores.has('tidewater-offline-'+scope+'-current'));assert(!cacheStores.has('tidewater-offline-'+scope+'-quota'));next.setOffline();
+assert.equal(next.activationRequested,false,'An update must not interrupt a running flight');
+await next.event('message',{data:{type:'activate-update'}});assert.equal(next.activationRequested,true);
+assert(next.notifications.every(p=>p.offline.version==='current'));
 for(const [url,text] of files){const response=await next.event('fetch',{request:{url:scope+url,method:'GET'}});assert.equal(await response.text(),text);assert.equal(response.headers.get('Cross-Origin-Embedder-Policy'),'require-corp');}
 assert.equal(await (await next.event('fetch',{request:{url:scope+'?offline=1',method:'GET',mode:'navigate'}})).text(),files.get('index.html'));
 console.log('Offline atomic install, SHA-256/quota failures, version activation, subpath requests and cached isolation headers passed');

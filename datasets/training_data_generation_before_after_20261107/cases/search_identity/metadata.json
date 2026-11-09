@@ -1,0 +1,342 @@
+{
+  "key": "search_identity",
+  "title": "SEARCH 03 \u2014 IDENTITY BELOW THE RESOLUTION LIMIT",
+  "bug": "Old path: 33\u201347 px similar decoys were forced to different_boat with identity_valid=true, even though the distinguishing signature is not resolvable at that size.",
+  "fix": "Decoy identity now requires 48 px. The 33\u201347 px decoys become unknown_boat with identity supervision off; the 84 px target keeps its pad-based identity.",
+  "spec": {
+    "seed": 20261207,
+    "map_kind": "island",
+    "distance_m": 14.0,
+    "height_m": 5.2,
+    "bearing_deg": -37.0,
+    "decoy_layout": [
+      [
+        10.0,
+        205.0
+      ],
+      [
+        18.0,
+        155.0
+      ]
+    ],
+    "camera_pan_deg": 0.0,
+    "camera_tilt_offset_deg": 0.0,
+    "yaw_offset_deg": 0.0,
+    "weather": "hazy"
+  },
+  "before": {
+    "heat": 4,
+    "presence": 1.0,
+    "evidence": 4,
+    "ignore": 0,
+    "identity": 4,
+    "class": "valid",
+    "visible_fraction": 0.0,
+    "center_in_frame": false,
+    "rule_error": null,
+    "training_eligible": true,
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          281,
+          148,
+          365,
+          210
+        ],
+        "center_px": [
+          323.0,
+          179.0
+        ],
+        "extent_px": 84,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          440,
+          70,
+          476,
+          85
+        ],
+        "center_px": [
+          458.0,
+          77.5
+        ],
+        "extent_px": 36,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null
+      },
+      {
+        "key": "decoy_similar",
+        "bbox": [
+          202,
+          71,
+          241,
+          118
+        ],
+        "center_px": [
+          221.5,
+          94.5
+        ],
+        "extent_px": 47,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null
+      },
+      {
+        "key": "decoy_dark",
+        "bbox": [
+          442,
+          77,
+          475,
+          84
+        ],
+        "center_px": [
+          458.5,
+          80.5
+        ],
+        "extent_px": 33,
+        "clipped": false,
+        "detection_valid": true,
+        "evidence": "different_boat",
+        "identity_valid": true,
+        "pad_visible": null
+      }
+    ]
+  },
+  "after": {
+    "heat": 4,
+    "presence": 1.0,
+    "evidence": 94,
+    "ignore": 0,
+    "identity": 1,
+    "class": "full",
+    "visible_fraction": 0.9443411701623433,
+    "center_in_frame": true,
+    "rule_error": null,
+    "training_eligible": true,
+    "target": {
+      "key": "target",
+      "bbox": [
+        281,
+        148,
+        365,
+        210
+      ],
+      "full_bbox": [
+        281.071509600685,
+        147.87667974076012,
+        365.0064416823509,
+        213.58181419010768
+      ],
+      "center_px": [
+        323.03897564151794,
+        180.7292469654339
+      ],
+      "visible_center_px": [
+        323.0,
+        179.0
+      ],
+      "extent_px": 84,
+      "full_extent_px": 83,
+      "depth_m": 15.014802412929003,
+      "min_depth_m": 13.71918287627623,
+      "too_close": false,
+      "too_close_reason": null,
+      "clipped": false,
+      "center_in_frame": true,
+      "visible_fraction": 0.9443411701623433,
+      "clipped_fraction": 0.0,
+      "frame_coverage": 0.022604166666666668,
+      "label_class": "full",
+      "detection_valid": true,
+      "evidence": "target_boat",
+      "identity_valid": true,
+      "pad_visible": true,
+      "pad_extent_px": 22.316188780571625,
+      "overlap": false,
+      "occluded_by": null
+    },
+    "boats": [
+      {
+        "key": "target",
+        "bbox": [
+          281,
+          148,
+          365,
+          210
+        ],
+        "full_bbox": [
+          281.071509600685,
+          147.87667974076012,
+          365.0064416823509,
+          213.58181419010768
+        ],
+        "center_px": [
+          323.03897564151794,
+          180.7292469654339
+        ],
+        "visible_center_px": [
+          323.0,
+          179.0
+        ],
+        "extent_px": 84,
+        "full_extent_px": 83,
+        "depth_m": 15.014802412929003,
+        "min_depth_m": 13.71918287627623,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.9443411701623433,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.022604166666666668,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "target_boat",
+        "identity_valid": true,
+        "pad_visible": true,
+        "pad_extent_px": 22.316188780571625,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_red",
+        "bbox": [
+          440,
+          70,
+          476,
+          85
+        ],
+        "full_bbox": [
+          438.58132654035467,
+          69.52657450583011,
+          476.302532726445,
+          86.92998998897765
+        ],
+        "center_px": [
+          457.4419296333998,
+          78.22828224740388
+        ],
+        "visible_center_px": [
+          458.0,
+          77.5
+        ],
+        "extent_px": 36,
+        "full_extent_px": 37,
+        "depth_m": 30.220038988304246,
+        "min_depth_m": 29.572522658528566,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.8225715788677062,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.00234375,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_similar",
+        "bbox": [
+          202,
+          71,
+          241,
+          118
+        ],
+        "full_bbox": [
+          201.68489202846325,
+          71.35178415480864,
+          242.5012109474497,
+          120.53803115228203
+        ],
+        "center_px": [
+          222.09305148795647,
+          95.94490765354533
+        ],
+        "visible_center_px": [
+          221.5,
+          94.5
+        ],
+        "extent_px": 47,
+        "full_extent_px": 49,
+        "depth_m": 23.182989747332584,
+        "min_depth_m": 22.490845610757123,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.9130297820255023,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.007955729166666667,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": false,
+        "occluded_by": null
+      },
+      {
+        "key": "decoy_dark",
+        "bbox": [
+          442,
+          77,
+          475,
+          84
+        ],
+        "full_bbox": [
+          440.7044849406499,
+          76.92887937466442,
+          475.4583459244835,
+          85.8196840826793
+        ],
+        "center_px": [
+          458.0814154325667,
+          81.37428172867186
+        ],
+        "visible_center_px": [
+          458.5,
+          80.5
+        ],
+        "extent_px": 33,
+        "full_extent_px": 34,
+        "depth_m": 30.35611695456719,
+        "min_depth_m": 29.861615557801958,
+        "too_close": false,
+        "too_close_reason": null,
+        "clipped": false,
+        "center_in_frame": true,
+        "visible_fraction": 0.7475975156314587,
+        "clipped_fraction": 0.0,
+        "frame_coverage": 0.0010026041666666666,
+        "label_class": "full",
+        "detection_valid": true,
+        "evidence": "unknown_boat",
+        "identity_valid": false,
+        "pad_visible": null,
+        "pad_extent_px": null,
+        "overlap": true,
+        "occluded_by": null
+      }
+    ]
+  },
+  "stats_line": "BEFORE  heat=4  presence=1  evidence=4  ignore=0  identity=4  class=valid  eligible=1   \u00b7   AFTER  heat=4  presence=1  evidence=94  ignore=0  identity=1  class=full  eligible=1"
+}
