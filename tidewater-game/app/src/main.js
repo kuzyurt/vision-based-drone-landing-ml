@@ -49,11 +49,10 @@ app.init( ( p, text, until ) => ui.setLoading( p, text, until ) ).then( async ()
 
 	app.ui = new AppUI( app, ui );
 	app.flightOps = new FlightOperations( app );
-	ui.setLoading( 1, 'Ready' );
-	await ui.hideLoader();
 	// frame-time benchmark and reference shots (see core/Bench.js): it drives the frames itself
 	if ( app.qs.has( 'bench' ) ) {
 
+		await ui.hideLoader();
 		window.__bench = new ( await import( './core/Bench.js' ) ).Bench( app );
 		if ( app.qs.has( 'auto' ) ) window.__job = window.__bench.auto( app.qs.get( 'auto' ), { runs: Number( app.qs.get( 'runs' ) ) || 1 } );
 		// ?bench&shots=view1,view2[&tag=name][&dt=seconds][&seq=n&every=frames]: reference shots of the named views only (core/DebugViews.js; dt > 0: the clock runs, e.g. for the eased lens flare)
@@ -61,10 +60,14 @@ app.init( ( p, text, until ) => ui.setLoading( p, text, until ) ).then( async ()
 		if ( app.qs.has( 'wdbg' ) && app.waterMaterial ) app.waterMaterial.debugMode.value = Number( app.qs.get( 'wdbg' ) );
 		if ( app.qs.has( 'shots' ) ) window.__job = window.__bench.shots( app.qs.get( 'shots' ).split( ',' ), { tag: app.qs.get( 'tag' ) || 'shot', dt: Number( app.qs.get( 'dt' ) ) || 0, seq: Number( app.qs.get( 'seq' ) ) || 1, every: Number( app.qs.get( 'every' ) ) || 1 } );
 
-	} else app.start();
-	// The flight game's own start card replaces the fishing start overlay, so the old HUD never
-	// appears before the mission consoles do. (`?bench` drives the frames itself: no card.)
-	if ( ! app.qs.has( 'bench' ) ) app.flightOps.presentStart();
+	} else {
+
+		app.start();
+		// Boot into the scene: the loader stays up while PX4/MuJoCo start, then lifts onto the
+		// front-right AERODOCK shot. The start click there cuts to the drone camera.
+		app.flightOps.boot( ui );
+
+	}
 
 } ).catch( ( e ) => {
 

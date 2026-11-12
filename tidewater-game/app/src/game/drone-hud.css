@@ -321,10 +321,11 @@
 }
 
 /* ---- opening AERODOCK shot --------------------------------------------- */
+/* the shot's caption, above the boat and clear of the start card at the bottom */
 #flight-intro {
 	position: fixed;
 	left: 50%;
-	bottom: 9vh;
+	top: 8vh;
 	z-index: 92;
 	transform: translateX(-50%);
 	text-align: center;
@@ -352,9 +353,10 @@
 	inset: 0;
 	z-index: 93;
 	display: grid;
-	place-items: center;
-	padding: 24px;
-	background: radial-gradient(120% 90% at 50% 42%, rgba(3, 5, 6, .30), rgba(3, 5, 6, .84));
+	align-items: end;
+	justify-items: center;
+	padding: 0 24px 8vh;
+	background: linear-gradient(180deg, rgba(3, 5, 6, .34) 0%, rgba(3, 5, 6, 0) 26%, rgba(3, 5, 6, 0) 52%, rgba(3, 5, 6, .72) 100%);
 	color: var(--ink);
 	font: 400 11px/1.5 'JetBrains Mono', ui-monospace, monospace;
 	letter-spacing: .06em;
@@ -367,31 +369,32 @@
 #flight-start.is-off { opacity: 0; pointer-events: none; }
 #flight-start *, #flight-start *::before, #flight-start *::after { box-sizing: border-box; }
 #flight-start .fs-card {
-	width: min(580px, 88vw);
-	padding: 32px 34px 24px;
-	border: 1px solid var(--line);
-	background: rgba(4, 9, 10, .74);
+	width: min(620px, 92vw);
+	padding: 0;
+	border: 0;
+	background: none;
 	text-align: center;
 }
 #flight-start .fs-brand { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: left; }
 #flight-start .fs-mark {
-	width: 30px;
-	height: 30px;
+	width: 26px;
+	height: 26px;
 	display: grid;
 	place-items: center;
 	border: 1px solid rgba(223, 228, 225, .35);
 	border-radius: 50% 50% 50% 3px;
-	font-size: 12px;
+	font-size: 11px;
 }
 #flight-start .fs-brand b { font-weight: 400; letter-spacing: .5em; }
 #flight-start .fs-brand small { display: block; margin-top: 5px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
 #flight-start .fs-lead {
-	max-width: 44ch;
-	margin: 22px auto 20px;
+	max-width: 46ch;
+	margin: 16px auto 16px;
 	font-size: 9px;
-	line-height: 1.9;
+	line-height: 1.8;
 	letter-spacing: .1em;
 	color: var(--ink-2);
+	text-shadow: 0 1px 12px rgba(0, 0, 0, .85);
 	text-transform: none;
 }
 #flight-start .fs-keys {
@@ -399,7 +402,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 8px 16px;
-	padding: 16px 0 18px;
+	padding: 13px 0 15px;
 	border-top: 1px solid var(--line);
 	border-bottom: 1px solid var(--line);
 	font-size: 7px;
@@ -417,7 +420,7 @@
 }
 #flight-start .fs-go {
 	pointer-events: auto;
-	margin: 22px auto 0;
+	margin: 18px auto 0;
 	padding: 11px 24px;
 	border: 1px solid rgba(223, 228, 225, .3);
 	background: rgba(223, 228, 225, .05);
@@ -429,7 +432,7 @@
 }
 #flight-start .fs-go:hover:not(:disabled) { background: rgba(223, 228, 225, .12); border-color: rgba(223, 228, 225, .46); }
 #flight-start .fs-go:disabled { color: var(--ink-3); cursor: default; }
-#flight-start .fs-status { margin-top: 14px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
+#flight-start .fs-status { margin-top: 12px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); text-shadow: 0 1px 10px rgba(0, 0, 0, .8); }
 #flight-start.is-error .fs-status { color: #c8806f; }
 #flight-start :focus-visible { outline: 1px solid rgba(223, 228, 225, .5); outline-offset: 3px; }
 
