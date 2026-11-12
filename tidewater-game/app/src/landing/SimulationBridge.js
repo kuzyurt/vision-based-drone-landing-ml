@@ -274,6 +274,7 @@ export class SimulationBridge {
 			this.app.camera.updateMatrix();
 		}
 		if ( this.state?.waves ) {
+			if ( ! this.landingWater ) this._takeLandingWater();
 			const elapsed = this.state.error ? 0 : sample ? sample.time - this.state.time_s : ( Math.min( .1, ( performance.now() - this.lastPacketTime ) / 1000 ) - .025 ) * Math.min( 1.1, this.state.realtime_factor ?? 1 );
 			for ( const [ i, c ] of this.state.waves.entries() ) {
 				const omega = Math.sqrt( 9.80665 * Math.hypot( c[ 0 ], c[ 1 ] ) );
@@ -303,9 +304,32 @@ export class SimulationBridge {
         finally { this.restarting = false; }
     }
 
-    close() {
-        this.policy.close();
-        this.closed = true;
+    	// The flight simulation's water is the shared MuJoCo field: four metre-scale waves replace the
+	// FFT ocean's height and normals (WaterSurface), so buoyancy and the rendered surface agree.
+	// The shore surf stays on: its displacement is discarded by that same branch, but its analytic
+	// swash edge, edge foam and surf-zone turbidity are what keep the waterline from ending on mesh
+	// triangles (WaterMaterial clips the sheet per pixel). Take the field over when the first wave
+	// packet arrives (the camera cuts to the vehicle then) and hand the ocean back on close.
+	_takeLandingWater() {
+
+		this.landingWater = true;
+		landingWaveParams.fields.enabled.value = 1;
+
+	}
+
+	_releaseLandingWater() {
+
+		if ( ! this.landingWater ) return;
+		this.landingWater = false;
+		landingWaveParams.fields.enabled.value = 0;
+
+	}
+
+	close() {
+
+		this.policy.close();
+		this._releaseLandingWater();
+		this.closed = true;
         this.assetAbort.abort();
         return this._disposeWorker().catch(error => this._setStatus({...this.state, ready:false, error:error.message}));
     }

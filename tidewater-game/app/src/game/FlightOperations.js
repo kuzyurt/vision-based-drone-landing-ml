@@ -1,4 +1,4 @@
-import { Euler } from '../engine/index.js';
+import { Euler, Vector3 } from '../engine/index.js';
 import { SimulationBridge } from '../landing/SimulationBridge.js';
 import { recordPerformance } from '../landing/PerformanceRecording.js';
 
@@ -6,6 +6,10 @@ const MAP = { xMin: - 250, xMax: 330, zMin: - 125, zMax: 285 };
 const clamp = ( value, low, high ) => Math.max( low, Math.min( high, value ) );
 const degrees = value => ( ( value * 180 / Math.PI % 360 ) + 360 ) % 360;
 const DRONE_KEYS = [ 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'KeyR', 'KeyF', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown' ];
+// The opening AERODOCK shot: the keyart studio's "Front right" framing (5 m out, 31.5 deg to
+// starboard of the bow, a hand's height above the deck, 38 deg lens) in world units.
+const SHOT = { distance: 4.96, bearing: 0.55, eye: 1.13, aim: 0.48, fov: 38 };
+const _shotPos = new Vector3(), _shotAim = new Vector3(), _shotFwd = new Vector3(), _shotStbd = new Vector3();
 
 export class FlightOperations {
 
@@ -35,6 +39,7 @@ export class FlightOperations {
 		this._buildHelmUI();
 		this._buildDroneUI();
 		this._buildIntro();
+		this._buildStart();
 
 	}
 
@@ -124,6 +129,7 @@ export class FlightOperations {
 					<div class="stat"><label>XTE</label><b><span data-bind="xte">—</span><i>m</i></b></div>
 				</div>
 				<div class="top-right">
+					<span class="freecam">Free camera</span>
 					<span class="link"><i></i><span data-bind="link-text">LINK · WAIT</span></span>
 					<button class="chip" type="button" data-action="switch">Drone<kbd>B</kbd></button>
 					<button class="chip" type="button" data-action="camera"><span data-bind="cam">CAM · DOCK</span><kbd>U</kbd></button>
@@ -224,7 +230,7 @@ export class FlightOperations {
 			</nav>
 
 			<footer class="foot">
-				<span class="keys">W/S throttle · A/D steer · U camera · P auto · C retry · V free · G shot · B drone · Home reset</span>
+				<span class="keys" data-bind="keys">W/S THROTTLE · A/D STEER · U CAMERA · P AUTO · B DRONE · C RETRY · V FREE · G SHOT · HOME RESET</span>
 				<span class="right"><button type="button" data-action="freecam">Free cam · V</button><button type="button" data-action="shot">Frame · G</button></span>
 			</footer>
 
@@ -254,6 +260,7 @@ export class FlightOperations {
 					<div class="stat"><label>BAT</label><b><span data-bind="batt">—</span><i>%</i></b></div>
 				</div>
 				<div class="top-right">
+					<span class="freecam">Free camera</span>
 					<span class="link"><i></i><span data-bind="link-text">SX1262 · WAIT</span></span>
 					<button class="mode-toggle hit" type="button" data-action="switch">Helm · B</button>
 				</div>
@@ -347,7 +354,7 @@ export class FlightOperations {
 			<p class="alarm" data-bind="alarm" role="status"></p>
 
 			<footer class="foot">
-				<span class="keys">WASD · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · V FREE · G SHOT · C RETRY · HOME RESET</span>
+				<span class="keys" data-bind="keys">WASD FLY · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · B HELM · U BOAT CAM · V FREE · G SHOT · C RETRY · HOME RESET</span>
 				<span class="right"><button class="mini hit" type="button" data-action="freecam">Free cam · V</button><button class="mini hit" type="button" data-action="shot">Frame · G</button><button class="mini hit" type="button" data-action="reset">Reset · Home</button></span>
 			</footer>
 
@@ -381,9 +388,128 @@ export class FlightOperations {
 		const el = document.createElement( 'div' );
 		el.id = 'flight-intro';
 		el.hidden = true;
-		el.innerHTML = '<b>AERODOCK</b><small>Surface craft · launch platform</small><span>Press any key</span>';
+		el.innerHTML = '<b>AERODOCK</b><small>Surface craft · launch platform</small><span>Click or press any key to take the controls</span>';
 		document.body.append( el );
 		this._introEl = el;
+
+	}
+
+	// The mission start card: the game opens here instead of the fishing HUD, so nothing from the
+	// old interface shows before the flight console exists. It doubles as the simulator's loading
+	// status and its error / retry card.
+	_buildStart() {
+
+		const el = document.createElement( 'div' );
+		el.id = 'flight-start';
+		el.hidden = true;
+		el.innerHTML = `
+			<div class="fs-card" role="dialog" aria-labelledby="fs-title">
+				<div class="fs-brand"><span class="fs-mark">T</span><span><b id="fs-title">Tidewater</b><small>Coastal flight operations</small></span></div>
+				<p class="fs-lead">Land the X500 on the AERODOCK deck. Fly the approach yourself, or hand it to the MuJoCo-trained landing policy.</p>
+				<div class="fs-keys">
+					<span><kbd>W A S D</kbd>Fly</span>
+					<span><kbd>R</kbd><kbd>F</kbd>Climb / descend</span>
+					<span><kbd>Q</kbd><kbd>E</kbd>Yaw</span>
+					<span><kbd>Mouse</kbd>Camera</span>
+					<span><kbd>B</kbd>Helm</span>
+					<span><kbd>U</kbd>Boat camera</span>
+					<span><kbd>P</kbd>Auto route</span>
+					<span><kbd>V</kbd>Free camera</span>
+					<span><kbd>G</kbd>Frame</span>
+					<span><kbd>Home</kbd>Reset</span>
+				</div>
+				<button class="fs-go" type="button">Start flight operations</button>
+				<div class="fs-status" data-bind="start-status" role="status">Browser PX4 · MuJoCo · WebGPU</div>
+			</div>`;
+		document.body.append( el );
+		this._startEl = el;
+		this._startStatusEl = el.querySelector( '[data-bind="start-status"]' );
+		this._startGo = el.querySelector( '.fs-go' );
+		el.addEventListener( 'click', () => {
+
+			if ( ! this.active ) this._begin();
+			else if ( this.state?.error ) this.bridge?.retry();
+
+		} );
+
+	}
+
+	// Shows the card and waits for the first click, Enter or Space. Called once from main() after
+	// the loader fades; the Tidewater start overlay is not used by the flight game.
+	presentStart() {
+
+		if ( this._startPresented ) return;
+		this._startPresented = true;
+		document.body.classList.add( 'flight-mode-active' );
+		this._startEl.hidden = false;
+		const begin = ( event ) => {
+
+			if ( event ) {
+
+				if ( event.type === 'keydown' && event.code !== 'Enter' && event.code !== 'Space' ) return;
+				event.preventDefault();
+				event.stopPropagation();
+
+			}
+			window.removeEventListener( 'keydown', begin, true );
+			this._begin();
+
+		};
+		this._startKey = begin;
+		window.addEventListener( 'keydown', begin, true );
+		this._startGo.focus( { preventScroll: true } );
+
+	}
+
+	_begin() {
+
+		if ( this._beginRequested ) return;
+		this._beginRequested = true;
+		if ( this._startKey ) window.removeEventListener( 'keydown', this._startKey, true );
+		this._startEl.classList.add( 'is-loading' );
+		this._startStatus( 'Starting the browser simulator…' );
+		this.activate();
+		if ( this.app.audio ) this.app.audio.resume();
+
+	}
+
+	_startStatus( text, alert = false ) {
+
+		if ( ! this._startStatusEl ) return;
+		if ( this._startStatusEl.textContent !== String( text ) ) this._startStatusEl.textContent = String( text );
+		this._startEl.classList.toggle( 'is-error', !! alert );
+
+	}
+
+	// The card follows the simulator through startup and leaves when the first flight HUD can take
+	// over (the opening AERODOCK shot).
+	_syncStart( state, flightReady ) {
+
+		if ( ! this._startPresented || this._startGone || this._startEl.hidden ) return;
+		if ( flightReady ) {
+
+			this._startGone = true;
+			this._startEl.classList.add( 'is-off' );
+			setTimeout( () => {
+
+				if ( this._startEl.classList.contains( 'is-off' ) ) this._startEl.hidden = true;
+
+			}, 420 );
+			return;
+
+		}
+		if ( state?.error ) {
+
+			this._startGo.textContent = 'Retry simulation';
+			this._startStatus( state.error, true );
+
+		} else {
+
+			this._startGo.textContent = this._beginRequested ? 'Loading…' : 'Start flight operations';
+			this._startGo.disabled = !! this._beginRequested;
+			this._startStatus( state?.status || ( this._beginRequested ? 'Loading the original vehicles…' : 'Browser PX4 · MuJoCo · WebGPU' ) );
+
+		}
 
 	}
 
@@ -419,17 +545,49 @@ export class FlightOperations {
 
 	}
 
+	// The opening shot: the AERODOCK from ahead and to starboard, close enough to read the boat.
+	// The pose comes from the rendered body group (the same interpolated pose the CAD is drawn
+	// with) so the framing never disagrees with what is on screen.
 	_poseAerodock() {
 
+		const group = this.bridge?.groups?.get( 'Physics body boat' );
 		const boat = this.state?.boat;
-		if ( ! boat?.position ) return;
-		const p = boat.position, h = boat.heading;
-		this.app.camera.position.set(
-			p[ 0 ] + Math.sin( h ) * 6.6 + Math.cos( h ) * 4.8,
-			p[ 1 ] + 2.7,
-			p[ 2 ] - Math.cos( h ) * 6.6 + Math.sin( h ) * 4.8
-		);
-		this.app.camera.lookAt( p[ 0 ], p[ 1 ] + 0.6, p[ 2 ] );
+		if ( group ) {
+
+			_shotPos.copy( group.position );
+			// the body's x axis is the bow; in this model +y is the port side, so starboard is -y
+			_shotFwd.set( 1, 0, 0 ).applyQuaternion( group.quaternion );
+			_shotStbd.set( 0, - 1, 0 ).applyQuaternion( group.quaternion );
+
+		} else if ( boat?.position ) {
+
+			_shotPos.set( boat.position[ 0 ], boat.position[ 1 ], boat.position[ 2 ] );
+			const h = boat.heading || 0;
+			_shotFwd.set( Math.sin( h ), 0, - Math.cos( h ) );
+			_shotStbd.set( Math.cos( h ), 0, Math.sin( h ) );
+
+		} else return;
+
+		// level the heading: the shot keeps its height above the water, whatever the deck is doing
+		_shotFwd.y = 0;
+		_shotFwd.normalize();
+		_shotStbd.y = 0;
+		_shotStbd.normalize();
+		const camera = this.app.camera;
+		camera.position.copy( _shotPos )
+			.addScaledVector( _shotFwd, Math.cos( SHOT.bearing ) * SHOT.distance )
+			.addScaledVector( _shotStbd, Math.sin( SHOT.bearing ) * SHOT.distance );
+		camera.position.y = _shotPos.y + SHOT.eye;
+		_shotAim.copy( _shotPos );
+		_shotAim.y += SHOT.aim;
+		camera.up.set( 0, 1, 0 );
+		camera.lookAt( _shotAim );
+		if ( camera.fov !== SHOT.fov ) {
+
+			camera.fov = SHOT.fov;
+			camera.updateProjectionMatrix();
+
+		}
 
 	}
 
@@ -481,7 +639,6 @@ export class FlightOperations {
 		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
-		this._ui.root.hidden = false;
 		document.body.classList.add( 'flight-mode-active' );
 		// Tidewater supplies the scenery. The existing combined CAD simulation owns both vehicles.
 		this.app.boat.group.visible = false;
@@ -889,11 +1046,16 @@ export class FlightOperations {
 			if ( flightReady && ! this._introStarted ) this._startIntro();
 			if ( state.error && this._intro ) this._endIntro();
 			const intro = ! ! this._intro;
-			const showHelm = isBoat && ! freeCamera && flightReady && ! intro;
-			const showDrone = ! isBoat && ! freeCamera && flightReady && ! intro;
+			// The helm and drone consoles own the screen. The free camera keeps the active one up (with
+			// its own key line) instead of falling back to the superseded `fc-*` console.
+			const showHelm = isBoat && flightReady && ! intro;
+			const showDrone = ! isBoat && flightReady && ! intro;
 			this._helm.root.hidden = ! showHelm;
 			this._drone.root.hidden = ! showDrone;
-			this._ui.root.hidden = showHelm || showDrone || intro;
+			this._helm.root.classList.toggle( 'is-freecam', freeCamera );
+			this._drone.root.classList.toggle( 'is-freecam', freeCamera );
+			this._ui.root.hidden = true;
+			this._syncStart( state, flightReady );
 			if ( showHelm ) this._updateHelm( state, link, boat, drone );
 			if ( showDrone ) this._updateDrone( state, link, boat, drone );
 
@@ -1039,6 +1201,9 @@ export class FlightOperations {
 		this._hBind( 'auto-btn' )?.classList.toggle( 'is-on', this.autopilot );
 		this._hBind( 'manual-btn' )?.classList.toggle( 'is-on', ! this.autopilot );
 		this._hText( 'cam', this.boatCamera === 'boat_dock' ? 'CAM · DOCK' : 'CAM · NAV' );
+		this._hText( 'keys', this.freeCamera
+			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
+			: 'W/S THROTTLE · A/D STEER · U CAMERA · P AUTO · B DRONE · C RETRY · V FREE · G SHOT · HOME RESET' );
 
 	}
 
@@ -1152,8 +1317,9 @@ export class FlightOperations {
 		}
 		this._dText( 'alarm', lost ? ( link.enabled === false ? 'SX1262 DISABLED · TELEMETRY OFF' : status === 'handshake' ? 'SX1262 PAIRING · TELEMETRY STALE' : `SX1262 LINK LOST · LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` ) : '' );
 
-		const control = this._flightControl();
-		this._dText( 'flight-btn', control.label );
+		this._dText( 'keys', this.freeCamera
+			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
+			: 'WASD FLY · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · B HELM · U BOAT CAM · V FREE · G SHOT · C RETRY · HOME RESET' );
 		const flightButton = this._dBind( 'flight-btn' );
 		if ( flightButton ) flightButton.disabled = ! state.ready || ! drone?.px4_ready || ! this.bridge?.cameraView || !! state.error || control.busy;
 		const ml = this.bridge?.policy?.status || {};
