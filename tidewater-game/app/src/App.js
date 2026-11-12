@@ -622,7 +622,8 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		// ---- flight operations / player / boat (boat physics first so cameras follow its pose)
 		if ( this.flightOps && this.flightOps.active ) this.flightOps.beforePhysics( dt );
 		else if ( this.input.hit( 'KeyF' ) ) this.setFreeCam( ! this.freeCam );
-		if ( this.input.hit( 'KeyT' ) ) this.toggleTime();
+		// The flight build owns T (take off / land) and keeps a fixed 15:00, so no time toggle there.
+		if ( ! this.flightOps && this.input.hit( 'KeyT' ) ) this.toggleTime();
 		if ( this.input.hit( 'KeyL' ) ) {
 
 			const on = this.localLights.toggleFlashlight();

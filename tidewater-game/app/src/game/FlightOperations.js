@@ -649,6 +649,10 @@ export class FlightOperations {
 		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
+		// One fixed afternoon. T is the take-off key here, so the app's time-of-day hotkey (an
+		// 8-minute day) must not run: pin the light at 15:00 and keep the clock stopped.
+		this.app.settings.timeOfDay = 15;
+		this.app.settings.timeSpeed = 0;
 		document.body.classList.add( 'flight-mode-active' );
 		// Tidewater supplies the scenery. The existing combined CAD simulation owns both vehicles.
 		this.app.boat.group.visible = false;
