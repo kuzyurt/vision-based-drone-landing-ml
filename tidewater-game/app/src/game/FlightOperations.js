@@ -1323,6 +1323,7 @@ export class FlightOperations {
 		this._dText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
 			: 'WASD FLY · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · B HELM · U BOAT CAM · V FREE · G SHOT · C RETRY · HOME RESET' );
+		const control = this._flightControl();
 		const flightButton = this._dBind( 'flight-btn' );
 		if ( flightButton ) flightButton.disabled = ! state.ready || ! drone?.px4_ready || ! this.bridge?.cameraView || !! state.error || control.busy;
 		const ml = this.bridge?.policy?.status || {};

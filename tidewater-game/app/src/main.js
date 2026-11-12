@@ -49,6 +49,7 @@ app.init( ( p, text, until ) => ui.setLoading( p, text, until ) ).then( async ()
 
 	app.ui = new AppUI( app, ui );
 	app.flightOps = new FlightOperations( app );
+	window.__flightOps = app.flightOps;
 	// frame-time benchmark and reference shots (see core/Bench.js): it drives the frames itself
 	if ( app.qs.has( 'bench' ) ) {
 
