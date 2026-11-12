@@ -674,7 +674,7 @@ fn cloudsShadow( worldXZ: vec2f ) -> f32 {
 	let s = mix( mix( cloudsShadowTap( i0 ), cloudsShadowTap( i0 + vec2i( 1, 0 ) ), fr.x ), mix( cloudsShadowTap( i0 + vec2i( 0, 1 ) ), cloudsShadowTap( i0 + vec2i( 1, 1 ) ), fr.x ), fr.y );
 	// no data outside the map: fade to unshadowed at its border
 	let e = abs( uv - 0.5 );
-	let inside = smoothstep( 0.5, 0.42, max( e.x, e.y ) );
+	let inside = 1.0 - smoothstep( 0.42, 0.5, max( e.x, e.y ) );
 	return mix( 1.0, s, cloudsParams.shadowStrength * inside );
 }
 `,

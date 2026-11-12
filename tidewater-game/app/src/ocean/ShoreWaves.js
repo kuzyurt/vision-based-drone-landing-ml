@@ -402,7 +402,7 @@ fn shoreProfile( u: f32, lam: f32, P: ShoreBreak, withFoam: bool ) -> ShoreProfi
 	let yFront = select( P.ytB, P.ytB + ( P.ycB - P.ytB ) * fy, inFace );
 	let cb = pow( max( ( cos( u * ( SHORE_TAU * 0.85 ) ) + 1.0 ) * 0.5, 0.0 ), P.p );
 	let yBack = P.ytB + ( P.ycB - P.ytB ) * mix( cb, exp( u * -7.0 ), P.wBore );
-	let xBack = P.Xc * exp( u * -6.0 ) * smoothstep( 0.5, 0.35, u ) + xPre * ( 1.0 - P.wBore );
+	let xBack = P.Xc * exp( u * -6.0 ) * ( 1.0 - smoothstep( 0.35, 0.5, u ) ) + xPre * ( 1.0 - P.wBore );
 	let front = u < 0.0;
 	let wC = smoothstep( -0.35, 0.25, P.b ) * shoreP.curl;
 	var r: ShoreProfile;

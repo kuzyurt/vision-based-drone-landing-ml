@@ -23,6 +23,7 @@ export class SimulationBridge {
 		this.lastStatus = 0;
 		this.lastMapUpload = 0;
 		this.cameraView = null;
+		this.cameraPaused = false;
 		this.groups = new Map();
 		this.layout = null;
 		this.cameraTarget = { position: new E.Vector3(), quaternion: new E.Quaternion(), scale: new E.Vector3() };
@@ -222,6 +223,7 @@ export class SimulationBridge {
 
 	_applyCamera( state, snap = false ) {
 
+		if ( this.cameraPaused ) return;
 		const controls = this.app.flightOps;
 		const name = controls.mode === 'boat' ? controls.boatCamera : 'drone';
 		const view = state.views[ name ];
@@ -264,7 +266,7 @@ export class SimulationBridge {
 				this.hull.quaternion.slerp( this.hull.target.quaternion, alpha );
 			}
 		}
-		if ( this.cameraView ) {
+		if ( this.cameraView && ! this.cameraPaused ) {
 			if ( ! sample || ! this.timeline.apply( this.app.camera, `camera:${ this.cameraView }`, sample ) ) {
 				this.app.camera.position.lerp( this.cameraTarget.position, alpha );
 				this.app.camera.quaternion.slerp( this.cameraTarget.quaternion, alpha );

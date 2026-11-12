@@ -521,7 +521,7 @@ body[data-view='boat'] .helm-feed { display: block; }
 	white-space: nowrap;
 	text-transform: none;
 }
-.foot .right { display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+.foot .right { display: flex; align-items: center; gap: 16px; margin-left: auto; white-space: nowrap; }
 
 /* ---- transients -------------------------------------------------------- */
 .toast {
@@ -559,6 +559,9 @@ body[data-view='boat'] .helm-feed { display: block; }
 .is-lost .link { color: var(--alert); }
 .is-lost .radio-quality b, .is-lost .radio-head b { color: var(--alert); }
 .is-lost .segbar i.on { background: var(--alert); }
+.is-lost .radio-grid b { color: rgba(223, 228, 225, .42); }
+.radio-head small.is-alert { color: var(--alert); }
+.is-lost #v-age { color: var(--alert); }
 .is-low b { color: var(--warn) !important; }
 .is-low .segbar i.on { background: var(--warn); }
 
@@ -784,21 +787,19 @@ body[data-view='boat'] .helm-feed { display: block; }
 	<header class="top">
 		<div class="brand">
 			<b>TIDEWATER</b>
-			<small>X500 V2 · PX4 1.16 · MUJOCO 3.14</small>
 		</div>
 		<div class="stats" aria-label="Flight data">
-			<div class="stat"><label>Alt · MSL</label><b><span id="v-alt">012.8</span><i>m</i></b><small>BARO ±0.5</small></div>
-			<div class="stat"><label>Gnd spd</label><b><span id="v-gspd">02.50</span><i>m/s</i></b><small>GNSS ±0.2</small></div>
-			<div class="stat"><label>Hdg</label><b><span id="v-hdg">346</span><i>°</i></b><small>MAG ±3</small></div>
-			<div class="stat"><label>Sep</label><b><span id="v-sep">108</span><i>m</i></b><small id="v-sep-src">LNK ±4</small></div>
-			<div class="stat"><label>Bat</label><b><span id="v-batt">78</span><i>%</i></b><small><span id="v-batt-v">21.9 V</span> · PX4</small></div>
+			<div class="stat"><label>ALT</label><b><span id="v-alt">012.8</span><i>m</i></b></div>
+			<div class="stat"><label>SPD</label><b><span id="v-gspd">02.50</span><i>m/s</i></b></div>
+			<div class="stat"><label>HDG</label><b><span id="v-hdg">346</span><i>°</i></b></div>
+			<div class="stat"><label>SEP</label><b><span id="v-sep">108</span><i>m</i></b></div>
+			<div class="stat"><label>BAT</label><b><span id="v-batt">78</span><i>%</i></b></div>
 		</div>
 		<div class="top-right">
 			<div class="link-wrap">
 				<button class="link hit" id="link-demo" type="button" title="Toggle the simulated link state">
 					<i></i><span id="v-link">SX1262 · PAIRED</span>
 				</button>
-				<small id="v-mode">DRONE FEED · 868.0 MHz</small>
 			</div>
 			<button class="mode-toggle hit" id="mode-toggle" type="button">Helm · B</button>
 		</div>
@@ -806,15 +807,10 @@ body[data-view='boat'] .helm-feed { display: block; }
 
 	<div class="datum">
 		<div class="agl-block">
-			<small>Radar alt · 40 ms</small>
+			<small>AGL</small>
 			<div class="agl">
 				<span class="agl-bar"></span>
-				<b><span id="v-agl">12.4</span><em>m</em><s>±0.2</s></b>
-				<div class="gimbal">
-					<span>Tilt <b id="v-tilt">−12.4°</b></span>
-					<span>Pan <b id="v-pan">346.0°</b></span>
-					<small>Encoder 4 ms</small>
-				</div>
+				<b><span id="v-agl">12.4</span><em>m</em></b>
 			</div>
 		</div>
 		<div class="datum-right">
@@ -822,15 +818,11 @@ body[data-view='boat'] .helm-feed { display: block; }
 				<div class="coord"><small>GNSS X</small><b id="v-gx">+0062</b></div>
 				<div class="coord"><small>GNSS Z</small><b id="v-gz">+0110</b></div>
 			</div>
-			<div class="coord-note">3D FIX · ±1.2 M · 5 HZ</div>
-			<div class="boat-strip">
-				Boat <b id="v-bspd">2.8</b> ±0.4 m/s · CRS <b id="v-bcrs">264</b> ±5°<span id="v-bage">LINK 0.3 s</span>
-			</div>
+			<div class="boat-strip">Boat <b id="v-bspd">2.8</b> m/s · CRS <b id="v-bcrs">264</b>°</div>
 		</div>
 	</div>
 
 	<section class="optic" aria-hidden="true">
-		<span class="opt-cap">ONBOARD CAMERA · 640 × 360 · VIS 100 MS</span>
 		<svg class="optics" viewBox="-260 -260 520 520">
 			<defs><clipPath id="optic-clip"><circle r="236"></circle></clipPath></defs>
 			<g id="compass"></g>
@@ -865,13 +857,12 @@ body[data-view='boat'] .helm-feed { display: block; }
 			<path d="M0 -247l-3.4 7h6.8z" fill="currentColor" fill-opacity=".7"></path>
 		</svg>
 		<div class="opt-foot">
-			<span>PITCH <b id="v-pitch">+1.2</b> ROLL <b id="v-roll">+3.8</b> · IMU 8 MS</span>
-			<span class="armed is-off" id="v-armed">DISARMED · PX4 1.16 · MAG 20 MS</span>
+			<span>PITCH <b id="v-pitch">+1.2</b> · ROLL <b id="v-roll">+3.8</b></span>
+			<span class="armed is-off" id="v-armed">DISARMED</span>
 		</div>
 	</section>
 
 	<figure class="scope">
-		<figcaption class="scope-head"><span>Relative motion</span><span>North up</span></figcaption>
 		<svg viewBox="-180 -180 360 360" role="img" aria-label="Range rings centred on the drone, with the boat bearing, and velocity arrows for both craft">
 			<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"></circle>
 			<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".16" stroke-width="1.2"></circle>
@@ -890,7 +881,7 @@ body[data-view='boat'] .helm-feed { display: block; }
 			<g id="sc-boat" transform="translate(0 0)">
 				<circle id="sc-sigma" r="6" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 4"></circle>
 				<g id="sc-boat-rot">
-					<path d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path>
+					<path id="sc-boat-glyph" d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path>
 				</g>
 				<g id="sc-boat-vec">
 					<line x1="0" y1="-11" x2="0" y2="-34" stroke="currentColor" stroke-opacity=".6" stroke-width="1.3"></line>
@@ -904,26 +895,20 @@ body[data-view='boat'] .helm-feed { display: block; }
 			</g>
 			<circle r="2.4" fill="currentColor"></circle>
 			<path d="M-11 0H-5M5 0H11M0 -11V-5M0 5V11" stroke="currentColor" stroke-opacity=".55" stroke-width="1.1"></path>
-			<text x="11" y="16" class="blip-sub" id="sc-drn-label">DRN 2.5 m/s</text>
 		</svg>
-		<div class="scope-foot"><span>RNG <b id="sc-rng">108</b> m · BRG <b id="sc-brg">345</b>°</span><span id="sc-fix">LNK 0.3 s · ±4 m</span></div>
+		<div class="scope-foot"><span>RNG <b id="sc-rng">108</b> m · BRG <b id="sc-brg">345</b>°</span></div>
 	</figure>
 
 	<section class="radio" aria-label="Radio link">
-		<div class="radio-head"><b>Vehicle link</b><small>SX1262 · simulated</small></div>
+		<div class="radio-head"><b>Vehicle link</b><small id="v-link-state">STABLE</small></div>
 		<div class="radio-quality"><b id="v-quality">093</b><span>% QLT</span></div>
 		<div class="segbar" id="segbar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
 		<div class="radio-grid">
 			<div><small>RSSI</small><b id="v-rssi">−086 dBm</b></div>
 			<div><small>SNR</small><b id="v-snr">+08.6 dB</b></div>
-			<div><small>Modem lat</small><b id="v-lat">036 ms</b></div>
 			<div><small>Loss</small><b id="v-loss">00.0 %</b></div>
-			<div><small>TX</small><b id="v-tx">1284</b></div>
-			<div><small>RX</small><b id="v-rx">1281</b></div>
-			<div><small>Drop</small><b id="v-drop">003</b></div>
 			<div><small>Age</small><b id="v-age">0.3 s</b></div>
 		</div>
-		<div class="radio-foot" id="v-note">868.0 MHz · SF7 · track σ 4 m</div>
 		<div class="radio-actions">
 			<button class="mini hit" id="act-radio" type="button">Disable SX1262</button>
 			<button class="mini hit" id="act-reconnect" type="button">Retry · C</button>
@@ -943,11 +928,8 @@ body[data-view='boat'] .helm-feed { display: block; }
 	<p class="alarm" role="status">SX1262 LINK LOST · VISUAL TRACK · PRESS C</p>
 
 	<footer class="foot">
-		<span>PX4 1.16 · MUJOCO 3.14 · SIM</span>
-		<span class="mid" id="v-lat-rail">IMU 8 ms · MAG 20 ms · RDR 40 ms · GNSS 180 ms · LNK 236 ms</span>
 		<span class="right">
 			<button class="mini hit" id="act-reset" type="button">Reset · Home</button>
-			<span id="v-perf">GPU INTEL · 1.00× · 60 FPS</span>
 		</span>
 	</footer>
 
@@ -1248,7 +1230,13 @@ body[data-view='boat'] .helm-feed { display: block; }
 		text( 'sc-brg', disp.brg );
 		text( 'sc-fix', lost ? `VIS 0.1 s · ±1.5 m` : `LNK ${ disp.age.toFixed( 1 ) } s · ±${ disp.sigma } m` );
 		text( 'sc-drn-label', `DRN ${ disp.gspd.toFixed( 1 ) } m/s` );
-		text( 'sc-boat-label', lost ? 'BOAT · VIS' : 'BOAT' );
+		text( 'sc-boat-label', lost ? `BOAT · VIS ${ disp.age.toFixed( 1 ) } s` : 'BOAT' );
+		text( 'v-link-state', lost ? 'NO TELEMETRY' : 'STABLE' );
+		$( 'v-link-state' ).classList.toggle( 'is-alert', lost );
+		scBoat.style.color = lost ? 'var(--alert)' : '';
+		scLine.style.color = lost ? 'var(--alert)' : '';
+		$( 'sc-boat-glyph' ).setAttribute( 'fill-opacity', lost ? '.12' : '.95' );
+		scBoatVec.style.display = lost ? 'none' : '';
 
 		const bat = $( 'v-batt' ).closest( '.stat' );
 		bat.classList.toggle( 'is-low', disp.batt < 20 );
@@ -1266,10 +1254,12 @@ body[data-view='boat'] .helm-feed { display: block; }
 		scBoat.setAttribute( 'transform', `translate(${ bx.toFixed( 1 ) } ${ by.toFixed( 1 ) })` );
 		scBoatRot.setAttribute( 'transform', `rotate(${ disp.bcrs })` );
 		scBoatVec.setAttribute( 'transform', `rotate(${ disp.bcrs })` );
-		scSigma.setAttribute( 'r', Math.max( 3, disp.sigma * 1.5 ).toFixed( 1 ) );
-		const right = bx < 100;
+		scSigma.setAttribute( 'r', lost ? ( 6 + Math.min( disp.age, 10 ) * 2.2 ).toFixed( 1 ) : Math.max( 3, disp.sigma * 1.5 ).toFixed( 1 ) );
+		// the label extends away from the centre so it never covers the ring labels
+		const right = bx >= 0;
 		const tx = right ? 12 : - 12;
 		scBoatLabel.setAttribute( 'x', tx );
+		scBoatLabel.setAttribute( 'y', - 8 );
 		scBoatLabel.setAttribute( 'text-anchor', right ? 'start' : 'end' );
 
 		// drone groundspeed arrow: course over ground, not nose heading
@@ -1591,7 +1581,7 @@ body[data-view='boat'] .helm-feed { display: block; }
 
 		armed = ! armed;
 		$( 'act-flight' ).textContent = armed ? 'Land' : 'Take off';
-		$( 'v-armed' ).textContent = ( armed ? 'ARMED' : 'DISARMED' ) + ' · PX4 1.16 · MAG 20 MS';
+		$( 'v-armed' ).textContent = armed ? 'ARMED' : 'DISARMED';
 		$( 'v-armed' ).classList.toggle( 'is-off', ! armed );
 		toast( armed ? 'TAKEOFF REQUESTED · GUIDED CLIMB' : 'LANDING TARGET SET · GUIDED DESCENT' );
 

@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AERODOCK · helm attitude</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+	:root {
+		--mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+		--ink: #e7f0eb;
+		--muted: rgba(225, 239, 232, .58);
+		--faint: rgba(225, 239, 232, .34);
+		--line: rgba(222, 239, 231, .16);
+		--line-strong: rgba(232, 245, 238, .5);
+		--pad: clamp(30px, 3.3vw, 50px);
+		--side-tilt: -3.2deg;
+		--stern-tilt: 4.6deg;
+	}
+
+	* { box-sizing: border-box; }
+	html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #030607; }
+	body {
+		color: var(--ink);
+		font: 400 12px/1.45 var(--mono);
+		letter-spacing: .08em;
+		text-transform: uppercase;
+		-webkit-font-smoothing: antialiased;
+		text-shadow: 0 0 14px rgba(0, 0, 0, .5);
+	}
+
+	.scene { position: fixed; inset: 0; overflow: hidden; }
+	.feed {
+		position: absolute;
+		inset: -4%;
+		background: url("feed.jpg") center 48% / cover no-repeat;
+		filter: grayscale(.38) saturate(.42) brightness(.37) contrast(1.06) blur(1.2px);
+		transform: scale(1.05);
+	}
+	.veil {
+		position: absolute;
+		inset: 0;
+		background:
+			radial-gradient(ellipse 120% 86% at 50% 44%, rgba(3, 7, 8, .12) 0%, rgba(3, 7, 8, .46) 52%, rgba(2, 4, 5, .94) 100%),
+			linear-gradient(180deg, rgba(2, 5, 6, .9) 0%, rgba(2, 5, 6, .24) 28%, rgba(2, 5, 6, .2) 62%, rgba(1, 3, 4, .9) 100%);
+	}
+	.veil::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: radial-gradient(ellipse 90% 70% at 50% 52%, transparent 28%, rgba(1, 3, 4, .5) 100%);
+	}
+	.grain {
+		position: absolute;
+		inset: -40px;
+		background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='2' stitchTiles='stitch'/></filter><rect width='140' height='140' filter='url(%23n)'/></svg>");
+		opacity: .045;
+		pointer-events: none;
+		animation: grain 1.8s steps(3) infinite;
+	}
+	@keyframes grain {
+		0% { transform: translate(0, 0); }
+		33% { transform: translate(-13px, 8px); }
+		66% { transform: translate(10px, -15px); }
+		100% { transform: translate(0, 0); }
+	}
+
+	.hud { position: absolute; inset: 0; z-index: 3; padding: var(--pad); }
+	.hud::before {
+		content: '';
+		position: absolute;
+		left: var(--pad);
+		right: var(--pad);
+		top: 104px;
+		height: 1px;
+		background: var(--line);
+	}
+
+	.top { display: flex; align-items: flex-start; justify-content: space-between; }
+	.brand { display: flex; align-items: center; gap: 15px; }
+	.mark {
+		width: 29px;
+		height: 29px;
+		display: grid;
+		place-items: center;
+		border: 1px solid var(--line-strong);
+		border-radius: 50% 50% 50% 3px;
+		color: var(--ink);
+		font-size: 13px;
+		transform: rotate(-45deg);
+	}
+	.mark span { transform: rotate(45deg); }
+	.brand-copy b { display: block; font-size: 15px; font-weight: 500; letter-spacing: .28em; }
+	.brand-copy small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; letter-spacing: .17em; }
+
+	.mode { display: flex; align-items: center; gap: 10px; padding-top: 2px; }
+	.mode-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink); box-shadow: 0 0 10px rgba(231, 240, 235, .6); }
+	.mode b { font-size: 14px; font-weight: 500; letter-spacing: .2em; }
+	.mode small { color: var(--muted); font-size: 11px; letter-spacing: .16em; }
+
+	.rule { position: absolute; left: calc(var(--pad) + 172px); top: 142px; bottom: 142px; width: 1px; background: var(--line); }
+
+	.metrics { position: absolute; left: var(--pad); top: 244px; width: 154px; }
+	.metric + .metric { margin-top: 42px; padding-top: 17px; border-top: 1px solid var(--line); }
+	.metric span { display: block; color: var(--muted); font-size: 12px; letter-spacing: .19em; }
+	.metric b { display: inline-block; margin-top: 6px; font-size: 58px; font-weight: 300; line-height: .88; letter-spacing: -.07em; }
+	.metric em { margin-left: 5px; color: var(--muted); font-size: 12px; font-style: normal; letter-spacing: .05em; }
+	.metric.course b { font-size: 27px; font-weight: 400; letter-spacing: -.02em; }
+
+	.attitude {
+		position: absolute;
+		left: 252px;
+		right: var(--pad);
+		top: 144px;
+		bottom: 142px;
+		display: flex;
+		align-items: center;
+		gap: clamp(20px, 2.4vw, 36px);
+	}
+	.attitude::before {
+		content: '';
+		position: absolute;
+		left: 8%;
+		right: 0;
+		top: 2%;
+		bottom: 2%;
+		background: radial-gradient(ellipse at 50% 52%, rgba(2, 6, 7, .4) 0%, transparent 72%);
+		pointer-events: none;
+	}
+	.sketch { position: relative; z-index: 1; min-width: 0; }
+	.sketch.side { flex: 1 1 auto; }
+	.sketch.stern { flex: 0 0 25%; width: 286px; max-width: 300px; }
+	.sketch-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 18px;
+		padding-bottom: 9px;
+		border-bottom: 1px solid var(--line);
+	}
+	.sketch-head > span { color: var(--muted); font-size: 12px; letter-spacing: .21em; }
+	.sketch-head > b { color: var(--muted); font-size: 12px; font-weight: 400; letter-spacing: .15em; }
+	.sketch-head > b em { margin-left: 8px; color: var(--ink); font-size: 18px; font-style: normal; font-weight: 400; letter-spacing: .01em; }
+
+	.stage {
+		position: relative;
+		height: clamp(250px, 37vh, 350px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.horizon {
+		position: absolute;
+		left: 1%;
+		right: 1%;
+		top: 58%;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--line-strong) 8%, var(--line-strong) 92%, transparent);
+	}
+	.horizon::before, .horizon::after {
+		content: '';
+		position: absolute;
+		top: -5px;
+		height: 11px;
+		border-left: 1px solid var(--line-strong);
+	}
+	.horizon::before { left: 8%; }
+	.horizon::after { right: 8%; }
+	.pivot {
+		position: absolute;
+		left: 50%;
+		top: calc(58% - 4px);
+		width: 8px;
+		height: 8px;
+		border: 1px solid var(--line-strong);
+		border-radius: 50%;
+		background: rgba(3, 7, 8, .8);
+		transform: translateX(-50%);
+	}
+	.vertical-mark {
+		position: absolute;
+		left: 50%;
+		top: calc(58% - 21px);
+		height: 42px;
+		border-left: 1px solid var(--line);
+		transform: translateX(-50%);
+	}
+	.craft {
+		display: block;
+		width: auto;
+		max-width: 100%;
+		max-height: 100%;
+		object-fit: contain;
+		filter: drop-shadow(0 0 16px rgba(219, 245, 233, .1));
+		transform: rotate(var(--tilt, 0deg));
+		transform-origin: 50% 55%;
+	}
+	.side .craft { width: min(100%, 738px); }
+	.stern .craft { width: min(100%, 282px); }
+	@media (max-width: 1120px) {
+		:root { --pad: 28px; }
+		.rule { display: none; }
+		.metrics { top: 210px; width: 128px; }
+		.metric b { font-size: 47px; }
+		.attitude { left: 194px; top: 130px; }
+		.sketch.stern { flex-basis: 24%; width: 235px; }
+	}
+</style>
+</head>
+<body>
+<div class="scene">
+	<div class="feed"></div>
+	<div class="veil"></div>
+	<div class="grain"></div>
+
+	<div class="hud">
+		<header class="top">
+			<div class="brand">
+				<div class="mark"><span>◢</span></div>
+				<div class="brand-copy">
+					<b>AERODOCK</b>
+					<small>Tidewater · helm</small>
+				</div>
+			</div>
+			<div class="mode">
+				<i class="mode-dot"></i>
+				<b>Auto</b>
+				<small>Helm</small>
+			</div>
+		</header>
+
+		<div class="rule"></div>
+
+		<aside class="metrics" aria-label="Boat motion">
+			<div class="metric">
+				<span>Speed</span>
+				<b>4.2</b><em>kn</em>
+			</div>
+			<div class="metric course">
+				<span>Course</span>
+				<b>247°</b>
+			</div>
+		</aside>
+
+		<section class="attitude" aria-label="AERODOCK attitude">
+			<figure class="sketch side">
+				<header class="sketch-head">
+					<span>Profile</span>
+					<b>Pitch <em>+3.2°</em></b>
+				</header>
+				<div class="stage">
+					<div class="horizon"></div>
+					<div class="vertical-mark"></div>
+					<div class="pivot"></div>
+					<img class="craft" style="--tilt: var(--side-tilt)" src="aerodock-side.png" alt="Orthographic side profile traced from the AERODOCK 3D model">
+				</div>
+			</figure>
+
+			<figure class="sketch stern">
+				<header class="sketch-head">
+					<span>Stern</span>
+					<b>Roll <em>−4.6°</em></b>
+				</header>
+				<div class="stage">
+					<div class="horizon"></div>
+					<div class="vertical-mark"></div>
+					<div class="pivot"></div>
+					<img class="craft" style="--tilt: var(--stern-tilt)" src="aerodock-stern.png" alt="Orthographic stern view traced from the AERODOCK 3D model">
+				</div>
+			</figure>
+		</section>
+	</div>
+</div>
+</body>
+</html>
