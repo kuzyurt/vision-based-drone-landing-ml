@@ -6,6 +6,9 @@ const MAP = { xMin: - 250, xMax: 330, zMin: - 125, zMax: 285 };
 const clamp = ( value, low, high ) => Math.max( low, Math.min( high, value ) );
 const degrees = value => ( ( value * 180 / Math.PI % 360 ) + 360 ) % 360;
 const DRONE_KEYS = [ 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'KeyR', 'KeyF', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown' ];
+// Keys that only mean something once the X500 is flying: pressing them on the deck asks for the
+// flight instead of pretending a parked aircraft can move.
+const FLIGHT_KEYS = [ 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'KeyR', 'KeyF' ];
 // The opening AERODOCK shot: the keyart studio's "Front right" framing (5 m out, 31.5 deg to
 // starboard of the bow, a hand's height above the deck, 38 deg lens) in world units.
 const SHOT = { distance: 4.96, bearing: 0.55, eye: 1.13, aim: 0.48, fov: 38 };
@@ -20,7 +23,8 @@ export class FlightOperations {
 		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
-		this.autopilot = true;
+		// The boat stays where it is until the player asks for route following (P).
+		this.autopilot = false;
 		this.state = null;
 		this.radio = null;
 		this.bridge = null;
@@ -30,8 +34,7 @@ export class FlightOperations {
 		this._ui = null;
 		this.manualMotors = [ 0, 0 ];
 		this.suppressedKeys = new Set();
-		this._helmFix = null;
-		this._droneFix = null;
+
 		// Boot flow: the simulator starts behind the loader, the camera holds the AERODOCK shot and the
 		// start card waits on it; the click releases both the card and the camera to the drone.
 		this._booted = false;
@@ -145,7 +148,7 @@ export class FlightOperations {
 			<div class="datum">
 				<div class="agl-block">
 					<small>SPD</small>
-					<div class="agl"><span class="agl-bar"></span><b><span data-bind="spd">—</span><em>kn</em></b></div>
+					<div class="agl"><span class="agl-bar"></span><b><span data-bind="spd">—</span><em>km/h</em></b></div>
 				</div>
 				<div class="coords">
 					<div class="coord"><small>Drn</small><b><span data-bind="drn-range">—</span><i>m</i></b></div>
@@ -153,26 +156,28 @@ export class FlightOperations {
 				</div>
 			</div>
 
-			<figure class="scope" aria-label="Range rings around the boat and the radio-reported drone position">
+			<figure class="scope" aria-label="Range rings centred on the boat; the drone is drawn at its last radio position report">
 				<svg viewBox="-180 -180 360 360" role="img">
-					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"></circle>
-					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".16" stroke-width="1.2"></circle>
-					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="1.2"></circle>
-					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".08"></path>
+					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".24" stroke-width="1.5"></circle>
+					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"></circle>
+					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"></circle>
+					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".18"></path>
 					<g class="ring-label" text-anchor="end"><text x="-4" y="-46">50</text><text x="-4" y="-96">100</text><text x="-4" y="-146">150 m</text></g>
 					<g class="cardinal" text-anchor="middle"><text x="0" y="-166">N</text></g>
-					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".5"></path>
-					<line data-bind="drn-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="2 5"></line>
-					<g data-bind="drn" transform="translate(0 0)">
-						<circle data-bind="drn-sigma" r="6" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 4"></circle>
-						<g data-bind="drn-rot" transform="rotate(0)"><path data-bind="drn-glyph" d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path></g>
-						<g data-bind="drn-vec"><line x1="0" y1="-11" x2="0" y2="-32" stroke="currentColor" stroke-opacity=".6" stroke-width="1.3"></line><path d="M0 -34l-3.5 6h7z" fill="currentColor" fill-opacity=".8"></path></g>
-						<text data-bind="drn-label" x="-12" y="-8" text-anchor="end" class="blip-label">DRN</text>
+					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".65"></path>
+					<line data-bind="other-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="2 5"></line>
+					<g data-bind="other" style="display:none">
+						<g data-bind="other-vec"><line data-bind="other-vec-line" x1="0" y1="0" x2="0" y2="-30" stroke="currentColor" stroke-opacity=".85" stroke-width="1.8"></line><path data-bind="other-vec-head" transform="translate(0 -30)" d="M0 0l-4 7h8z" fill="currentColor" fill-opacity=".95"></path></g>
+						<circle data-bind="other-sigma" r="7" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3" stroke-dasharray="2 4"></circle>
+						<g data-bind="other-rot"><path d="M-10 -10L-3 -3M10 -10L3 -3M-10 10L-3 3M10 10L3 3" stroke="currentColor" stroke-width="2" fill="none"></path><circle cx="-10" cy="-10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="10" cy="-10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="-10" cy="10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="10" cy="10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M0 -6L4.6 0L0 6L-4.6 0Z" fill="currentColor"></path></g>
+						<text data-bind="other-label" x="-12" y="-9" text-anchor="end" class="blip-label">DRN</text>
 					</g>
-					<circle r="2.4" fill="currentColor"></circle>
-					<path d="M-11 0H-5M5 0H11M0 -11V-5M0 5V11" stroke="currentColor" stroke-opacity=".55" stroke-width="1.1"></path>
+					<g data-bind="own">
+						<g data-bind="own-vec"><line data-bind="own-vec-line" x1="0" y1="0" x2="0" y2="-30" stroke="currentColor" stroke-opacity=".9" stroke-width="2"></line><path data-bind="own-vec-head" transform="translate(0 -30)" d="M0 0l-4 7h8z" fill="currentColor"></path></g>
+						<g data-bind="own-rot"><path d="M0 -15L7.5 -4L7.5 13L-7.5 13L-7.5 -4Z" fill="currentColor" fill-opacity=".9"></path><path d="M0 -9V13M-4 -2H4" stroke="currentColor" stroke-opacity=".32" fill="none"></path></g>
+					</g>
 				</svg>
-				<div class="scope-foot"><span class="scope-note" data-bind="scope-note"></span></div>
+				<figcaption class="scope-foot"><span class="scope-note" data-bind="scope-note"></span><span data-bind="stamp"></span></figcaption>
 			</figure>
 
 			<div class="rail">
@@ -260,7 +265,7 @@ export class FlightOperations {
 				<div class="brand"><b>TIDEWATER</b><small>X500 · PX4 · MuJoCo</small></div>
 				<div class="stats" aria-label="Flight data">
 					<div class="stat"><label>ALT</label><b><span data-bind="alt">—</span><i>m</i></b></div>
-					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>m/s</i></b></div>
+					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>km/h</i></b><small data-bind="spd-ms">—</small></div>
 					<div class="stat"><label>HDG</label><b><span data-bind="hdg">—</span><i>°</i></b></div>
 					<div class="stat"><label>SEP</label><b><span data-bind="sep">—</span><i>m</i></b></div>
 					<div class="stat"><label>BAT</label><b><span data-bind="batt">—</span><i>%</i></b></div>
@@ -271,6 +276,8 @@ export class FlightOperations {
 					<button class="mode-toggle hit" type="button" data-action="switch">Helm · B</button>
 				</div>
 			</header>
+
+			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><b>VISUAL POLICY V1</b><span data-bind="ml-banner-note">ML has control · L for manual</span></div>
 
 			<div class="datum">
 				<div class="agl-block"><small>AGL</small><div class="agl"><span class="agl-bar"></span><b><span data-bind="agl">—</span><em>m</em></b></div></div>
@@ -310,27 +317,28 @@ export class FlightOperations {
 				<div class="opt-foot"><span>Pitch <b data-bind="pitch">—</b> · Roll <b data-bind="roll">—</b></span><span class="armed is-off" data-bind="armed">DISARMED</span></div>
 			</section>
 
-			<figure class="scope" aria-label="Range rings centred on the drone, with the boat's reported track">
+			<figure class="scope" aria-label="Range rings centred on the drone; the boat is drawn at its last radio position report">
 				<svg viewBox="-180 -180 360 360" role="img">
-					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"></circle>
-					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".16" stroke-width="1.2"></circle>
-					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="1.2"></circle>
-					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".08"></path>
+					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".24" stroke-width="1.5"></circle>
+					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".3" stroke-width="1.5"></circle>
+					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.5"></circle>
+					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".18"></path>
 					<g class="ring-label" text-anchor="end"><text x="-4" y="-46">050</text><text x="-4" y="-96">100</text><text x="-4" y="-146">150 m</text></g>
 					<g class="cardinal" text-anchor="middle"><text x="0" y="-166">N</text></g>
-					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".5"></path>
-					<line data-bind="sc-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="2 5"></line>
-					<g data-bind="boat" transform="translate(0 0)">
-						<circle data-bind="boat-sigma" r="6" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 4"></circle>
-						<g data-bind="boat-rot"><path data-bind="boat-glyph" d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path></g>
-						<g data-bind="boat-vec"><line x1="0" y1="-11" x2="0" y2="-34" stroke="currentColor" stroke-opacity=".6" stroke-width="1.3"></line><path d="M0 -36l-3.5 6h7z" fill="currentColor" fill-opacity=".8"></path></g>
-						<text data-bind="boat-label" x="12" y="-8" class="blip-label">BOAT</text>
+					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".65"></path>
+					<line data-bind="other-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".45" stroke-dasharray="2 5"></line>
+					<g data-bind="other" style="display:none">
+						<g data-bind="other-vec"><line data-bind="other-vec-line" x1="0" y1="0" x2="0" y2="-30" stroke="currentColor" stroke-opacity=".85" stroke-width="1.8"></line><path data-bind="other-vec-head" transform="translate(0 -30)" d="M0 0l-4 7h8z" fill="currentColor" fill-opacity=".95"></path></g>
+						<circle data-bind="other-sigma" r="7" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.3" stroke-dasharray="2 4"></circle>
+						<g data-bind="other-rot"><path d="M0 -13L6.5 -3L6.5 11L-6.5 11L-6.5 -3Z" fill="currentColor" fill-opacity=".94"></path><path d="M0 -8V11" stroke="currentColor" stroke-opacity=".3" fill="none"></path></g>
+						<text data-bind="other-label" x="12" y="-9" class="blip-label">BOAT</text>
 					</g>
-					<g data-bind="drone-vec"><line x1="0" y1="-10" x2="0" y2="-40" stroke="currentColor" stroke-opacity=".8" stroke-width="1.3"></line><path d="M0 -42l-3.5 6h7z" fill="currentColor" fill-opacity=".95"></path></g>
-					<circle r="2.4" fill="currentColor"></circle>
-					<path d="M-11 0H-5M5 0H11M0 -11V-5M0 5V11" stroke="currentColor" stroke-opacity=".55" stroke-width="1.1"></path>
+					<g data-bind="own">
+						<g data-bind="own-vec"><line data-bind="own-vec-line" x1="0" y1="0" x2="0" y2="-30" stroke="currentColor" stroke-opacity=".9" stroke-width="2"></line><path data-bind="own-vec-head" transform="translate(0 -30)" d="M0 0l-4 7h8z" fill="currentColor"></path></g>
+						<g data-bind="own-rot"><path d="M-10 -10L-3 -3M10 -10L3 -3M-10 10L-3 3M10 10L3 3" stroke="currentColor" stroke-width="2" fill="none"></path><circle cx="-10" cy="-10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="10" cy="-10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="-10" cy="10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><circle cx="10" cy="10" r="2.8" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M0 -6L4.6 0L0 6L-4.6 0Z" fill="currentColor"></path></g>
+					</g>
 				</svg>
-				<div class="scope-foot"><span>RNG <b data-bind="sc-range">—</b> m · BRG <b data-bind="sc-bearing">—</b>°</span></div>
+				<figcaption class="scope-foot"><span>RNG <b data-bind="range">—</b> m · BRG <b data-bind="bearing">—</b>°</span><span data-bind="stamp"></span></figcaption>
 			</figure>
 
 			<section class="radio" aria-label="Vehicle link">
@@ -353,7 +361,7 @@ export class FlightOperations {
 				<svg class="actions-frame" viewBox="0 0 720 56" preserveAspectRatio="none" aria-hidden="true"><path d="M36 55 L92 1 H628 L684 55"></path></svg>
 				<button class="hit" type="button" data-action="flight" data-bind="flight-btn">Take off</button>
 				<button class="hit" type="button" data-action="ml" data-bind="ml-btn">ML landing</button>
-				<button class="hit" type="button" data-action="timing" data-bind="timing-btn">Record 10 s</button>
+				<button class="hit" type="button" data-action="timing" data-bind="timing-btn">Record 10 s · Y</button>
 				<button class="hit" type="button" data-action="switch">Helm · B</button>
 			</nav>
 
@@ -834,6 +842,23 @@ export class FlightOperations {
 
 	}
 
+	_airborne() {
+
+		return !! ( this.state?.drone?.armed || this.state?.drone?.flight_requested );
+
+	}
+
+	// A parked X500 ignores WASD/R/F (no setpoint is sent), so say why once and name the keys.
+	_needFlight() {
+
+		const now = performance.now();
+		this._flightHintUntil = now + 6000;
+		if ( now - ( this._flightHintSaid || 0 ) < 2600 ) return;
+		this._flightHintSaid = now;
+		this._toast( 'Start the flight first · T takes off · R rises' );
+
+	}
+
 	reconnect() {
 
 		if ( ( this.state?.radio || this.radio )?.enabled === false ) return;
@@ -858,9 +883,8 @@ export class FlightOperations {
 		}
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
-		this.autopilot = true;
+		this.autopilot = false;
 		this.manualMotors = [ 0, 0 ];
-		this._helmFix = null;
 		this.bridge?.send( { action: 'reset', keys: [], mode: 'drone' } );
 		this._toast( 'Resetting both MuJoCo vehicles' );
 		this._refreshUI();
@@ -880,6 +904,14 @@ export class FlightOperations {
 		if ( input.hit( 'KeyC' ) && this.radio?.connected === false ) this.reconnect();
 		if ( input.hit( 'KeyP' ) && this.mode === 'boat' ) this.setAutopilot( ! this.autopilot );
 		if ( input.hit( 'KeyU' ) && this.mode === 'boat' ) this.toggleBoatCamera();
+		// Every console action has a key: no HUD element needs the mouse.
+		if ( input.hit( 'KeyT' ) && this.mode === 'drone' ) this.toggleFlight();
+		if ( input.hit( 'KeyL' ) && this.mode === 'drone' ) this.toggleML();
+		if ( input.hit( 'KeyK' ) ) this.toggleLid();
+		if ( input.hit( 'KeyJ' ) ) this.togglePlatform();
+		if ( input.hit( 'KeyX' ) ) this.toggleRadio();
+		if ( input.hit( 'KeyY' ) ) this.recordTiming();
+		if ( this.mode === 'drone' && ! this._airborne() && FLIGHT_KEYS.some( code => input.hit( code ) ) ) this._needFlight();
 
 		this._inputTime += dt;
 		if ( this._inputTime < .033 ) return;
@@ -942,6 +974,8 @@ export class FlightOperations {
 		this._ui.root.querySelector( '[data-action="retry"]' ).hidden = ! state.error;
 		const boat = state.boat;
 		const drone = state.drone;
+		// The other vehicle's plot position is its last radio packet, not the simulator's truth.
+		if ( state.remote ) this._remoteVehicles = state.remote;
 		const link = state.radio || this.radio || {};
 		const isBoat = this.mode === 'boat';
 		const freeCamera = this.freeCamera;
@@ -1082,7 +1116,7 @@ export class FlightOperations {
 			: heading;
 
 		this._hText( 'sog', knots === null ? '—' : knots.toFixed( 1 ).padStart( 4, '0' ) );
-		this._hText( 'spd', knots === null ? '—' : knots.toFixed( 1 ).padStart( 4, '0' ) );
+		this._hText( 'spd', boat && Number.isFinite( boat.speed ) ? ( boat.speed * 3.6 ).toFixed( 1 ).padStart( 4, '0' ) : '—' );
 		this._hText( 'cog', course === null ? '—' : String( Math.round( course ) ).padStart( 3, '0' ) );
 		this._hText( 'hdg', heading === null ? '—' : String( Math.round( heading ) ).padStart( 3, '0' ) );
 		this._hText( 'xte', Number.isFinite( state.route?.error_m ) ? state.route.error_m.toFixed( 1 ) : '—' );
@@ -1110,54 +1144,9 @@ export class FlightOperations {
 		const retryButton = this._hBind( 'retry-btn' );
 		if ( retryButton ) retryButton.disabled = link.enabled === false || link.connected !== false || status === 'handshake';
 
-		let fix = null;
-		const boatPosition = boat?.position, dronePosition = drone?.position;
-		if ( boatPosition && dronePosition ) {
-
-			fix = {
-				range: Math.hypot( dronePosition[ 0 ] - boatPosition[ 0 ], dronePosition[ 2 ] - boatPosition[ 2 ] ),
-				bearing: this._bearing( boatPosition, dronePosition ),
-				heading: ( ( drone.heading * 180 / Math.PI % 360 ) + 360 ) % 360,
-				speed: drone.speed,
-				velocity: drone.velocity,
-			};
-
-		}
-		if ( fix && ! lost ) this._helmFix = fix;
-		const shown = lost ? this._helmFix : fix;
-		this._hText( 'drn-range', shown ? shown.range.toFixed( 1 ) : '—' );
-		this._hText( 'drn-bearing', shown ? String( Math.round( shown.bearing ) ).padStart( 3, '0' ) : '—' );
-
-		const blip = this._hBind( 'drn' ), line = this._hBind( 'drn-line' );
-		if ( blip ) blip.style.display = shown ? '' : 'none';
-		if ( line ) line.style.display = shown ? '' : 'none';
-		if ( shown ) {
-
-			const radius = Math.min( shown.range, 150 );
-			const angle = shown.bearing * Math.PI / 180;
-			const x = radius * Math.sin( angle ), y = - radius * Math.cos( angle );
-			blip.setAttribute( 'transform', `translate(${ x.toFixed( 1 ) } ${ y.toFixed( 1 ) })` );
-			line.setAttribute( 'x2', x.toFixed( 1 ) );
-			line.setAttribute( 'y2', y.toFixed( 1 ) );
-			this._hBind( 'drn-rot' )?.setAttribute( 'transform', `rotate(${ shown.heading.toFixed( 0 ) })` );
-			const glyph = this._hBind( 'drn-glyph' );
-			glyph?.setAttribute( 'fill-opacity', lost ? '.06' : '.95' );
-			glyph?.setAttribute( 'stroke', 'currentColor' );
-			glyph?.setAttribute( 'stroke-width', lost ? '1.2' : '1.1' );
-			this._hBind( 'drn-sigma' )?.setAttribute( 'r', ( lost ? 9 + Math.min( age, 10 ) * 2.4 : 6 ).toFixed( 1 ) );
-			const vector = this._hBind( 'drn-vec' );
-			const speed = shown.speed || 0;
-			if ( vector ) vector.style.display = lost || speed < .4 ? 'none' : '';
-			if ( vector && speed >= .4 && shown.velocity ) {
-
-				const vectorCourse = ( ( Math.atan2( shown.velocity[ 0 ], - shown.velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
-				vector.setAttribute( 'transform', `rotate(${ vectorCourse.toFixed( 0 ) })` );
-
-			}
-			this._hText( 'drn-label', lost ? `DRN · LAST ${ age.toFixed( 1 ) } s` : 'DRN' );
-
-		}
-		this._hText( 'scope-note', lost ? ( link.enabled === false ? 'LINK DISABLED' : `LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` ) : '' );
+		// Boat in the middle from its own fix; the drone where its last radio packet put it.
+		this._drawScope( this._hBind.bind( this ), this._hText.bind( this ), boat, this._remoteVehicles?.drone, { lost, age, label: 'DRN', prefix: 'drn-' } );
+		this._hText( 'scope-note', lost ? ( link.enabled === false ? 'RADIO OFF' : `LAST FIX ${ age.toFixed( 1 ) } s · C RETRY` ) : '' );
 
 		const pitch = boat ? boat.pitch * 180 / Math.PI : 0;
 		const roll = boat ? boat.roll * 180 / Math.PI : 0;
@@ -1206,7 +1195,7 @@ export class FlightOperations {
 		this._hText( 'cam', this.boatCamera === 'boat_dock' ? 'CAM · DOCK' : 'CAM · NAV' );
 		this._hText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
-			: 'W/S THROTTLE · A/D STEER · U CAMERA · P AUTO · B DRONE · C RETRY · V FREE · G SHOT · HOME RESET' );
+			: 'W/S THROTTLE · A/D STEER · P AUTO · K LIDS · J PLATFORM · U CAMERA · X RADIO · B DRONE · V FREE · HOME RESET' );
 
 	}
 
@@ -1226,7 +1215,8 @@ export class FlightOperations {
 		const signed = value => `${ value < 0 ? '−' : '+' }${ String( Math.abs( Math.round( value ) ) ).padStart( 4, '0' ) }`;
 
 		this._dText( 'alt', position ? position[ 1 ].toFixed( 1 ).padStart( 5, '0' ) : '—' );
-		this._dText( 'spd', drone && Number.isFinite( drone.speed ) ? drone.speed.toFixed( 2 ).padStart( 5, '0' ) : '—' );
+		this._dText( 'spd', drone && Number.isFinite( drone.speed ) ? ( drone.speed * 3.6 ).toFixed( 1 ).padStart( 5, '0' ) : '—' );
+		this._dText( 'spd-ms', drone && Number.isFinite( drone.speed ) ? `${ drone.speed.toFixed( 2 ) } m/s` : '' );
 		this._dText( 'hdg', heading === null ? '—' : String( Math.round( heading ) ).padStart( 3, '0' ) );
 		this._dText( 'sep', separation === null ? '—' : separation.toFixed( 0 ).padStart( 3, '0' ) );
 		this._dText( 'batt', Number.isFinite( drone?.battery_pct ) ? String( Math.round( drone.battery_pct ) ).padStart( 2, '0' ) : '—' );
@@ -1244,13 +1234,6 @@ export class FlightOperations {
 		this._dBind( 'compass' )?.setAttribute( 'transform', `rotate(${ ( - ( heading || 0 ) ).toFixed( 1 ) })` );
 		this._dText( 'armed', drone?.armed ? 'ARMED' : 'DISARMED' );
 		this._dBind( 'armed' )?.classList.toggle( 'is-off', ! drone?.armed );
-		const velocity = drone?.velocity;
-		if ( velocity && Math.hypot( velocity[ 0 ], velocity[ 2 ] ) > .4 ) {
-
-			const course = ( ( Math.atan2( velocity[ 0 ], - velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
-			this._dBind( 'drone-vec' )?.setAttribute( 'transform', `rotate(${ course.toFixed( 0 ) })` );
-
-		}
 
 		const word = ! link.enabled ? 'DISABLED' : status === 'handshake' ? 'PAIRING' : lost ? 'LOST' : status === 'critical' ? 'CRITICAL' : status === 'degraded' ? 'DEGRADED' : 'STABLE';
 		this._dText( 'link-text', `SX1262 · ${ word }` );
@@ -1274,63 +1257,40 @@ export class FlightOperations {
 		const retryButton = this._dBind( 'retry-btn' );
 		if ( retryButton ) retryButton.disabled = link.enabled === false || link.connected !== false || status === 'handshake';
 
-		let fix = null;
-		if ( position && boatPosition ) {
+		// Drone in the middle from its own fix; the boat where its last radio packet put it.
+		this._drawScope( this._dBind.bind( this ), this._dText.bind( this ), drone, this._remoteVehicles?.boat, { lost, age, label: 'BOAT', prefix: '' } );
+		const needFlight = ! drone?.armed && ! drone?.flight_requested && this._flightHintUntil > performance.now();
+		const alarm = lost
+			? ( link.enabled === false ? 'SX1262 DISABLED · TELEMETRY OFF' : status === 'handshake' ? 'SX1262 PAIRING · TELEMETRY STALE' : `SX1262 LINK LOST · LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` )
+			: needFlight ? 'START THE FLIGHT FIRST · T TAKES OFF · R RISES' : '';
+		this._dText( 'alarm', alarm );
+		this._dBind( 'alarm' )?.classList.toggle( 'is-on', !! alarm );
 
-			fix = {
-				range: separation,
-				bearing: this._bearing( position, boatPosition ),
-				heading: degrees( boat.heading ),
-				speed: boat.speed,
-				velocity: boat.velocity,
-			};
-
-		}
-		if ( fix && ! lost ) this._droneFix = fix;
-		const shown = lost ? this._droneFix : fix;
-		this._dText( 'sc-range', shown ? shown.range.toFixed( 0 ) : '—' );
-		this._dText( 'sc-bearing', shown ? String( Math.round( shown.bearing ) ).padStart( 3, '0' ) : '—' );
-		const group = this._dBind( 'boat' ), line = this._dBind( 'sc-line' );
-		if ( group ) group.style.display = shown ? '' : 'none';
-		if ( line ) line.style.display = shown ? '' : 'none';
-		if ( shown && group && line ) {
-
-			const radius = Math.min( shown.range, 150 );
-			const angle = shown.bearing * Math.PI / 180;
-			const x = radius * Math.sin( angle ), y = - radius * Math.cos( angle );
-			group.setAttribute( 'transform', `translate(${ x.toFixed( 1 ) } ${ y.toFixed( 1 ) })` );
-			line.setAttribute( 'x2', x.toFixed( 1 ) );
-			line.setAttribute( 'y2', y.toFixed( 1 ) );
-			this._dBind( 'boat-rot' )?.setAttribute( 'transform', `rotate(${ shown.heading.toFixed( 0 ) })` );
-			const glyph = this._dBind( 'boat-glyph' );
-			glyph?.setAttribute( 'fill-opacity', lost ? '.06' : '.95' );
-			glyph?.setAttribute( 'stroke', 'currentColor' );
-			glyph?.setAttribute( 'stroke-width', lost ? '1.2' : '1.1' );
-			this._dBind( 'boat-sigma' )?.setAttribute( 'r', ( lost ? 9 + Math.min( age, 10 ) * 2.4 : 6 ).toFixed( 1 ) );
-			const vector = this._dBind( 'boat-vec' );
-			if ( vector ) vector.style.display = lost || shown.speed < .4 ? 'none' : '';
-			if ( vector && shown.speed >= .4 && shown.velocity ) {
-
-				const course = ( ( Math.atan2( shown.velocity[ 0 ], - shown.velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
-				vector.setAttribute( 'transform', `rotate(${ course.toFixed( 0 ) })` );
-
-			}
-			this._dText( 'boat-label', lost ? `BOAT · LAST ${ age.toFixed( 1 ) } s` : 'BOAT' );
-
-		}
-		this._dText( 'alarm', lost ? ( link.enabled === false ? 'SX1262 DISABLED · TELEMETRY OFF' : status === 'handshake' ? 'SX1262 PAIRING · TELEMETRY STALE' : `SX1262 LINK LOST · LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` ) : '' );
+		const ml = this.bridge?.policy?.status || {};
+		const mlActive = !! ml.enabled;
+		root.classList.toggle( 'is-ml', mlActive );
+		const banner = this._dBind( 'ml-banner' );
+		if ( banner ) banner.hidden = ! ( mlActive || ml.loading );
+		this._dText( 'ml-banner-note', ml.loading ? 'Loading the trained visual policy…' : 'ML has control · L for manual' );
 
 		this._dText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
-			: 'WASD FLY · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · B HELM · U BOAT CAM · V FREE · G SHOT · C RETRY · HOME RESET' );
+			: mlActive || ml.loading
+				? 'VISUAL POLICY V1 · L MANUAL CONTROL · T LAND · B HELM · V FREE · G SHOT'
+				: 'WASD FLY · R/F ALT · Q/E YAW · T FLIGHT · L ML · K LIDS · J PLATFORM · B HELM · V FREE · G SHOT · HOME RESET' );
 		const control = this._flightControl();
 		const flightButton = this._dBind( 'flight-btn' );
-		if ( flightButton ) flightButton.disabled = ! state.ready || ! drone?.px4_ready || ! this.bridge?.cameraView || !! state.error || control.busy;
-		const ml = this.bridge?.policy?.status || {};
+		if ( flightButton ) {
+
+			flightButton.textContent = `${ control.label } · T`;
+			flightButton.disabled = mlActive || ! state.ready || ! drone?.px4_ready || ! this.bridge?.cameraView || !! state.error || control.busy;
+
+		}
 		const mlButton = this._dBind( 'ml-btn' );
 		if ( mlButton ) {
 
-			mlButton.textContent = ml.loading ? 'Cancel ML loading' : ml.enabled ? 'Manual control' : 'ML landing';
+			mlButton.textContent = ml.loading ? 'Cancel ML · L' : ml.enabled ? 'Manual control · L' : 'Visual policy v1 · L';
+			mlButton.setAttribute( 'aria-pressed', String( mlActive ) );
 			mlButton.disabled = ! ( ml.loading || ml.enabled ) && ( ! state.ready || ! this.bridge?.cameraView || ! drone?.armed || drone.landed || drone.landing_requested || !! state.error );
 
 		}
@@ -1353,6 +1313,77 @@ export class FlightOperations {
 				} ).finally( () => { this._screenshotPending = false; } );
 
 		} );
+
+	}
+
+	// Both consoles plot the same way: the player's own vehicle at the centre from its own fix, the
+	// other one at its last radio-reported position, each with a velocity arrow that grows with
+	// speed and disappears when the vehicle is not moving.
+	_drawScope( bind, text, own, other, { lost, age, label, prefix = '' } ) {
+
+		const ownGroup = bind( 'own' );
+		if ( ownGroup ) ownGroup.style.display = own?.position ? '' : 'none';
+		bind( 'own-rot' )?.setAttribute( 'transform', `rotate(${ degrees( own?.heading ?? 0 ).toFixed( 0 ) })` );
+		this._scopeVector( bind, 'own', own?.velocity );
+
+		let fix = null;
+		if ( own?.position && other?.position ) {
+
+			fix = {
+				range: Math.hypot( other.position[ 0 ] - own.position[ 0 ], other.position[ 2 ] - own.position[ 2 ] ),
+				bearing: this._bearing( own.position, other.position ),
+				heading: degrees( other.heading || 0 ),
+				velocity: other.velocity || [ 0, 0, 0 ],
+			};
+
+		}
+
+		const group = bind( 'other' ), line = bind( 'other-line' );
+		if ( group ) group.style.display = fix ? '' : 'none';
+		if ( line ) line.style.display = fix ? '' : 'none';
+		if ( fix && group && line ) {
+
+			const radius = Math.min( fix.range, 150 );
+			const angle = fix.bearing * Math.PI / 180;
+			const x = radius * Math.sin( angle ), y = - radius * Math.cos( angle );
+			group.setAttribute( 'transform', `translate(${ x.toFixed( 1 ) } ${ y.toFixed( 1 ) })` );
+			group.setAttribute( 'opacity', lost ? '.5' : '1' );
+			line.setAttribute( 'x2', x.toFixed( 1 ) );
+			line.setAttribute( 'y2', y.toFixed( 1 ) );
+			bind( 'other-rot' )?.setAttribute( 'transform', `rotate(${ fix.heading.toFixed( 0 ) })` );
+			bind( 'other-sigma' )?.setAttribute( 'r', ( lost ? 9 + Math.min( age, 10 ) * 2.4 : 6.5 ).toFixed( 1 ) );
+			this._scopeVector( bind, 'other', fix.velocity );
+			text( 'other-label', lost ? `${ label } · ${ age.toFixed( 0 ) } s` : label );
+
+		}
+		text( 'range', fix ? fix.range.toFixed( 0 ) : '—' );
+		text( 'bearing', fix ? String( Math.round( fix.bearing ) ).padStart( 3, '0' ) : '—' );
+		if ( prefix ) {
+
+			text( `${ prefix }range`, fix ? fix.range.toFixed( 1 ) : '—' );
+			text( `${ prefix }bearing`, fix ? String( Math.round( fix.bearing ) ).padStart( 3, '0' ) : '—' );
+
+		}
+		text( 'stamp', fix
+			? ( lost ? 'LAST RADIO FIX' : fix.range > 150 ? 'BEYOND 150 m' : `RADIO ${ age.toFixed( 1 ) } s` )
+			: ( lost ? 'NO RADIO FIX' : 'WAITING FOR RADIO' ) );
+
+	}
+
+	_scopeVector( bind, name, velocity ) {
+
+		const vector = bind( `${ name }-vec` );
+		const line = bind( `${ name }-vec-line` ), head = bind( `${ name }-vec-head` );
+		const speed = velocity ? Math.hypot( velocity[ 0 ], velocity[ 2 ] ) : 0;
+		// Below ~1 km/h the horizontal velocity is deck motion and rotor wash, not a course.
+		if ( vector ) vector.style.display = speed >= .3 ? '' : 'none';
+		if ( speed < .3 ) return;
+		const course = degrees( Math.atan2( velocity[ 0 ], - velocity[ 2 ] ) );
+		// 13 units at a crawl, 20 per m/s above it: length reads as speed, with a visible floor.
+		const length = Math.max( 13, Math.min( 58, 9 + speed * 20 ) );
+		vector.setAttribute( 'transform', `rotate(${ course.toFixed( 0 ) })` );
+		line?.setAttribute( 'y2', ( - length ).toFixed( 1 ) );
+		head?.setAttribute( 'transform', `translate(0 ${ ( - length ).toFixed( 1 ) })` );
 
 	}
 

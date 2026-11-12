@@ -1,14 +1,15 @@
 /* The drone feed: TIDEWATER's new flight HUD over the live X500 camera. */
 #drone-hud {
 	--mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	--ink: #dfe4e1;
-	--ink-2: rgba(223, 228, 225, .64);
-	--ink-3: rgba(223, 228, 225, .46);
-	--ink-4: rgba(223, 228, 225, .25);
-	--line: rgba(223, 228, 225, .14);
-	--line-soft: rgba(223, 228, 225, .07);
-	--alert: #c8806f;
-	--warn: #c6a06a;
+	--ink: #f7fbfa;
+	--ink-2: rgba(247, 251, 250, .88);
+	--ink-3: rgba(247, 251, 250, .68);
+	--ink-4: rgba(247, 251, 250, .42);
+	--line: rgba(247, 251, 250, .24);
+	--line-soft: rgba(247, 251, 250, .13);
+	--alert: #e08b78;
+	--warn: #e7c084;
+	--ml: #8ff0d6;
 	--pad: clamp(20px, 2.6vw, 40px);
 	--label: 7px;
 	position: fixed;
@@ -19,7 +20,7 @@
 	font: 400 11px/1.4 var(--mono);
 	letter-spacing: .06em;
 	text-transform: uppercase;
-	text-shadow: 0 0 12px rgba(0, 0, 0, .6);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, .75), 0 0 14px rgba(0, 0, 0, .55);
 	pointer-events: none;
 	-webkit-font-smoothing: antialiased;
 }
@@ -27,7 +28,8 @@
 #drone-hud[hidden] { display: none; }
 #drone-hud *, #drone-hud *::before, #drone-hud *::after { box-sizing: border-box; }
 #drone-hud button { font: inherit; color: inherit; background: none; border: 0; }
-#drone-hud .hit { pointer-events: auto; cursor: pointer; }
+/* keyboard only: no HUD element is a mouse target */
+#drone-hud button, #drone-hud .hit { pointer-events: none; cursor: default; }
 #drone-hud .scrim {
 	position: absolute;
 	inset: 0;
@@ -85,7 +87,7 @@
 	color: var(--ink-3);
 }
 #drone-hud .stat b {
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: 400;
 	letter-spacing: .1em;
 	font-variant-numeric: tabular-nums;
@@ -100,6 +102,7 @@
 	color: var(--ink-3);
 	text-transform: none;
 }
+#drone-hud .stat small { display: block; margin-top: 2px; font-size: 7px; letter-spacing: .14em; color: var(--ink-3); text-transform: none; }
 #drone-hud .top-right {
 	justify-self: end;
 	display: flex;
@@ -133,7 +136,7 @@
 }
 #drone-hud .agl-block small { display: block; margin-bottom: 7px; font-size: var(--label); letter-spacing: .3em; color: var(--ink-3); }
 #drone-hud .agl { display: flex; align-items: flex-end; }
-#drone-hud .agl-bar { width: 2px; height: 32px; margin-right: 11px; background: var(--ink); opacity: .5; }
+#drone-hud .agl-bar { width: 3px; height: 32px; margin-right: 11px; background: var(--ink); opacity: .72; }
 #drone-hud .agl b { font-size: 31px; font-weight: 300; line-height: .86; letter-spacing: .01em; font-variant-numeric: tabular-nums; text-transform: none; }
 #drone-hud .agl b em { margin-left: 5px; font-style: normal; font-size: 8px; letter-spacing: .3em; color: var(--ink-3); vertical-align: 8px; text-transform: none; }
 #drone-hud .coords { display: flex; gap: 28px; text-align: right; }
@@ -176,9 +179,9 @@
 #drone-hud .scope text { font-family: var(--mono); }
 #drone-hud .scope-foot { display: flex; justify-content: space-between; gap: 10px; margin-top: 9px; font-size: 8.5px; letter-spacing: .14em; color: var(--ink-3); }
 #drone-hud .scope-foot b { font-size: 12px; font-weight: 400; color: var(--ink); text-transform: none; }
-#drone-hud .ring-label { fill: currentColor; fill-opacity: .45; font-size: 8.5px; letter-spacing: .1em; }
-#drone-hud .cardinal { fill: currentColor; fill-opacity: .6; font-size: 8.5px; letter-spacing: .16em; }
-#drone-hud .blip-label { fill: currentColor; fill-opacity: .9; font-size: 10px; letter-spacing: .08em; }
+#drone-hud .ring-label { fill: currentColor; fill-opacity: .66; font-size: 9px; letter-spacing: .1em; }
+#drone-hud .cardinal { fill: currentColor; fill-opacity: .82; font-size: 9px; letter-spacing: .16em; }
+#drone-hud .blip-label { fill: currentColor; fill-opacity: 1; font-size: 10px; letter-spacing: .08em; }
 
 /* ---- radio ------------------------------------------------------------- */
 #drone-hud .radio { position: absolute; right: var(--pad); bottom: 88px; width: 252px; text-align: right; }
@@ -196,7 +199,7 @@
 #drone-hud .radio-quality b { font-size: 24px; font-weight: 300; line-height: .86; letter-spacing: .01em; font-variant-numeric: tabular-nums; }
 #drone-hud .radio-quality span { padding-bottom: 4px; font-size: 8px; letter-spacing: .26em; color: var(--ink-3); }
 #drone-hud .segbar { display: flex; justify-content: flex-end; gap: 3px; margin: 9px 0 12px; }
-#drone-hud .segbar i { width: 15px; height: 2px; background: var(--line); }
+#drone-hud .segbar i { width: 15px; height: 3px; background: var(--line); }
 #drone-hud .segbar i.on { background: var(--ink-2); }
 #drone-hud .radio-grid {
 	display: grid;
@@ -227,7 +230,7 @@
 	gap: clamp(6px, 1.4vw, 20px);
 	transform: translateX(-50%);
 }
-#drone-hud .actions-frame { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); opacity: .15; }
+#drone-hud .actions-frame { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); opacity: .3; }
 #drone-hud .actions-frame path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
 #drone-hud .actions button {
 	position: relative;
@@ -282,21 +285,24 @@
 	left: 50%;
 	bottom: 122px;
 	transform: translateX(-50%);
-	font-size: 8px;
-	letter-spacing: .3em;
-	color: var(--alert);
+	padding: 5px 12px;
+	border: 1px solid transparent;
+	font-size: 9px;
+	letter-spacing: .26em;
+	color: var(--warn);
 	opacity: 0;
-	transition: opacity .2s ease;
+	transition: opacity .25s ease;
 	white-space: nowrap;
 }
-#drone-hud.is-lost .alarm { opacity: 1; }
+#drone-hud .alarm.is-on { opacity: 1; border-color: var(--line); background: rgba(4, 6, 7, .45); }
+#drone-hud.is-lost .alarm { opacity: 1; color: var(--alert); }
 #drone-hud.is-lost .link i { background: var(--alert); box-shadow: 0 0 9px rgba(200, 128, 111, .5); }
 #drone-hud.is-lost .link { color: var(--alert); }
 #drone-hud.is-lost .radio-quality b, #drone-hud.is-lost .radio-head b { color: var(--alert); }
 #drone-hud.is-lost .segbar i.on { background: var(--alert); }
 #drone-hud.is-lost .radio-grid b { color: rgba(223, 228, 225, .42); }
 #drone-hud.is-lost .radio-grid .age b { color: var(--alert); }
-#drone-hud.is-lost [data-bind='boat'], #drone-hud.is-lost [data-bind='sc-line'] { color: var(--alert); }
+#drone-hud.is-lost [data-bind='other'], #drone-hud.is-lost [data-bind='other-line'] { color: var(--alert); }
 
 @media (max-width: 1180px) {
 	#drone-hud .stat { min-width: 66px; padding: 0 10px; }
@@ -464,3 +470,43 @@
 }
 #drone-hud.is-freecam .freecam,
 #helm-hud.is-freecam .freecam { display: inline-block; }
+
+/* ---- visual policy v1 -------------------------------------------------- */
+/* When the policy flies, the console steps back: controls dim and slide, the plot grows, and the
+   only live control is the key that hands the aircraft back. */
+#drone-hud .ml-banner {
+	position: absolute;
+	left: 50%;
+	top: 112px;
+	z-index: 2;
+	display: flex;
+	align-items: baseline;
+	gap: 14px;
+	padding: 8px 18px;
+	border: 1px solid rgba(143, 240, 214, .45);
+	background: rgba(4, 12, 10, .58);
+	color: var(--ml);
+	font-size: 9px;
+	letter-spacing: .26em;
+	white-space: nowrap;
+	transform: translateX(-50%);
+	animation: ml-in .45s cubic-bezier(.2, .9, .2, 1) both;
+}
+#drone-hud .ml-banner[hidden] { display: none; }
+#drone-hud .ml-banner b { font-weight: 400; letter-spacing: .34em; }
+#drone-hud .ml-banner span { color: rgba(247, 251, 250, .84); letter-spacing: .2em; }
+@keyframes ml-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
+#drone-hud .top, #drone-hud .datum, #drone-hud .scope, #drone-hud .radio, #drone-hud .actions, #drone-hud .optic, #drone-hud .foot {
+	transition: transform .55s cubic-bezier(.2, .8, .2, 1), opacity .45s ease;
+}
+#drone-hud.is-ml .top { transform: translateY(-3px); }
+#drone-hud.is-ml .datum { opacity: .84; }
+#drone-hud.is-ml .scope { transform: translateY(5px) scale(1.04); }
+#drone-hud.is-ml .optic { transform: translate(-50%, -50%) scale(.96); opacity: .68; }
+#drone-hud.is-ml .radio { transform: translateY(4px); opacity: .55; }
+#drone-hud.is-ml .actions { transform: translate(-50%, 9px) scale(.95); opacity: .42; }
+#drone-hud.is-ml .actions button { color: var(--ink-4); }
+#drone-hud.is-ml .actions [data-action='ml'] { color: var(--ml); }
+#drone-hud.is-ml .top::after { background: var(--ml); animation: ml-pulse 2.4s ease-in-out infinite; }
+#drone-hud.is-ml .alarm { color: var(--ml); }
+@keyframes ml-pulse { 0%, 100% { opacity: .26; } 50% { opacity: .78; } }
