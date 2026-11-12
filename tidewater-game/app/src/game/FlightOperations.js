@@ -32,9 +32,15 @@ export class FlightOperations {
 		this.suppressedKeys = new Set();
 		this._helmFix = null;
 		this._droneFix = null;
-		this._intro = null;
-		this._introStarted = false;
-		this._introJustEnded = false;
+		// Boot flow: the simulator starts behind the loader, the camera holds the AERODOCK shot and the
+		// start card waits on it; the click releases both the card and the camera to the drone.
+		this._booted = false;
+		this._holding = true;
+		this._started = false;
+		this._revealed = false;
+		this._startGone = false;
+		this._loader = null;
+		this._loaderStatus = '';
 		this._buildUI();
 		this._buildHelmUI();
 		this._buildDroneUI();
@@ -388,7 +394,7 @@ export class FlightOperations {
 		const el = document.createElement( 'div' );
 		el.id = 'flight-intro';
 		el.hidden = true;
-		el.innerHTML = '<b>AERODOCK</b><small>Surface craft · launch platform</small><span>Click or press any key to take the controls</span>';
+		el.innerHTML = '<b>AERODOCK</b><small>Surface craft · launch platform</small>';
 		document.body.append( el );
 		this._introEl = el;
 
@@ -427,49 +433,69 @@ export class FlightOperations {
 		this._startGo = el.querySelector( '.fs-go' );
 		el.addEventListener( 'click', () => {
 
-			if ( ! this.active ) this._begin();
-			else if ( this.state?.error ) this.bridge?.retry();
+			if ( this.state?.error ) this.bridge?.retry();
+			else this._begin();
 
 		} );
 
 	}
 
-	// Shows the card and waits for the first click, Enter or Space. Called once from main() after
-	// the loader fades; the Tidewater start overlay is not used by the flight game.
-	presentStart() {
+	// Boots straight into the scene: the simulator starts while the loader is still up, the camera
+	// holds the front-right AERODOCK shot, and only when the flight console can take over does the
+	// loader lift onto that shot with the start card. Nothing else is ever the first view.
+	boot( ui ) {
 
-		if ( this._startPresented ) return;
-		this._startPresented = true;
+		if ( this._booted ) return;
+		this._booted = true;
+		this._loader = ui;
 		document.body.classList.add( 'flight-mode-active' );
 		this._startEl.hidden = false;
-		const begin = ( event ) => {
+		this._introEl.hidden = false;
+		this._setLoader( 'Starting the browser simulator' );
+		this.activate();
+		window.addEventListener( 'keydown', event => {
 
-			if ( event ) {
-
-				if ( event.type === 'keydown' && event.code !== 'Enter' && event.code !== 'Space' ) return;
-				event.preventDefault();
-				event.stopPropagation();
-
-			}
-			window.removeEventListener( 'keydown', begin, true );
+			if ( this._startGone || ( event.code !== 'Enter' && event.code !== 'Space' ) ) return;
+			event.preventDefault();
 			this._begin();
 
-		};
-		this._startKey = begin;
-		window.addEventListener( 'keydown', begin, true );
-		this._startGo.focus( { preventScroll: true } );
+		}, true );
 
 	}
 
+	// One gate: the click (or Enter) on the AERODOCK shot. It releases the camera to the simulator's
+	// drone camera and gets out of the way.
 	_begin() {
 
-		if ( this._beginRequested ) return;
-		this._beginRequested = true;
-		if ( this._startKey ) window.removeEventListener( 'keydown', this._startKey, true );
-		this._startEl.classList.add( 'is-loading' );
-		this._startStatus( 'Starting the browser simulator…' );
-		this.activate();
+		if ( this._started || ! this.state?.ready ) return;
+		this._started = true;
+		this._startGone = true;
+		this._startEl.classList.add( 'is-off' );
+		setTimeout( () => {
+
+			if ( this._startGone ) this._startEl.hidden = true;
+
+		}, 420 );
+		this._introEl.hidden = true;
+		this._holding = false;
+		if ( this.bridge ) {
+
+			this.bridge.cameraPaused = false;
+			this.bridge.selectCamera();
+
+		}
 		if ( this.app.audio ) this.app.audio.resume();
+		this.app.input.requestLock?.();
+		this._refreshUI();
+
+	}
+
+	// The loader's own status line, only when it changes (setLoading restarts its creep animation).
+	_setLoader( status ) {
+
+		if ( ! this._loader || this._loaderStatus === status ) return;
+		this._loaderStatus = status;
+		this._loader.setLoading( .97, status, .99 );
 
 	}
 
@@ -481,67 +507,43 @@ export class FlightOperations {
 
 	}
 
-	// The card follows the simulator through startup and leaves when the first flight HUD can take
-	// over (the opening AERODOCK shot).
+	// The card waits on the AERODOCK shot through startup and becomes the only gate once the flight
+	// console is ready. It also carries the simulator's error and its retry.
 	_syncStart( state, flightReady ) {
 
-		if ( ! this._startPresented || this._startGone || this._startEl.hidden ) return;
-		if ( flightReady ) {
-
-			this._startGone = true;
-			this._startEl.classList.add( 'is-off' );
-			setTimeout( () => {
-
-				if ( this._startEl.classList.contains( 'is-off' ) ) this._startEl.hidden = true;
-
-			}, 420 );
-			return;
-
-		}
+		if ( ! this._booted || this._startGone || ! this._startEl ) return;
 		if ( state?.error ) {
 
 			this._startGo.textContent = 'Retry simulation';
+			this._startGo.disabled = false;
 			this._startStatus( state.error, true );
-
-		} else {
-
-			this._startGo.textContent = this._beginRequested ? 'Loading…' : 'Start flight operations';
-			this._startGo.disabled = !! this._beginRequested;
-			this._startStatus( state?.status || ( this._beginRequested ? 'Loading the original vehicles…' : 'Browser PX4 · MuJoCo · WebGPU' ) );
+			this._reveal();
+			return;
 
 		}
+		if ( ! flightReady ) {
+
+			this._startGo.textContent = 'Starting simulator…';
+			this._startGo.disabled = true;
+			this._startStatus( state?.status || 'Loading the original vehicles…' );
+			this._setLoader( state?.status || 'Starting the browser simulator' );
+			return;
+
+		}
+		this._startGo.textContent = 'Start flight operations';
+		this._startGo.disabled = false;
+		this._startStatus( 'Simulator ready · X500 on the deck' );
+		this._reveal();
 
 	}
 
-	_startIntro() {
+	// Lifts the loader, revealing the AERODOCK shot with the card already on it. Once.
+	_reveal() {
 
-		if ( this._introStarted || ! this.bridge?.installed ) return;
-		this._introStarted = true;
-		this._intro = { until: performance.now() + 6500 };
-		this.bridge.cameraPaused = true;
-		this._introEl.hidden = false;
-		this._introEnd = () => this._endIntro();
-		window.addEventListener( 'keydown', this._introEnd, true );
-		window.addEventListener( 'pointerdown', this._introEnd, true );
-
-	}
-
-	_endIntro() {
-
-		if ( ! this._intro ) return;
-		this._intro = null;
-		this._introJustEnded = true;
-		for ( const code of this.app.input.keys ) this.suppressedKeys.add( code );
-		this._introEl.hidden = true;
-		window.removeEventListener( 'keydown', this._introEnd, true );
-		window.removeEventListener( 'pointerdown', this._introEnd, true );
-		if ( this.bridge ) {
-
-			this.bridge.cameraPaused = false;
-			this.bridge.selectCamera();
-
-		}
-		this._refreshUI();
+		if ( this._revealed ) return;
+		this._revealed = true;
+		this._startEl.hidden = false;
+		this._loader?.hideLoader?.();
 
 	}
 
@@ -622,7 +624,7 @@ export class FlightOperations {
 
 	_handleMotorInput( target ) {
 
-		if ( this._intro ) return;
+		if ( this._holding ) return;
 
 		const side = target.dataset.control;
 		if ( side !== 'port' && side !== 'starboard' ) return;
@@ -665,7 +667,7 @@ export class FlightOperations {
 
 	toggleFreeCamera() {
 
-		if ( ! this.active ) return;
+		if ( ! this.active || this._holding ) return;
 		if ( ! this.freeCamera ) {
 
 			if ( ! this.state?.ready || ! this.bridge?.installed || ! this.bridge?.cameraView || this.state?.error ) {
@@ -711,7 +713,7 @@ export class FlightOperations {
 
 	_sendDroneKeys() {
 
-		if ( this._intro || this.freeCamera || ! this.active || this.mode !== 'drone' || ! this.state?.ready || ! this.bridge?.installed || this.state?.error ) return;
+		if ( this._holding || this.freeCamera || ! this.active || this.mode !== 'drone' || ! this.state?.ready || ! this.bridge?.installed || this.state?.error ) return;
 		for ( const code of this.suppressedKeys ) if ( ! this.app.input.down( code ) ) this.suppressedKeys.delete( code );
 		const keys = DRONE_KEYS.filter( code => this.app.input.down( code ) && ! this.suppressedKeys.has( code ) );
 		this.bridge.send( { keys } );
@@ -867,8 +869,7 @@ export class FlightOperations {
 
 	beforePhysics( dt ) {
 
-		if ( ! this.active || this._intro ) return;
-		if ( this._introJustEnded ) { this._introJustEnded = false; return; }
+		if ( ! this.active || this._holding ) return;
 		const input = this.app.input;
 		if ( input.hit( 'KeyG' ) ) this.captureScreenshot();
 		if ( input.hit( 'KeyV' ) ) this.toggleFreeCamera();
@@ -907,10 +908,13 @@ export class FlightOperations {
 	update( dt ) {
 
 		if ( ! this.active ) return;
-		if ( this._intro ) {
+		// Hold the opening shot, following the boat, until the player takes the controls. The camera
+		// is paused only once the bridge knows its view (it reports `cameraView` from _applyCamera,
+		// which returns early while paused) so the console can still become ready behind the loader.
+		if ( this._holding ) {
 
-			if ( performance.now() >= this._intro.until ) this._endIntro();
-			else this._poseAerodock();
+			if ( this.bridge?.cameraView ) this.bridge.cameraPaused = true;
+			this._poseAerodock();
 
 		}
 		this.bridge?.update( dt );
@@ -1043,13 +1047,12 @@ export class FlightOperations {
 		if ( this.active ) {
 
 			const flightReady = !! state.ready && cameraReady && ! state.error;
-			if ( flightReady && ! this._introStarted ) this._startIntro();
-			if ( state.error && this._intro ) this._endIntro();
-			const intro = ! ! this._intro;
+			// Nothing but the AERODOCK shot until the player starts; the consoles appear on the click.
+			const started = ! this._holding;
 			// The helm and drone consoles own the screen. The free camera keeps the active one up (with
 			// its own key line) instead of falling back to the superseded `fc-*` console.
-			const showHelm = isBoat && flightReady && ! intro;
-			const showDrone = ! isBoat && flightReady && ! intro;
+			const showHelm = isBoat && flightReady && started;
+			const showDrone = ! isBoat && flightReady && started;
 			this._helm.root.hidden = ! showHelm;
 			this._drone.root.hidden = ! showDrone;
 			this._helm.root.classList.toggle( 'is-freecam', freeCamera );
