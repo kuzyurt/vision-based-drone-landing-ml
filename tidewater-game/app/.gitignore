@@ -2,3 +2,6 @@ node_modules
 dist
 .DS_Store
 *.log
+
+# local test scratch (CDP drivers, Edge profiles) - not part of the build
+/.tmp-*/

@@ -354,8 +354,8 @@
 	z-index: 93;
 	display: grid;
 	align-items: end;
-	justify-items: center;
-	padding: 0 24px 8vh;
+	justify-items: start;
+	padding: 0 6vw 7vh;
 	background: linear-gradient(180deg, rgba(3, 5, 6, .34) 0%, rgba(3, 5, 6, 0) 26%, rgba(3, 5, 6, 0) 52%, rgba(3, 5, 6, .72) 100%);
 	color: var(--ink);
 	font: 400 11px/1.5 'JetBrains Mono', ui-monospace, monospace;
@@ -369,13 +369,13 @@
 #flight-start.is-off { opacity: 0; pointer-events: none; }
 #flight-start *, #flight-start *::before, #flight-start *::after { box-sizing: border-box; }
 #flight-start .fs-card {
-	width: min(620px, 92vw);
+	width: min(520px, 92vw);
 	padding: 0;
 	border: 0;
 	background: none;
-	text-align: center;
+	text-align: left;
 }
-#flight-start .fs-brand { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: left; }
+#flight-start .fs-brand { display: flex; align-items: center; justify-content: flex-start; gap: 12px; text-align: left; }
 #flight-start .fs-mark {
 	width: 26px;
 	height: 26px;
@@ -389,7 +389,7 @@
 #flight-start .fs-brand small { display: block; margin-top: 5px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
 #flight-start .fs-lead {
 	max-width: 46ch;
-	margin: 16px auto 16px;
+	margin: 14px 0 14px;
 	font-size: 9px;
 	line-height: 1.8;
 	letter-spacing: .1em;
@@ -400,7 +400,7 @@
 #flight-start .fs-keys {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	justify-content: flex-start;
 	gap: 8px 16px;
 	padding: 13px 0 15px;
 	border-top: 1px solid var(--line);
@@ -420,7 +420,7 @@
 }
 #flight-start .fs-go {
 	pointer-events: auto;
-	margin: 18px auto 0;
+	margin: 18px 0 0;
 	padding: 11px 24px;
 	border: 1px solid rgba(223, 228, 225, .3);
 	background: rgba(223, 228, 225, .05);
@@ -436,9 +436,16 @@
 #flight-start.is-error .fs-status { color: #c8806f; }
 #flight-start :focus-visible { outline: 1px solid rgba(223, 228, 225, .5); outline-offset: 3px; }
 
+/* narrow screens: the boat is not beside the text any more, so centre the block again */
+@media (max-width: 900px) {
+	#flight-start { justify-items: center; padding: 0 24px 8vh; }
+	#flight-start .fs-card { width: min(560px, 92vw); text-align: center; }
+	#flight-start .fs-brand, #flight-start .fs-keys { justify-content: center; }
+	#flight-start .fs-lead { margin: 14px auto; }
+	#flight-start .fs-go { margin: 18px auto 0; }
+}
 @media (max-width: 700px) {
 	#flight-start .fs-keys { display: none; }
-	#flight-start .fs-card { padding: 24px 20px 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
 	#flight-start { transition-duration: .01ms; }
