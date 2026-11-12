@@ -19,4 +19,10 @@ op.state.drone.flight_requested=true;assert.equal(op._flightControl().label,'Can
 op.state.drone.armed=true;assert.equal(op._flightControl().label,'Land');
 op.state.drone.landing_requested=true;const before=sent.length;assert.equal(op._flightControl().label,'Landing…');op.toggleFlight();assert.equal(sent.length,before);
 op.state.drone.takeoff_pending=true;assert.equal(op._flightControl().label,'Stopping boat…');
-console.log('Flight intent clears only on confirmed grounding/disarming; cancellation, late arming, keyboard landing and button states passed');
+// Capture the velocity at the moment the setpoint is handed to PX4: the fake observation below
+// reuses the same buffer, so reading it afterwards would see zeros.
+let sentVelocity=null;pilot.module._tw_setpoint=()=>{sentVelocity=Array.from(memory.subarray(2,5));};
+pilot.configuration.parameters={MPC_XY_VEL_MAX:2};pilot.armed=true;pilot.landed=false;pilot.flightRequested=true;pilot.landingRequested=false;
+pilot.pilot(['KeyW']);assert(Math.abs(Math.hypot(...sentVelocity)-2)<1e-9,'Full stick must ask for MPC_XY_VEL_MAX, not a 1 m/s unit vector');
+pilot.pilot([]);assert(Math.hypot(...sentVelocity)<1e-9,'No keys must command a hover');
+console.log('Flight intent clears only on confirmed grounding/disarming; cancellation, late arming, keyboard landing, button states and the 2 m/s stick setpoint passed');

@@ -10,8 +10,8 @@ export function pose(p,R) {return [R[0],R[1],R[2],p[0],R[6],R[7],R[8],p[2],-R[3]
 export class BrowserGame {
  constructor(mj,m,d,f,px4,c,map) {
   Object.assign(this,{mj,m,d,f,px4,c,map});this.policyRecoveryClearance=new PolicyRecoveryClearance(map);this.route=chooseRoute(map);this.coast=coastPoints(map);
-  this.mode='drone';this.camera='boat_dock';this.automatic=true;this.keys=[];this.lookX=0;this.lookY=0;this.motors=[0,0];
-  this.progress=0;this.travelled=0;this.courseError=0;this.targetSpeed=2.8;this.launchComplete=false;this.takeoffPending=false;this.message=null;
+  this.mode='drone';this.camera='boat_dock';this.automatic=false;this.keys=[];this.lookX=0;this.lookY=0;this.motors=[0,0];
+  this.progress=0;this.travelled=0;this.courseError=0;this.targetSpeed=1.5;this.launchComplete=false;this.takeoffPending=false;this.message=null;
   this.nextControl=d.time;this.nextRadio=d.time;this.radio={enabled:true,connected:true,quality:100,status:'stable',simulated:true};
   this.remote=null;this.samples=[];this.tx=0;this.rx=0;this.dropped=0;this.retryTime=0;this.retryPending=false;this.lastRx=0;this.randomState=0x1262;
   this.ml={enabled:false,phase:'manual',error:null};this.mlGeneration=0;
@@ -72,7 +72,7 @@ export class BrowserGame {
    mechanism_busy:positions.some((p,i)=>Math.abs(p-this.f.boatTargets[i])>.004 || Math.abs(this.f.servos[i]-this.f.boatTargets[i])>.0005)};
  }
  boatSpeed() {const velocity=this.f.velocity(this.c.boat.body,vector(this.d.xipos,this.c.boat.body));return Math.hypot(velocity[3],velocity[4]);}
- routeControl() {
+ routeControl(drive=true) {
   const {points,arc,length}=this.route,p=vector(this.d.xpos,this.c.boat.body),speed=this.boatSpeed();let index=0;
   while(index<arc.length && arc[index]<=this.progress)index++;
   const count=points.length-1;let distance=Infinity,projected=this.progress;
@@ -84,16 +84,21 @@ export class BrowserGame {
   const target=(this.progress+Math.max(12,5*speed))%length;index=0;while(index<arc.length-2 && arc[index+1]<target)index++;
   const u=(target-arc[index])/(arc[index+1]-arc[index]),goal=points[index].map((v,i)=>v+u*(points[index+1][i]-v));
   const R=this.d.xmat.subarray(this.c.boat.body*9,this.c.boat.body*9+9),yaw=Math.atan2(R[3],R[0]),desired=Math.atan2(goal[1]-p[1],goal[0]-p[0]);
-  const error=Math.atan2(Math.sin(desired-yaw),Math.cos(desired-yaw)),targetSpeed=2.8*Math.max(.35,Math.cos(error));
-  const base=clamp(2.8*targetSpeed**3+4*targetSpeed+12*(targetSpeed-speed),0,78),turn=clamp(60*error-85*this.f.velocity(this.c.boat.body,vector(this.d.xipos,this.c.boat.body))[2],-base,base);
-  this.f.power=[clamp(base+turn,0,100),clamp(base-turn,0,100)];this.targetSpeed=targetSpeed;
+  const error=Math.atan2(Math.sin(desired-yaw),Math.cos(desired-yaw)),targetSpeed=1.5*Math.max(.35,Math.cos(error));
+  this.targetSpeed=targetSpeed;
+  // Tracking always runs (cross-track error and route status stay live); only the motors are
+  // route-following when the player has asked for it. 1.5 m/s is the hard cruise ceiling and the
+  // term below sheds power above it.
+  if(!drive)return;
+  const base=clamp(2.8*targetSpeed**3+4*targetSpeed+12*(targetSpeed-speed)-70*Math.max(0,speed-1.5),0,78),turn=clamp(60*error-85*this.f.velocity(this.c.boat.body,vector(this.d.xipos,this.c.boat.body))[2],-base,base);
+  this.f.power=[clamp(base+turn,0,100),clamp(base-turn,0,100)];
  }
  control() {
   const p=this.px4,obs=p.observation();
   if(this.takeoffPending && this.boatSpeed()<.15 && obs[0]) {this.takeoffPending=false;p.landingRequested=false;p.flightRequested=true;p.targetHeight=1.5;p.armRequestTime=this.d.time;p.lastArmTry=0;}
   if(p.armed && this.d.xpos[this.c.drone.base*3+2]>this.d.site_xpos[this.c.pad_site*3+2]+1)this.launchComplete=true;
   const hold=this.takeoffPending || (!this.launchComplete && this.mode==='drone');
-  if(hold || !obs[0])this.f.power=[0,0];else if(this.automatic)this.routeControl();else this.f.power=[...this.motors];
+  if(hold || !obs[0])this.f.power=[0,0];else{this.routeControl(this.automatic);if(!this.automatic)this.f.power=[...this.motors];}
   if(!this.ml.enabled)p.pilot(this.mode==='drone'?this.keys:[],this.mode==='drone'?this.lookX:0,this.mode==='drone'?this.lookY:0);this.lookX=this.lookY=0;
  }
  async advance() {
@@ -131,7 +136,8 @@ export class BrowserGame {
  }
  vehicle(body) {
   const d=this.d,p=vector(d.xpos,body),v=this.f.velocity(body,vector(d.xipos,body)).slice(3),R=d.xmat.subarray(body*9,body*9+9),yaw=Math.atan2(R[3],R[0]);
-  return {position:viewPosition(p),velocity:viewPosition(v),roll:Math.atan2(R[7],R[8]),pitch:Math.asin(clamp(-R[6],-1,1)),yaw,heading:(Math.PI/2-yaw+2*Math.PI)%(2*Math.PI),speed:Math.hypot(...v)};
+  const viewVelocity=viewPosition(v);
+  return {position:viewPosition(p),velocity:viewVelocity,roll:Math.atan2(R[7],R[8]),pitch:Math.asin(clamp(-R[6],-1,1)),yaw,heading:(Math.PI/2-yaw+2*Math.PI)%(2*Math.PI),speed:Math.hypot(viewVelocity[0],viewVelocity[2])};
  }
  vehicles() {
   const p=this.px4,obs=p.observation(),u=this.c.drone,drone=this.vehicle(u.base),boat=this.vehicle(this.c.boat.body);

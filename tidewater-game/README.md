@@ -43,9 +43,9 @@ the collision world and shaders. Wait for **Offline files ready** for offline pl
 | Disable / Enable SX1262 | Remove / restore simulated boat radio |
 | Home, Reset, Retry | Return to spawn |
 
-The boat remains independently controllable during landing. Its normal
-2.8 m/s cruise exceeds the policy's nominal 2 m/s horizontal limit, so slow it
-for an initial trial. Lower the platform before closing the lids.
+The boat remains independently controllable during landing. Its 1.5 m/s cruise
+stays inside the policy's nominal 2 m/s horizontal limit, which is also the
+full-stick manual flight speed. Lower the platform before closing the lids.
 
 ## What the game adds
 

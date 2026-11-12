@@ -1,14 +1,14 @@
 /* The AERODOCK helm: the design study's frame over the live MuJoCo camera. */
 #helm-hud {
 	--mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-	--ink: #dfe4e1;
-	--ink-2: rgba(223, 228, 225, .64);
-	--ink-3: rgba(223, 228, 225, .46);
-	--ink-4: rgba(223, 228, 225, .25);
-	--line: rgba(223, 228, 225, .14);
-	--line-soft: rgba(223, 228, 225, .07);
-	--alert: #c8806f;
-	--warn: #c6a06a;
+	--ink: #f7fbfa;
+	--ink-2: rgba(247, 251, 250, .88);
+	--ink-3: rgba(247, 251, 250, .68);
+	--ink-4: rgba(247, 251, 250, .42);
+	--line: rgba(247, 251, 250, .24);
+	--line-soft: rgba(247, 251, 250, .13);
+	--alert: #e08b78;
+	--warn: #e7c084;
 	--pad: clamp(20px, 2.6vw, 40px);
 	--label: 7px;
 	position: fixed;
@@ -19,7 +19,7 @@
 	font: 400 11px/1.4 var(--mono);
 	letter-spacing: .06em;
 	text-transform: uppercase;
-	text-shadow: 0 0 12px rgba(0, 0, 0, .6);
+	text-shadow: 0 1px 2px rgba(0, 0, 0, .75), 0 0 14px rgba(0, 0, 0, .55);
 	pointer-events: none;
 	-webkit-font-smoothing: antialiased;
 }
@@ -27,8 +27,9 @@
 #helm-hud[hidden] { display: none; }
 #helm-hud *, #helm-hud *::before, #helm-hud *::after { box-sizing: border-box; }
 #helm-hud button, #helm-hud input { font: inherit; color: inherit; }
-#helm-hud button { background: none; border: 0; cursor: pointer; pointer-events: auto; }
-#helm-hud .thr, #helm-hud .chip { pointer-events: auto; }
+/* keyboard only: the console has no mouse targets, the throttle sliders are gone (W/S, A/D) */
+#helm-hud button, #helm-hud .chip { background: none; border: 0; cursor: default; pointer-events: none; }
+#helm-hud .thr { display: none; }
 
 #helm-hud .scrim {
 	position: absolute;
@@ -161,7 +162,7 @@
 	color: var(--ink-3);
 }
 #helm-hud .agl { display: flex; align-items: flex-end; }
-#helm-hud .agl-bar { width: 2px; height: 32px; margin-right: 11px; background: var(--ink); opacity: .5; }
+#helm-hud .agl-bar { width: 3px; height: 32px; margin-right: 11px; background: var(--ink); opacity: .72; }
 #helm-hud .agl b {
 	font-size: 31px;
 	font-weight: 300;
@@ -212,12 +213,12 @@
 }
 #helm-hud .scope svg { display: block; width: 100%; height: auto; overflow: visible; color: var(--ink); }
 #helm-hud .scope text { font-family: var(--mono); }
-#helm-hud .ring-label { fill: currentColor; fill-opacity: .45; font-size: 8.5px; letter-spacing: .1em; }
-#helm-hud .cardinal { fill: currentColor; fill-opacity: .6; font-size: 8.5px; letter-spacing: .16em; }
-#helm-hud .blip-label { fill: currentColor; fill-opacity: .9; font-size: 9px; letter-spacing: .08em; }
+#helm-hud .ring-label { fill: currentColor; fill-opacity: .66; font-size: 9px; letter-spacing: .1em; }
+#helm-hud .cardinal { fill: currentColor; fill-opacity: .82; font-size: 9px; letter-spacing: .16em; }
+#helm-hud .blip-label { fill: currentColor; fill-opacity: 1; font-size: 9px; letter-spacing: .08em; }
 #helm-hud .scope-foot {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
 	gap: 10px;
 	min-height: 14px;
 	margin-top: 9px;
@@ -226,8 +227,8 @@
 	color: var(--ink-3);
 }
 #helm-hud .scope-note { color: var(--alert); }
-#helm-hud[data-link='lost'] [data-bind='drn'],
-#helm-hud[data-link='lost'] [data-bind='drn-line'] { color: var(--alert); }
+#helm-hud[data-link='lost'] [data-bind='other'],
+#helm-hud[data-link='lost'] [data-bind='other-line'] { color: var(--alert); }
 
 /* ---- right rail -------------------------------------------------------- */
 #helm-hud .rail {
@@ -316,7 +317,7 @@
 }
 #helm-hud .radio-quality span { padding-bottom: 4px; font-size: 8px; letter-spacing: .26em; color: var(--ink-3); }
 #helm-hud .segbar { display: flex; justify-content: flex-end; gap: 3px; margin: 9px 0 10px; }
-#helm-hud .segbar i { width: 15px; height: 2px; background: var(--line); }
+#helm-hud .segbar i { width: 15px; height: 3px; background: var(--line); }
 #helm-hud .segbar i.on { background: var(--ink-2); }
 #helm-hud[data-link='lost'] .segbar i { background: var(--line-soft); }
 #helm-hud[data-link='lost'] .link-panel .radio-quality b,
@@ -366,7 +367,7 @@
 	border-bottom: 1px solid var(--line-soft);
 }
 #helm-hud .bar-row > span { font-size: 7px; letter-spacing: .2em; color: var(--ink-3); }
-#helm-hud .bar { height: 2px; background: var(--line); overflow: hidden; }
+#helm-hud .bar { height: 3px; background: var(--line); overflow: hidden; }
 #helm-hud .bar i { display: block; height: 100%; width: 0; background: var(--ink-2); transition: width .12s linear; }
 #helm-hud .bar-row > b {
 	font-size: 9px;
@@ -427,7 +428,7 @@
 	gap: clamp(6px, 1.4vw, 18px);
 	transform: translateX(-50%);
 }
-#helm-hud .actions-frame { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); opacity: .15; }
+#helm-hud .actions-frame { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); opacity: .3; }
 #helm-hud .actions-frame path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
 #helm-hud .actions .act { position: relative; z-index: 1; padding: 8px 2px; font-size: 9px; letter-spacing: .22em; }
 #helm-hud .actions .act.is-on::before, #helm-hud .actions .act.is-on::after { color: var(--ink-2); }
@@ -500,3 +501,6 @@
 @media (prefers-reduced-motion: reduce) {
 	#helm-hud *, #helm-hud *::before, #helm-hud *::after { transition-duration: 0.01ms !important; }
 }
+
+/* the plot's radio age sits at the opposite end from the range */
+#helm-hud .scope-foot > :last-child { text-align: right; }

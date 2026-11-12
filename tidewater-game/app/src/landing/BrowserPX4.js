@@ -88,7 +88,10 @@ export class BrowserPX4 {
 		const d=this.data,b=this.configuration.drone.base,R=d.xmat.subarray(b*9,b*9+9);
 		let x=(held('KeyW')?1:0)-(held('KeyS')?1:0),y=(held('KeyA')?1:0)-(held('KeyD')?1:0);
 		const length=Math.hypot(x,y);if(length>1){x/=length;y/=length;}
-		const velocity=NED([R[0]*x+R[1]*y,R[3]*x+R[4]*y,R[6]*x+R[7]*y]);
+		// Full stick is the airframe's declared horizontal limit, not a unit vector: the old 1 m/s
+		// setpoint made the X500 slower than the boat while MPC_XY_VEL_MAX already caps it.
+		const maxSpeed=this.configuration.parameters?.MPC_XY_VEL_MAX??2;
+		const velocity=NED([R[0]*x+R[1]*y,R[3]*x+R[4]*y,R[6]*x+R[7]*y]).map(v=>v*maxSpeed);
 		const values=this.buffer();values[0]=Math.trunc(t*1000)>>>0;values[1]=-(this.targetHeight-.216);values.set(velocity,2);
 		values[5]=((held('KeyE')?1:0)-(held('KeyQ')?1:0))*.5;
 		this.module._tw_setpoint(this.pointer);

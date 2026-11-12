@@ -68,7 +68,7 @@ second unconfirmed runtime.
 
 - **B** switches drone/boat; **U** switches the two original boat cameras.
 - Drone: **WASD** moves, **R/F** climbs/descends, **Q/E** yaws. Arrow keys or mouse
-  move the articulated camera. Use the Take off, Hover and Land controls.
+  move the articulated camera. **T** takes off and lands.
 - Boat: **P** switches automatic/manual motors; **W/S** controls both throttles,
   **A/D** steers differentially. Sliders set individual motors.
 - Lower the platform before closing the lids; open both lids before raising it.
@@ -120,7 +120,7 @@ notices accompany their models and textures.
 After taking off, press **ML landing** to hand the drone to the workspace's
 **vision-first radio-fusion** policy. The button changes to **Manual control**; press it
 to resume piloting. **Land** also cancels ML control. Boat control is independent
-of ML: route following keeps its normal 2.8 m/s target, and manual throttles,
+of ML: route following keeps its normal 1.5 m/s target, and manual throttles,
 steering, stop and auto/manual selection remain available during ML landing.
 The policy's existing 2 m/s horizontal command limit remains unchanged; it may
 not catch or land on a faster boat.
@@ -204,7 +204,7 @@ bounded recovery exhaustion or the mission deadline restores manual hold.
 Handoff preserves the measured altitude even after a recovery above the normal
 8 m manual ceiling. The declared static map only vetoes unsafe upward recovery;
 the sea-level/nominal-deck prior supplies no dynamic boat position or touchdown
-truth. Independent boat controls and normal 2.8 m/s cruise remain unchanged.
+truth. Independent boat controls and the 1.5 m/s cruise remain unchanged.
 
 Developer preparation: build `wasm/build_marker.sh` with the pinned Emscripten
 runtime, then run `app/tools/export-vision-first-policy.py` with the training
