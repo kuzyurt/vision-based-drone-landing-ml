@@ -1,4 +1,4 @@
-import { Vector3, Euler, Color, MathUtils, Mesh } from './engine/index.js';
+import { Vector2, Vector3, Euler, Color, MathUtils, Mesh } from './engine/index.js';
 import { GPU } from './engine/gpu/GPU.js';
 import { SunShadows } from './engine/render/Shadows.js';
 import { FrameUniforms } from './engine/render/Frame.js';
@@ -359,6 +359,7 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 			if ( window.__ui && window.__ui.isPointerOverUI ) return;
 			if ( this.flightOps && this.flightOps.active ) {
 
+				if ( this.flightOps.freeCamera ) this.input.requestLock();
 				if ( this.audio ) this.audio.resume();
 				return;
 
@@ -645,6 +646,10 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 			else this.player.update( dt );
 			this.game.update( dt );
 
+		} else if ( this.flightOps.freeCamera ) {
+
+			this.fly.update( dt );
+
 		}
 		if ( this.flightOps && this.flightOps.active ) this.flightOps.update( dt );
 		this.updateSun();
@@ -705,7 +710,20 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		this.localLights.update( this.camera, dt );
 
 		// ---- render
-		G.exposure.value = s.exposure;
+		this.renderFrame( dt );
+		this.profiler.update( dt );
+
+		this.updateAudio( dt );
+		if ( this.ui ) this.ui.update( dt );
+		this.input.endFrame();
+
+	}
+
+	// The render half of a frame. Screenshots call this without stepping the
+	// simulation, so a capture never advances the world or runs simulation-only work.
+	renderFrame( dt ) {
+
+		G.exposure.value = this.settings.exposure;
 		updateCameraVelocity( this.camera );
 		this.post.lens.update( dt, this.camera.position.y < ( this.cameraWaterHeight ?? 0 ) );
 		if ( this.post.flare ) {
@@ -725,11 +743,97 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		this.post.render();
 		this.post.endFrame();
 		GPU.submit();
-		this.profiler.update( dt );
 
-		this.updateAudio( dt );
-		if ( this.ui ) this.ui.update( dt );
-		this.input.endFrame();
+	}
+
+	// Save one clean frame of the flight camera at 1920x1080. The DOM HUD is not part of
+	// the canvas, so this captures the world only. Rendering at the target size instead of
+	// upscaling keeps it a true 1080p frame.
+	async captureScreenshot( width = 1920, height = 1080 ) {
+
+		if ( this._captureScreenshot ) throw new Error( 'A screenshot is already being rendered' );
+		this._captureScreenshot = true;
+		const engine = this.engine, canvas = engine.canvas, post = this.post;
+		const saved = {
+			width: canvas.width, height: canvas.height,
+			styleWidth: canvas.style.width, styleHeight: canvas.style.height,
+			outputTexture: post.outputTexture, outputSize: post.outputSize,
+			scale: post.scale, renderScale: this.settings.renderScale,
+			cloudSize: this.clouds?.outputSize, cloudScale: this.clouds?.resolutionScale,
+		};
+		let result;
+		try {
+
+			engine.stop();
+			await GPU.queue.onSubmittedWorkDone();
+			canvas.width = width;
+			canvas.height = height;
+			this.camera.aspect = width / height;
+			this.camera.updateProjectionMatrix();
+			post.outputTexture = null;
+			post.outputSize = new Vector2( width, height );
+			post.setScale( 1 );
+			post._outW = 0;
+			this.settings.renderScale = 1;
+			if ( this.clouds ) {
+
+				this.clouds.outputSize = new Vector2( width, height );
+				this.clouds.resolutionScale = 1;
+				this.clouds.resetHistory?.();
+
+			}
+			// Let TAA, auto exposure and the cloud history settle at the new size.
+			// Render only: the world stays frozen while the 1080p frame is built.
+			for ( let i = 0; i < 3; i ++ ) {
+
+				GPU.beginFrame();
+				FrameUniforms.fields.frameIndex.value = GPU.frame;
+				G.dt.value = 0;
+				this.renderFrame( 0 );
+				await GPU.queue.onSubmittedWorkDone();
+
+			}
+			const blob = await new Promise( resolve => canvas.toBlob( resolve, 'image/png' ) );
+			if ( ! blob ) throw new Error( 'The browser could not encode the frame' );
+			const bitmap = await createImageBitmap( blob );
+			const actual = { width: bitmap.width, height: bitmap.height };
+			bitmap.close();
+			if ( actual.width !== width || actual.height !== height ) throw new Error( `Screenshot came out ${ actual.width }×${ actual.height }` );
+			const link = document.createElement( 'a' );
+			const url = URL.createObjectURL( blob );
+			link.href = url;
+			link.download = `tidewater-${ new Date().toISOString().replace( /[:.]/g, '-' ) }.png`;
+			document.body.append( link );
+			link.click();
+			link.remove();
+			setTimeout( () => URL.revokeObjectURL( url ), 30000 );
+			result = { ...actual, blob };
+
+		} finally {
+
+			canvas.width = saved.width;
+			canvas.height = saved.height;
+			canvas.style.width = saved.styleWidth;
+			canvas.style.height = saved.styleHeight;
+			post.outputTexture = saved.outputTexture;
+			post.outputSize = saved.outputSize;
+			post.setScale( saved.scale );
+			post._outW = 0;
+			this.settings.renderScale = saved.renderScale;
+			if ( this.clouds ) {
+
+				this.clouds.outputSize = saved.cloudSize;
+				this.clouds.resolutionScale = saved.cloudScale;
+				this.clouds.resetHistory?.();
+
+			}
+			engine.resize();
+			post._outW = 0;
+			this._captureScreenshot = false;
+			engine.start( ( dt, t ) => this.frame( dt, t ) );
+
+		}
+		return result;
 
 	}
 

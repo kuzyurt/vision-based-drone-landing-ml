@@ -13,3 +13,6 @@ __pycache__/
 /history/**/*.jsonl.gz
 
 /wasm/tests/*.mjb.gz
+
+# Scratch captures, HUD drafts and throwaway browser profiles
+/.tmp-*/

@@ -1,3 +1,4 @@
+import { Euler } from '../engine/index.js';
 import { SimulationBridge } from '../landing/SimulationBridge.js';
 import { recordPerformance } from '../landing/PerformanceRecording.js';
 
@@ -12,6 +13,7 @@ export class FlightOperations {
 
 		this.app = app;
 		this.active = false;
+		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
 		this.autopilot = true;
@@ -24,7 +26,15 @@ export class FlightOperations {
 		this._ui = null;
 		this.manualMotors = [ 0, 0 ];
 		this.suppressedKeys = new Set();
+		this._helmFix = null;
+		this._droneFix = null;
+		this._intro = null;
+		this._introStarted = false;
+		this._introJustEnded = false;
 		this._buildUI();
+		this._buildHelmUI();
+		this._buildDroneUI();
+		this._buildIntro();
 
 	}
 
@@ -42,7 +52,7 @@ export class FlightOperations {
 			<header class="fc-top">
 				<div class="fc-wordmark"><span class="fc-mark">T</span><span><b>Tidewater</b><small>Coastal flight operations · browser PX4 / MuJoCo</small></span></div>
 				<div class="fc-link" data-bind="link" data-state="waiting"><i></i><span data-bind="link-label">Connecting simulator</span><small data-bind="controller-source">Native MuJoCo</small></div>
-				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="timing">Record timing (10 s)</button><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
+				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="timing">Record timing (10 s)</button><button class="fc-icon-btn" data-action="freecam" aria-pressed="false" title="Toggle free camera (V)">Free cam <kbd>V</kbd></button><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
 			</header>
 			<aside class="fc-map-panel fc-panel">
 				<div class="fc-panel-head"><span>Live telemetry map</span><small>Shared MuJoCo frame</small></div>
@@ -92,32 +102,375 @@ export class FlightOperations {
 			canvas: root.querySelector( '.fc-map' ),
 			bindings: new Map( Array.from( root.querySelectorAll( '[data-bind]' ), element => [ element.dataset.bind, element ] ) ),
 		};
-		root.addEventListener( 'click', event => {
-			const action = event.target.closest( '[data-action]' )?.dataset.action;
-			if ( action === 'switch' ) this.switchVehicle();
-			else if ( action === 'retry' ) this.bridge?.retry();
-			else if ( action === 'reset' ) this.resetVehicles();
-			else if ( action === 'reconnect' ) this.reconnect();
-			else if ( action === 'radio' ) this.toggleRadio();
-			else if ( action === 'flight' ) this.toggleFlight();
-			else if ( action === 'ml' ) this.toggleML();
-			else if ( action === 'timing' ) this.recordTiming();
-			else if ( action === 'autopilot' ) this.setAutopilot( ! this.autopilot );
-			else if ( action === 'manual' ) this.setAutopilot( false );
-			else if ( action === 'automatic' ) this.setAutopilot( true );
-			else if ( action === 'stop' ) { this.setAutopilot( false ); this.manualMotors = [ 0, 0 ]; this.bridge?.send( { motors: [ 0, 0 ] } ); }
-			else if ( action === 'camera' ) this.toggleBoatCamera();
-			else if ( action === 'lid' ) this.toggleLid();
-			else if ( action === 'platform' ) this.togglePlatform();
-		} );
-		root.addEventListener( 'input', event => {
-			const side = event.target.dataset.control;
-			if ( side !== 'port' && side !== 'starboard' ) return;
-			const index = side === 'port' ? 0 : 1;
-			this.manualMotors[ index ] = Number( event.target.value );
-			this._text( side, `${ event.target.value }%` );
-			this.bridge?.send( { motors: this.manualMotors, mode: this.mode } );
-		} );
+		root.addEventListener( 'click', event => this._handleAction( event.target.closest( '[data-action]' )?.dataset.action ) );
+		root.addEventListener( 'input', event => this._handleMotorInput( event.target ) );
+
+	}
+
+	_buildHelmUI() {
+
+		const root = document.createElement( 'div' );
+		root.id = 'helm-hud';
+		root.hidden = true;
+		root.dataset.link = 'live';
+		root.innerHTML = `
+			<div class="scrim" aria-hidden="true"></div>
+			<header class="top">
+				<div class="brand"><b>AERODOCK</b></div>
+				<div class="stats" aria-label="Boat data">
+					<div class="stat"><label>SOG</label><b><span data-bind="sog">—</span><i>kn</i></b></div>
+					<div class="stat"><label>COG</label><b><span data-bind="cog">—</span><i>°</i></b></div>
+					<div class="stat"><label>HDG</label><b><span data-bind="hdg">—</span><i>°</i></b></div>
+					<div class="stat"><label>XTE</label><b><span data-bind="xte">—</span><i>m</i></b></div>
+				</div>
+				<div class="top-right">
+					<span class="link"><i></i><span data-bind="link-text">LINK · WAIT</span></span>
+					<button class="chip" type="button" data-action="switch">Drone<kbd>B</kbd></button>
+					<button class="chip" type="button" data-action="camera"><span data-bind="cam">CAM · DOCK</span><kbd>U</kbd></button>
+				</div>
+			</header>
+
+			<div class="datum">
+				<div class="agl-block">
+					<small>SPD</small>
+					<div class="agl"><span class="agl-bar"></span><b><span data-bind="spd">—</span><em>kn</em></b></div>
+				</div>
+				<div class="coords">
+					<div class="coord"><small>Drn</small><b><span data-bind="drn-range">—</span><i>m</i></b></div>
+					<div class="coord"><small>Brg</small><b><span data-bind="drn-bearing">—</span><i>°</i></b></div>
+				</div>
+			</div>
+
+			<figure class="scope" aria-label="Range rings around the boat and the radio-reported drone position">
+				<svg viewBox="-180 -180 360 360" role="img">
+					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"></circle>
+					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".16" stroke-width="1.2"></circle>
+					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="1.2"></circle>
+					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".08"></path>
+					<g class="ring-label" text-anchor="end"><text x="-4" y="-46">50</text><text x="-4" y="-96">100</text><text x="-4" y="-146">150 m</text></g>
+					<g class="cardinal" text-anchor="middle"><text x="0" y="-166">N</text></g>
+					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".5"></path>
+					<line data-bind="drn-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="2 5"></line>
+					<g data-bind="drn" transform="translate(0 0)">
+						<circle data-bind="drn-sigma" r="6" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 4"></circle>
+						<g data-bind="drn-rot" transform="rotate(0)"><path data-bind="drn-glyph" d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path></g>
+						<g data-bind="drn-vec"><line x1="0" y1="-11" x2="0" y2="-32" stroke="currentColor" stroke-opacity=".6" stroke-width="1.3"></line><path d="M0 -34l-3.5 6h7z" fill="currentColor" fill-opacity=".8"></path></g>
+						<text data-bind="drn-label" x="-12" y="-8" text-anchor="end" class="blip-label">DRN</text>
+					</g>
+					<circle r="2.4" fill="currentColor"></circle>
+					<path d="M-11 0H-5M5 0H11M0 -11V-5M0 5V11" stroke="currentColor" stroke-opacity=".55" stroke-width="1.1"></path>
+				</svg>
+				<div class="scope-foot"><span class="scope-note" data-bind="scope-note"></span></div>
+			</figure>
+
+			<div class="rail">
+				<section class="attitude" aria-label="Boat attitude">
+					<figure class="sketch side">
+						<header class="sketch-head"><b>Pitch <em data-bind="pitch">—</em></b></header>
+						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="side-craft" src="/ui/aerodock-side.png" alt="AERODOCK side profile" style="--tilt: 0deg"></div>
+					</figure>
+					<figure class="sketch stern">
+						<header class="sketch-head"><b>Roll <em data-bind="roll">—</em></b></header>
+						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="stern-craft" src="/ui/aerodock-stern.png" alt="AERODOCK stern view" style="--tilt: 0deg"></div>
+					</figure>
+				</section>
+
+				<section class="panel link-panel" aria-label="Vehicle link">
+					<div class="panel-head"><b>Vehicle link</b><small data-bind="link-state">WAIT</small></div>
+					<div class="radio-quality"><b data-bind="quality">—</b><span>% QLT</span></div>
+					<div class="segbar" data-bind="segbar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+					<div class="radio-grid">
+						<div><small>RSSI</small><b data-bind="rssi">—</b></div>
+						<div><small>SNR</small><b data-bind="snr">—</b></div>
+						<div><small>Loss</small><b data-bind="loss">—</b></div>
+						<div class="age"><small>Age</small><b data-bind="age">—</b></div>
+					</div>
+					<div class="panel-actions">
+						<button class="act is-on" type="button" data-action="radio" data-bind="radio-btn">Disable SX1262</button>
+						<button class="act" type="button" data-action="reconnect" data-bind="retry-btn">Retry · C</button>
+					</div>
+				</section>
+
+				<section class="panel propulsion" aria-label="Propulsion">
+					<div class="panel-head"><b>Propulsion</b><small data-bind="drive">—</small></div>
+					<div class="motor">
+						<div class="bar-row"><span>Port</span><div class="bar"><i data-bind="port-bar"></i></div><b data-bind="port">0%</b></div>
+						<input class="thr" data-control="port" type="range" min="0" max="100" value="0" aria-label="Port motor throttle">
+					</div>
+					<div class="motor">
+						<div class="bar-row"><span>Stbd</span><div class="bar"><i data-bind="stbd-bar"></i></div><b data-bind="stbd">0%</b></div>
+						<input class="thr" data-control="starboard" type="range" min="0" max="100" value="0" aria-label="Starboard motor throttle">
+					</div>
+				</section>
+			</div>
+
+			<section class="panel deck-panel" aria-label="Deck mechanisms">
+				<div class="panel-head"><b>Deck</b><small data-bind="deck-state">READY</small></div>
+				<div class="bar-row"><span>Platform</span><div class="bar"><i data-bind="plat-bar"></i></div><b data-bind="plat">0%</b></div>
+				<div class="bar-row"><span>Lids</span><div class="bar"><i data-bind="lids-bar"></i></div><b data-bind="lids">0%</b></div>
+				<div class="panel-actions">
+					<button class="act" type="button" data-action="lid" data-bind="lid-btn">Open lids</button>
+					<button class="act" type="button" data-action="platform" data-bind="plat-btn">Raise platform</button>
+				</div>
+				<div class="bilge" data-bind="bilge"><span>Bilge <b data-bind="bilge-l">—</b> L</span><span>Flow <b data-bind="flow">—</b> L/min</span></div>
+			</section>
+
+			<nav class="actions" aria-label="Helm actions">
+				<svg class="actions-frame" viewBox="0 0 640 56" preserveAspectRatio="none" aria-hidden="true"><path d="M32 55 L82 1 H558 L608 55"></path></svg>
+				<button class="act is-on" type="button" data-action="automatic" data-bind="auto-btn">Auto route · P</button>
+				<button class="act" type="button" data-action="manual" data-bind="manual-btn">Manual</button>
+				<button class="act" type="button" data-action="stop">Stop</button>
+				<button class="act" type="button" data-action="reset">Reset · Home</button>
+			</nav>
+
+			<footer class="foot">
+				<span class="keys">W/S throttle · A/D steer · U camera · P auto · C retry · V free · G shot · B drone · Home reset</span>
+				<span class="right"><button type="button" data-action="freecam">Free cam · V</button><button type="button" data-action="shot">Frame · G</button></span>
+			</footer>
+
+			<div class="toast" data-bind="toast" role="status"></div>
+		`;
+		document.body.append( root );
+		this._helm = { root, bindings: new Map( Array.from( root.querySelectorAll( '[data-bind]' ), element => [ element.dataset.bind, element ] ) ) };
+		root.addEventListener( 'click', event => this._handleAction( event.target.closest( '[data-action]' )?.dataset.action ) );
+		root.addEventListener( 'input', event => this._handleMotorInput( event.target ) );
+
+	}
+
+	_buildDroneUI() {
+
+		const root = document.createElement( 'div' );
+		root.id = 'drone-hud';
+		root.hidden = true;
+		root.innerHTML = `
+			<div class="scrim" aria-hidden="true"></div>
+			<header class="top">
+				<div class="brand"><b>TIDEWATER</b><small>X500 · PX4 · MuJoCo</small></div>
+				<div class="stats" aria-label="Flight data">
+					<div class="stat"><label>ALT</label><b><span data-bind="alt">—</span><i>m</i></b></div>
+					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>m/s</i></b></div>
+					<div class="stat"><label>HDG</label><b><span data-bind="hdg">—</span><i>°</i></b></div>
+					<div class="stat"><label>SEP</label><b><span data-bind="sep">—</span><i>m</i></b></div>
+					<div class="stat"><label>BAT</label><b><span data-bind="batt">—</span><i>%</i></b></div>
+				</div>
+				<div class="top-right">
+					<span class="link"><i></i><span data-bind="link-text">SX1262 · WAIT</span></span>
+					<button class="mode-toggle hit" type="button" data-action="switch">Helm · B</button>
+				</div>
+			</header>
+
+			<div class="datum">
+				<div class="agl-block"><small>AGL</small><div class="agl"><span class="agl-bar"></span><b><span data-bind="agl">—</span><em>m</em></b></div></div>
+				<div class="datum-right">
+					<div class="coords">
+						<div class="coord"><small>GNSS X</small><b data-bind="gx">—</b></div>
+						<div class="coord"><small>GNSS Z</small><b data-bind="gz">—</b></div>
+					</div>
+					<div class="boat-strip">Boat <b data-bind="bspd">—</b> m/s · CRS <b data-bind="bcrs">—</b>°</div>
+				</div>
+			</div>
+
+			<section class="optic" aria-hidden="true">
+				<svg class="optics" viewBox="-260 -260 520 520">
+					<defs><clipPath id="drone-optic-clip"><circle r="236"></circle></clipPath></defs>
+					<g data-bind="compass"></g>
+					<circle r="238" fill="none" stroke="currentColor" stroke-opacity=".1"></circle>
+					<g clip-path="url(#drone-optic-clip)">
+						<g data-bind="horizon">
+							<path d="M-100 -60H100" stroke="currentColor" stroke-opacity=".12" fill="none"></path>
+							<path d="M-160 -30H160" stroke="currentColor" stroke-opacity=".22" fill="none"></path>
+							<path d="M-238 0H238" stroke="currentColor" stroke-opacity=".52" fill="none"></path>
+							<path d="M-160 30H160" stroke="currentColor" stroke-opacity=".22" fill="none"></path>
+							<path d="M-100 60H100" stroke="currentColor" stroke-opacity=".12" fill="none"></path>
+							<g stroke="currentColor" stroke-opacity=".34"><path d="M-100 -60h8M-160 -30h6M-160 30h6M-100 60h8"></path></g>
+							<g fill="currentColor" fill-opacity=".55" font-size="7.5" letter-spacing="1.2" text-anchor="end"><text x="-110" y="-57.5">20</text><text x="-170" y="-27.5">10</text><text x="-170" y="33">10</text><text x="-110" y="62.5">20</text></g>
+						</g>
+					</g>
+					<path d="M-172 -172L-236 -236M172 172L236 236M172 -172L236 -236M-172 172L-236 236" stroke="currentColor" stroke-opacity=".13" fill="none"></path>
+					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".26" stroke-dasharray="200 35.6" transform="rotate(18)"></circle>
+					<circle r="96" fill="none" stroke="currentColor" stroke-opacity=".48" stroke-width="1.2" stroke-dasharray="150 151.6" transform="rotate(135)"></circle>
+					<circle r="26" fill="none" stroke="currentColor" stroke-opacity=".16"></circle>
+					<path d="M-30 0H-8M8 0H30M0 -30V-8M0 8V30" stroke="currentColor" stroke-opacity=".38"></path>
+					<circle r="1.8" fill="currentColor"></circle>
+					<path d="M0 -247l-3.4 7h6.8z" fill="currentColor" fill-opacity=".7"></path>
+				</svg>
+				<div class="opt-foot"><span>Pitch <b data-bind="pitch">—</b> · Roll <b data-bind="roll">—</b></span><span class="armed is-off" data-bind="armed">DISARMED</span></div>
+			</section>
+
+			<figure class="scope" aria-label="Range rings centred on the drone, with the boat's reported track">
+				<svg viewBox="-180 -180 360 360" role="img">
+					<circle r="50" fill="none" stroke="currentColor" stroke-opacity=".13" stroke-width="1.2"></circle>
+					<circle r="100" fill="none" stroke="currentColor" stroke-opacity=".16" stroke-width="1.2"></circle>
+					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width="1.2"></circle>
+					<path d="M-170 0H170M0 -170V170" stroke="currentColor" stroke-opacity=".08"></path>
+					<g class="ring-label" text-anchor="end"><text x="-4" y="-46">050</text><text x="-4" y="-96">100</text><text x="-4" y="-146">150 m</text></g>
+					<g class="cardinal" text-anchor="middle"><text x="0" y="-166">N</text></g>
+					<path d="M0 -176l-4 6h8z" fill="currentColor" fill-opacity=".5"></path>
+					<line data-bind="sc-line" x1="0" y1="0" x2="0" y2="0" stroke="currentColor" stroke-opacity=".3" stroke-dasharray="2 5"></line>
+					<g data-bind="boat" transform="translate(0 0)">
+						<circle data-bind="boat-sigma" r="6" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.2" stroke-dasharray="2 4"></circle>
+						<g data-bind="boat-rot"><path data-bind="boat-glyph" d="M0 -8L6 8L0 4L-6 8Z" fill="currentColor" fill-opacity=".95"></path></g>
+						<g data-bind="boat-vec"><line x1="0" y1="-11" x2="0" y2="-34" stroke="currentColor" stroke-opacity=".6" stroke-width="1.3"></line><path d="M0 -36l-3.5 6h7z" fill="currentColor" fill-opacity=".8"></path></g>
+						<text data-bind="boat-label" x="12" y="-8" class="blip-label">BOAT</text>
+					</g>
+					<g data-bind="drone-vec"><line x1="0" y1="-10" x2="0" y2="-40" stroke="currentColor" stroke-opacity=".8" stroke-width="1.3"></line><path d="M0 -42l-3.5 6h7z" fill="currentColor" fill-opacity=".95"></path></g>
+					<circle r="2.4" fill="currentColor"></circle>
+					<path d="M-11 0H-5M5 0H11M0 -11V-5M0 5V11" stroke="currentColor" stroke-opacity=".55" stroke-width="1.1"></path>
+				</svg>
+				<div class="scope-foot"><span>RNG <b data-bind="sc-range">—</b> m · BRG <b data-bind="sc-bearing">—</b>°</span></div>
+			</figure>
+
+			<section class="radio" aria-label="Vehicle link">
+				<div class="radio-head"><b>Vehicle link</b><small data-bind="link-state">WAIT</small></div>
+				<div class="radio-quality"><b data-bind="quality">—</b><span>% QLT</span></div>
+				<div class="segbar" data-bind="segbar"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+				<div class="radio-grid">
+					<div><small>RSSI</small><b data-bind="rssi">—</b></div>
+					<div><small>SNR</small><b data-bind="snr">—</b></div>
+					<div><small>Loss</small><b data-bind="loss">—</b></div>
+					<div class="age"><small>Age</small><b data-bind="age">—</b></div>
+				</div>
+				<div class="radio-actions">
+					<button class="mini hit" type="button" data-action="radio" data-bind="radio-btn">Disable SX1262</button>
+					<button class="mini hit" type="button" data-action="reconnect" data-bind="retry-btn">Retry · C</button>
+				</div>
+			</section>
+
+			<nav class="actions" aria-label="Flight actions">
+				<svg class="actions-frame" viewBox="0 0 720 56" preserveAspectRatio="none" aria-hidden="true"><path d="M36 55 L92 1 H628 L684 55"></path></svg>
+				<button class="hit" type="button" data-action="flight" data-bind="flight-btn">Take off</button>
+				<button class="hit" type="button" data-action="ml" data-bind="ml-btn">ML landing</button>
+				<button class="hit" type="button" data-action="timing" data-bind="timing-btn">Record 10 s</button>
+				<button class="hit" type="button" data-action="switch">Helm · B</button>
+			</nav>
+
+			<p class="alarm" data-bind="alarm" role="status"></p>
+
+			<footer class="foot">
+				<span class="keys">WASD · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · V FREE · G SHOT · C RETRY · HOME RESET</span>
+				<span class="right"><button class="mini hit" type="button" data-action="freecam">Free cam · V</button><button class="mini hit" type="button" data-action="shot">Frame · G</button><button class="mini hit" type="button" data-action="reset">Reset · Home</button></span>
+			</footer>
+
+			<div class="toast" data-bind="toast" role="status"></div>
+		`;
+		document.body.append( root );
+		this._drone = { root, bindings: new Map( Array.from( root.querySelectorAll( '[data-bind]' ), element => [ element.dataset.bind, element ] ) ) };
+		const compass = root.querySelector( '[data-bind="compass"]' );
+		let ring = '';
+		for ( let i = 0; i < 72; i ++ ) {
+
+			const a = i * 5 * Math.PI / 180;
+			const major = i % 6 === 0, mid = i % 3 === 0;
+			const r1 = 238, r2 = major ? 213 : mid ? 224 : 230;
+			ring += `<line x1="${ ( Math.sin( a ) * r1 ).toFixed( 1 ) }" y1="${ ( - Math.cos( a ) * r1 ).toFixed( 1 ) }" x2="${ ( Math.sin( a ) * r2 ).toFixed( 1 ) }" y2="${ ( - Math.cos( a ) * r2 ).toFixed( 1 ) }" stroke="currentColor" stroke-opacity="${ major ? .36 : mid ? .19 : .1 }" stroke-width="${ major ? 1 : .6 }"/>`;
+
+		}
+		for ( const [ deg, label ] of [ [ 0, 'N' ], [ 90, 'E' ], [ 180, 'S' ], [ 270, 'W' ] ] ) {
+
+			const a = deg * Math.PI / 180, r = 201;
+			ring += `<text x="${ ( Math.sin( a ) * r ).toFixed( 1 ) }" y="${ ( - Math.cos( a ) * r + 2.4 ).toFixed( 1 ) }" text-anchor="middle" font-size="7" letter-spacing="1.5" fill="currentColor" fill-opacity=".46">${ label }</text>`;
+
+		}
+		compass.innerHTML = ring;
+		root.addEventListener( 'click', event => this._handleAction( event.target.closest( '[data-action]' )?.dataset.action ) );
+
+	}
+
+	_buildIntro() {
+
+		const el = document.createElement( 'div' );
+		el.id = 'flight-intro';
+		el.hidden = true;
+		el.innerHTML = '<b>AERODOCK</b><small>Surface craft · launch platform</small><span>Press any key</span>';
+		document.body.append( el );
+		this._introEl = el;
+
+	}
+
+	_startIntro() {
+
+		if ( this._introStarted || ! this.bridge?.installed ) return;
+		this._introStarted = true;
+		this._intro = { until: performance.now() + 6500 };
+		this.bridge.cameraPaused = true;
+		this._introEl.hidden = false;
+		this._introEnd = () => this._endIntro();
+		window.addEventListener( 'keydown', this._introEnd, true );
+		window.addEventListener( 'pointerdown', this._introEnd, true );
+
+	}
+
+	_endIntro() {
+
+		if ( ! this._intro ) return;
+		this._intro = null;
+		this._introJustEnded = true;
+		for ( const code of this.app.input.keys ) this.suppressedKeys.add( code );
+		this._introEl.hidden = true;
+		window.removeEventListener( 'keydown', this._introEnd, true );
+		window.removeEventListener( 'pointerdown', this._introEnd, true );
+		if ( this.bridge ) {
+
+			this.bridge.cameraPaused = false;
+			this.bridge.selectCamera();
+
+		}
+		this._refreshUI();
+
+	}
+
+	_poseAerodock() {
+
+		const boat = this.state?.boat;
+		if ( ! boat?.position ) return;
+		const p = boat.position, h = boat.heading;
+		this.app.camera.position.set(
+			p[ 0 ] + Math.sin( h ) * 6.6 + Math.cos( h ) * 4.8,
+			p[ 1 ] + 2.7,
+			p[ 2 ] - Math.cos( h ) * 6.6 + Math.sin( h ) * 4.8
+		);
+		this.app.camera.lookAt( p[ 0 ], p[ 1 ] + 0.6, p[ 2 ] );
+
+	}
+
+	_handleAction( action ) {
+
+		if ( ! action ) return;
+		if ( action === 'freecam' ) this.toggleFreeCamera();
+		else if ( action === 'shot' ) this.captureScreenshot();
+		else if ( action === 'switch' ) this.switchVehicle();
+		else if ( action === 'retry' ) this.bridge?.retry();
+		else if ( action === 'reset' ) this.resetVehicles();
+		else if ( action === 'reconnect' ) this.reconnect();
+		else if ( action === 'radio' ) this.toggleRadio();
+		else if ( action === 'flight' ) this.toggleFlight();
+		else if ( action === 'ml' ) this.toggleML();
+		else if ( action === 'timing' ) this.recordTiming();
+		else if ( action === 'autopilot' ) this.setAutopilot( ! this.autopilot );
+		else if ( action === 'manual' ) this.setAutopilot( false );
+		else if ( action === 'automatic' ) this.setAutopilot( true );
+		else if ( action === 'stop' ) {
+
+			this.setAutopilot( false );
+			this.manualMotors = [ 0, 0 ];
+			this.bridge?.send( { motors: [ 0, 0 ] } );
+			this._toast( 'Motors stopped' );
+
+		} else if ( action === 'camera' ) this.toggleBoatCamera();
+		else if ( action === 'lid' ) this.toggleLid();
+		else if ( action === 'platform' ) this.togglePlatform();
+
+	}
+
+	_handleMotorInput( target ) {
+
+		if ( this._intro ) return;
+
+		const side = target.dataset.control;
+		if ( side !== 'port' && side !== 'starboard' ) return;
+		if ( this.autopilot ) this.setAutopilot( false );
+		this.manualMotors[ side === 'port' ? 0 : 1 ] = Number( target.value );
+		this.bridge?.send( { motors: this.manualMotors, mode: this.mode } );
 
 	}
 
@@ -125,6 +478,7 @@ export class FlightOperations {
 
 		if ( this.active ) return;
 		this.active = true;
+		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
 		this._ui.root.hidden = false;
@@ -152,6 +506,44 @@ export class FlightOperations {
 
 	}
 
+	toggleFreeCamera() {
+
+		if ( ! this.active ) return;
+		if ( ! this.freeCamera ) {
+
+			if ( ! this.state?.ready || ! this.bridge?.installed || ! this.bridge?.cameraView || this.state?.error ) {
+
+				this._toast( 'Free camera becomes available when the flight camera is ready' );
+				return;
+
+			}
+			const camera = this.app.camera;
+			const angle = new Euler().setFromQuaternion( camera.quaternion, 'YXZ' );
+			this.freeCamera = true;
+			if ( this.bridge ) this.bridge.cameraPaused = true;
+			this.app.fly.setPose( camera.position.clone(), angle.y, angle.x );
+			this.app.fly.velocity.set( 0, 0, 0 );
+			this.bridge?.send( { keys: [], look_x: 0, look_y: 0 } );
+			this.app.input.requestLock?.();
+			this._toast( 'Free camera · WASD move · Q/E height · drag to look · G screenshot · V return' );
+
+		} else {
+
+			this.freeCamera = false;
+			if ( this.bridge ) {
+
+				this.bridge.cameraPaused = false;
+				this.bridge.selectCamera();
+
+			}
+			if ( document.pointerLockElement ) document.exitPointerLock?.();
+			this._toast( 'Flight camera restored' );
+
+		}
+		this._refreshUI();
+
+	}
+
 	_receive( state ) {
 
 		this.state = state;
@@ -162,7 +554,7 @@ export class FlightOperations {
 
 	_sendDroneKeys() {
 
-		if ( ! this.active || this.mode !== 'drone' || ! this.state?.ready || ! this.bridge?.installed || this.state?.error ) return;
+		if ( this._intro || this.freeCamera || ! this.active || this.mode !== 'drone' || ! this.state?.ready || ! this.bridge?.installed || this.state?.error ) return;
 		for ( const code of this.suppressedKeys ) if ( ! this.app.input.down( code ) ) this.suppressedKeys.delete( code );
 		const keys = DRONE_KEYS.filter( code => this.app.input.down( code ) && ! this.suppressedKeys.has( code ) );
 		this.bridge.send( { keys } );
@@ -204,17 +596,40 @@ export class FlightOperations {
 
 	toggleLid() {
 
-		const positions = this.state?.boat;
-		if ( positions?.mechanism_busy ) return;
-		const isOpen = positions && positions.aft_lid > .92 && positions.fore_lid > .92;
+		const boat = this.state?.boat;
+		if ( ! boat || boat.mechanism_busy ) {
+
+			this._toast( 'Wait for the current mechanism movement to finish' );
+			return;
+
+		}
+		const isOpen = boat.aft_lid > .978 && boat.fore_lid > .978;
+		if ( isOpen && boat.platform > .02 ) {
+
+			this._toast( 'Lower the launch platform before closing both lids' );
+			return;
+
+		}
 		this.bridge?.send( { action: 'lid', open: ! isOpen } );
 
 	}
 
 	togglePlatform() {
 
-		if ( this.state?.boat?.mechanism_busy ) return;
-		const raised = ( this.state?.boat?.platform ?? 0 ) > .92;
+		const boat = this.state?.boat;
+		if ( ! boat || boat.mechanism_busy ) {
+
+			this._toast( 'Wait for the current mechanism movement to finish' );
+			return;
+
+		}
+		const raised = boat.platform > .92;
+		if ( ! raised && Math.min( boat.aft_lid, boat.fore_lid ) < .978 ) {
+
+			this._toast( 'Open both lids before raising the launch platform' );
+			return;
+
+		}
 		this.bridge?.send( { action: 'platform', raised: ! raised } );
 
 	}
@@ -230,15 +645,17 @@ export class FlightOperations {
 	}
 
 	async recordTiming() {
-		const button=this._ui.root.querySelector('[data-action="timing"]');if(button.disabled||!this.bridge)return;
-		button.disabled=true;
+		const buttons=[this._ui.root.querySelector('[data-action="timing"]'),this._dBind('timing-btn')].filter(Boolean);
+		if(!buttons.length||buttons.some(button=>button.disabled)||!this.bridge)return;
+		const label=text=>{for(const button of buttons)button.textContent=text;};
+		for(const button of buttons)button.disabled=true;
 		try {
-			const report=await recordPerformance(this.app,{onProgress:seconds=>{button.textContent=`Recording ${seconds} s…`;}});
+			const report=await recordPerformance(this.app,{onProgress:seconds=>label(`Recording ${seconds} s…`)});
 			const response=await fetch(new URL('__timing',location.href),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(report)}).catch(()=>null);
-			if(response?.ok){button.textContent='Timing saved locally';this._toast('Timing saved to the local Tidewater server');}
-			else {const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='tidewater-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);button.textContent='Timing report downloaded';}
-		}catch(error){button.textContent='Record timing (10 s)';this._toast(error.message);}
-		finally{button.disabled=false;}
+			if(response?.ok){label('Timing saved locally');this._toast('Timing saved to the local Tidewater server');}
+			else {const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='tidewater-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);label('Timing report downloaded');}
+		}catch(error){label('Record 10 s');this._toast(error.message);}
+		finally{for(const button of buttons)button.disabled=false;}
 	}
 
 	toggleML() {
@@ -284,6 +701,7 @@ export class FlightOperations {
 		this.boatCamera = 'boat_dock';
 		this.autopilot = true;
 		this.manualMotors = [ 0, 0 ];
+		this._helmFix = null;
 		this.bridge?.send( { action: 'reset', keys: [], mode: 'drone' } );
 		this._toast( 'Resetting both MuJoCo vehicles' );
 		this._refreshUI();
@@ -292,8 +710,12 @@ export class FlightOperations {
 
 	beforePhysics( dt ) {
 
-		if ( ! this.active ) return;
+		if ( ! this.active || this._intro ) return;
+		if ( this._introJustEnded ) { this._introJustEnded = false; return; }
 		const input = this.app.input;
+		if ( input.hit( 'KeyG' ) ) this.captureScreenshot();
+		if ( input.hit( 'KeyV' ) ) this.toggleFreeCamera();
+		if ( this.freeCamera ) return;
 		if ( input.hit( 'Home' ) ) this.resetVehicles();
 		if ( ! this.state?.ready || ! this.bridge?.installed || ! this.bridge?.cameraView || this.state?.error ) return;
 		if ( input.hit( 'KeyB' ) ) this.switchVehicle();
@@ -328,6 +750,12 @@ export class FlightOperations {
 	update( dt ) {
 
 		if ( ! this.active ) return;
+		if ( this._intro ) {
+
+			if ( performance.now() >= this._intro.until ) this._endIntro();
+			else this._poseAerodock();
+
+		}
 		this.bridge?.update( dt );
 		this._uiTime += dt;
 		this._mapTime += dt;
@@ -355,6 +783,7 @@ export class FlightOperations {
 		const drone = state.drone;
 		const link = state.radio || this.radio || {};
 		const isBoat = this.mode === 'boat';
+		const freeCamera = this.freeCamera;
 		const current = isBoat ? boat : drone;
 		const localDrone = drone?.position;
 		const localBoat = boat?.position;
@@ -364,7 +793,7 @@ export class FlightOperations {
 		const roll = current?.roll;
 		const altitude = drone?.position ? drone.position[ 1 ] - Math.max( 0, this.app.terrainData.heightAt( drone.position[ 0 ], drone.position[ 2 ] ) ) : null;
 
-		this._text( 'mode-label', isBoat ? 'Boat helm' : 'Drone feed' );
+		this._text( 'mode-label', freeCamera ? 'Free camera' : isBoat ? 'Boat helm' : 'Drone feed' );
 		this._text( 'attitude-title', isBoat ? 'Boat attitude' : 'Drone attitude' );
 		this._text( 'range', distance === null ? '—' : distance.toFixed( 1 ) );
 		this._text( 'bearing', localDrone && localBoat ? `${ this._bearing( localBoat, localDrone ).toFixed( 0 ) }°` : '—' );
@@ -401,7 +830,7 @@ export class FlightOperations {
 		this._text( 'vehicle-type', isBoat ? 'Surface craft · original CAD' : 'X500 aircraft · original CAD' );
 		this._text( 'vehicle-name', isBoat ? 'AERODOCK launch' : 'Holybro X500 V2' );
 		this._text( 'vehicle-symbol', isBoat ? '◢' : '⌖' );
-		this._text( 'controls', isBoat ? 'W/S motors · A/D steer · U boat cameras · B drone' : 'WASD flight · R/F altitude · Q/E yaw · arrows/mouse gimbal · B boat' );
+		this._text( 'controls', freeCamera ? 'WASD move · Q/E height · drag/mouse look · G screenshot · V flight camera' : isBoat ? 'W/S motors · A/D steer · U boat cameras · B drone' : 'WASD flight · R/F altitude · Q/E yaw · arrows/mouse gimbal · B boat' );
 		this._bind( 'manual-controls' ).hidden = ! isBoat;
 		this._text( 'motor-mode', this.autopilot ? 'Route following · motors controlled automatically' : 'Manual motors · set both throttles or use WASD' );
 		this._text( 'port-actual', `Output ${ Math.round( boat?.port_power || 0 ) }%` );
@@ -423,6 +852,13 @@ export class FlightOperations {
 		const cameraButton = this._ui.root.querySelector( '[data-action="camera"]' );
 		cameraButton.innerHTML = `${ this.boatCamera === 'boat_dock' ? 'Dock camera' : 'Navigation camera' } <kbd>U</kbd>`;
 		cameraButton.hidden = ! isBoat;
+		const freeButton = this._ui.root.querySelector( '[data-action="freecam"]' );
+		if ( freeButton ) {
+
+			freeButton.innerHTML = `${ freeCamera ? 'Flight camera' : 'Free camera' } <kbd>V</kbd>`;
+			freeButton.setAttribute( 'aria-pressed', String( freeCamera ) );
+
+		}
 		const flightControl = this._flightControl();
 		const ml=this.bridge?.policy?.status||{},mlButton=this._ui.root.querySelector('[data-action="ml"]');
 		mlButton.textContent=ml.loading?'Cancel ML loading':ml.enabled?'Manual control':'ML landing';mlButton.setAttribute('aria-pressed',String(!!ml.enabled));
@@ -430,7 +866,7 @@ export class FlightOperations {
 		this._ui.root.querySelector( '[data-action="flight"]' ).textContent = flightControl.label;
 		this._ui.root.querySelector( '[data-action="flight"]' ).hidden = isBoat;
 		this._ui.root.querySelector( '[data-action="flight"]' ).disabled = ! state.ready || ! drone?.px4_ready || ! cameraReady || !! state.error || flightControl.busy;
-		for ( const action of [ 'switch', 'autopilot', 'camera', 'lid', 'platform' ] ) this._ui.root.querySelector( `[data-action="${ action }"]` ).disabled = ! state.ready || ! cameraReady || !! state.error;
+		for ( const action of [ 'switch', 'freecam', 'autopilot', 'camera', 'lid', 'platform' ] ) this._ui.root.querySelector( `[data-action="${ action }"]` ).disabled = ! state.ready || ! cameraReady || !! state.error;
 		if ( boat?.mechanism_busy ) {
 			for ( const action of [ 'lid', 'platform' ] ) this._ui.root.querySelector( `[data-action="${ action }"]` ).disabled = true;
 			this._text( 'deck-state', `Mechanism moving · platform ${ Math.round( boat.platform * 100 ) }% · lids ${ Math.round( boat.aft_lid * 100 ) }% / ${ Math.round( boat.fore_lid * 100 ) }%` );
@@ -444,7 +880,309 @@ export class FlightOperations {
 		this._text( 'controller-source', state.source || 'Native MuJoCo' );
 		this._ui.root.querySelector( '[data-action="switch"]' ).innerHTML = `${ isBoat ? 'Switch to drone' : 'Switch to boat' } <kbd>B</kbd>`;
 		this._ui.root.classList.toggle( 'is-boat', isBoat );
+		this._ui.root.classList.toggle( 'is-freecam', freeCamera );
 		this._ui.root.classList.toggle( 'is-link-lost', link.connected === false );
+
+		if ( this.active ) {
+
+			const flightReady = !! state.ready && cameraReady && ! state.error;
+			if ( flightReady && ! this._introStarted ) this._startIntro();
+			if ( state.error && this._intro ) this._endIntro();
+			const intro = ! ! this._intro;
+			const showHelm = isBoat && ! freeCamera && flightReady && ! intro;
+			const showDrone = ! isBoat && ! freeCamera && flightReady && ! intro;
+			this._helm.root.hidden = ! showHelm;
+			this._drone.root.hidden = ! showDrone;
+			this._ui.root.hidden = showHelm || showDrone || intro;
+			if ( showHelm ) this._updateHelm( state, link, boat, drone );
+			if ( showDrone ) this._updateDrone( state, link, boat, drone );
+
+		}
+
+	}
+
+	_updateHelm( state, link, boat, drone ) {
+
+		if ( ! this._helm ) return;
+
+		const helm = this._helm.root;
+		const lost = link.connected === false;
+		const status = String( link.status || '' ).toLowerCase();
+		const age = Number.isFinite( link.telemetry_age_s ) ? Math.max( 0, link.telemetry_age_s ) : 0;
+		const knots = boat ? boat.speed * 1.943844 : null;
+		const heading = boat ? ( ( boat.heading * 180 / Math.PI % 360 ) + 360 ) % 360 : null;
+		const velocity = boat?.velocity || [ 0, 0, 0 ];
+		const course = boat && Math.hypot( velocity[ 0 ], velocity[ 2 ] ) > .3
+			? ( ( Math.atan2( velocity[ 0 ], - velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360
+			: heading;
+
+		this._hText( 'sog', knots === null ? '—' : knots.toFixed( 1 ).padStart( 4, '0' ) );
+		this._hText( 'spd', knots === null ? '—' : knots.toFixed( 1 ).padStart( 4, '0' ) );
+		this._hText( 'cog', course === null ? '—' : String( Math.round( course ) ).padStart( 3, '0' ) );
+		this._hText( 'hdg', heading === null ? '—' : String( Math.round( heading ) ).padStart( 3, '0' ) );
+		this._hText( 'xte', Number.isFinite( state.route?.error_m ) ? state.route.error_m.toFixed( 1 ) : '—' );
+
+		const word = ! link.enabled ? 'DISABLED' : status === 'handshake' ? 'PAIRING' : lost ? 'LOST' : status === 'critical' ? 'CRITICAL' : status === 'degraded' ? 'DEGRADED' : 'STABLE';
+		this._hText( 'link-text', `LINK · ${ word }` );
+		this._hText( 'link-state', lost ? 'NO TELEMETRY' : status === 'handshake' ? 'HANDSHAKE' : word );
+		this._hBind( 'link-state' )?.classList.toggle( 'is-alert', lost );
+		helm.dataset.link = lost ? 'lost' : 'live';
+		const quality = lost ? 0 : Math.round( link.quality ?? 0 );
+		this._hText( 'quality', String( quality ).padStart( 3, '0' ) );
+		const segments = this._hBind( 'segbar' )?.children || [];
+		for ( let i = 0; i < segments.length; i ++ ) segments[ i ].classList.toggle( 'on', ! lost && i < Math.round( quality / 10 ) );
+		this._hText( 'rssi', lost || ! Number.isFinite( link.rssi ) ? '—' : `${ link.rssi < 0 ? '−' : '+' }${ String( Math.abs( Math.round( link.rssi ) ) ).padStart( 3, '0' ) } dBm` );
+		this._hText( 'snr', lost || ! Number.isFinite( link.snr ) ? '—' : `${ link.snr < 0 ? '−' : '+' }${ Math.abs( link.snr ).toFixed( 1 ) } dB` );
+		this._hText( 'loss', lost ? '100.0 %' : Number.isFinite( link.packet_loss ) ? `${ link.packet_loss.toFixed( 1 ) } %` : '—' );
+		this._hText( 'age', `${ age.toFixed( 1 ) } s` );
+		const radioButton = this._hBind( 'radio-btn' );
+		if ( radioButton ) {
+
+			radioButton.textContent = link.enabled === false ? 'Enable SX1262' : 'Disable SX1262';
+			radioButton.classList.toggle( 'is-on', link.enabled !== false );
+
+		}
+		const retryButton = this._hBind( 'retry-btn' );
+		if ( retryButton ) retryButton.disabled = link.enabled === false || link.connected !== false || status === 'handshake';
+
+		let fix = null;
+		const boatPosition = boat?.position, dronePosition = drone?.position;
+		if ( boatPosition && dronePosition ) {
+
+			fix = {
+				range: Math.hypot( dronePosition[ 0 ] - boatPosition[ 0 ], dronePosition[ 2 ] - boatPosition[ 2 ] ),
+				bearing: this._bearing( boatPosition, dronePosition ),
+				heading: ( ( drone.heading * 180 / Math.PI % 360 ) + 360 ) % 360,
+				speed: drone.speed,
+				velocity: drone.velocity,
+			};
+
+		}
+		if ( fix && ! lost ) this._helmFix = fix;
+		const shown = lost ? this._helmFix : fix;
+		this._hText( 'drn-range', shown ? shown.range.toFixed( 1 ) : '—' );
+		this._hText( 'drn-bearing', shown ? String( Math.round( shown.bearing ) ).padStart( 3, '0' ) : '—' );
+
+		const blip = this._hBind( 'drn' ), line = this._hBind( 'drn-line' );
+		if ( blip ) blip.style.display = shown ? '' : 'none';
+		if ( line ) line.style.display = shown ? '' : 'none';
+		if ( shown ) {
+
+			const radius = Math.min( shown.range, 150 );
+			const angle = shown.bearing * Math.PI / 180;
+			const x = radius * Math.sin( angle ), y = - radius * Math.cos( angle );
+			blip.setAttribute( 'transform', `translate(${ x.toFixed( 1 ) } ${ y.toFixed( 1 ) })` );
+			line.setAttribute( 'x2', x.toFixed( 1 ) );
+			line.setAttribute( 'y2', y.toFixed( 1 ) );
+			this._hBind( 'drn-rot' )?.setAttribute( 'transform', `rotate(${ shown.heading.toFixed( 0 ) })` );
+			const glyph = this._hBind( 'drn-glyph' );
+			glyph?.setAttribute( 'fill-opacity', lost ? '.06' : '.95' );
+			glyph?.setAttribute( 'stroke', 'currentColor' );
+			glyph?.setAttribute( 'stroke-width', lost ? '1.2' : '1.1' );
+			this._hBind( 'drn-sigma' )?.setAttribute( 'r', ( lost ? 9 + Math.min( age, 10 ) * 2.4 : 6 ).toFixed( 1 ) );
+			const vector = this._hBind( 'drn-vec' );
+			const speed = shown.speed || 0;
+			if ( vector ) vector.style.display = lost || speed < .4 ? 'none' : '';
+			if ( vector && speed >= .4 && shown.velocity ) {
+
+				const vectorCourse = ( ( Math.atan2( shown.velocity[ 0 ], - shown.velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
+				vector.setAttribute( 'transform', `rotate(${ vectorCourse.toFixed( 0 ) })` );
+
+			}
+			this._hText( 'drn-label', lost ? `DRN · LAST ${ age.toFixed( 1 ) } s` : 'DRN' );
+
+		}
+		this._hText( 'scope-note', lost ? ( link.enabled === false ? 'LINK DISABLED' : `LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` ) : '' );
+
+		const pitch = boat ? boat.pitch * 180 / Math.PI : 0;
+		const roll = boat ? boat.roll * 180 / Math.PI : 0;
+		this._hText( 'pitch', `${ pitch < 0 ? '−' : '+' }${ Math.abs( pitch ).toFixed( 1 ) }°` );
+		this._hText( 'roll', `${ roll < 0 ? '−' : '+' }${ Math.abs( roll ).toFixed( 1 ) }°` );
+		this._hBind( 'side-craft' )?.style.setProperty( '--tilt', `${ ( - pitch ).toFixed( 1 ) }deg` );
+		this._hBind( 'stern-craft' )?.style.setProperty( '--tilt', `${ roll.toFixed( 1 ) }deg` );
+
+		const platform = boat?.platform ?? 0;
+		const lids = boat ? Math.min( boat.aft_lid, boat.fore_lid ) : 0;
+		if ( this._hBind( 'plat-bar' ) ) this._hBind( 'plat-bar' ).style.width = `${ platform * 100 }%`;
+		this._hText( 'plat', `${ Math.round( platform * 100 ) }%` );
+		if ( this._hBind( 'lids-bar' ) ) this._hBind( 'lids-bar' ).style.width = `${ lids * 100 }%`;
+		this._hText( 'lids', `${ Math.round( lids * 100 ) }%` );
+		const open = lids > .978;
+		this._hText( 'lid-btn', open ? 'Close lids' : 'Open lids' );
+		this._hText( 'plat-btn', platform > .92 ? 'Lower platform' : 'Raise platform' );
+		const busy = !! boat?.mechanism_busy;
+		if ( this._hBind( 'lid-btn' ) ) this._hBind( 'lid-btn' ).disabled = busy;
+		if ( this._hBind( 'plat-btn' ) ) this._hBind( 'plat-btn' ).disabled = busy;
+		this._hText( 'deck-state', busy ? 'MOVING' : 'READY' );
+
+		const litres = boat && Number.isFinite( boat.cabin_water_l ) ? boat.cabin_water_l : null;
+		const flowRaw = boat?.drain_flow_lpm;
+		const flow = Array.isArray( flowRaw ) ? flowRaw.reduce( ( sum, value ) => sum + ( Number( value ) || 0 ), 0 ) : Number.isFinite( flowRaw ) ? flowRaw : null;
+		this._hText( 'bilge-l', litres === null ? '—' : litres.toFixed( 1 ) );
+		this._hText( 'flow', flow === null ? '—' : flow.toFixed( 1 ) );
+		this._hBind( 'bilge' )?.classList.toggle( 'is-alert', !! boat?.drain_high_water );
+
+		const portPower = boat?.port_power ?? 0, starboardPower = boat?.starboard_power ?? 0;
+		if ( this._hBind( 'port-bar' ) ) this._hBind( 'port-bar' ).style.width = `${ portPower }%`;
+		if ( this._hBind( 'stbd-bar' ) ) this._hBind( 'stbd-bar' ).style.width = `${ starboardPower }%`;
+		this._hText( 'port', `${ Math.round( portPower ) }%` );
+		this._hText( 'stbd', `${ Math.round( starboardPower ) }%` );
+		this._hText( 'drive', this.autopilot ? `AUTO · ${ ( state.route?.target_speed_m_s ?? 2.8 ).toFixed( 1 ) } m/s` : 'MANUAL' );
+		for ( const [ side, value, index ] of [ [ 'port', portPower, 0 ], [ 'starboard', starboardPower, 1 ] ] ) {
+
+			const slider = helm.querySelector( `[data-control="${ side }"]` );
+			if ( ! slider ) continue;
+			if ( document.activeElement !== slider ) slider.value = String( Math.round( this.autopilot ? value : this.manualMotors[ index ] ) );
+			slider.disabled = ! state.ready;
+
+		}
+		this._hBind( 'auto-btn' )?.classList.toggle( 'is-on', this.autopilot );
+		this._hBind( 'manual-btn' )?.classList.toggle( 'is-on', ! this.autopilot );
+		this._hText( 'cam', this.boatCamera === 'boat_dock' ? 'CAM · DOCK' : 'CAM · NAV' );
+
+	}
+
+	_updateDrone( state, link, boat, drone ) {
+
+		if ( ! this._drone ) return;
+		const root = this._drone.root;
+		const lost = link.connected === false;
+		const status = String( link.status || '' ).toLowerCase();
+		const age = Number.isFinite( link.telemetry_age_s ) ? Math.max( 0, link.telemetry_age_s ) : 0;
+		const position = drone?.position;
+		const boatPosition = boat?.position;
+		const heading = drone ? ( ( drone.heading * 180 / Math.PI % 360 ) + 360 ) % 360 : null;
+		const separation = position && boatPosition ? Math.hypot( boatPosition[ 0 ] - position[ 0 ], boatPosition[ 2 ] - position[ 2 ] ) : null;
+		const ground = position ? Math.max( 0, this.app.terrainData.heightAt( position[ 0 ], position[ 2 ] ) ) : 0;
+		const agl = position ? position[ 1 ] - ground : null;
+		const signed = value => `${ value < 0 ? '−' : '+' }${ String( Math.abs( Math.round( value ) ) ).padStart( 4, '0' ) }`;
+
+		this._dText( 'alt', position ? position[ 1 ].toFixed( 1 ).padStart( 5, '0' ) : '—' );
+		this._dText( 'spd', drone && Number.isFinite( drone.speed ) ? drone.speed.toFixed( 2 ).padStart( 5, '0' ) : '—' );
+		this._dText( 'hdg', heading === null ? '—' : String( Math.round( heading ) ).padStart( 3, '0' ) );
+		this._dText( 'sep', separation === null ? '—' : separation.toFixed( 0 ).padStart( 3, '0' ) );
+		this._dText( 'batt', Number.isFinite( drone?.battery_pct ) ? String( Math.round( drone.battery_pct ) ).padStart( 2, '0' ) : '—' );
+		this._dText( 'agl', agl === null ? '—' : agl.toFixed( 1 ) );
+		this._dText( 'gx', position ? signed( position[ 0 ] ) : '—' );
+		this._dText( 'gz', position ? signed( position[ 2 ] ) : '—' );
+		this._dText( 'bspd', boat ? boat.speed.toFixed( 1 ) : '—' );
+		this._dText( 'bcrs', boat ? String( Math.round( degrees( boat.heading ) ) ).padStart( 3, '0' ) : '—' );
+
+		const pitch = drone ? drone.pitch * 180 / Math.PI : 0;
+		const roll = drone ? drone.roll * 180 / Math.PI : 0;
+		this._dText( 'pitch', `${ pitch < 0 ? '−' : '+' }${ Math.abs( pitch ).toFixed( 1 ) }°` );
+		this._dText( 'roll', `${ roll < 0 ? '−' : '+' }${ Math.abs( roll ).toFixed( 1 ) }°` );
+		this._dBind( 'horizon' )?.setAttribute( 'transform', `rotate(${ ( - roll ).toFixed( 1 ) }) translate(0 ${ ( pitch * 3 ).toFixed( 1 ) })` );
+		this._dBind( 'compass' )?.setAttribute( 'transform', `rotate(${ ( - ( heading || 0 ) ).toFixed( 1 ) })` );
+		this._dText( 'armed', drone?.armed ? 'ARMED' : 'DISARMED' );
+		this._dBind( 'armed' )?.classList.toggle( 'is-off', ! drone?.armed );
+		const velocity = drone?.velocity;
+		if ( velocity && Math.hypot( velocity[ 0 ], velocity[ 2 ] ) > .4 ) {
+
+			const course = ( ( Math.atan2( velocity[ 0 ], - velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
+			this._dBind( 'drone-vec' )?.setAttribute( 'transform', `rotate(${ course.toFixed( 0 ) })` );
+
+		}
+
+		const word = ! link.enabled ? 'DISABLED' : status === 'handshake' ? 'PAIRING' : lost ? 'LOST' : status === 'critical' ? 'CRITICAL' : status === 'degraded' ? 'DEGRADED' : 'STABLE';
+		this._dText( 'link-text', `SX1262 · ${ word }` );
+		this._dText( 'link-state', lost ? 'NO TELEMETRY' : status === 'handshake' ? 'HANDSHAKE' : word );
+		root.classList.toggle( 'is-lost', lost );
+		const quality = lost ? 0 : Math.round( link.quality ?? 0 );
+		this._dText( 'quality', String( quality ).padStart( 3, '0' ) );
+		const segments = this._dBind( 'segbar' )?.children || [];
+		for ( let i = 0; i < segments.length; i ++ ) segments[ i ].classList.toggle( 'on', ! lost && i < Math.round( quality / 10 ) );
+		this._dText( 'rssi', lost || ! Number.isFinite( link.rssi ) ? '—' : `${ link.rssi < 0 ? '−' : '+' }${ String( Math.abs( Math.round( link.rssi ) ) ).padStart( 3, '0' ) } dBm` );
+		this._dText( 'snr', lost || ! Number.isFinite( link.snr ) ? '—' : `${ link.snr < 0 ? '−' : '+' }${ Math.abs( link.snr ).toFixed( 1 ) } dB` );
+		this._dText( 'loss', lost ? '100.0 %' : Number.isFinite( link.packet_loss ) ? `${ link.packet_loss.toFixed( 1 ) } %` : '—' );
+		this._dText( 'age', `${ age.toFixed( 1 ) } s` );
+		const radioButton = this._dBind( 'radio-btn' );
+		if ( radioButton ) {
+
+			radioButton.textContent = link.enabled === false ? 'Enable SX1262' : 'Disable SX1262';
+			radioButton.classList.toggle( 'is-on', link.enabled !== false );
+
+		}
+		const retryButton = this._dBind( 'retry-btn' );
+		if ( retryButton ) retryButton.disabled = link.enabled === false || link.connected !== false || status === 'handshake';
+
+		let fix = null;
+		if ( position && boatPosition ) {
+
+			fix = {
+				range: separation,
+				bearing: this._bearing( position, boatPosition ),
+				heading: degrees( boat.heading ),
+				speed: boat.speed,
+				velocity: boat.velocity,
+			};
+
+		}
+		if ( fix && ! lost ) this._droneFix = fix;
+		const shown = lost ? this._droneFix : fix;
+		this._dText( 'sc-range', shown ? shown.range.toFixed( 0 ) : '—' );
+		this._dText( 'sc-bearing', shown ? String( Math.round( shown.bearing ) ).padStart( 3, '0' ) : '—' );
+		const group = this._dBind( 'boat' ), line = this._dBind( 'sc-line' );
+		if ( group ) group.style.display = shown ? '' : 'none';
+		if ( line ) line.style.display = shown ? '' : 'none';
+		if ( shown && group && line ) {
+
+			const radius = Math.min( shown.range, 150 );
+			const angle = shown.bearing * Math.PI / 180;
+			const x = radius * Math.sin( angle ), y = - radius * Math.cos( angle );
+			group.setAttribute( 'transform', `translate(${ x.toFixed( 1 ) } ${ y.toFixed( 1 ) })` );
+			line.setAttribute( 'x2', x.toFixed( 1 ) );
+			line.setAttribute( 'y2', y.toFixed( 1 ) );
+			this._dBind( 'boat-rot' )?.setAttribute( 'transform', `rotate(${ shown.heading.toFixed( 0 ) })` );
+			const glyph = this._dBind( 'boat-glyph' );
+			glyph?.setAttribute( 'fill-opacity', lost ? '.06' : '.95' );
+			glyph?.setAttribute( 'stroke', 'currentColor' );
+			glyph?.setAttribute( 'stroke-width', lost ? '1.2' : '1.1' );
+			this._dBind( 'boat-sigma' )?.setAttribute( 'r', ( lost ? 9 + Math.min( age, 10 ) * 2.4 : 6 ).toFixed( 1 ) );
+			const vector = this._dBind( 'boat-vec' );
+			if ( vector ) vector.style.display = lost || shown.speed < .4 ? 'none' : '';
+			if ( vector && shown.speed >= .4 && shown.velocity ) {
+
+				const course = ( ( Math.atan2( shown.velocity[ 0 ], - shown.velocity[ 2 ] ) * 180 / Math.PI % 360 ) + 360 ) % 360;
+				vector.setAttribute( 'transform', `rotate(${ course.toFixed( 0 ) })` );
+
+			}
+			this._dText( 'boat-label', lost ? `BOAT · LAST ${ age.toFixed( 1 ) } s` : 'BOAT' );
+
+		}
+		this._dText( 'alarm', lost ? ( link.enabled === false ? 'SX1262 DISABLED · TELEMETRY OFF' : status === 'handshake' ? 'SX1262 PAIRING · TELEMETRY STALE' : `SX1262 LINK LOST · LAST FIX ${ age.toFixed( 1 ) } s · PRESS C` ) : '' );
+
+		const control = this._flightControl();
+		this._dText( 'flight-btn', control.label );
+		const flightButton = this._dBind( 'flight-btn' );
+		if ( flightButton ) flightButton.disabled = ! state.ready || ! drone?.px4_ready || ! this.bridge?.cameraView || !! state.error || control.busy;
+		const ml = this.bridge?.policy?.status || {};
+		const mlButton = this._dBind( 'ml-btn' );
+		if ( mlButton ) {
+
+			mlButton.textContent = ml.loading ? 'Cancel ML loading' : ml.enabled ? 'Manual control' : 'ML landing';
+			mlButton.disabled = ! ( ml.loading || ml.enabled ) && ( ! state.ready || ! this.bridge?.cameraView || ! drone?.armed || drone.landed || drone.landing_requested || !! state.error );
+
+		}
+
+	}
+
+	captureScreenshot() {
+
+		if ( this._screenshotPending ) return;
+		this._screenshotPending = true;
+		this._toast( 'Rendering screenshot · 1920 × 1080' );
+		requestAnimationFrame( () => {
+
+			this.app.captureScreenshot?.().then( result => this._toast( `Screenshot saved · ${ result.width } × ${ result.height }` ) )
+				.catch( error => {
+
+					console.error( 'Screenshot failed', error );
+					this._toast( 'Screenshot failed: ' + error.message );
+
+				} ).finally( () => { this._screenshotPending = false; } );
+
+		} );
 
 	}
 
@@ -536,14 +1274,48 @@ export class FlightOperations {
 
 	}
 
+	_hText( key, value ) {
+
+		const element = this._hBind( key );
+		if ( element ) element.textContent = String( value );
+
+	}
+
+	_hBind( key ) {
+
+		return this._helm?.bindings.get( key );
+
+	}
+
+	_dText( key, value ) {
+
+		const element = this._dBind( key );
+		if ( element ) element.textContent = String( value );
+
+	}
+
+	_dBind( key ) {
+
+		return this._drone?.bindings.get( key );
+
+	}
+
 	_toast( text ) {
 
-		const element = this._bind( 'toast' );
-		if ( ! element ) return;
-		element.textContent = text;
-		element.classList.add( 'is-on' );
+		const elements = [ this._bind( 'toast' ), this._hBind( 'toast' ), this._dBind( 'toast' ) ].filter( Boolean );
+		if ( ! elements.length ) return;
+		for ( const element of elements ) {
+
+			element.textContent = text;
+			element.classList.add( 'is-on' );
+
+		}
 		clearTimeout( this._toastTimer );
-		this._toastTimer = setTimeout( () => element.classList.remove( 'is-on' ), 2600 );
+		this._toastTimer = setTimeout( () => {
+
+			for ( const element of elements ) element.classList.remove( 'is-on' );
+
+		}, 2600 );
 
 	}
 

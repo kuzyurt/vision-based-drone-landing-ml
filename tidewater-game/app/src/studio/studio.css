@@ -1,0 +1,365 @@
+body.studio-mode {
+	background: #071014;
+}
+
+body.studio-mode #fps {
+	display: none !important;
+}
+
+#ka-studio {
+	--ka-ink: #eef5f2;
+	--ka-muted: rgba(218, 231, 227, 0.56);
+	--ka-line: rgba(190, 218, 210, 0.2);
+	--ka-panel: rgba(7, 17, 20, 0.72);
+	--ka-sun: #f4b66f;
+	position: fixed;
+	inset: 0;
+	z-index: 900;
+	pointer-events: none;
+	color: var(--ka-ink);
+	font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+#ka-studio *,
+#ka-studio *::before,
+#ka-studio *::after {
+	box-sizing: border-box;
+}
+
+#ka-studio .ka-top {
+	position: absolute;
+	top: 26px;
+	left: 30px;
+	right: 30px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	gap: 20px;
+	transition: opacity 320ms ease, transform 320ms ease;
+}
+
+#ka-studio .ka-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
+}
+
+#ka-studio .ka-mark {
+	display: grid;
+	place-items: center;
+	width: 34px;
+	height: 34px;
+	border: 1px solid rgba(244, 182, 111, 0.68);
+	border-radius: 50%;
+	color: var(--ka-sun);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 13px;
+	font-weight: 600;
+	letter-spacing: -0.08em;
+}
+
+#ka-studio .ka-brand b {
+	display: block;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.24em;
+}
+
+#ka-studio .ka-brand small {
+	display: block;
+	margin-top: 4px;
+	color: var(--ka-muted);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 10px;
+	letter-spacing: 0.08em;
+}
+
+#ka-studio .ka-top-right {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+#ka-studio .ka-shot {
+	padding: 7px 10px;
+	border: 1px solid var(--ka-line);
+	border-radius: 4px;
+	background: rgba(4, 12, 14, 0.35);
+	color: rgba(238, 245, 242, 0.72);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 10px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+#ka-studio button {
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+}
+
+#ka-studio .ka-ghost {
+	pointer-events: auto;
+	padding: 7px 10px;
+	border: 1px solid var(--ka-line);
+	border-radius: 4px;
+	background: rgba(4, 12, 14, 0.35);
+	color: rgba(238, 245, 242, 0.72);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 10px;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+	transition: border-color 160ms ease, color 160ms ease;
+}
+
+#ka-studio .ka-ghost:hover {
+	border-color: rgba(244, 182, 111, 0.56);
+	color: var(--ka-ink);
+}
+
+#ka-studio kbd {
+	padding: 1px 4px;
+	border: 1px solid rgba(238, 245, 242, 0.18);
+	border-radius: 3px;
+	color: var(--ka-muted);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 9px;
+	font-weight: 400;
+}
+
+#ka-studio .ka-help {
+	position: absolute;
+	left: 50%;
+	bottom: 26px;
+	transform: translateX(-50%);
+	color: rgba(238, 245, 242, 0.48);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 10px;
+	letter-spacing: 0.04em;
+	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.75);
+	transition: opacity 320ms ease;
+}
+
+#ka-studio .ka-help i {
+	display: inline-block;
+	width: 1px;
+	height: 10px;
+	margin: 0 9px -1px;
+	background: rgba(238, 245, 242, 0.22);
+}
+
+#ka-studio .ka-panel {
+	position: absolute;
+	right: 30px;
+	bottom: 30px;
+	width: 292px;
+	padding: 18px 18px 14px;
+	border: 1px solid var(--ka-line);
+	border-radius: 8px;
+	background: var(--ka-panel);
+	box-shadow: 0 20px 70px rgba(0, 0, 0, 0.28);
+	backdrop-filter: blur(20px) saturate(115%);
+	-webkit-backdrop-filter: blur(20px) saturate(115%);
+	pointer-events: auto;
+	transition: opacity 320ms ease, transform 320ms ease;
+}
+
+#ka-studio .ka-panel-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 10px;
+	padding-bottom: 14px;
+	border-bottom: 1px solid var(--ka-line);
+	margin-bottom: 15px;
+}
+
+#ka-studio .ka-panel-head span {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+}
+
+#ka-studio .ka-panel-head small {
+	color: var(--ka-muted);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 8px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+	text-align: right;
+}
+
+#ka-studio .ka-field {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 12px;
+	margin: 12px 0 7px;
+}
+
+#ka-studio .ka-field label {
+	color: var(--ka-muted);
+	font-size: 10px;
+	letter-spacing: 0.06em;
+}
+
+#ka-studio .ka-field output {
+	color: var(--ka-ink);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+}
+
+#ka-studio .ka-range {
+	display: block;
+	width: 100%;
+	height: 16px;
+	margin: 0;
+	appearance: none;
+	-webkit-appearance: none;
+	background: transparent;
+	cursor: ew-resize;
+}
+
+#ka-studio .ka-range::-webkit-slider-runnable-track {
+	height: 2px;
+	border-radius: 2px;
+	background: linear-gradient(90deg, rgba(244, 182, 111, 0.82), rgba(190, 218, 210, 0.32));
+}
+
+#ka-studio .ka-range::-moz-range-track {
+	height: 2px;
+	border-radius: 2px;
+	background: linear-gradient(90deg, rgba(244, 182, 111, 0.82), rgba(190, 218, 210, 0.32));
+}
+
+#ka-studio .ka-range::-webkit-slider-thumb {
+	width: 12px;
+	height: 12px;
+	margin-top: -5px;
+	border: 2px solid #0b1719;
+	border-radius: 50%;
+	background: var(--ka-sun);
+	box-shadow: 0 0 0 1px rgba(244, 182, 111, 0.4);
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+#ka-studio .ka-range::-moz-range-thumb {
+	width: 10px;
+	height: 10px;
+	border: 2px solid #0b1719;
+	border-radius: 50%;
+	background: var(--ka-sun);
+	box-shadow: 0 0 0 1px rgba(244, 182, 111, 0.4);
+}
+
+#ka-studio .ka-presets {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 5px;
+	margin: 13px 0 2px;
+}
+
+#ka-studio .ka-presets button {
+	min-height: 29px;
+	padding: 6px 8px;
+	border: 1px solid var(--ka-line);
+	border-radius: 3px;
+	background: rgba(238, 245, 242, 0.035);
+	color: var(--ka-muted);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 9px;
+	letter-spacing: 0.04em;
+	text-align: left;
+	transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+#ka-studio .ka-presets button:hover {
+	border-color: rgba(244, 182, 111, 0.44);
+	color: var(--ka-ink);
+}
+
+#ka-studio .ka-presets button.is-on {
+	border-color: rgba(244, 182, 111, 0.68);
+	background: rgba(244, 182, 111, 0.11);
+	color: var(--ka-ink);
+}
+
+#ka-studio .ka-presets button:last-child {
+	grid-column: 1 / -1;
+}
+
+#ka-studio .ka-panel-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-top: 16px;
+	padding-top: 13px;
+	border-top: 1px solid var(--ka-line);
+}
+
+#ka-studio .ka-panel-foot button {
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: var(--ka-sun);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 9px;
+	letter-spacing: 0.04em;
+}
+
+#ka-studio .ka-panel-foot button:hover {
+	color: #ffd29b;
+}
+
+#ka-studio .ka-panel-foot span {
+	max-width: 142px;
+	overflow: hidden;
+	color: rgba(218, 231, 227, 0.4);
+	font-family: "JetBrains Mono", ui-monospace, monospace;
+	font-size: 8px;
+	line-height: 1.4;
+	text-align: right;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+body.studio-clean #ka-studio .ka-top,
+body.studio-clean #ka-studio .ka-help,
+body.studio-clean #ka-studio .ka-panel {
+	opacity: 0;
+	transform: translateY(6px);
+	pointer-events: none;
+}
+
+@media (max-width: 700px) {
+	#ka-studio .ka-top {
+		top: 16px;
+		left: 16px;
+		right: 16px;
+	}
+
+	#ka-studio .ka-shot {
+		display: none;
+	}
+
+	#ka-studio .ka-panel {
+		right: 12px;
+		bottom: 12px;
+		left: 12px;
+		width: auto;
+	}
+
+	#ka-studio .ka-help {
+		display: none;
+	}
+}

@@ -98,6 +98,8 @@ body.flight-mode-active #fps { display: none !important; }
 #flight-console button:active { background: rgba(44, 93, 92, .9); }
 .fc-top-actions [data-action='switch'] { border-color: rgba(95, 227, 212, .42); color: var(--fc-aqua); }
 .fc-top-actions .fc-icon-btn { color: var(--fc-muted); }
+#flight-console [data-action='freecam'][aria-pressed='true'] { border-color: rgba(255, 184, 107, .55); color: #ffd6a1; background: rgba(255, 184, 107, .1); }
+#flight-console.is-freecam .fc-mode { color: #ffd6a1; }
 
 .fc-panel {
 	border: 1px solid var(--fc-line);

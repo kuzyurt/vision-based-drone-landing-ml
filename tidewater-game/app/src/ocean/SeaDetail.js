@@ -64,7 +64,7 @@ fn seaDetailSample( xz: vec2f ) -> SeaDetailSample {
 
 	// slicks: long bands, strongest in light wind, torn apart by gusts
 	let sl = seaDetailLoad( vec2f( along / 1100.0, across / 70.0 ) ).z;
-	let calmWind = smoothstep( 13.0, 4.0, frame.windSpeed );
+	let calmWind = 1.0 - smoothstep( 4.0, 13.0, frame.windSpeed );
 	let slick = smoothstep( 0.64, 0.76, sl ) * ( 1.0 - gust * 0.8 ) * calmWind * seaDetailParams.slickAmount;
 
 	// windrows: thin foam lines ~10 m apart that come and go along their length
