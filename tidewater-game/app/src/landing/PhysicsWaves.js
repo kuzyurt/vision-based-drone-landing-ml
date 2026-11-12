@@ -1,7 +1,8 @@
 import { UniformBlock, ShaderModule } from '../engine/webgpu.js';
 import { Vector4 } from '../engine/math/index.js';
 export const landingWaveParams=new UniformBlock('LandingWaveParams',{
- enabled:['f32',1],
+ // off until the flight bridge takes the water over: the game renders its own FFT ocean
+ enabled:['f32',0],
  c0:['vec4f',new Vector4()],c1:['vec4f',new Vector4()],c2:['vec4f',new Vector4()],c3:['vec4f',new Vector4()],
 },{label:'landing waves'});
 export const landingWaveModule=new ShaderModule({name:'landingWaves',uniforms:landingWaveParams,uniformName:'landingWaves',code:`

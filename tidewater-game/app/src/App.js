@@ -178,9 +178,9 @@ export class App {
 		this.surface.terrain = this.terrainGPU;
 		this.seaDetail = new SeaDetail();
 		this.surface.detail = this.seaDetail;
+		// the game's coast keeps its breaking waves and swash; the flight simulator owns its own
+		// metre-scale water field and lowers this again while it runs (SimulationBridge)
 		this.shore = new ShoreWaves( this.terrainGPU );
-		this.shore.enabled.value = 0;
-		this.shore.amplitude.value = .025;
 		this.surface.shore = this.shore;
 		this.caustics = qs.has( 'noCaustics' ) ? null : new Caustics( renderer, this.fft );
 		if ( this.caustics ) this.caustics.detail = this.seaDetail;

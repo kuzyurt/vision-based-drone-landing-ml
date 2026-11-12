@@ -394,7 +394,9 @@ ${ T ? `		let L0 = max( pos.y - groundH, 0.0 ) / tDown;
 		}` : '		let Lt = 400.0;' }
 		let Lter = clamp( Lt, 0.0, 400.0 );
 		// thin breaking crests: the refracted ray leaves through the back of the wave into the sky
-		let crestT = ${ hasCrest ? 'shoreCrestPath( lagXZ, vDepth, Tv )' : '1e4' };
+		// Landing mode draws the shared physical wave field: its surface is not the shore profile the
+		// crest finder marches, so the see-through-crest path would cut holes into flat water.
+		let crestT = ${ hasCrest ? 'select( shoreCrestPath( lagXZ, vDepth, Tv ), 1e4, landingWaves.enabled > 0.5 )' : '1e4' };
 		let thruCrest = crestT < Lter;
 
 		// project the refracted end point to the screen

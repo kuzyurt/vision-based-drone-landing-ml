@@ -2341,6 +2341,9 @@ export class UI {
 	_onKey( e ) {
 
 		if ( isTypingTarget( e.target ) || e.ctrlKey || e.metaKey || e.altKey ) return;
+		// The flight game owns its keys (on the helm P is the autopilot, not photo mode) and its
+		// consoles replace this panel and the help overlay entirely.
+		if ( document.body.classList.contains( 'flight-mode-active' ) ) return;
 
 		if ( e.code === 'F1' || e.key === '?' ) {
 

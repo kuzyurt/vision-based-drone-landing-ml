@@ -339,3 +339,118 @@
 #flight-intro b { display: block; font-size: 10px; font-weight: 400; letter-spacing: .6em; }
 #flight-intro small { display: block; margin-top: 9px; font-size: 7px; letter-spacing: .26em; color: rgba(223, 228, 225, .5); }
 #flight-intro span { display: block; margin-top: 18px; font-size: 8px; letter-spacing: .2em; color: rgba(223, 228, 225, .66); }
+
+/* ---- mission start ------------------------------------------------------ */
+/* The game opens here: same ink, mono and letter-spacing as the consoles, so the old Tidewater
+   interface never appears before the flight HUD. Click anywhere (or Enter) to start. */
+#flight-start {
+	--ink: #dfe4e1;
+	--ink-2: rgba(223, 228, 225, .64);
+	--ink-3: rgba(223, 228, 225, .46);
+	--line: rgba(223, 228, 225, .14);
+	position: fixed;
+	inset: 0;
+	z-index: 93;
+	display: grid;
+	place-items: center;
+	padding: 24px;
+	background: radial-gradient(120% 90% at 50% 42%, rgba(3, 5, 6, .30), rgba(3, 5, 6, .84));
+	color: var(--ink);
+	font: 400 11px/1.5 'JetBrains Mono', ui-monospace, monospace;
+	letter-spacing: .06em;
+	text-transform: uppercase;
+	cursor: pointer;
+	-webkit-font-smoothing: antialiased;
+	transition: opacity .38s ease;
+}
+#flight-start[hidden] { display: none; }
+#flight-start.is-off { opacity: 0; pointer-events: none; }
+#flight-start *, #flight-start *::before, #flight-start *::after { box-sizing: border-box; }
+#flight-start .fs-card {
+	width: min(580px, 88vw);
+	padding: 32px 34px 24px;
+	border: 1px solid var(--line);
+	background: rgba(4, 9, 10, .74);
+	text-align: center;
+}
+#flight-start .fs-brand { display: flex; align-items: center; justify-content: center; gap: 12px; text-align: left; }
+#flight-start .fs-mark {
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-items: center;
+	border: 1px solid rgba(223, 228, 225, .35);
+	border-radius: 50% 50% 50% 3px;
+	font-size: 12px;
+}
+#flight-start .fs-brand b { font-weight: 400; letter-spacing: .5em; }
+#flight-start .fs-brand small { display: block; margin-top: 5px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
+#flight-start .fs-lead {
+	max-width: 44ch;
+	margin: 22px auto 20px;
+	font-size: 9px;
+	line-height: 1.9;
+	letter-spacing: .1em;
+	color: var(--ink-2);
+	text-transform: none;
+}
+#flight-start .fs-keys {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px 16px;
+	padding: 16px 0 18px;
+	border-top: 1px solid var(--line);
+	border-bottom: 1px solid var(--line);
+	font-size: 7px;
+	letter-spacing: .18em;
+	color: var(--ink-3);
+}
+#flight-start .fs-keys span { display: inline-flex; align-items: center; gap: 6px; }
+#flight-start kbd {
+	padding: 2px 5px;
+	border: 1px solid rgba(223, 228, 225, .2);
+	border-radius: 3px;
+	color: var(--ink-2);
+	font: inherit;
+	letter-spacing: .1em;
+}
+#flight-start .fs-go {
+	pointer-events: auto;
+	margin: 22px auto 0;
+	padding: 11px 24px;
+	border: 1px solid rgba(223, 228, 225, .3);
+	background: rgba(223, 228, 225, .05);
+	color: inherit;
+	font: inherit;
+	letter-spacing: .28em;
+	cursor: pointer;
+	transition: background .15s ease, border-color .15s ease;
+}
+#flight-start .fs-go:hover:not(:disabled) { background: rgba(223, 228, 225, .12); border-color: rgba(223, 228, 225, .46); }
+#flight-start .fs-go:disabled { color: var(--ink-3); cursor: default; }
+#flight-start .fs-status { margin-top: 14px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
+#flight-start.is-error .fs-status { color: #c8806f; }
+#flight-start :focus-visible { outline: 1px solid rgba(223, 228, 225, .5); outline-offset: 3px; }
+
+@media (max-width: 700px) {
+	#flight-start .fs-keys { display: none; }
+	#flight-start .fs-card { padding: 24px 20px 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	#flight-start { transition-duration: .01ms; }
+}
+
+/* The flight consoles stand in for the free camera instead of yielding to the old console. */
+#drone-hud .freecam,
+#helm-hud .freecam {
+	display: none;
+	padding: 3px 7px;
+	border: 1px solid var(--line);
+	color: var(--ink-2);
+	font-size: 7px;
+	letter-spacing: .24em;
+	white-space: nowrap;
+}
+#drone-hud.is-freecam .freecam,
+#helm-hud.is-freecam .freecam { display: inline-block; }
