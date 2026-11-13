@@ -9,6 +9,16 @@ const p=new PolicyInference();
 const external=process.argv.includes('--external');
 await p.initialize({base:base.href,executionProvider:external?'external-webgpu':'wasm',loadPython:()=>loadPyodide({indexURL:fileURLToPath(new URL('pyodide/',base))})});
 const frames=JSON.parse(await fs.readFile(new URL('neural.json',fixtures),'utf8'));
+if(p.student){
+ const f=structuredClone(frames[0]),obs=f.observation;obs.decision_dt_s??=.04;obs.mission??={elapsed_s:0,budget_s:180};
+ const numeric=p.numeric(obs);assert.equal(numeric.length,32);assert(numeric.every(Number.isFinite));
+ const result=await p.act(new Uint8Array(640*360*3),obs,0);
+ assert.equal(result.action.length,6);assert(result.action.every(Number.isFinite));
+ assert(result.diagnostics.pre360_phase,'Student diagnostics must include pre360 state');
+ assert(p.prediction.length===15&&p.prediction.every(Number.isFinite));
+ assert(p.hidden.length===128&&p.hidden.every(Number.isFinite));
+ p.reset();assert(p.hidden.every(x=>x===0));
+}else{
 for(let i=0;i<frames.length;i++){
  const f=frames[i],rgb=new Uint8Array(await fs.readFile(new URL(`rgb-${i}.bin`,fixtures)));
  const numeric=p.numeric(f.observation);assert(Math.max(...numeric.map((x,j)=>Math.abs(x-f.numeric[j])))<1e-6,'Frozen numeric observation must be unchanged');
@@ -25,5 +35,6 @@ if(p.numericCount===34){
  const numeric=p.numeric(missing);assert.equal(numeric[21],0);assert(Math.abs(numeric[19]-3.1)<1e-6);assert.equal(numeric[22],p.manifest.unknown_dock_observation_mean);assert.deepEqual(Array.from(numeric.slice(32)),[100,10]);
  const stale=structuredClone(frames[0].observation);stale.beacon.age_s=4;assert.equal(p.numeric(stale)[21],0);
  const invalid=structuredClone(frames[0].observation);invalid.beacon.relative_heading_m=[1,2];assert.equal(p.numeric(invalid)[21],0);
+}
 }
 await p.close();console.log(external?'Frozen numeric observation and external-GPU controller path matched original controller commands at full 640×360 resolution.':'Browser ONNX WASM and Pyodide controller ran the checkpoint at full 640×360 resolution.');

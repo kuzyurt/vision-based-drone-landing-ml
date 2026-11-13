@@ -5,7 +5,6 @@ Data is split by lifecycle, not by date or generator.
 | Folder | Meaning | In git? |
 |---|---|---|
 | [`generated/`](generated/) | Reproducible output from a documented command. | Manifests, metadata and generator scripts yes; payloads no. |
-| [`datasets/`](../datasets/) | Compatibility pointer for the old generated-data root. | README only. |
 
 Reviewed, stable inputs will live under the future `data/curated/` root. No
 curated set has been promoted yet; the manifest contract is in

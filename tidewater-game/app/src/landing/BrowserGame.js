@@ -95,10 +95,9 @@ export class BrowserGame {
  }
  control() {
   const p=this.px4,obs=p.observation();
-  if(this.takeoffPending && this.boatSpeed()<.15 && obs[0]) {this.takeoffPending=false;p.landingRequested=false;p.flightRequested=true;p.targetHeight=1.5;p.armRequestTime=this.d.time;p.lastArmTry=0;}
-  if(p.armed && this.d.xpos[this.c.drone.base*3+2]>this.d.site_xpos[this.c.pad_site*3+2]+1)this.launchComplete=true;
-  const hold=this.takeoffPending || (!this.launchComplete && this.mode==='drone');
-  if(hold || !obs[0])this.f.power=[0,0];else{this.routeControl(this.automatic);if(!this.automatic)this.f.power=[...this.motors];}
+  	  if(this.takeoffPending && obs[0]) {this.takeoffPending=false;p.landingRequested=false;p.flightRequested=true;p.targetHeight=1.5;p.armRequestTime=this.d.time;p.lastArmTry=0;}
+	  if(p.armed && this.d.xpos[this.c.drone.base*3+2]>this.d.site_xpos[this.c.pad_site*3+2]+1)this.launchComplete=true;
+	  if(!obs[0])this.f.power=[0,0];else{this.routeControl(this.automatic);if(!this.automatic)this.f.power=[...this.motors];}
   if(!this.ml.enabled)p.pilot(this.mode==='drone'?this.keys:[],this.mode==='drone'?this.lookX:0,this.mode==='drone'?this.lookY:0);this.lookX=this.lookY=0;
  }
  async advance() {

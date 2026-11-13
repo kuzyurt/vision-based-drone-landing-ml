@@ -135,7 +135,7 @@ export class SimulationBridge {
 	}
 
     _openWorker() {
-        const worker = new Worker( new URL( './BrowserSimulationWorker.js', import.meta.url ), { type: 'module', name: 'Tidewater PX4 and MuJoCo' } );
+        const worker = new Worker( new URL( './BrowserSimulationWorker.js', import.meta.url ), { type: 'module', name: 'AERODOCK PX4 and MuJoCo' } );
         this.worker = worker;
         worker.onmessage = event => {
             try {

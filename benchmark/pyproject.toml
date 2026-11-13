@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "benchmark"
-version = "0.1.0"
-description = "Frozen MuJoCo/PX4 landing-policy benchmark harness"
+version = "0.2.0"
+description = "Frozen 20-case MuJoCo/PX4 landing-policy benchmark"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -17,10 +17,11 @@ dependencies = [
   "opencv-python>=4.10,<5",
   "torch>=2.7,<3",
   "torchvision>=0.22,<1",
+  "psutil>=5.9,<8",
 ]
 
 [project.scripts]
-benchmark = "benchmark.__main__:main"
+benchmark = "benchmark.harness.run:main"
 
 [tool.setuptools]
-packages = ["benchmark"]
+packages = ["benchmark", "benchmark.harness"]

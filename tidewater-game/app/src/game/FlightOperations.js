@@ -64,13 +64,13 @@ export class FlightOperations {
 				<button data-action="retry" hidden>Retry simulation</button>
 			</section>
 			<header class="fc-top">
-				<div class="fc-wordmark"><span class="fc-mark">T</span><span><b>Tidewater</b><small>Coastal flight operations · browser PX4 / MuJoCo</small></span></div>
+				<div class="fc-wordmark"><span class="fc-mark">A</span><span><b>AERODOCK</b><small>Coastal flight operations · browser PX4 / MuJoCo</small></span></div>
 				<div class="fc-link" data-bind="link" data-state="waiting"><i></i><span data-bind="link-label">Connecting simulator</span><small data-bind="controller-source">Native MuJoCo</small></div>
 				<div class="fc-top-actions"><span class="fc-mode" data-bind="mode-label">Drone feed</span><button data-action="timing">Record timing (10 s)</button><button class="fc-icon-btn" data-action="freecam" aria-pressed="false" title="Toggle free camera (V)">Free cam <kbd>V</kbd></button><button data-action="switch">Switch to boat <kbd>B</kbd></button><button class="fc-icon-btn" data-action="reset" title="Reset both vehicles">Reset <kbd>Home</kbd></button></div>
 			</header>
 			<aside class="fc-map-panel fc-panel">
 				<div class="fc-panel-head"><span>Live telemetry map</span><small>Shared MuJoCo frame</small></div>
-				<canvas class="fc-map" width="520" height="360" aria-label="Map showing the actual Tidewater coastline, route, drone and boat"></canvas>
+				<canvas class="fc-map" width="520" height="360" aria-label="Map showing the actual coastline, route, drone and boat"></canvas>
 				<div class="fc-map-legend"><span><i class="fc-dot fc-dot-drone"></i>Drone</span><span><i class="fc-dot fc-dot-boat"></i>Boat</span><span class="fc-map-course">Verified closed water route</span></div>
 				<div class="fc-range"><strong data-bind="range">—</strong><span>m separation</span><span class="fc-bearing">Bearing <b data-bind="bearing">—</b></span></div>
 			</aside>
@@ -203,7 +203,7 @@ export class FlightOperations {
 						<div class="age"><small>Age</small><b data-bind="age">—</b></div>
 					</div>
 					<div class="panel-actions">
-						<button class="act is-on" type="button" data-action="radio" data-bind="radio-btn">Disable SX1262</button>
+						<span class="act is-on" data-bind="radio-btn">Disable SX1262 · X</span>
 						<button class="act" type="button" data-action="reconnect" data-bind="retry-btn">Retry · C</button>
 					</div>
 				</section>
@@ -262,7 +262,7 @@ export class FlightOperations {
 		root.innerHTML = `
 			<div class="scrim" aria-hidden="true"></div>
 			<header class="top">
-				<div class="brand"><b>TIDEWATER</b><small>X500 · PX4 · MuJoCo</small></div>
+				<div class="brand"><b>AERODOCK</b><small>X500 · PX4 · MuJoCo</small></div>
 				<div class="stats" aria-label="Flight data">
 					<div class="stat"><label>ALT</label><b><span data-bind="alt">—</span><i>m</i></b></div>
 					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>km/h</i></b><small data-bind="spd-ms">—</small></div>
@@ -273,11 +273,13 @@ export class FlightOperations {
 				<div class="top-right">
 					<span class="freecam">Free camera</span>
 					<span class="link"><i></i><span data-bind="link-text">SX1262 · WAIT</span></span>
+					<span class="radio-power" data-bind="radio-power">Disable SX1262 · X</span>
 					<button class="mode-toggle hit" type="button" data-action="switch">Helm · B</button>
 				</div>
 			</header>
 
-			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><b>VISUAL POLICY V1</b><span data-bind="ml-banner-note">ML has control · L for manual</span></div>
+			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><b>STUDENT POLICY</b><span data-bind="ml-banner-note">Search + landing · L for manual</span></div>
+			<div class="policy-warning" data-bind="policy-warning" role="status" hidden><b>POLICY WARNING</b><span data-bind="policy-warning-text"></span></div>
 
 			<div class="datum">
 				<div class="agl-block"><small>AGL</small><div class="agl"><span class="agl-bar"></span><b><span data-bind="agl">—</span><em>m</em></b></div></div>
@@ -352,7 +354,7 @@ export class FlightOperations {
 					<div class="age"><small>Age</small><b data-bind="age">—</b></div>
 				</div>
 				<div class="radio-actions">
-					<button class="mini hit" type="button" data-action="radio" data-bind="radio-btn">Disable SX1262</button>
+					<span class="mini" data-bind="radio-btn">Disable SX1262 · X</span>
 					<button class="mini hit" type="button" data-action="reconnect" data-bind="retry-btn">Retry · C</button>
 				</div>
 			</section>
@@ -418,7 +420,7 @@ export class FlightOperations {
 		el.hidden = true;
 		el.innerHTML = `
 			<div class="fs-card" role="dialog" aria-labelledby="fs-title">
-				<div class="fs-brand"><span class="fs-mark">T</span><span><b id="fs-title">Tidewater</b><small>Coastal flight operations</small></span></div>
+				<div class="fs-brand"><span class="fs-mark">A</span><span><b id="fs-title">AERODOCK</b><small>Coastal flight operations</small></span></div>
 				<p class="fs-lead">Land the X500 on the AERODOCK deck. Fly the approach yourself, or hand it to the MuJoCo-trained landing policy.</p>
 				<div class="fs-keys">
 					<span><kbd>W A S D</kbd>Fly</span>
@@ -823,8 +825,8 @@ export class FlightOperations {
 		try {
 			const report=await recordPerformance(this.app,{onProgress:seconds=>label(`Recording ${seconds} s…`)});
 			const response=await fetch(new URL('__timing',location.href),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(report)}).catch(()=>null);
-			if(response?.ok){label('Timing saved locally');this._toast('Timing saved to the local Tidewater server');}
-			else {const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='tidewater-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);label('Timing report downloaded');}
+			if(response?.ok){label('Timing saved locally');this._toast('Timing saved to the local server');}
+			else {const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='flight-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);label('Timing report downloaded');}
 		}catch(error){label('Record 10 s');this._toast(error.message);}
 		finally{for(const button of buttons)button.disabled=false;}
 	}
@@ -838,7 +840,7 @@ export class FlightOperations {
 	_flightControl() {
 
 		const drone = this.state?.drone;
-		if ( drone?.takeoff_pending ) return { label: 'Stopping boat…', action: 'land', busy: true };
+		if ( drone?.takeoff_pending ) return { label: 'Preparing takeoff…', action: 'land', busy: true };
 		if ( drone?.landing_requested ) return { label: 'Landing…', action: 'land', busy: true };
 		if ( drone?.armed ) return { label: 'Land', action: 'land', busy: false };
 		if ( drone?.flight_requested ) return { label: 'Cancel takeoff', action: 'land', busy: false };
@@ -1074,7 +1076,7 @@ export class FlightOperations {
 		this._bind( 'route-status' ).textContent = state.error || ml.error || state.ml?.error || (ml.loading?'Loading trained ML policy…':ml.enabled?`ML · ${state.ml?.phase||'acquire'} · ${state.ml?.intervention||'no override'} · ${link.connected?'radio on':'radio 0'}${mlCommand?` · velocity ${mlCommand} m/s`:''} · boat ${this.autopilot?'auto':'manual'}`:null) || state.message ||
 			( state.route?.valid === false ? 'No safe water route found · manual mode only' :
 				state.route ? `Closed water loop · ${ state.route.length_m.toFixed( 0 )} m · ${ state.route.error_m.toFixed( 1 )} m cross-track` :
-				state.status || 'Importing Tidewater terrain' );
+				state.status || 'Importing terrain' );
 		this._text( 'performance', `GPU ${ this.app.gpu?.adapter?.info?.vendor || 'WebGPU' } · Physics ${ ( state.realtime_factor ?? 1 ).toFixed( 2 ) }× real time · ${ ( this.app.fps || 0 ).toFixed( 0 )} FPS · waves ≤5 cm` );
 		this._text( 'controller-source', state.source || 'Native MuJoCo' );
 		this._ui.root.querySelector( '[data-action="switch"]' ).innerHTML = `${ isBoat ? 'Switch to drone' : 'Switch to boat' } <kbd>B</kbd>`;
@@ -1141,7 +1143,7 @@ export class FlightOperations {
 		const radioButton = this._hBind( 'radio-btn' );
 		if ( radioButton ) {
 
-			radioButton.textContent = link.enabled === false ? 'Enable SX1262' : 'Disable SX1262';
+			radioButton.textContent = link.enabled === false ? 'Enable SX1262 · X' : 'Disable SX1262 · X';
 			radioButton.classList.toggle( 'is-on', link.enabled !== false );
 
 		}
@@ -1254,10 +1256,13 @@ export class FlightOperations {
 		const radioButton = this._dBind( 'radio-btn' );
 		if ( radioButton ) {
 
-			radioButton.textContent = link.enabled === false ? 'Enable SX1262' : 'Disable SX1262';
+			radioButton.textContent = link.enabled === false ? 'Enable SX1262 · X' : 'Disable SX1262 · X';
 			radioButton.classList.toggle( 'is-on', link.enabled !== false );
 
 		}
+		const radioPower = this._dBind( 'radio-power' );
+		if ( radioPower ) radioPower.textContent = link.enabled === false ? 'Enable SX1262 · X' : 'Disable SX1262 · X';
+
 		const retryButton = this._dBind( 'retry-btn' );
 		if ( retryButton ) retryButton.disabled = link.enabled === false || link.connected !== false || status === 'handshake';
 
@@ -1275,13 +1280,23 @@ export class FlightOperations {
 		root.classList.toggle( 'is-ml', mlActive );
 		const banner = this._dBind( 'ml-banner' );
 		if ( banner ) banner.hidden = ! ( mlActive || ml.loading );
-		this._dText( 'ml-banner-note', ml.loading ? 'Loading the trained visual policy…' : 'ML has control · L for manual' );
+		this._dText( 'ml-banner-note', ml.loading ? 'Loading the student policy…' : 'Search + landing · L for manual' );
+		const diagnostics = this.bridge?.policy?.latestDiagnostics || {};
+		const warningCode = diagnostics.search_warning;
+		const warning = mlActive && warningCode
+			? warningCode === 'boat_search_exhausted'
+				? '3 SEARCH PASSES COMPLETE · NO BOAT IDENTITY CONFIRMED'
+				: String( warningCode ).replaceAll( '_', ' ' ).toUpperCase()
+			: '';
+		const policyWarning = this._dBind( 'policy-warning' );
+		if ( policyWarning ) policyWarning.hidden = ! warning;
+		this._dText( 'policy-warning-text', warning );
 
 		this._dText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
 			: mlActive || ml.loading
-				? 'VISUAL POLICY V1 · L MANUAL CONTROL · T LAND · B HELM · V FREE · G SHOT'
-				: 'WASD FLY · R/F ALT · Q/E YAW · T FLIGHT · L ML · K LIDS · J PLATFORM · B HELM · V FREE · G SHOT · HOME RESET' );
+				? 'STUDENT POLICY · L MANUAL CONTROL · T LAND · B HELM · V FREE · G SHOT'
+				: 'WASD FLY · R/F ALT · Q/E YAW · T FLIGHT · L ML · X RADIO · K LIDS · J PLATFORM · B HELM · V FREE · G SHOT · HOME RESET' );
 		const control = this._flightControl();
 		const flightButton = this._dBind( 'flight-btn' );
 		if ( flightButton ) {
@@ -1293,7 +1308,7 @@ export class FlightOperations {
 		const mlButton = this._dBind( 'ml-btn' );
 		if ( mlButton ) {
 
-			mlButton.textContent = ml.loading ? 'Cancel ML · L' : ml.enabled ? 'Manual control · L' : 'Visual policy v1 · L';
+			mlButton.textContent = ml.loading ? 'Cancel ML · L' : ml.enabled ? 'Manual control · L' : 'Student policy · L';
 			mlButton.setAttribute( 'aria-pressed', String( mlActive ) );
 			mlButton.disabled = ! ( ml.loading || ml.enabled ) && ( ! state.ready || ! this.bridge?.cameraView || ! drone?.armed || drone.landed || drone.landing_requested || !! state.error );
 

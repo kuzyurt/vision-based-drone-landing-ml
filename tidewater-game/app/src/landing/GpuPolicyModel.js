@@ -4,7 +4,7 @@ import * as ort from 'onnxruntime-web/all';
 // GPU kernel; unsupported operations fail initialization instead of silently
 // falling back to CPU inference.
 export class GpuPolicyModel {
- async initialize(model,base,{capture=true,debug=false,layout,device,adapter,inputContract}={}){
+ async initialize(model,base,{capture=true,debug=false,layout,device,adapter,inputContract,outputContract}={}){
   if(!globalThis.navigator?.gpu)throw new Error('ML landing requires WebGPU');
   ort.env.wasm.numThreads=1;ort.env.wasm.wasmPaths=base+'ort/';
   // Pinned ORT 1.30 JSEP requests its device through the adapter hook and
@@ -28,13 +28,27 @@ export class GpuPolicyModel {
   this.session=await ort.InferenceSession.create(model,{executionProviders:[{name:'webgpu',preferredLayout:this.layout}],graphOptimizationLevel:'all',enableGraphCapture:capture,preferredOutputLocation:'gpu-buffer',logSeverityLevel:debug?0:2,logVerbosityLevel:debug?1:0,extra:{session:{disable_cpu_ep_fallback:'1'}}});
   this.device=ort.env.webgpu.device;this.buffers=[];this.tensors=[];
   if(device&&this.device!==device)throw new Error('Policy and sensor must share the same GPU device');
-  const tensor=(name,dims)=>{const count=dims.reduce((a,b)=>a*b,1),buffer=this.device.createBuffer({label:'ML '+name,size:Math.ceil(count*4/16)*16,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC|GPUBufferUsage.COPY_DST});this.buffers.push(buffer);const value=ort.Tensor.fromGpuBuffer(buffer,{dataType:'float32',dims});this.tensors.push(value);return {buffer,tensor:value};};
+  const align=value=>Math.ceil(value/16)*16;
+  const tensor=(name,dims)=>{const count=dims.reduce((a,b)=>a*b,1),size=align(count*4),buffer=this.device.createBuffer({label:'ML '+name,size,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_SRC|GPUBufferUsage.COPY_DST});this.buffers.push(buffer);const value=ort.Tensor.fromGpuBuffer(buffer,{dataType:'float32',dims});this.tensors.push(value);return {buffer,tensor:value,count,bytes:count*4,size};};
   this.numericCount=inputContract?.numeric?.[2]??32;this.predictionCount=inputContract?.prediction?.[2]??15;
   if(!((this.numericCount===32&&this.predictionCount===15)||(this.numericCount===34&&this.predictionCount===20)))throw new Error('Unsupported neural tensor contract');
-  this.predictionBytes=this.predictionCount*4;this.hiddenOffset=Math.ceil(this.predictionBytes/16)*16;
-  this.image=tensor('image',[1,1,3,360,640]);this.numeric=tensor('numeric',[1,1,this.numericCount]);this.hiddenIn=tensor('hidden input',[1,1,128]);this.prediction=tensor('pose output',[1,1,this.predictionCount]);this.hiddenOut=tensor('hidden output',[1,1,128]);
-  this.feeds={image:this.image.tensor,numeric:this.numeric.tensor,hidden:this.hiddenIn.tensor};this.outputs={prediction:this.prediction.tensor,next_hidden:this.hiddenOut.tensor};
-  this.readback=this.device.createBuffer({label:'ML fixed output readback',size:this.hiddenOffset+512,usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
+  this.prediction=tensor('pose output',[1,1,this.predictionCount]);this.hiddenOut=tensor('hidden output',[1,1,128]);this.image=tensor('image',[1,1,3,360,640]);this.numeric=tensor('numeric',[1,1,this.numericCount]);this.hiddenIn=tensor('hidden input',[1,1,128]);
+  this.searchSpecs=[];const search=outputContract?.search;
+  if(search){
+   const specs=[['search_heat','search_heat',search.heat],['search_offset','search_offset',search.offset],['search_presence','search_presence',search.presence],['search_evidence','search_evidence',search.evidence],['search_identity','search_identity',search.identity]];
+   for(const [key,name,dims] of specs){
+    if(!Array.isArray(dims)||!dims.length)throw new Error('Student search output contract is missing '+key);
+    const output=tensor(name,dims);this.searchSpecs.push({key,name,dims,...output});
+   }
+  }
+  this.feeds={image:this.image.tensor,numeric:this.numeric.tensor,hidden:this.hiddenIn.tensor};
+  this.outputs={prediction:this.prediction.tensor,next_hidden:this.hiddenOut.tensor};
+  for(const item of this.searchSpecs)this.outputs[item.name]=item.tensor;
+  this.predictionBytes=this.prediction.bytes;this.hiddenOffset=align(this.predictionBytes);this.searchOffset=align(this.hiddenOffset+this.hiddenOut.bytes);
+  let cursor=this.searchOffset;const offsets=new Map();
+  for(const item of this.searchSpecs){cursor=align(cursor);offsets.set(item.key,cursor);item.readbackOffset=cursor;cursor+=item.bytes;}
+  this.readbackBytes=align(cursor);
+  this.readback=this.device.createBuffer({label:'ML fixed output readback',size:Math.max(this.readbackBytes,16),usage:GPUBufferUsage.COPY_DST|GPUBufferUsage.MAP_READ});
   const shader=this.device.createShaderModule({label:'ML exact RGB texture to FP32 CHW',code:`
    @group(0) @binding(0) var image:texture_2d<f32>;
    @group(0) @binding(1) var<storage,read_write> output:array<f32>;
@@ -68,9 +82,13 @@ export class GpuPolicyModel {
  async execute(numeric){
   this.device.queue.writeBuffer(this.numeric.buffer,0,numeric);
   await this.session.run(this.feeds,this.outputs);
-  const encoder=this.device.createCommandEncoder();encoder.copyBufferToBuffer(this.prediction.buffer,0,this.readback,0,this.predictionBytes);encoder.copyBufferToBuffer(this.hiddenOut.buffer,0,this.readback,this.hiddenOffset,512);encoder.copyBufferToBuffer(this.hiddenOut.buffer,0,this.hiddenIn.buffer,0,512);this.device.queue.submit([encoder.finish()]);
-  try{await this.readback.mapAsync(GPUMapMode.READ);const bytes=this.readback.getMappedRange();return {prediction:new Float32Array(new Float32Array(bytes,0,this.predictionCount)),hidden:new Float32Array(new Float32Array(bytes,this.hiddenOffset,128))};}
-  finally{if(this.readback.mapState==='mapped')this.readback.unmap();}
+  const encoder=this.device.createCommandEncoder();encoder.copyBufferToBuffer(this.prediction.buffer,0,this.readback,0,this.predictionBytes);encoder.copyBufferToBuffer(this.hiddenOut.buffer,0,this.readback,this.hiddenOffset,this.hiddenOut.bytes);
+  for(const item of this.searchSpecs)encoder.copyBufferToBuffer(item.buffer,0,this.readback,item.readbackOffset,item.bytes);
+  encoder.copyBufferToBuffer(this.hiddenOut.buffer,0,this.hiddenIn.buffer,0,this.hiddenOut.bytes);this.device.queue.submit([encoder.finish()]);
+  try{await this.readback.mapAsync(GPUMapMode.READ);const bytes=this.readback.getMappedRange();const result={prediction:new Float32Array(new Float32Array(bytes,0,this.predictionCount)),hidden:new Float32Array(new Float32Array(bytes,this.hiddenOffset,128))};
+   if(this.searchSpecs.length){result.search={};for(const item of this.searchSpecs)result.search[item.key]=new Float32Array(new Float32Array(bytes,item.readbackOffset,item.count));}
+   return result;
+  }finally{if(this.readback.mapState==='mapped')this.readback.unmap();}
  }
  async close(){await this.inFlight?.catch(()=>{});await this.session?.release();for(const t of this.tensors||[])t.dispose();for(const b of this.buffers||[])b.destroy();this.readback?.destroy();this.session=null;}
 }

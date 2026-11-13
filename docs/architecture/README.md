@@ -34,7 +34,6 @@ packages/          installable Python distributions
   aerodock/        boat simulator
   px4sim/          drone simulator
   landing/         policy, teachers, training
-  datagen/         synthetic data generation
   benchmark/       evaluation harness
   runtime-support/ promoted Windows/mission runtime helpers
   target-learning/ promoted label and teacher adapters
@@ -56,37 +55,39 @@ docs/              cross-cutting documentation
 tools/             repository maintenance checks
 ```
 
+Synthetic data generation is not a distribution: its source lives at
+`training_runs/training_data_generation/`, next to the runs that use it.
+
 Only the roots with real content are materialized today: `data/generated/`,
-`models/registry.json`, `packages/datagen/`, `docs/operations/` and `tools/`.
-The other paths above are target contracts documented in
-[FOLDER_DISPOSITION.md](FOLDER_DISPOSITION.md); no empty placeholder
-directories are kept.
+`models/registry.json`, `docs/operations/` and `tools/`. The other paths above
+are target contracts documented in [FOLDER_DISPOSITION.md](FOLDER_DISPOSITION.md);
+no empty placeholder directories are kept.
 
 ## The pinned boundary
 
-`benchmark/environments/runtime.json` records exact paths and SHA-256 values for:
+`old/benchmark/environments/runtime.json` records exact paths and SHA-256 values for:
 
 - 171 source files,
 - 18 assets,
 - 14 harness files.
 
-`benchmark/runner.py` verifies those receipts before every trial. Moving
+`old/benchmark/runner.py` verifies those receipts before every trial. Moving
 `AERODOCK_MuJoCo`, `px4-mujoco-drone-simulation`, `landing_training`,
-`benchmark`, `tidewater-game` or `artifacts` would make the frozen benchmark
-fail preflight. Therefore this migration does **not** move those trees. It adds
-packaging metadata at their current roots and records their future locations
-above. A future benchmark generation can re-base the receipts and then move the
-code.
+`old/benchmark`, `tidewater-game` or `artifacts` would make the archived
+benchmark fail preflight. The active V2 benchmark is `benchmark/`; its own
+pinned receipts live in `benchmark/definition/runtime.json`.
 
 ## What moved in this pass
 
-- `datasets/` → `data/generated/` (generated review datasets).
-- `training_data_generation/` → `packages/datagen/training_data_generation/`,
+- `datasets/` → `data/generated/` (generated review datasets); the empty
+  pointer folder was later deleted.
+- `training_data_generation/` → `training_runs/training_data_generation/`,
   with the original import path kept as a compatibility shim.
 - `training_runs/background_manual_20261025/` → `docs/operations/background-manual/`.
 - Root logs and the investigation handoff → `docs/operations/`.
+- Pre-V2 `benchmark/` → `old/benchmark/`; `benchmarkV2/` promoted to `benchmark/`.
 
-No pinned source folder was removed or renamed. No GitHub workflows were added.
+Pinned simulator and source trees were not moved. No GitHub workflows were added.
 
 ## Rules
 

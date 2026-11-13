@@ -21,7 +21,7 @@ REQUIRED = (
     "tidewater-game",
     "artifacts",
     "training_runs",
-    "packages/datagen/training_data_generation",
+    "training_runs/training_data_generation",
     "data/generated",
     "models",
     "models/registry.json",
@@ -101,9 +101,9 @@ def main() -> int:
     try:
         import training_data_generation  # noqa: F401
         shim_paths = {Path(item).resolve() for item in training_data_generation.__path__}
-        expected = ROOT / "packages/datagen/training_data_generation"
+        expected = ROOT / "training_runs/training_data_generation"
         if expected.resolve() not in shim_paths:
-            errors.append("training_data_generation shim does not point at packages/datagen")
+            errors.append("training_data_generation shim does not point at training_runs/training_data_generation")
     except Exception as error:  # pragma: no cover - diagnostic path
         errors.append(f"training_data_generation import failed: {error}")
 

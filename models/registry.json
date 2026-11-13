@@ -1,7 +1,7 @@
 {
   "captured_utc": "2026-10-24T17:18:42.936423+00:00",
   "future_store": "models/sha256",
-  "generated_from": "benchmark/models/inventory.json",
+  "generated_from": "old/benchmark/models/inventory.json",
   "models": {
     "candidate-center-only-cb32208a": {
       "available": true,
@@ -17,11 +17,11 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "path": "old/benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
           "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
         }
       }
@@ -40,15 +40,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -67,15 +67,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -94,15 +94,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -121,15 +121,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -148,15 +148,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -175,15 +175,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -202,15 +202,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -229,15 +229,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -256,15 +256,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -283,15 +283,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -310,15 +310,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -337,7 +337,7 @@
       "status": "not_run",
       "weights": {
         "pose.pt": {
-          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "path": "old/benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
           "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
         }
       }
@@ -356,11 +356,11 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "path": "old/benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
           "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
         }
       }
@@ -379,15 +379,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
+          "path": "old/benchmark/models/weights/c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7.pt",
           "sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -406,19 +406,19 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "recognizer.pt": {
-          "path": "benchmark/models/weights/52f1c07a09aa781889d6187dab4817047526b0c24234b6ef245920fd709ad588.pt",
+          "path": "old/benchmark/models/weights/52f1c07a09aa781889d6187dab4817047526b0c24234b6ef245920fd709ad588.pt",
           "sha256": "52f1c07a09aa781889d6187dab4817047526b0c24234b6ef245920fd709ad588"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -437,19 +437,19 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "recognizer.pt": {
-          "path": "benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
+          "path": "old/benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
           "sha256": "fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -468,19 +468,19 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "recognizer.pt": {
-          "path": "benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
+          "path": "old/benchmark/models/weights/fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff.pt",
           "sha256": "fd12bb896037b928fdb88a10a76ab1a0038538d6624042afe8788f0a1ffd19ff"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -499,19 +499,19 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "recognizer.pt": {
-          "path": "benchmark/models/weights/5d7df9eb1194654ec3933c0dadf9bc0917f1bfd050361ba6b624996e06f181d8.pt",
+          "path": "old/benchmark/models/weights/5d7df9eb1194654ec3933c0dadf9bc0917f1bfd050361ba6b624996e06f181d8.pt",
           "sha256": "5d7df9eb1194654ec3933c0dadf9bc0917f1bfd050361ba6b624996e06f181d8"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -530,7 +530,7 @@
       "status": "not_run",
       "weights": {
         "pose.pt": {
-          "path": "benchmark/models/weights/795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e.pt",
+          "path": "old/benchmark/models/weights/795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e.pt",
           "sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e"
         }
       }
@@ -542,7 +542,7 @@
       "manifest": {
         "bytes": 420,
         "file_modified_utc": "2026-10-24T17:15:26.109863+00:00",
-        "path": "benchmark/teacher_policy.json",
+        "path": "old/benchmark/teacher_policy.json",
         "sha256": "7cb148a145dd8a4d1006354218f968c552f2318f84d96d53622b6c05a00d4c45"
       },
       "role": "privileged teacher",
@@ -556,7 +556,7 @@
       "manifest": {
         "bytes": 657,
         "file_modified_utc": "2026-11-04T14:47:57.964792+00:00",
-        "path": "benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
+        "path": "old/benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
         "sha256": "a5418343a1981226fbec4e746b2e713892144f42b8071857d77c3d663585934b"
       },
       "role": "privileged teacher",
@@ -570,7 +570,7 @@
       "manifest": {
         "bytes": 657,
         "file_modified_utc": "2026-11-04T14:47:57.964792+00:00",
-        "path": "benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
+        "path": "old/benchmark/revisions/teacher_four_20261104/teacher_policy_wave.json",
         "sha256": "a5418343a1981226fbec4e746b2e713892144f42b8071857d77c3d663585934b"
       },
       "role": "privileged teacher",
@@ -591,15 +591,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -618,15 +618,15 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
@@ -645,7 +645,7 @@
       "status": "not_run",
       "weights": {
         "pose.pt": {
-          "path": "benchmark/models/weights/20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749.pt",
+          "path": "old/benchmark/models/weights/20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749.pt",
           "sha256": "20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749"
         }
       }
@@ -664,20 +664,20 @@
       "status": "not_run",
       "weights": {
         "acquisition.pt": {
-          "path": "benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
+          "path": "old/benchmark/models/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt",
           "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65"
         },
         "pose.pt": {
-          "path": "benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
+          "path": "old/benchmark/models/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt",
           "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4"
         },
         "spatial_acquisition.pt": {
-          "path": "benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
+          "path": "old/benchmark/models/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt",
           "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b"
         }
       }
     }
   },
   "schema_version": 1,
-  "weight_store": "benchmark/models/weights"
+  "weight_store": "old/benchmark/models/weights"
 }

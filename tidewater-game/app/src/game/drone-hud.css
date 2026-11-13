@@ -112,8 +112,16 @@
 }
 #drone-hud .link { display: inline-flex; align-items: center; gap: 9px; padding: 4px 0; font-size: 9px; letter-spacing: .2em; color: var(--ink-2); white-space: nowrap; }
 #drone-hud .link i { width: 5px; height: 5px; background: var(--ink); box-shadow: 0 0 9px rgba(223, 228, 225, .45); }
+#drone-hud .radio-power {
+	padding: 4px 0 4px 12px;
+	border-left: 1px solid var(--line-soft);
+	font-size: 8px;
+	letter-spacing: .16em;
+	color: var(--ink-3);
+	white-space: nowrap;
+}
 #drone-hud .mode-toggle {
-	padding: 6px 0 6px 16px;
+	padding: 6px 0 6px 12px;
 	font-size: 9px;
 	letter-spacing: .22em;
 	color: var(--ink-2);
@@ -216,6 +224,7 @@
 #drone-hud .mini { padding: 6px 0 4px; font-size: 8px; letter-spacing: .2em; color: var(--ink-3); white-space: nowrap; }
 #drone-hud .mini:hover { color: var(--ink); }
 #drone-hud .mini:disabled { color: var(--ink-4); }
+
 
 /* ---- actions ----------------------------------------------------------- */
 #drone-hud .actions {
@@ -495,6 +504,26 @@
 #drone-hud .ml-banner[hidden] { display: none; }
 #drone-hud .ml-banner b { font-weight: 400; letter-spacing: .34em; }
 #drone-hud .ml-banner span { color: rgba(247, 251, 250, .84); letter-spacing: .2em; }
+#drone-hud .policy-warning {
+	position: absolute;
+	left: 50%;
+	top: 150px;
+	z-index: 2;
+	display: flex;
+	align-items: baseline;
+	gap: 12px;
+	padding: 6px 14px;
+	border: 1px solid rgba(217, 190, 112, .5);
+	background: rgba(18, 13, 4, .66);
+	color: var(--warn);
+	font-size: 8px;
+	letter-spacing: .22em;
+	white-space: nowrap;
+	transform: translateX(-50%);
+}
+#drone-hud .policy-warning[hidden] { display: none; }
+#drone-hud .policy-warning b { font-weight: 400; letter-spacing: .3em; }
+#drone-hud .policy-warning span { color: rgba(247, 251, 250, .86); letter-spacing: .18em; }
 @keyframes ml-in { from { opacity: 0; transform: translate(-50%, -8px); } to { opacity: 1; transform: translate(-50%, 0); } }
 #drone-hud .top, #drone-hud .datum, #drone-hud .scope, #drone-hud .radio, #drone-hud .actions, #drone-hud .optic, #drone-hud .foot {
 	transition: transform .55s cubic-bezier(.2, .8, .2, 1), opacity .45s ease;

@@ -29,7 +29,7 @@ const DEG = Math.PI / 180;
 const PRESET = {
 	atmosphere: { multipleScattering: 0.99 },
 	shape: {
-		altitude: 4000, thickness: 5200, density: 0.019, coverage: 0.49,
+		altitude: 4000, thickness: 5200, density: 0.019, coverage: 0.65,
 		horizonCoverageStart: 20000, horizonCoverageRamp: 45000, horizonCoverageAmount: 0.12,
 		edgeSoftness: 0.095, edgeSoftnessFalloff: 1, weatherScale: 29000, baseScale: 7500, baseStrength: 0.69,
 		erosionScaleBaseMultiplier: 0.13, erosionStrengthBase: 0.24, erosionStrengthPeak: 2.15, erosionShape: 1,

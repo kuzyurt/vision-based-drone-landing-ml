@@ -49,24 +49,18 @@ desktop.ini
 !/training_runs/**/run.json
 !/training_runs/**/summary.json
 !/training_runs/**/RESULTS.md
+!/training_runs/training_data_generation/rules/*.json
 
-# Benchmark raw outputs; definitions, reports and figures stay tracked.
-/benchmark/runs/
-/benchmark/probes/
-/benchmark/audits/
-/benchmark/models/
-/benchmark/_superseded_inventory/
-/benchmark/revisions/*/runs/
-/benchmark/revisions/*/audits/
-/benchmark/revisions/*/operations/
+# Archived pre-V2 benchmark raw outputs; active benchmark has its own ignore rules.
+/old/benchmark/runs/
+/old/benchmark/probes/
+/old/benchmark/audits/
+/old/benchmark/models/
+/old/benchmark/_superseded_inventory/
+/old/benchmark/revisions/*/runs/
+/old/benchmark/revisions/*/audits/
+/old/benchmark/revisions/*/operations/
 
-# Generated datasets: manifests and generator scripts are source; media is not.
-/datasets/**
-!/datasets/
-!/datasets/**/
-!/datasets/**/*.json
-!/datasets/**/*.md
-!/datasets/**/*.py
 
 # Future generated data root: keep README, manifests, metadata and generator
 # scripts; ignore the image/archive payloads.

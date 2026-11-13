@@ -14,7 +14,7 @@ export class BrowserRuntime {
   this.starting=this.initialize(payload);return this.starting;
  }
  async initialize({base,meta,heights}) {
-  if(!this.isolated)throw new Error('PX4 needs cross-origin isolation. Use the included Tidewater static server, then reload the game.');
+  if(!this.isolated)throw new Error('PX4 needs cross-origin isolation. Use the included static server, then reload the game.');
   this.status('Loading MuJoCo WebAssembly');
   const json=async name=>JSON.parse(new TextDecoder().decode(await this.fetchAsset(base+name)));
   const map={meta,heights:new Float32Array(heights)},c=await json('physics/configuration.json'),boot=await json('physics/px4-startup.json');this.check();

@@ -16,6 +16,6 @@ The check verifies:
 - with `--hash`, every pinned SHA-256 still matches;
 - no `.pyc`, virtual environment or `node_modules` files are tracked;
 - the `training_data_generation` compatibility shim resolves to
-  `packages/datagen/training_data_generation`.
+  `training_runs/training_data_generation`.
 
 It never imports MuJoCo, loads a model or starts a flight.

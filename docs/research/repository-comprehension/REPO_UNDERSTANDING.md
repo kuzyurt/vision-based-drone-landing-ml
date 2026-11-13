@@ -108,7 +108,7 @@ Scale: 4,456 tracked files; ~10k+ on disk; 36 modified and 63 untracked paths �
 
 ### 3.3 How one flight actually works `[D]`
 
-1. **Observation — 32 numbers** (`landing_training/policy.py:22` registers a 32-dim normaliser). Own velocity/attitude/rates, two gimbal angles, radio position/velocity slots, freshness/validity/status, image timing, previous command slots, decision interval. In the `periodic_no_action_v1` variant the six previous-command slots are replaced by sine/cosine pairs of yaw/pan/tilt; radio fields are neutralised.
+1. **Observation — 32 numbers** (`landing_training/training/policy.py:22` registers a 32-dim normaliser). Own velocity/attitude/rates, two gimbal angles, radio position/velocity slots, freshness/validity/status, image timing, previous command slots, decision interval. In the `periodic_no_action_v1` variant the six previous-command slots are replaced by sine/cosine pairs of yaw/pan/tilt; radio fields are neutralised.
 2. **Vision — MobileNetV3-Small.** Feature maps feed spatial detection/localisation heads plus a 256-d visual projection. A telemetry MLP maps 32→64. Concatenated 320 features enter a **GRU with 128-d hidden state**.
 3. **Output — a 15-value pose state**, not motor commands: visibility, relative position (3), relative velocity (3), deck heading (2), deck normal (3), marker image location (2), contact confidence (1).
 4. **Control is explicit.** The pose estimate is converted to six commands at 25 Hz: `[forward, right, down velocity, yaw rate, camera pan rate, camera tilt rate]`. The first four go to PX4's offboard velocity/yaw interface; PX4 closes the flight-control loops and produces motor thrust. The last two drive gimbal servos.
@@ -121,7 +121,7 @@ This is why the project insists it is **not end-to-end RL**: the network estimat
 
 This is the single most important distinction in the repo, and the docs repeat it because conflating them produces fake results:
 
-1. **`landing_training/policy.py`** — the historical baseline (MobileNet + telemetry MLP + GRU emitting six actions directly). Kept for reproduction. **Not** the current system.
+1. **`landing_training/training/policy.py`** — the historical baseline (MobileNet + telemetry MLP + GRU emitting six actions directly). Kept for reproduction. **Not** the current system.
 2. **R15** — the real candidate: learned vision + marker registration + explicit control + PX4. Frozen, hashed, deployed.
 3. **Teachers** — `privileged_teacher.py` uses simulator truth and **no neural network**; the observable teacher (v60 protocol + v61 recogniser) uses RGB only. A teacher landing is not a learner landing.
 
@@ -186,6 +186,6 @@ This is the correct design for the failure modes in §1.3. It is also why the do
 ## Part 5 — How to falsify me
 
 1. Run `python -B -m benchmark status` (or read `summary.json`) — if it is not 16/60, my snapshot is stale.
-2. Open `landing_training/policy.py:22` — if the observation is not 32, the architecture section is wrong.
+2. Open `landing_training/training/policy.py:22` — if the observation is not 32, the architecture section is wrong.
 3. Check `benchmark/runs/comparison_20261024_teacher_r15_radio_v2/diagnostic_stop.json` — the path-length blocker is either still the edge or already fixed.
 4. Ask me to predict: *"if you change the radio fusion cap from 0.35, which tests and which cases move?"* A model that understands should answer; one that summarised cannot.
