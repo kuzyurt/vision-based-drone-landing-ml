@@ -1140,18 +1140,14 @@ class Backend:
                             self.boat_auto = bool(self.boat_auto)
                         # Calibrate the PX4 estimator on a stationary launch
                         # platform before beginning the continuous boat loop.
-                        if px4.takeoff_pending and abs(env.boat.get_speed("m/s")) < .15:
+                        if px4.takeoff_pending:
                             px4.takeoff_pending = False
                             px4.flight_requested = True
                             px4.target_height = 1.5 if isinstance(px4, GamePX4) else max(3., px4.target_height)
                         if px4.armed and env.drone.position[2] > env.data.site_xpos[env.pad_site, 2] + 1.0:
                             env.launch_complete = True
-                        launch_hold = px4.takeoff_pending or (not env.launch_complete and self.mode == "drone")
-                        env.boat_auto = self.boat_auto and px4.observation()["valid"] and not launch_hold
-                        if launch_hold:
-                            env.boat.power[:] = 0.
-                        else:
-                            env.control_boat(command, min(dt, .1))
+                        env.boat_auto = self.boat_auto and px4.observation()["valid"]
+                        env.control_boat(command, min(dt, .1))
                         keys = command["keys"] if self.mode == "drone" else []
                         with self.lock:
                             look_x = float(self.command["look_x"])

@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Tidewater · Flight operations</title>
-	<link rel="preload" as="image" href="ui/keyart-720.jpg" imagesrcset="ui/keyart-720.jpg 1280w, ui/keyart.jpg 2560w" imagesizes="100vw" />
+	<title>AERODOCK · Flight operations</title>
+	<link rel="preload" as="image" href="ui/aerodock-start-1280.jpg" imagesrcset="ui/aerodock-start-1280.jpg 1280w, ui/aerodock-start.jpg 1920w" imagesizes="100vw" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat+Brush&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
@@ -20,14 +20,14 @@
 <body>
 	<div id="app"></div>
 	<div id="fps">-- fps</div>
-	<div id="loader" role="status" aria-live="polite" aria-label="Loading Tidewater">
-		<img class="loader-art" src="ui/keyart-720.jpg" srcset="ui/keyart-720.jpg 1280w, ui/keyart.jpg 2560w" sizes="100vw" alt="" decoding="async" fetchpriority="high" onload="this.classList.add('is-in')" />
+	<div id="loader" role="status" aria-live="polite" aria-label="Loading AERODOCK">
+		<img class="loader-art" src="ui/aerodock-start-1280.jpg" srcset="ui/aerodock-start-1280.jpg 1280w, ui/aerodock-start.jpg 1920w" sizes="100vw" alt="" decoding="async" fetchpriority="high" onload="this.classList.add('is-in')" />
 		<div class="loader-scrim"></div>
 		<div class="loader-inner">
 			<div class="loader-brand">
 			<p class="loader-kicker">A coastal drone and surface craft simulation</p>
-				<h1 class="loader-title">TIDEWATER</h1>
-				<p class="loader-tagline">Pilot a survey drone above Tidewater Bay, keep the radio link clear, and guide the launch boat along its offshore course.</p>
+				<h1 class="loader-title">AERODOCK</h1>
+				<p class="loader-tagline">Pilot a survey drone from the AERODOCK deck, keep the radio link clear, and guide the launch boat along its offshore course.</p>
 			</div>
 			<div class="loader-panel">
 				<div class="loader-row">
@@ -40,7 +40,7 @@
 					<span class="loader-tip-label">Tip</span>
 					<div class="loader-tip-list">
 						<p class="loader-tip">Move with <kbd>W A S D</kbd>, drag the mouse or use the arrow keys to aim the camera, and use <kbd>R</kbd> / <kbd>F</kbd> to climb or descend.</p>
-						<p class="loader-tip">The on-screen SX1262 readout is simulated from range and terrain line of sight; it is not connected to radio hardware.</p>
+						<p class="loader-tip">The on-screen SX1262 readout is simulated from range and terrain line of sight; it is not connected to radio hardware. Press <kbd>X</kbd> to disable or enable it.</p>
 						<p class="loader-tip">Press <kbd>B</kbd> to switch between the drone feed and boat helm. Press <kbd>U</kbd> at the helm to change boat camera.</p>
 						<p class="loader-tip">The boat follows a closed loop east of the wooden pier, clear of the reef and shoreline.</p>
 						<p class="loader-tip">Press <kbd>P</kbd> for automatic/manual boat control, and use the deck buttons to operate the hatches and launch platform.</p>

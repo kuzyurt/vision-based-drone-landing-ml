@@ -104,7 +104,7 @@ export class KeyartStudio {
 			<div class="ka-top">
 				<div class="ka-brand">
 					<span class="ka-mark">A</span>
-					<span><b>AERODOCK</b><small>Keyart studio · Tidewater</small></span>
+					<span><b>AERODOCK</b><small>Keyart studio</small></span>
 				</div>
 				<div class="ka-top-right">
 					<span class="ka-shot" data-bind="shot">Front right · 16:21</span>

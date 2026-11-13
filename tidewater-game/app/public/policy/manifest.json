@@ -1,12 +1,14 @@
 {
-  "schema": "aerodock.landing.radio_robust_policy.v1",
-  "policy_class": "landing_training.radio_robust_20261015.runtime.RadioRobustRuntime",
-  "checkpoint": "pose.pt",
-  "checkpoint_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
-  "selected_epoch": 8,
-  "source_checkpoint_sha256": "c2990e69e254cbeddde8dd57d4cf481a2c7daa37735cd96083c7f3095512f5f7",
-  "dataset_sha256": "6e0e67310c59e592aaa4b342389086c3ddb4261b591f0d3e3117d2e100131187",
-  "review_manifest_sha256": "f139320840735fe5bc6da97ace35d6d274b7f435d5370c9679a20185a76afb4d",
+  "schema": "aerodock.landing.search_student_policy.v1",
+  "policy_class": "reference.student_radio.RadioSearchRuntime",
+  "checkpoint": "search_best.pt",
+  "checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "base": "base/pose.pt",
+  "base_checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "source_policy_schema": "drone.search.student.v1",
+  "source_policy_runtime": "runtime.SearchRuntime",
+  "source_fingerprint": "7b4950efe5f600ae40bb6de2d22d27302e02bedbcb7729b1b5ed20bc07508a12",
+  "selected_epoch": null,
   "calibration": {
     "foot_local_flu": [
       [
@@ -130,263 +132,15 @@
     8.61294937133789,
     1.3863097429275513
   ],
-  "training": {
-    "parent_training": {
-      "encoder_frozen": true,
-      "observation_mode": "periodic_no_action_v1",
-      "mixed_original_and_new": true,
-      "radio_modes": {
-        "clean": 0.1,
-        "noisy": 0.15,
-        "missing": 0.75
-      },
-      "unknown_dock_status": "masked to training mean, matching runtime",
-      "selection": "missing-radio pose, visibility and image-bearing errors"
-    },
-    "vision_frozen": true,
-    "only_fusion_gate_trained": true,
-    "radio_stream": "recorded physical boat motion + causal world-frame biases/noise/drift/latency/outages/stuck fixes",
-    "independent_visual_recurrence": true,
-    "max_radio_weight": 0.35,
-    "new_images": false,
-    "new_collection": false,
-    "test_data_used": false,
-    "train_episodes": 1080,
-    "validation_episodes": 140,
-    "selection": "fixed training-world-disjoint validation only"
-  },
-  "validation_metrics": {
-    "clean": {
-      "near_frames": 52690,
-      "frames": 163470,
-      "visible_frames": 157447,
-      "columns": [
-        "xy_m",
-        "z_m",
-        "velocity_m_s",
-        "heading_deg"
-      ],
-      "rms": [
-        0.03630670413372716,
-        0.026774832938261824,
-        0.03387239301188981,
-        0.5454906402711114
-      ],
-      "score": 0.07218516332657285,
-      "visual_bearing_rms_px": 8.410026985350662,
-      "visibility_brier": 0.005070708497639511,
-      "mean_radio_weight": 0.08865666832916563,
-      "bad_radio_mean_weight": null,
-      "bad_radio_frames": 0
-    },
-    "biased": {
-      "near_frames": 52690,
-      "frames": 163470,
-      "visible_frames": 157447,
-      "columns": [
-        "xy_m",
-        "z_m",
-        "velocity_m_s",
-        "heading_deg"
-      ],
-      "rms": [
-        0.039139125840351334,
-        0.02764711526595743,
-        0.033988756888466753,
-        0.5454906402711114
-      ],
-      "score": 0.07533745166979418,
-      "visual_bearing_rms_px": 8.410026985350662,
-      "visibility_brier": 0.005070708497639511,
-      "mean_radio_weight": 0.010602073768819605,
-      "bad_radio_mean_weight": 0.010306528293772748,
-      "bad_radio_frames": 155708
-    },
-    "missing": {
-      "near_frames": 52690,
-      "frames": 163470,
-      "visible_frames": 157447,
-      "columns": [
-        "xy_m",
-        "z_m",
-        "velocity_m_s",
-        "heading_deg"
-      ],
-      "rms": [
-        0.035978615740463744,
-        0.027573551519041607,
-        0.04042952411465497,
-        0.5454906402711114
-      ],
-      "score": 0.07537525605892595,
-      "visual_bearing_rms_px": 8.410026985350662,
-      "visibility_brier": 0.005070708497639511,
-      "mean_radio_weight": 0.0,
-      "bad_radio_mean_weight": null,
-      "bad_radio_frames": 0
-    },
-    "stuck": {
-      "near_frames": 52690,
-      "frames": 163470,
-      "visible_frames": 157447,
-      "columns": [
-        "xy_m",
-        "z_m",
-        "velocity_m_s",
-        "heading_deg"
-      ],
-      "rms": [
-        0.04166118880951887,
-        0.026791927094662188,
-        0.06096078868766561,
-        0.5454906402711114
-      ],
-      "score": 0.09108897408717256,
-      "visual_bearing_rms_px": 8.410026985350662,
-      "visibility_brier": 0.005070708497639511,
-      "mean_radio_weight": 0.06040887936407369,
-      "bad_radio_mean_weight": 0.03660243250620417,
-      "bad_radio_frames": 31921
-    }
-  },
-  "closed_loop_evaluated": false,
-  "automatic_deployment": false,
-  "interface": {
-    "rgb_shape": [
-      360,
-      640,
-      3
-    ],
-    "telemetry": "original 32-value sensor contract",
-    "uncertainty": [
-      "beacon.position_sigma_m",
-      "beacon.velocity_sigma_m_s"
-    ],
-    "missing": "beacon.valid=false; invalid numeric placeholders are masked after normalization",
-    "visual_landing_authorization": "allow_visual_landing constructor option, default false"
-  },
-  "file_hashes": {
-    "training_provenance.json": "a72b6fc1a43c991a3734bd30d7d23693c291f558304b9c46dc15056a20d06cef",
-    "spatial_acquisition.pt": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
-    "runtime_check.json": "0ec2a65317c880a9566fb70872b98ede7e12f67a0678af7ef1c79e9c095e9921",
-    "training_history.json": "486862c2f98a3cefeca7c5c76c22a57b354cc18b9b4003feafd3aa4dc30f9c52",
-    "training_result.json": "e0edba01c5254f80b6d6a5e06a9268e2d12ee243c2e81b63c31c5c88bc42afb9",
-    "RESULTS.md": "cc48f2277159c030756507b26dfa8838c71feb9dffa7c5f078fbf70daa5f79eb",
-    "pose.pt": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
-    "acquisition.pt": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65",
-    "completion_receipt.json": "c4b7c6cd16cd39e845fe5fb3215967e705bba29aff6ebed6720a9ef4b4643299",
-    "code/landing_training/pose_model.py": "5a3500189f760d35a27e2ad31a9ad6d649ed5219df69d3cf034be09a6f6dcc2e",
-    "code/landing_training/recording.py": "774965312cc5c8af2bfee721f5add5f580835fafe4df53c8059a09670caf8d26",
-    "code/landing_training/policy.py": "48c5c54b078169c3c16aa30726f6fd8fd95557abf1c11b92655d715a2ed7c992",
-    "code/landing_training/__init__.py": "7bb76b4104abe3edb1938efb08c2351c42e3288926a7f93d93136b0ea432d55e",
-    "code/landing_training/radio_robust_20261015/augmentation.py": "1fdf7fe2294e5d5354ccc414e280ba933b58316a100f87e88f85ad4b1313e463",
-    "code/landing_training/radio_robust_20261015/train.py": "fc913363dab3f67812db1aa74e6fd0335bfa791d407b97b4e3b8b76ac33ce8ed",
-    "code/landing_training/radio_robust_20261015/runtime.py": "c1254453f06865f2532eb2dd70406b92f5458b85dce635f0d472491d5e0be561",
-    "code/landing_training/radio_robust_20261015/runtime_fixes.py": "df96686d45000a1a633c886b171fa498a0f4a7b4bd37dbb32126a638a5f41b62",
-    "code/landing_training/radio_robust_20261015/SCIPY-LICENSE.txt": "221e59f5e910fd7f94e44f0dac77436a11338c285c6346232e4a850a50da0e94",
-    "code/landing_training/radio_robust_20261015/README.md": "a1131f87197a379f140d4dd363b7bd42bc35fea215ca6f96ac404d2fdb04f7a1",
-    "code/landing_training/radio_robust_20261015/parent_model.py": "34b1f707559184ff89ff2867c6c299fed09c76fc79119b1356b0e99232d9b7f5",
-    "code/landing_training/radio_robust_20261015/model.py": "8d5bc22786e27a85228312f512eaa26b2c44501c70bff15bff8546ce21928469",
-    "code/landing_training/radio_robust_20261015/marker_trf.h": "f8a83533f6cc1efd40cd0659a177c1881fa5a2fbf0b40bfc9c28bae2ab37287a",
-    "code/landing_training/radio_robust_20261015/marker_kernel.so": "1f797538588477f0e4e516054f8d2817aa65776c0dfa72f7cfd842f2a89545c5",
-    "code/landing_training/radio_robust_20261015/native_marker.py": "77f54d0a2af071de03f24ff22a9ef919aeab2a6e1c9a39ada2c0df5bb34ccb9c",
-    "code/landing_training/radio_robust_20261015/acquisition.py": "7b5413b7f6d327674e022ffd98c6ceb9408b2a3fd4cf977bea3d52b888d6c7bc",
-    "code/landing_training/radio_robust_20261015/__init__.py": "6caec4e63be72086debd1316652acc5d3ec710a1b099f74ffd76e7169db66c57",
-    "code/landing_training/radio_robust_20261015/spatial_acquisition.py": "fc621eaaea3a51e9bf314e4b59c8229783c3f7f292ee87c350dfbf8ea568850f",
-    "code/landing_training/radio_robust_20261015/marker_kernel.cpp": "0b70a9263dfc75ddba3b3771fba17391692d43bc0dbffaafe92aa33de2e58c66",
-    "code/landing_training/radio_robust_20261015/controller/source.json": "5782cf045aeb2d7bd7ee25f23a8a38a176ae366e3b7baee1e3ab4b81764f65b1",
-    "code/landing_training/radio_robust_20261015/controller/visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095",
-    "code/landing_training/radio_robust_20261015/controller/action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
-    "code/landing_training/radio_robust_20261015/controller/camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
-    "code/landing_training/radio_robust_20261015/controller/marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
-    "code/landing_training/radio_robust_20261015/controller/supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
-    "code/landing_training/radio_robust_20261015/controller/marker_geometry.py": "f6aa5c5d1bc0ec96532106b19753f16fa1902f4e5d507d7c6bb8ee645f59b5d1",
-    "code/landing_training/radio_robust_20261015/controller/physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
-    "code/landing_training/radio_robust_20261015/controller/camera_obstruction_map.json": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
-    "code/landing_training/radio_robust_20261015/controller/observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
-    "code/landing_training/radio_robust_20261015/controller/recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
-    "code/landing_training/radio_robust_20261015/controller/marker_policy.py": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
-    "code/landing_training/radio_robust_20261015/controller/visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
-    "code/landing_training/radio_robust_20261015/controller/hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
-    "code/landing_training/radio_robust_20261015/controller/camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
-    "code/landing_training/radio_robust_20261015/controller/persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
-    "code/landing_training/radio_robust_20261015/controller/approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
-    "code/landing_training/radio_robust_20261015/controller/nearfield_visibility.py": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
-    "code/landing_training/radio_robust_20261015/controller/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "code/landing_training/radio_robust_20261015/controller/camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa"
-  },
-  "runtime_revision": "landing_hardening_r8c_true_visibility_alignment_hold",
-  "source_code_commit": "2ca3759 plus experiment sources recorded by SHA256",
-  "source_branch": "codex/radio-free-20261016",
-  "reliability_qualified": false,
-  "source_epoch_checkpoint_sha256": "8edf2308d951d7103598af760493c2fa5b4664469ae7e9c8c257460fb7376d8d",
-  "validation_selection_score": 0.11155434854150009,
-  "controller_changes": [
-    "existing image-only acquisition head for coarse visibility/bearing",
-    "capture-time bearing transformed to own current heading",
-    "aircraft yaw selects CAD-measured clear camera sector; counter-pan retains visual bearing",
-    "bearing persistence/innovation check, short bounded loss memory, yaw-based search",
-    "own odometry propagates visual track until measured boat motion is ready",
-    "three metric fits confirm lock; tracking grace shortened, physical touchdown unchanged",
-    "turn aircraft only when calibrated camera sector is obstructed",
-    "one-second lower-score track maintenance after strong visual acquisition with bearing-consistency gate",
-    "stronger relative-motion damping and 0.7m/s closure limit while heading/motion alignment is pending",
-    "tracked camera counter-pans measured aircraft yaw rate",
-    "spatial image-only heatmap/offset/presence head reuses frozen encoder intermediate maps; existing RGB training/validation only",
-    "bounded below-horizon tentative camera attention for partial targets; no translation until established strong detection",
-    "8s touchdown commit retains accepted visual motion with own odometry, bounded XY correction and explicit drift/height/attitude/telemetry cancellation; original commit entry and physical landing criteria unchanged",
-    "reject above-horizon coarse targets before locking camera or authorizing movement",
-    "reverse template-to-edge distances query full observed border cloud rather than sparse240 forward samples; solver, residual threshold, precision/recall and physical landing gates unchanged",
-    "coarse horizontal approach/braking uses own altitude, static declared water/deck plane and RGB bearing; avoids 2*sin(elevation) moving-target equilibrium without permitting unconfirmed descent",
-    "All direct boat-radio controller inputs removed; independently gated radio can influence learned pose only. Visual search/registration cannot be vetoed by radio coordinates.",
-    "R2: bounded uncertainty-aware accepted-geometry memory, predicted ROI remeasurement, local recovery, clearance-gated2.5m view reset, own gimbal-command feedback; no R1 acquisition feedforward changes",
-    "R3: consume own gimbal-command target from actual px4 telemetry namespace; static recovery swept column covers16s maximum climb/scan horizon",
-    "R4: close low unconfirmed handoff obtains a higher view before accelerating past a target, using below-horizon image bearing and declared nominal deck plane only",
-    "R5: uncertainty-qualified remembered geometry keeps its own projected fit ROI after0.5s; coarse neural pixel cannot overwrite it. Measurement acceptance and descent criteria unchanged.",
-    "R6: additional broad deck-datum consistency veto before visual-fit acceptance/memory update. Rejects recorded false fit implying a pad7.5m below sea; no geometry, timing, descent or touchdown threshold relaxed.",
-    "R7: recovery cooldown cannot suppress new local loss braking. Existing current confidence/clearance gates may start a bounded near-deck view reset before projected0.4s uncertainty consumes the remaining ascent margin. No safety threshold loosened.",
-    "Nearfield camera-offset alignment and calibrated final-view forecast are ADDITIONAL descent vetoes. Fresh RGB registration required for new nearfield descent. Unchanged3cm touchdown entry, physical contact/disarm, fitter, speed/gimbal limits and neural weights. A4s unresolved alignment asks existing gated bounded recovery.",
-    "Post-guard nearfield closing veto prevents command slew reintroducing the closing descent that the visibility planner paused. No new descent from a missing RGB fit.",
-    "When existing geometry is ready, visibility alignment and its settling interval request actual relative-altitude hold, instead of inheriting recover-up after stability reset. Existing non-ready geometric recovery and all final gates remain."
-  ],
-  "physics_acceleration": "FP64 equivalent math, unchanged forces, timestep and collision rules",
-  "authorization_kind": "explicit_current_session_authorization",
-  "experiment_root": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/landing_hardening_20261018T011610Z",
-  "closed_loop_results": [],
-  "target_met_on_this_sample": false,
-  "acquisition_checkpoint": "acquisition.pt",
-  "acquisition_checkpoint_sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65",
-  "experiment_notes": "Development controller. Inherited parent results retained separately; fresh qualification has not begun.",
-  "spatial_checkpoint": "spatial_acquisition.pt",
-  "spatial_checkpoint_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
-  "spatial_training": {
-    "status": "completed",
-    "epochs": 15,
-    "selected_epoch": 9,
-    "validation": {
-      "frames": 9235,
-      "visible_frames": 7610,
-      "negative_frames": 1625,
-      "pixel_rms": 10.956771850585938,
-      "offcenter_pixel_rms": 12.304543495178223,
-      "median_pixel_error": 0.9179627895355225,
-      "p90_pixel_error": 2.3958334922790527,
-      "false_positive_rate": 0.0036923076923076922,
-      "recall": 0.9823915900131406,
-      "score": 15.941219526661259
-    },
-    "checkpoint_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
-    "test_images_used": false
-  },
-  "algorithm_version": "vision_first_fusion_v1",
-  "browser_schema": "tidewater.vision_first_policy.browser.v2",
-  "unknown_dock_observation_mean": 0.9898932576179504,
   "mission_budget_s": 180.0,
   "allow_visual_landing": true,
-  "model": "pose.onnx",
-  "model_sha256": "350584d6b5a9c464c22f8bfe59fd94c5543527ce3af2afd439453a061ac40420",
-  "bundle_sha256": "5748013cfbc0011b6264b6096d58ffa5c8ba8bdf05931238125de144b309753c",
-  "spatial_acquisition_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+  "boat_radio": true,
+  "unknown_dock_observation_mean": 0.9898932576179504,
+  "algorithm_version": "radio_search_student_v1",
+  "browser_schema": "tidewater.search_student.browser.v1",
+  "model": "student.onnx",
+  "model_sha256": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
+  "model_bytes": 6436831,
   "input_contract": {
     "image": [
       1,
@@ -398,7 +152,7 @@
     "numeric": [
       1,
       1,
-      34
+      32
     ],
     "hidden": [
       1,
@@ -408,38 +162,82 @@
     "prediction": [
       1,
       1,
-      20
+      15
     ],
-    "numeric_fields": "original 32 sensors plus reported position/velocity uncertainty",
-    "prediction_fields": "fused pose[15], spatial presence logit[1], normalized spatial center[2], fusion weights[2]",
+    "numeric_fields": "original 32-value sensor contract",
+    "prediction_fields": "fused pose[15]",
     "image_dtype": "float32",
     "image_value_range": [
       0,
       255
     ]
   },
+  "output_contract": {
+    "search": {
+      "heat": [
+        1,
+        45,
+        80
+      ],
+      "offset": [
+        1,
+        2,
+        45,
+        80
+      ],
+      "presence": [
+        1,
+        1
+      ],
+      "evidence": [
+        1,
+        4,
+        45,
+        80
+      ],
+      "identity": [
+        1,
+        2,
+        45,
+        80
+      ]
+    }
+  },
+  "search_thresholds": {
+    "proposal_threshold": 0.5,
+    "max_objects": 7,
+    "evidence_threshold": 0.8,
+    "identity_threshold": 0.98,
+    "target_like_threshold": 0.6,
+    "target_identity_threshold": 0.85
+  },
+  "reference_entry": "student_api.py",
   "reference_adapter_sha256": {
     "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
-    "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
-    "browser_api.py": "432b1cd89d5d2dcffbab98fcb4f401e2f147b1650cdf21f59b7576bfb74a283d",
     "action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
+    "approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
+    "browser_api.py": "432b1cd89d5d2dcffbab98fcb4f401e2f147b1650cdf21f59b7576bfb74a283d",
+    "camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
     "camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
     "camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+    "camera_obstruction_map.json": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
+    "hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
     "marker_geometry.py": "f533d1aa07f818773bb79feb35a883106d6afb34aedda32a33bfb752d89b0d4d",
     "marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
-    "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
-    "hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
     "marker_policy.py": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
-    "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095",
-    "observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
-    "camera_obstruction_map.json": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
-    "persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
-    "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
-    "camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
-    "physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
     "nearfield_visibility.py": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
-    "approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14"
+    "observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
+    "persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
+    "physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
+    "recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+    "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
+    "search_decision.py": "a41e9ab11bd8d52805a3a787d1f2883918a0d7fc2632a28cdf46e6d6c26d7d15",
+    "student_api.py": "ed81d662ce28faf7c77c5bd46ab332b183d514d956e2b88cbfe92bea4f58e770",
+    "student_radio.py": "5ebf5da604f97413ceb89e72175b2cbe7472a586cd0ee88f7ce2f6b841aa5254",
+    "student_runtime.py": "23f0af801230938a44bc8b977cc2a36e12c1b21a50de95dc49ada010c993b4d6",
+    "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
+    "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
+    "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095"
   },
   "runtime": {
     "onnxruntime_web": "1.30.0",
@@ -449,108 +247,41 @@
   "marker_kernel_sha256": "ec6f9a2f1147323ecab27d5add5f13abdbab5ad965df2047c24af9bdc124f1ba",
   "marker_kernel_source_sha256": "0b70a9263dfc75ddba3b3771fba17391692d43bc0dbffaafe92aa33de2e58c66",
   "marker_solver_source_sha256": "f8a83533f6cc1efd40cd0659a177c1881fa5a2fbf0b40bfc9c28bae2ab37287a",
-  "mission_integration": {
-    "fallback": "manual hold on mission deadline; no authorized static home in this boat-launch game",
-    "boat_control": "independent; 2.8m/s normal cruise exceeds policy 2m/s horizontal command bound",
-    "qualification": "native candidate had four targeted successful flights; browser port is not flight-qualified"
+  "pre360": {
+    "tilt_deg": 75.0,
+    "nadir_s": 2.5,
+    "yaw_rate_rad_s": 0.5,
+    "settle_yaw_rate_rad_s": 0.1,
+    "stop_settle_s": 0.4,
+    "lost_s": 0.6,
+    "handoff_frames": 4,
+    "handoff_confidence": 0.5
   },
-  "export_parity": [
-    {
-      "frame": 0,
-      "prediction": 2.86102294921875e-05,
-      "hidden": 1.0445713996887207e-05
-    },
-    {
-      "frame": 1,
-      "prediction": 3.24249267578125e-05,
-      "hidden": 1.3090670108795166e-05
-    },
-    {
-      "frame": 2,
-      "prediction": 2.6702880859375e-05,
-      "hidden": 8.277595043182373e-06
-    },
-    {
-      "frame": 3,
-      "prediction": 1.9073486328125e-05,
-      "hidden": 3.874301910400391e-06
-    },
-    {
-      "frame": 4,
-      "prediction": 2.002716064453125e-05,
-      "hidden": 3.159046173095703e-06
-    },
-    {
-      "frame": 5,
-      "prediction": 4.291534423828125e-06,
-      "hidden": 2.8014183044433594e-06
-    },
-    {
-      "frame": 6,
-      "prediction": 4.76837158203125e-06,
-      "hidden": 2.5033950805664062e-06
-    },
-    {
-      "frame": 7,
-      "prediction": 7.62939453125e-06,
-      "hidden": 2.5779008865356445e-06
-    }
-  ],
-  "declared_additional_inputs": [
-    "own issued gimbal position target",
-    "declared static obstacle clearance ceiling for upward recovery veto only; no dynamic boat state"
-  ],
-  "inherited_evidence_not_qualification_of_this_revision": {
-    "closed_loop_evaluated": false,
-    "reliability_qualified": false,
-    "closed_loop_results": {},
-    "target_met_on_this_sample": false,
-    "experiment_root": "/home/hxhshsh7gyg/vision-based-drone-landing-ml/landing_training/outputs/domain_training_20261016T134939Z",
-    "automatic_deployment": false,
-    "experiment_notes": "Only pre-lock image-centre predictions replaced by an existing v4 image-only head. Original visibility, pose/velocity predictions, propagation, gates, search and touchdown logic retained. No new training."
+  "export_parity": {
+    "prediction": 1.3113021850585938e-06,
+    "next_hidden": 1.1920928955078125e-06,
+    "search_heat": 1.811981201171875e-05,
+    "search_offset": 1.5497207641601562e-06,
+    "search_presence": 2.205371856689453e-05,
+    "search_evidence": 2.4318695068359375e-05,
+    "search_identity": 2.2172927856445312e-05
   },
-  "hardening_r10": {
-    "parent_policy_sha256": "ed6a2a0263ea0265b33cfa2d77aa4ed527d7fd6504d54677d386c5a2fd1a6893",
-    "cause": "R9 recorded RGB proves the independent far servo centred a landing leg over the boat. R9 also discarded original progress accounting and stopped despite real closure.",
-    "change": "Far recovery reuses original CAD-aware aircraft-yaw acquisition and its mission progress accounting, zero descent; near metric-memory/climb/visibility/touchdown criteria unchanged.",
-    "new_training": false,
-    "neural_weights_unchanged": true
+  "native_parity": {
+    "prediction": 1.1920928955078125e-07,
+    "hidden": 7.450580596923828e-08,
+    "heat": 0.0,
+    "offset": 0.0,
+    "presence": 0.0,
+    "evidence": 0.0,
+    "identity": 0.0
   },
-  "hardening_r13": {
-    "parent_policy_sha256": "d8868f20b07b494713d6d1ab08c4d977e56ef5b4622fa251e6cfd7b62175b174",
-    "cause": "R12 braking begins too late relative to measured command slew and aircraft response; brief metric handoff bypasses acquisition constraint before visual motion is initialized.",
-    "change": "Shared observed-bearing stopping-distance envelope before the existing single guard pass, through uninitialized metric handoff; no fixed following distance, descent permission, scoring or physics change.",
-    "braking_budget_m_s2": 0.6,
-    "reaction_allowance_s": 0.4,
-    "new_training": false,
-    "qualification_unestablished": true
+  "search_engine": {
+    "input_proposals": "decoded SearchHead proposals; no radio coordinates enter search/identity",
+    "search_decision": "benchmark/policies/student/revised_teacher.py SearchDecision",
+    "radio_first": "RadioSearchRuntime; fresh/plausible packet only until pre360/handoff",
+    "base_landing": "frozen R15 MarkerPosePolicy controller, radio-free observation"
   },
-  "approach_r2": {
-    "parent_policy_sha256": "e8d41926b123559409c06bee51d7d173b388079895db3c31ee190df07a73082e",
-    "correction": "R13 duplicate earlier finish method was overridden by existing final finish definition, so envelope never executed. Insert into actual existing final method; require full RadioRobustRuntime recorded-RGB branch proof before flights.",
-    "new_training": false,
-    "qualification_unestablished": true
-  },
-  "combined_r14": {
-    "scope": "Combination of two separately audited causal development improvements; not qualified until new full gates.",
-    "source_approach_policy_sha256": "95caee5b76059fbac2d026eab8640c8858be16d5c07ca10a6580cb049415f6a6",
-    "source_near_policy_sha256": "77af6dc5032ccd04d52b923f44c6c7466a5d421d26aeafd49dbdd536ce44602d",
-    "actual_development_branch_frames": {
-      "approach_stopping_limited": 220,
-      "nearfield_persistent_velocity_used": 389
-    },
-    "neural_weights_unchanged": true,
-    "strict_original_touchdown_and_physics_unchanged": true,
-    "new_training": false
-  },
-  "hardening_r15": {
-    "parent_policy_sha256": "34845b34dc9490fddcc411738bd25b83e0d52bf4ab3564bf4aa22c931004c473",
-    "cause": "R14pairedmerge4/5boat; neargravel .08m/s visibility threshold allowed .02-.04m/s relative drift into centimetre-wide final camera footprint. Veto began at4.6cm with remaining vertical momentum, then target leftview and returnedhome.",
-    "change": "Extra terminal-motion veto derived from calibrated final-view projection Jacobian, half existing inner108pixel radius and actual image age plus existing.4s horizon. Upper speed bound never exceeds old.08m/s. All original pose/visibility/3cm touchdown/disarm/physics gates unchanged.",
-    "new_training": false,
-    "qualification_unestablished": true
-  },
-  "staging_only": true,
-  "qualification": "Separate staged R14; native and actual browser gates still required.",
-  "native_controller_policy_sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35"
+  "qualification": "staged browser port; benchmark policy is not closed-loop qualified",
+  "rollback": "legacy vision-first manifest preserved in public/policy-legacy-vision-first",
+  "staged_at": "2026-11-12"
 }

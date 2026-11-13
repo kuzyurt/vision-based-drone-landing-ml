@@ -1,20 +1,22 @@
 # Folder disposition
 
-This is the migration decision table. “Pinned” means
-`benchmark/environments/runtime.json` records the folder’s files by path and
-SHA-256, so moving it now would break the frozen benchmark preflight.
+This is the migration decision table. “Pinned” means a benchmark receipt
+records the folder’s files by path and SHA-256, so moving it now would break
+that benchmark’s preflight. The pre-V2 receipts are archived in
+`old/benchmark/environments/runtime.json`; the active V2 receipts are in
+`benchmark/definition/runtime.json`.
 
 | Current folder | Decision | Future home | Notes |
 |---|---|---|---|
 | `AERODOCK_MuJoCo/` | Keep, pinned | `packages/aerodock/` | Distribution metadata added in place; import name remains `usv`. |
 | `px4-mujoco-drone-simulation/` | Keep, pinned | `packages/px4sim/` | Existing `pyproject.toml`; import name remains `sim`. |
 | `landing_training/` | Keep, pinned | `packages/landing/` | Distribution metadata added in place; flat modules still need a later split. |
-| `benchmark/` | Keep, pinned harness | `packages/benchmark/` | Definitions and reports stay; raw runs/probes/audits/models are output/evidence. |
+| `benchmark/` | Keep, active V2 | `packages/benchmark/` | Definitions and canonical evidence stay; the pre-V2 tree is archived at `old/benchmark/`. |
 | `tidewater-game/` | Keep, pinned app | `apps/tidewater/` | `runtime.json` pins browser assets; move after a benchmark re-base. |
 | `artifacts/` | Keep, pinned evidence | `experiments/evidence/` | Raw evidence, not source. Some runtime helpers still need promotion. |
 | `training_runs/` | Keep for now | `experiments/runs/` | Benchmark revisions reference exact `training_runs/...` paths. |
-| `datasets/` | Moved | `data/generated/` | Contents moved; `datasets/README.md` remains as a pointer. |
-| `training_data_generation/` | Moved | `packages/datagen/` | Source moved; original import path is now a compatibility shim. |
+| `datasets/` | Removed | `data/generated/` | Contents moved; the empty pointer folder was deleted. |
+| `training_data_generation/` | Moved | `training_runs/training_data_generation/` | Source moved next to the runs that use it; original import path is now a compatibility shim. |
 | `docs/` | Keep | `docs/` | Cross-cutting documentation and public media. |
 | `training_runs/background_manual_20261025/` | Moved | `docs/operations/background-manual/` | Windows/WSL service notes, not an ML run. |
 | Root `*.log`, `handoff_*.txt` | Moved | `docs/operations/` | Working notes are no longer loose at the repository root. |
@@ -61,7 +63,7 @@ The future roots replace paths that are currently pinned:
 | Future root | Current source | Gate |
 |---|---|---|
 | `experiments/runs/` | `training_runs/` | Benchmark revisions reference exact paths. |
-| `experiments/benchmarks/` | `benchmark/runs/`, `probes/`, `audits/` | Frozen harness receipts. |
+| `experiments/benchmarks/` | `old/benchmark/runs/`, `probes/`, `audits/` | Frozen harness receipts. |
 | `experiments/evidence/` | `artifacts/` | `runtime.json` hashes evidence files. |
 | `experiments/archive/` | future | Superseded policies and frozen revisions. |
 
@@ -81,10 +83,10 @@ references a hash and never copies a weight into its own directory.
 These are listed for later cleanup. **Nothing here was deleted.**
 
 - `.cloud-attachments/` — imported conversation artifact, not project source.
-- `benchmark/_superseded_inventory/` — old inventory; archive or remove after
+- `old/benchmark/_superseded_inventory/` — old inventory; archive or remove after
   confirming no historical report links to it.
-- `benchmark/probes/`, `benchmark/audits/`, `benchmark/runs/` — raw experiment
-  output; keep as evidence locally, not as source, and migrate to
+- `old/benchmark/probes/`, `old/benchmark/audits/`, `old/benchmark/runs/` — raw
+  experiment output; keep as evidence locally, not as source, and migrate to
   `experiments/` when practical.
 - `landing_training/.venv/` — local interpreter; recreate from requirements.
 - `landing_training/.vendor/PX4-Autopilot/` — nested checkout; belongs under

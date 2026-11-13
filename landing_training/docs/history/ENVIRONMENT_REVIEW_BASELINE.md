@@ -155,7 +155,7 @@ transports. No separately running boat server, drone server or WSL is required.
 
 ## Benchmark collection on your computer
 
-Run [collection_benchmark.py](../../collection_benchmark.py) from the repository root
+Run [collection_benchmark.py](../../tools/collection_benchmark.py) from the repository root
 in Linux, or inside WSL2 on Windows. Native Windows Python cannot run this Linux
 PX4 build. Prepare the environment above first; the benchmark does not install
 drivers, dependencies, or firmware, and does not run ML training.

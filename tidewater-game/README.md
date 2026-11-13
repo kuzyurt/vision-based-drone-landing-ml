@@ -29,8 +29,8 @@ the collision world and shaders. Wait for **Offline files ready** for offline pl
 ## Play with the policy
 
 1. Take off near a visible boat in mild conditions.
-2. Switch to the boat with **B**. Slow or stop it, open both lids, then raise
-   the landing platform.
+2. Switch to the boat with **B**. Open both lids, then raise the landing
+   platform. The boat does not need to stop for takeoff.
 3. Return to the drone and press **ML landing**. Press **Manual control** to
    take over; **Land** also cancels policy control.
 

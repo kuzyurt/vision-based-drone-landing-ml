@@ -4,8 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from benchmark.common import write
-from benchmark.rollout_digest import SCHEMA, build_digest, generate_episode_digest
+from benchmark.harness.common import write
+from benchmark.harness.rollout_digest import SCHEMA, build_digest, generate_episode_digest
 
 
 def make_episode(directory):

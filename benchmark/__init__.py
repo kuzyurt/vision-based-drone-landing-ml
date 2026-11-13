@@ -1,1 +1,1 @@
-"""Unaided drone/boat mission benchmarks. Importing this package never flies."""
+"""Clean AeroDock 20-case benchmark package. Importing it never flies."""

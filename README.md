@@ -23,7 +23,6 @@ new benchmark snapshot re-bases its receipts. Generated data and operational
 notes are already separated.
 
 - [Architecture and the pinned boundary](docs/architecture/README.md)
-- [Package status](packages/README.md)
 - [Data lifecycle](data/README.md)
 - [Folder disposition and future roots](docs/architecture/FOLDER_DISPOSITION.md)
 

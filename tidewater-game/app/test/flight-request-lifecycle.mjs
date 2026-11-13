@@ -18,7 +18,7 @@ assert.equal(op._flightControl().label,'Take off');op.toggleFlight();assert.equa
 op.state.drone.flight_requested=true;assert.equal(op._flightControl().label,'Cancel takeoff');op.toggleFlight();assert.equal(sent.at(-1).action,'land');
 op.state.drone.armed=true;assert.equal(op._flightControl().label,'Land');
 op.state.drone.landing_requested=true;const before=sent.length;assert.equal(op._flightControl().label,'Landing…');op.toggleFlight();assert.equal(sent.length,before);
-op.state.drone.takeoff_pending=true;assert.equal(op._flightControl().label,'Stopping boat…');
+op.state.drone.takeoff_pending=true;assert.equal(op._flightControl().label,'Preparing takeoff…');
 // Capture the velocity at the moment the setpoint is handed to PX4: the fake observation below
 // reuses the same buffer, so reading it afterwards would see zeros.
 let sentVelocity=null;pilot.module._tw_setpoint=()=>{sentVelocity=Array.from(memory.subarray(2,5));};

@@ -6,5 +6,4 @@
 -e ./AERODOCK_MuJoCo
 -e ./px4-mujoco-drone-simulation
 -e ./landing_training
--e ./packages/datagen
 -e ./benchmark

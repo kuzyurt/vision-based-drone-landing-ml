@@ -1,1 +1,0 @@
-"""Search-head sample generation."""

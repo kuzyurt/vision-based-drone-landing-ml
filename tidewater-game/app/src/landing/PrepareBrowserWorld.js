@@ -20,7 +20,7 @@ export function prepareBrowserWorld({createWorker,base,c,map,progress,signal}) {
     else if(packet.status)progress(packet.status);
    };
    worker.onerror=event=>finish(new Error(event.message||'World compiler worker failed'));
-   worker.onmessageerror=()=>finish(new Error('Could not receive compiled Tidewater world'));
+   worker.onmessageerror=()=>finish(new Error('Could not receive the compiled world'));
    signal?.addEventListener('abort',abort,{once:true});
    const heights=new Float32Array(map.heights);
    worker.postMessage({base,c,meta:map.meta,heights},[heights.buffer]);

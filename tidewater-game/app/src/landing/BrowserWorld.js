@@ -75,7 +75,7 @@ export async function compileWorld(mj,c,map,base,progress,fetchAsset=async url=>
  const key=Array.from(new Uint8Array(hash),v=>v.toString(16).padStart(2,'0')).join('');
  let binary=null;try{binary=await cached(key);}catch{/* Storage limits do not stop flight. */}
  if(binary) {
-  progress('Loading cached Tidewater collision world');mj.FS.writeFile('/world.mjb',binary);
+  progress('Loading cached collision world');mj.FS.writeFile('/world.mjb',binary);
   const vfs=new mj.MjVFS();try{return mj.MjModel.from_binary_path('/world.mjb',vfs);}catch{progress('Rebuilding damaged collision cache');}finally{vfs.delete();mj.FS.unlink('/world.mjb');}
  }
  progress('Loading original collision meshes');let done=0,next=1;
@@ -92,7 +92,7 @@ export async function compileWorld(mj,c,map,base,progress,fetchAsset=async url=>
  }
  map.meta.colliders.boxes.forEach((b,i)=>{if(b.solid===false)return;const a=(b.rotY||0)/2;geoms.push(`<geom name="tidewater_box_${i}" type="box" pos="${b.center[0]} ${-b.center[2]} ${b.center[1]}" size="${b.half[0]} ${b.half[2]} ${b.half[1]}" quat="${Math.cos(a)} 0 0 ${Math.sin(a)}" contype="12" conaffinity="3" group="5"/>`);});
  map.meta.colliders.cylinders.forEach((b,i)=>geoms.push(`<geom name="tidewater_cylinder_${i}" type="cylinder" pos="${b.x} ${-b.z} ${(b.yMin+b.yMax)/2}" size="${b.radius} ${(b.yMax-b.yMin)/2}" contype="12" conaffinity="3" group="5"/>`));
- progress('Compiling original CAD and Tidewater terrain · first load');
+ progress('Compiling original CAD and terrain · first load');
  mj.FS.writeFile('/world.xml',xml.replace('</asset>',assets.join('')+'</asset>').replace('</worldbody>',geoms.join('')+'</worldbody>'));
  let model;try{model=mj.MjModel.from_xml_path('/world.xml');}finally{for(const file of [...temporary,'/world.xml',...c.files.slice(1).map(f=>'/'+f)])mj.FS.unlink(file);}
  try{mj.mj_saveModel(model,'/world.mjb',null);const bytes=mj.FS.readFile('/world.mjb');await cached(key,bytes);mj.FS.unlink('/world.mjb');}catch{/* Flight works even when cache quota is exhausted. */}finally{try{mj.FS.unlink('/world.mjb');}catch{}}

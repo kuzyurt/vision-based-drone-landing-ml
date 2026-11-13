@@ -246,7 +246,7 @@ export class Clouds {
 
 		const wind0 = new Vector2().copy( G.windDir.value ).normalize().multiplyScalar( 12 );
 		this.params = new UniformBlock( 'CloudsParams', {
-			coverage: [ 'f32', 0.45 ],
+			coverage: [ 'f32', 0.65 ],
 			densityScale: [ 'f32', 0.07 ], // extinction (1/m) of the densest cloud
 			bottom: [ 'f32', 750 ],
 			top: [ 'f32', 2400 ],

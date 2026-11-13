@@ -145,7 +145,7 @@ It is separate from deployed R15 and the completed benchmark.
 
 ## Matched benchmark
 
-![Teacher, R15 and older policy on the same 20 missions](../benchmark/figures/model-comparison.png)
+![Teacher, R15 and older policy on the same 20 missions](../old/benchmark/archive/2026-11-10/figures/model-comparison.png)
 
 The 25 October comparison covers boat speed, crosswind, waves, distant search,
 radio availability and static decoys. All **60 cases** were valid.
@@ -155,8 +155,8 @@ higher overall score because acquisition and completion speed also count.
 No-radio acquisition remains the main weakness. Twenty cases per actor make
 this a comparative screen; earlier suites use different conditions.
 
-[Full results and failure analysis](../benchmark/reports/2026-10-25/RESULTS.md) ·
-[Benchmark design](../benchmark/README.md) · [Dashboard](../benchmark/ui/index.html)
+[Archived full results and failure analysis](../old/benchmark/archive/2026-11-10/reports/2026-10-25/RESULTS.md) ·
+[Current benchmark design](../benchmark/README.md) · [Archived dashboard](../old/benchmark/archive/2026-11-10/ui/index.html)
 
 ## Development
 
@@ -171,14 +171,14 @@ this a comparative screen; earlier suites use different conditions.
 
 | Area | Entry point |
 |---|---|
-| World | [`scene.py`](scene.py), [`environment.py`](environment.py), [`config.py`](config.py), [`px4.py`](px4.py) |
-| Teacher | [`privileged_teacher.py`](privileged_teacher.py), [`smooth_landing.py`](smooth_landing.py) |
-| Data | [`recording.py`](recording.py), [`review.py`](review.py), [`collect.py`](collect.py) |
+| World | [`scene.py`](sim/scene.py), [`environment.py`](sim/environment.py), [`config.py`](sim/config.py), [`px4.py`](sim/px4.py) |
+| Teacher | [`privileged_teacher.py`](teacher/privileged_teacher.py), [`smooth_landing.py`](teacher/smooth_landing.py), [`wave_teacher.py`](teacher/wave_teacher.py) |
+| Data | [`recording.py`](data/recording.py), [`review.py`](data/review.py), [`collect.py`](data/collect.py) |
 | Deployed R15 | [Frozen bundle and qualification](docs/CURRENT_POLICY.md) |
 | Active search revision | [Run guide](../training_runs/search_revision_20261025/README.md) |
 | Original setup | [Linux/WSL workflow](docs/history/ENVIRONMENT_REVIEW_BASELINE.md) |
 | Detailed evidence | [Development report](docs/reports/LANDING_POLICY_DEVELOPMENT_REPORT_2026-10-17.md), [Tidewater tests](docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md) |
 
-The root `policy.py` and `train.py` remain the original action-imitation baseline.
+The `training/policy.py` and `training/train.py` modules remain the original action-imitation baseline.
 Use the run guide for current training and the [source map](docs/SOURCE_MAP.md)
 to navigate modules. Frozen experiments remain in `artifacts/`.

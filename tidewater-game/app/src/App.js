@@ -803,7 +803,7 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 			const link = document.createElement( 'a' );
 			const url = URL.createObjectURL( blob );
 			link.href = url;
-			link.download = `tidewater-${ new Date().toISOString().replace( /[:.]/g, '-' ) }.png`;
+			link.download = `aerodock-${ new Date().toISOString().replace( /[:.]/g, '-' ) }.png`;
 			document.body.append( link );
 			link.click();
 			link.remove();
