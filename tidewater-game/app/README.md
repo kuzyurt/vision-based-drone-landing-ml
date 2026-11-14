@@ -186,11 +186,17 @@ technique references are listed in [CREDITS.md](CREDITS.md).
 
 ## Developer notes (2026-11-14)
 
-- **Z** starts/stops a session recording. Rows (vehicles, policy phase, actions,
-  diagnostics, search output, camera exposure, key presses, messages) are
-  appended every 2 s to `tidewater-game/recordings/session-<time>.jsonl` by the
-  local server (`npm start` or `npm run dev`). On another host the file is
-  downloaded when recording stops.
+- **Z** starts/stops a session log: one compact row every 0.5 s of simulation
+  time with the boat and drone (position, velocity, heading), the gimbal camera
+  (pan/tilt, their rates, look direction), the drone-to-boat distance and
+  bearing, whether the camera sees the boat and where in the 640×360 policy
+  image, the policy state and action, and the pad finder output (search
+  proposals, heat peak, pose-head estimates). Small `event` rows mark changes
+  (policy phase, boat enters/leaves the view, identity confirmed, ...). The
+  header lists the units. Press Z again to stop: the whole log is saved as one
+  JSON file (`session-<time>.json`, `{ header, rows }`, one row per line) in the
+  browser's Downloads folder. Nothing is written until you stop, so do not
+  close the tab while recording.
 - The trained policy loads in the background while the start image is shown;
   switching ML on only resets it. Manual control keeps it loaded.
 - After editing `public/policy/reference/*.py`, run

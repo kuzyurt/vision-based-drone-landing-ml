@@ -1,15 +1,36 @@
-// Developer session recorder (key Z). Records the whole flight session from the
-// moment Z is pressed until Z is pressed again: vehicle states, policy phase,
-// actions, diagnostics, search output, timings, key presses and messages.
-// Rows are sent every two seconds to the local server, which appends them to
-// tidewater-game/recordings/session-<time>.jsonl. Without that server (another
-// host), the rows are kept in memory and downloaded as a file on stop.
+// Developer session log (key Z). One compact row every 0.5 s of simulation time from the
+// moment Z is pressed until Z is pressed again, plus a few small event rows when something
+// changes (policy phase, boat enters / leaves the camera view, identity confirmed, ...).
+//
+// A row answers, at that moment: where the boat and the drone are, how they move and which way
+// they face; where the gimbal camera points and how fast it turns; how far apart the vehicles
+// are; whether the camera sees the boat and where in the 640x360 policy image it is; what the
+// policy is doing; and what the pad finder (search head + pose head) reports.
+//
+// Z starts the recording, Z again stops it and saves everything as one JSON file
+// (session-<time>.json: { header, rows: [...] }) in the browser's Downloads folder.
 
-const SAMPLE_MS = 50;
-const FLUSH_MS = 2000;
-const MEMORY_ROW_LIMIT = 200000;
+const ROW_S = 0.5; // simulation seconds between rows
+const POLL_MS = 50; // how often the state is checked for the next row and for events
+const IMAGE_W = 640, IMAGE_H = 360; // the policy camera image
+const HEAT_W = 80, HEAT_H = 45; // pad finder heat map grid
+const DEG = 180 / Math.PI;
+const TOP_PROPOSALS = 3;
 
 const finite = value => typeof value === 'number' && Number.isFinite( value ) ? value : null;
+const round = ( value, digits = 2 ) => {
+
+	const v = finite( value );
+	if ( v === null ) return null;
+	const k = 10 ** digits;
+	return Math.round( v * k ) / k;
+
+};
+const roundAll = ( values, digits = 2 ) => values && typeof values.length === 'number' ? Array.from( values, v => round( v, digits ) ) : null;
+const sigmoid = x => x >= 0 ? 1 / ( 1 + Math.exp( - x ) ) : Math.exp( x ) / ( 1 + Math.exp( x ) );
+const dot = ( a, b ) => a[ 0 ] * b[ 0 ] + a[ 1 ] * b[ 1 ] + a[ 2 ] * b[ 2 ];
+const sub = ( a, b ) => [ a[ 0 ] - b[ 0 ], a[ 1 ] - b[ 1 ], a[ 2 ] - b[ 2 ] ];
+const wrap180 = deg => ( ( ( deg + 180 ) % 360 ) + 360 ) % 360 - 180;
 const stamp = () => {
 
 	const d = new Date(), p = v => String( v ).padStart( 2, '0' );
@@ -17,24 +38,51 @@ const stamp = () => {
 
 };
 
-function searchSummary( search ) {
+// The game state uses view coordinates [x, y(up), z]; the log uses [east, north, up] (metres).
+const toENU = p => p ? [ p[ 0 ], - p[ 2 ], p[ 1 ] ] : null;
+const compass = ( east, north ) => ( ( Math.atan2( east, north ) * DEG ) + 360 ) % 360; // 0 = north, 90 = east
+
+// The drone's gimbal camera from its view matrix (row-major, view coordinates; columns are the
+// camera's right, up and back axes, the last column its position).
+function cameraFrame( view ) {
+
+	const M = view?.matrix;
+	if ( ! M || M.length < 16 || ! Number.isFinite( view.fovy ) ) return null;
+	return {
+		pos: [ M[ 3 ], M[ 7 ], M[ 11 ] ], right: [ M[ 0 ], M[ 4 ], M[ 8 ] ], up: [ M[ 1 ], M[ 5 ], M[ 9 ] ],
+		back: [ M[ 2 ], M[ 6 ], M[ 10 ] ], fovy: view.fovy * Math.PI / 180,
+	};
+
+}
+
+// Geometric projection of a world point into the policy image. It says where the point would be
+// in the image, not whether it is visible (terrain or other objects in front of it are ignored).
+function project( cam, point ) {
+
+	const rel = sub( point, cam.pos ), range = Math.hypot( rel[ 0 ], rel[ 1 ], rel[ 2 ] );
+	const x = dot( rel, cam.right ), y = dot( rel, cam.up ), z = - dot( rel, cam.back ); // z: depth in front of the lens
+	if ( z <= 0.05 ) return { in_view: false, reason: 'behind_camera', px: null, off_axis_deg: round( Math.acos( Math.max( - 1, Math.min( 1, z / range ) ) ) * DEG, 1 ) };
+	const focal = ( IMAGE_H / 2 ) / Math.tan( cam.fovy / 2 );
+	const px = [ IMAGE_W / 2 + focal * x / z, IMAGE_H / 2 - focal * y / z ];
+	const inside = px[ 0 ] >= 0 && px[ 0 ] < IMAGE_W && px[ 1 ] >= 0 && px[ 1 ] < IMAGE_H;
+	return {
+		in_view: inside, reason: inside ? null : 'outside_frame', px: [ round( px[ 0 ], 0 ), round( px[ 1 ], 0 ) ],
+		off_axis_deg: round( Math.acos( Math.max( - 1, Math.min( 1, z / range ) ) ) * DEG, 1 ),
+	};
+
+}
+
+// Peak of the pad finder's heat map (logits) as an image position.
+function heatPeak( search ) {
 
 	const heat = search?.search_heat;
 	if ( ! heat?.length ) return null;
-	let max = - Infinity, top = 0, above = 0;
-	const gate = Math.log( .36 / .64 );
-	for ( let i = 0; i < heat.length; i ++ ) {
-
-		if ( heat[ i ] > max ) { max = heat[ i ]; top = i; }
-		if ( heat[ i ] >= gate ) above ++;
-
-	}
-	const at = ( array, k ) => array?.length ? finite( array[ top + k * heat.length ] ) : null;
+	let max = - Infinity, top = 0;
+	for ( let i = 0; i < heat.length; i ++ ) if ( heat[ i ] > max ) { max = heat[ i ]; top = i; }
 	return {
-		presence: finite( search.search_presence?.[ 0 ] ), heat_max: finite( max ),
-		heat_top_row: Math.floor( top / 80 ), heat_top_col: top % 80, heat_above_036: above,
-		evidence_raw: [ 0, 1, 2, 3 ].map( k => at( search.search_evidence, k ) ),
-		identity_raw: [ 0, 1 ].map( k => at( search.search_identity, k ) ),
+		prob: round( sigmoid( max ), 3 ),
+		px: [ Math.round( ( ( top % HEAT_W ) + 0.5 ) * IMAGE_W / HEAT_W ), Math.round( ( Math.floor( top / HEAT_W ) + 0.5 ) * IMAGE_H / HEAT_H ) ],
+		presence_raw: round( search.search_presence?.[ 0 ], 3 ),
 	};
 
 }
@@ -62,174 +110,216 @@ export class SessionRecorder {
 		this.id = 'session-' + stamp();
 		this.started = performance.now();
 		this.startedAt = new Date().toISOString();
-		this.pending = [];
-		this.memory = [];
-		this.serverOk = true;
+		this.lines = []; // every row, already serialised
 		this.rows = 0;
-		this.lastKey = '';
-		this.part = 0;
-		this.flushing = null;
-		const app = this.ops.app;
-		this._push( {
-			type: 'header', schema: 'tidewater.session_recording.v1', id: this.id, started_at: this.startedAt,
-			user_agent: navigator.userAgent, page: location.href,
-			gpu: app.gpu?.adapterInfo ? { vendor: app.gpu.adapterInfo.vendor, architecture: app.gpu.adapterInfo.architecture, description: app.gpu.adapterInfo.description } : null,
-			settings: this._plain( app.settings ),
+		this.events = 0;
+		this.nextT = null;
+		this.lastT = null;
+		this.prev = null; // previous row's values, for rates
+		this.watch = null; // previous values of the things whose changes are logged
+		this.header = {
+			schema: 'tidewater.session_log.v3', id: this.id, started_at: this.startedAt,
 			policy_checkpoint: this.ops.bridge?.policy?.status?.checkpoint ?? null,
-		} );
-		this.mark( 'recording_started' );
-		this._onKey = event => {
-
-			if ( event.repeat ) return;
-			const typing = event.target && /^(INPUT|SELECT|TEXTAREA)$/.test( event.target.tagName );
-			if ( ! typing ) this.mark( event.type, { code: event.code } );
-
+			row_interval_sim_s: ROW_S,
+			units: {
+				positions: '[east, north, up] metres (up = height above sea level)', velocities: 'm/s, same axes',
+				angles: 'degrees; heading and *_az/bearing are compass (0 north, 90 east); pan/tilt are the gimbal joint angles',
+				rates: 'deg/s', image: `${ IMAGE_W }x${ IMAGE_H } policy camera, px = [column, row] from the top left`,
+				boat_in_cam: 'geometric projection of the boat origin, ignores occlusion',
+				action: 'policy output [forward, right, down, yaw rate, pan rate, tilt rate] as sent, raw units',
+			},
 		};
-		window.addEventListener( 'keydown', this._onKey, true );
-		window.addEventListener( 'keyup', this._onKey, true );
-		this.sampleTimer = setInterval( () => this._sample(), SAMPLE_MS );
-		this.flushTimer = setInterval( () => this._flush(), FLUSH_MS );
-		this._onHide = event => { if ( event.type === 'pagehide' ) this._flush( true ); else if ( document.visibilityState === 'hidden' ) this._flush(); };
-		document.addEventListener( 'visibilitychange', this._onHide );
-		window.addEventListener( 'pagehide', this._onHide );
-		this._sample();
+		this.mark( 'recording_started' );
+		this.pollTimer = setInterval( () => this._poll(), POLL_MS );
+		this._poll();
 		this._showBadge( true );
-		this.ops._toast( 'Session recording started · Z stops it' );
+		this.ops._toast( 'Session recording started · Z stops it and saves the file' );
 
 	}
 
-	async stop() {
+	stop() {
 
 		if ( ! this.active ) return;
-		this._sample();
-		this.mark( 'recording_stopped', { rows: this.rows, duration_s: ( performance.now() - this.started ) / 1000 } );
+		this._poll( true );
+		this.mark( 'recording_stopped', { rows: this.rows, events: this.events, duration_s: round( ( performance.now() - this.started ) / 1000, 1 ) } );
 		this.active = false;
-		clearInterval( this.sampleTimer );
-		clearInterval( this.flushTimer );
-		window.removeEventListener( 'keydown', this._onKey, true );
-		window.removeEventListener( 'keyup', this._onKey, true );
-		document.removeEventListener( 'visibilitychange', this._onHide );
-		window.removeEventListener( 'pagehide', this._onHide );
+		clearInterval( this.pollTimer );
 		this._showBadge( false );
-		await this._flush();
-		if ( this.serverOk ) {
-
-			this.ops._toast( `Recording saved · tidewater-game/recordings/${ this.id }.jsonl` );
-
-		} else {
-
-			const blob = new Blob( [ this.memory.join( '\n' ) + '\n' ], { type: 'application/x-ndjson' } );
-			const url = URL.createObjectURL( blob ), a = document.createElement( 'a' );
-			a.href = url; a.download = this.id + '.jsonl'; a.click();
-			setTimeout( () => URL.revokeObjectURL( url ), 2000 );
-			this.ops._toast( 'Local server unavailable · recording downloaded as ' + this.id + '.jsonl' );
-
-		}
-		this.memory = [];
+		const name = this.id + '.json';
+		this._download( name );
+		this.ops._toast( `Recording saved to Downloads · ${ name }` );
+		this.lines = [];
 
 	}
 
+	// One valid JSON file { header, rows: [...] }, each row on its own line.
+	_download( name ) {
+
+		const text = '{\n"header": ' + JSON.stringify( this.header ) + ',\n"rows": [\n' + this.lines.join( ',\n' ) + '\n]\n}\n';
+		const url = URL.createObjectURL( new Blob( [ text ], { type: 'application/json' } ) ), a = document.createElement( 'a' );
+		a.href = url; a.download = name;
+		document.body.appendChild( a );
+		a.click();
+		a.remove();
+		setTimeout( () => URL.revokeObjectURL( url ), 10000 );
+
+	}
+
+	// A small event row (other code calls this for policy toggles and on-screen messages).
 	mark( name, extra = null ) {
 
 		if ( ! this.active ) return;
-		this._push( { type: 'mark', wall_s: this._wall(), sim_s: finite( this.ops.state?.time_s ), name, extra } );
-
-	}
-
-	_wall() {
-
-		return ( performance.now() - this.started ) / 1000;
-
-	}
-
-	_plain( value ) {
-
-		try { return JSON.parse( JSON.stringify( value ?? null ) ); } catch { return null; }
+		this.events ++;
+		this._push( { type: 'event', t: round( this.ops.state?.time_s, 2 ), event: name, ...extra } );
 
 	}
 
 	_push( record ) {
 
 		let line;
-		try { line = JSON.stringify( record, ( key, value ) => typeof value === 'number' && ! Number.isFinite( value ) ? null : ( ArrayBuffer.isView( value ) ? Array.from( value ) : value ) ); } catch { return; }
-		this.pending.push( line );
-		if ( ! this.serverOk ) {
-
-			this.memory.push( line );
-			if ( this.memory.length > MEMORY_ROW_LIMIT ) this.memory.splice( 1, this.memory.length - MEMORY_ROW_LIMIT );
-
-		}
+		try { line = JSON.stringify( record, ( key, value ) => typeof value === 'number' && ! Number.isFinite( value ) ? null : value ); } catch { return; }
+		this.lines.push( line );
 
 	}
 
-	_sample() {
+	_poll( final = false ) {
 
 		if ( ! this.active ) return;
-		const ops = this.ops, state = ops.state;
-		if ( ! state ) return;
-		const policy = ops.bridge?.policy, d = policy?.latestDiagnostics ?? null;
-		const key = `${ finite( state.time_s ) }:${ d?.policy_elapsed_s ?? '' }:${ state.ml?.phase ?? '' }`;
-		if ( key === this.lastKey ) return;
-		this.lastKey = key;
-		this.rows ++;
-		const drone = state.drone, boat = state.boat;
-		this._push( {
-			type: 'row', wall_s: this._wall(), sim_s: finite( state.time_s ),
-			realtime_factor: finite( state.realtime_factor ),
-			control_mode: ops.mode, free_camera: !! ops.freeCamera, boat_autopilot: !! state.boat_autopilot,
-			keys_held: [ ...( ops.app.input?.keys || [] ) ],
-			phase: state.ml?.phase ?? null, ml_enabled: !! state.ml?.enabled, ml_error: state.ml?.error ?? null,
-			intervention: state.ml?.intervention ?? null, outcome: state.ml?.outcome ?? null,
-			action: state.ml?.action ?? null, message: state.message || null,
-			drone: drone ? {
-				position: drone.position, velocity: drone.velocity, yaw: finite( drone.yaw ), heading: finite( drone.heading ),
-				roll: finite( drone.roll ), pitch: finite( drone.pitch ), speed: finite( drone.speed ), altitude: finite( drone.altitude ),
-				pan: finite( drone.pan ), tilt: finite( drone.tilt ), armed: drone.armed, landed: drone.landed,
-				px4_mode: drone.px4_mode ?? null, battery_pct: finite( drone.battery_pct ), failed_rotors: drone.failed_rotors ?? null,
-				flight_requested: drone.flight_requested, landing_requested: drone.landing_requested,
-			} : null,
-			boat: boat ? {
-				position: boat.position, velocity: boat.velocity, heading: finite( boat.heading ?? boat.yaw ), speed: finite( boat.speed ),
-				roll: finite( boat.roll ), pitch: finite( boat.pitch ), port_power: finite( boat.port_power ), starboard_power: finite( boat.starboard_power ),
-				platform: finite( boat.platform ), aft_lid: finite( boat.aft_lid ), fore_lid: finite( boat.fore_lid ),
-			} : null,
-			route: state.route ? { progress_m: finite( state.route.progress_m ), error_m: finite( state.route.error_m ), target_speed_m_s: finite( state.route.target_speed_m_s ) } : null,
-			radio: state.radio ?? null,
-			policy_status: policy ? { enabled: policy.status?.enabled, loading: policy.status?.loading, preloaded: !! policy.preloaded, error: policy.status?.error ?? null } : null,
-			camera_exposure: policy?.camera?.exposureState ?? null,
-			diagnostics: d,
-			search: searchSummary( policy?.latestSearch ),
-			timings: policy?.latestTiming ?? null,
-		} );
+		const state = this.ops.state;
+		if ( ! state || ! Number.isFinite( state.time_s ) ) return;
+		const t = state.time_s;
+		if ( this.lastT !== null && t < this.lastT - 1 ) { this.mark( 'sim_time_reset', { from_t: round( this.lastT, 2 ) } ); this.nextT = null; this.prev = null; }
+		this.lastT = t;
+		let snap;
+		try { snap = this._snapshot( state, t ); } catch ( error ) { this.mark( 'log_error', { message: String( error?.message ?? error ) } ); return; }
+		this._events( snap, t );
+		if ( final && this.prev && t - this.prev.t < 0.05 ) return; // the last row is already this moment
+		if ( this.nextT === null || t >= this.nextT || final ) {
+
+			this.nextT = this.nextT === null ? t + ROW_S : this.nextT + ROW_S;
+			if ( this.nextT < t ) this.nextT = t + ROW_S;
+			this.rows ++;
+			this._push( { type: 'tick', t: round( t, 2 ), wall_s: round( ( performance.now() - this.started ) / 1000, 1 ), ...snap.row } );
+			this.prev = { t, pan: snap.raw.pan, tilt: snap.raw.tilt };
+
+		}
 
 	}
 
-	_flush( unloading = false ) {
+	_snapshot( state, t ) {
 
-		if ( ! this.pending.length || ! this.serverOk ) { if ( ! this.serverOk ) this.pending = []; return this.flushing || Promise.resolve(); }
-		const lines = this.pending;
-		this.pending = [];
-		const body = lines.join( '\n' ) + '\n';
-		const url = new URL( '__session-recording?id=' + encodeURIComponent( this.id ), location.href );
-		if ( unloading && navigator.sendBeacon ) {
+		const ops = this.ops, policy = ops.bridge?.policy;
+		const drone = state.drone, boat = state.boat, ml = state.ml || {};
+		const diag = policy?.latestDiagnostics ?? ml.diagnostics ?? {};
+		const dt = this.prev ? t - this.prev.t : 0;
 
-			navigator.sendBeacon( url, new Blob( [ body ], { type: 'text/plain' } ) );
-			return Promise.resolve();
+		// ---- vehicles
+		const dPos = toENU( drone?.position ), dVel = toENU( drone?.velocity );
+		const bPos = toENU( boat?.position ), bVel = toENU( boat?.velocity );
+		const bSpeed = bVel ? Math.hypot( bVel[ 0 ], bVel[ 1 ] ) : null;
+		const boatRow = boat ? {
+			pos: roundAll( bPos ), vel: roundAll( bVel ), speed: round( boat.speed ?? bSpeed ),
+			heading: round( boat.heading * DEG, 1 ), course: bSpeed > 0.15 ? round( compass( bVel[ 0 ], bVel[ 1 ] ), 1 ) : null,
+			autopilot: !! state.boat_autopilot,
+		} : null;
+		const droneRow = drone ? {
+			pos: roundAll( dPos ), vel: roundAll( dVel ), speed: round( drone.speed ), climb: round( dVel?.[ 2 ] ),
+			heading: round( drone.heading * DEG, 1 ), course: drone.speed > 0.15 ? round( compass( dVel[ 0 ], dVel[ 1 ] ), 1 ) : null,
+			roll: round( drone.roll * DEG, 1 ), pitch: round( drone.pitch * DEG, 1 ),
+			armed: !! drone.armed, landed: !! drone.landed, px4: drone.px4_mode ?? null, battery_pct: round( drone.battery_pct, 0 ),
+		} : null;
+
+		// ---- gimbal camera
+		const cam = cameraFrame( state.views?.drone );
+		const pan = finite( drone?.pan ), tilt = finite( drone?.tilt );
+		const look = cam ? toENU( [ - cam.back[ 0 ], - cam.back[ 1 ], - cam.back[ 2 ] ] ) : null;
+		const cameraRow = drone ? {
+			pan: round( pan * DEG, 1 ), tilt: round( tilt * DEG, 1 ),
+			pan_rate: dt > 0 && this.prev.pan !== null && pan !== null ? round( wrap180( ( pan - this.prev.pan ) * DEG ) / dt, 1 ) : null,
+			tilt_rate: dt > 0 && this.prev.tilt !== null && tilt !== null ? round( ( tilt - this.prev.tilt ) * DEG / dt, 1 ) : null,
+			look_az: look ? round( compass( look[ 0 ], look[ 1 ] ), 1 ) : null,
+			look_el: look ? round( Math.asin( Math.max( - 1, Math.min( 1, look[ 2 ] ) ) ) * DEG, 1 ) : null,
+		} : null;
+
+		// ---- drone <-> boat
+		let rel = null, boatInCam = null;
+		if ( dPos && bPos ) {
+
+			const d = sub( bPos, dPos ), horiz = Math.hypot( d[ 0 ], d[ 1 ] ), range = Math.hypot( d[ 0 ], d[ 1 ], d[ 2 ] );
+			const bearing = compass( d[ 0 ], d[ 1 ] );
+			const rv = sub( bVel || [ 0, 0, 0 ], dVel || [ 0, 0, 0 ] );
+			rel = {
+				range: round( range ), horiz: round( horiz ), above_boat: round( - d[ 2 ] ),
+				bearing: round( bearing, 1 ), bearing_vs_body: drone ? round( wrap180( bearing - drone.heading * DEG ), 1 ) : null,
+				bearing_vs_camera: look ? round( wrap180( bearing - compass( look[ 0 ], look[ 1 ] ) ), 1 ) : null,
+				closing_speed: horiz > 0.05 ? round( - ( rv[ 0 ] * d[ 0 ] + rv[ 1 ] * d[ 1 ] ) / horiz ) : null,
+			};
+			if ( cam ) boatInCam = project( cam, boat.position );
 
 		}
-		const previous = this.flushing || Promise.resolve();
-		// Batches are appended strictly in order.
-		this.flushing = previous.then( () => fetch( url, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body } ) ).then( response => {
 
-			if ( ! response.ok ) throw new Error( 'HTTP ' + response.status );
+		// ---- policy
+		const action = ml.action ?? null;
+		const proposals = Array.isArray( diag.search_proposals ) ? diag.search_proposals : [];
+		const peak = heatPeak( policy?.latestSearch );
+		const policyRow = {
+			on: !! ml.enabled, loading: !! policy?.status?.loading, phase: ml.phase ?? null, control_phase: diag.control_phase ?? null,
+			intervention: ml.intervention ?? diag.intervention ?? null, error: ml.error ?? null,
+			landed: ml.outcome?.landed ?? null, collision: ml.outcome?.collision_failure ?? null,
+			action: roundAll( action ),
+			search: {
+				mode: diag.search_mode ?? null, phase: diag.search_phase ?? null, passes_done: diag.scan_passes_completed ?? null,
+				identity_confirmed: diag.search_identity_confirmed ?? null, selected: diag.search_selected ?? diag.selected_visual_track ?? null,
+				warning: diag.search_warning ?? null, pre360_done: diag.pre360_done ?? null,
+			},
+		};
+		const padFinder = {
+			heat_peak: peak,
+			proposals: proposals.slice( 0, TOP_PROPOSALS ).map( p => ( {
+				px: roundAll( p.pixel, 0 ), conf: round( p.confidence, 2 ), label: p.evidence ?? null, target_p: round( p.identity_target_probability, 2 ),
+			} ) ),
+			proposal_count: proposals.length,
+			pose_valid: diag.pose_valid ?? null, pad_visible_p: round( diag.pad_visibility_probability, 2 ), image_head_visibility: round( diag.image_head_visibility, 2 ),
+			metric_confirmed: diag.metric_confirmed ?? null,
+			est_rel_pos: roundAll( diag.estimated_relative_position ), est_lateral_err: round( diag.estimated_lateral_error_m ), est_clearance: round( diag.estimated_clearance_m ),
+			est_heading_err: round( diag.estimated_heading_error_deg, 1 ),
+		};
+		const radio = state.radio ? { status: state.radio.status ?? null, quality: round( state.radio.quality, 0 ), age_s: round( state.radio.telemetry_age_s, 1 ) } : null;
 
-		} ).catch( () => {
+		return {
+			raw: { pan, tilt },
+			watch: {
+				phase: policyRow.phase, control_phase: policyRow.control_phase, search_phase: policyRow.search.phase,
+				identity_confirmed: policyRow.search.identity_confirmed, warning: policyRow.search.warning, intervention: policyRow.intervention,
+				on: policyRow.on, landed_on_boat: policyRow.landed, collision: policyRow.collision, armed: droneRow?.armed, landed: droneRow?.landed,
+				radio: radio?.status ?? null, boat_in_view: boatInCam ? boatInCam.in_view : null,
+				proposals: proposals.length > 0, pose_valid: padFinder.pose_valid, metric: padFinder.metric_confirmed,
+			},
+			detail: { boat_in_cam: boatInCam, rel },
+			row: { boat: boatRow, drone: droneRow, camera: cameraRow, rel, boat_in_cam: boatInCam, policy: policyRow, pad_finder: padFinder, radio },
+		};
 
-			// Keep everything already recorded: switch to in-memory mode for a download on stop.
-			if ( this.serverOk ) { this.serverOk = false; this.memory.push( ...lines ); }
+	}
 
-		} );
-		return this.flushing;
+	// One small event row per change of the watched values (the first poll only stores them).
+	_events( snap, t ) {
+
+		const now = snap.watch, before = this.watch;
+		this.watch = now;
+		if ( ! before ) return;
+		for ( const key of Object.keys( now ) ) {
+
+			if ( now[ key ] === before[ key ] ) continue;
+			const extra = { from: before[ key ] ?? null, to: now[ key ] ?? null };
+			if ( key === 'boat_in_view' ) {
+
+				const b = snap.detail.boat_in_cam;
+				extra.px = b?.px ?? null; extra.reason = b?.reason ?? null; extra.range = snap.detail.rel?.range ?? null;
+
+			}
+			this.mark( 'changed_' + key, extra );
+
+		}
 
 	}
 
