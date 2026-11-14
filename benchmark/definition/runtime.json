@@ -1,0 +1,1227 @@
+{
+  "schema": "aerodock.benchmark.environment.v1",
+  "captured_utc": "2026-11-10T18:52:10.233212+00:00",
+  "backend": "Windows MuJoCo 3.14 + pinned real PX4 WASM; separate from Linux and Tidewater qualification",
+  "px4_hashes": {
+    "px4.mjs": "374025cb94b8118a4e6992c2745ce3994a8b9e566e69059c92537056c7b2a028",
+    "px4.wasm": "f2fc10a99bde0f71ecbeafebfb8048e9465d8af457c6c963cc2c0a855e1dc4ab"
+  },
+  "source_files": [
+    {
+      "path": "landing_training/__init__.py",
+      "sha256": "5350a81693a6d1ca2b853326e714da8d60cefb67a924c0159664a7a2d95d7260",
+      "bytes": 2635,
+      "file_modified_utc": "2026-11-11T20:06:20.305684+00:00"
+    },
+    {
+      "path": "landing_training/data/audit.py",
+      "sha256": "5eea4d1c24ac154e8c7a09521f39791ec8de3481c50d7e34d4397eeb7d81b127",
+      "bytes": 6464,
+      "file_modified_utc": "2026-10-08T20:32:41.459595+00:00"
+    },
+    {
+      "path": "landing_training/tools/benchmark.py",
+      "sha256": "64bc9248d92f6bc599c501544069cf14a0846d423bc1b5844658d0b245d45bb3",
+      "bytes": 8875,
+      "file_modified_utc": "2026-10-08T20:32:41.462650+00:00"
+    },
+    {
+      "path": "landing_training/data/collect.py",
+      "sha256": "61854f1323693f861a48052c2d5ac35d677a8f74a614e868cfe17706b5e01487",
+      "bytes": 6327,
+      "file_modified_utc": "2026-10-08T20:32:41.463664+00:00"
+    },
+    {
+      "path": "landing_training/tools/collection_benchmark.py",
+      "sha256": "5e6fa6b6c9af75cbd27d97d94f52585b44adcf29259ea3d5061dd60cc75507bb",
+      "bytes": 19746,
+      "file_modified_utc": "2026-11-11T20:06:22.501594+00:00"
+    },
+    {
+      "path": "landing_training/sim/collision_pieces.py",
+      "sha256": "ee691543e6f79cb848bd9cf0f851221c20167d1a1a1e3f8423a51786712f2621",
+      "bytes": 2382,
+      "file_modified_utc": "2026-10-08T20:32:41.465950+00:00"
+    },
+    {
+      "path": "landing_training/sim/config.py",
+      "sha256": "fcc21c36ee4e6fb8064d2a5471d42ff5c077eaaea74967dc69a03cf68cdd31a6",
+      "bytes": 4456,
+      "file_modified_utc": "2026-10-08T20:32:41.472927+00:00"
+    },
+    {
+      "path": "landing_training/sim/environment.py",
+      "sha256": "93793976a2e70908169941af1e6e9aa1f38bec27f95e69cd70a38d6e103a7431",
+      "bytes": 19236,
+      "file_modified_utc": "2026-10-08T20:32:41.474946+00:00"
+    },
+    {
+      "path": "landing_training/training/evaluate.py",
+      "sha256": "796605e1ded7060b7a8e211477193e52ae14ef46a151764fcd751b107edef5a1",
+      "bytes": 3091,
+      "file_modified_utc": "2026-10-08T20:32:41.475459+00:00"
+    },
+    {
+      "path": "landing_training/teacher/expert.py",
+      "sha256": "45be6d58f929a013c39f0b4107b64f5b97a03bea5bc5927b00ee3dd857b55589",
+      "bytes": 10553,
+      "file_modified_utc": "2026-10-08T20:32:41.476472+00:00"
+    },
+    {
+      "path": "landing_training/data/gate.py",
+      "sha256": "33bd61bf82607741e34b11c9641ed99b507268932aa671bdc808d03733b3bba3",
+      "bytes": 3701,
+      "file_modified_utc": "2026-11-11T20:06:23.081751+00:00"
+    },
+    {
+      "path": "landing_training/tools/limits_report.py",
+      "sha256": "c56c8e3d03c67a31067687a1cb7e2469dbebd2371666564eb66367f5679b8ab8",
+      "bytes": 5867,
+      "file_modified_utc": "2026-10-08T20:32:41.479315+00:00"
+    },
+    {
+      "path": "landing_training/tools/ocean_preview.py",
+      "sha256": "e66018a779e5c6a545e3f973c5ba4d2da52a3dc57214d07deb99d6431d03f139",
+      "bytes": 7465,
+      "file_modified_utc": "2026-10-08T20:32:41.486906+00:00"
+    },
+    {
+      "path": "landing_training/sim/paths.py",
+      "sha256": "ac247a8b8d003ded37441449338a21a4b4fb09b6fc6c823959442573aa0104d1",
+      "bytes": 290,
+      "file_modified_utc": "2026-11-11T20:06:21.387231+00:00"
+    },
+    {
+      "path": "landing_training/training/policy.py",
+      "sha256": "bdf76ab2a995b519421d0293943daacb642dd9a45924b9c9645d4d1630a64380",
+      "bytes": 3665,
+      "file_modified_utc": "2026-10-08T20:32:41.491660+00:00"
+    },
+    {
+      "path": "landing_training/teacher/privileged_teacher.py",
+      "sha256": "912628d568a58181e950f1e189f574fbd9d022e90f33ee05cc4f99ea67d3282d",
+      "bytes": 13677,
+      "file_modified_utc": "2026-10-24T17:16:28.998819+00:00"
+    },
+    {
+      "path": "landing_training/sim/px4.py",
+      "sha256": "2a565c69d9fb7290a7b216535d1733e101a8b7d91874e033c54f2975edea5fa2",
+      "bytes": 10913,
+      "file_modified_utc": "2026-10-08T20:32:41.492404+00:00"
+    },
+    {
+      "path": "landing_training/tools/qualify.py",
+      "sha256": "81352693ea5d108ec551415889355c688a70ae40515dbb99e007476f97a02011",
+      "bytes": 20705,
+      "file_modified_utc": "2026-10-08T20:32:41.492946+00:00"
+    },
+    {
+      "path": "landing_training/data/recording.py",
+      "sha256": "77bbfcfe027eea5d9d969adde9a8091e72f6a03a5cc63f01068da2165072f554",
+      "bytes": 2474,
+      "file_modified_utc": "2026-10-08T20:32:41.517897+00:00"
+    },
+    {
+      "path": "landing_training/tools/rendering.py",
+      "sha256": "4f9466c715e3f40201ce233c0b77a9e87c42be5fdf22d9fbf51057330b064164",
+      "bytes": 12032,
+      "file_modified_utc": "2026-10-08T20:32:41.518996+00:00"
+    },
+    {
+      "path": "landing_training/data/review.py",
+      "sha256": "db657517b831063299189dfec029f70b519e7fab183f28a778976b6cb0cc61e0",
+      "bytes": 5591,
+      "file_modified_utc": "2026-10-08T20:32:41.525138+00:00"
+    },
+    {
+      "path": "landing_training/data/run_episode.py",
+      "sha256": "b9fcff110bfdaae6dfaab5c08780664e9d0e6c0e53c8d18c7cc966a547afafe8",
+      "bytes": 10394,
+      "file_modified_utc": "2026-10-08T20:32:41.530196+00:00"
+    },
+    {
+      "path": "landing_training/sim/scene.py",
+      "sha256": "611432119a30544676797a87a332e0f6fe9558c09c27a10967070dd1cec75675",
+      "bytes": 8585,
+      "file_modified_utc": "2026-11-11T20:06:20.845023+00:00"
+    },
+    {
+      "path": "landing_training/tools/setup_px4.py",
+      "sha256": "868b27bfc5f7f220f92028bd5239998417cddcde8f187706d93da459bc390d35",
+      "bytes": 3046,
+      "file_modified_utc": "2026-11-11T20:06:21.944886+00:00"
+    },
+    {
+      "path": "landing_training/teacher/smooth_landing.py",
+      "sha256": "7125c98c187cab399d379be9a2a0e91dfd96930cded102a0c9b8103c2b7b4c66",
+      "bytes": 8377,
+      "file_modified_utc": "2026-10-24T17:29:05.574142+00:00"
+    },
+    {
+      "path": "landing_training/tools/stress_review.py",
+      "sha256": "a3e26c8ffd6eca6876e5fb5279d6dff2ff4ead37c63b468f0c090a3a6f8cbb1e",
+      "bytes": 7511,
+      "file_modified_utc": "2026-10-08T20:32:41.566686+00:00"
+    },
+    {
+      "path": "landing_training/tests/test_privileged_teacher.py",
+      "sha256": "226559113ef33002a422772ed535284edd8c1d5128e88d0f172f9f3d086409e9",
+      "bytes": 6153,
+      "file_modified_utc": "2026-10-24T17:16:28.998819+00:00"
+    },
+    {
+      "path": "landing_training/tests/test_smooth_landing.py",
+      "sha256": "e65767cf0c81fb381f64110882805678c5ea1416e5d9a2711512902cdff4c6c9",
+      "bytes": 3853,
+      "file_modified_utc": "2026-11-11T20:09:24.186299+00:00"
+    },
+    {
+      "path": "landing_training/training/train.py",
+      "sha256": "3f0b56c3cf93a4ce4400c90b238b351625035858669ba939292d498d0ef894e5",
+      "bytes": 8828,
+      "file_modified_utc": "2026-10-08T20:32:41.568901+00:00"
+    },
+    {
+      "path": "landing_training/sim/visual_lod.py",
+      "sha256": "70e0d5b5665a5168d57d503574be7e6e65d2883fda26b8c1fa7adacd589d5348",
+      "bytes": 3538,
+      "file_modified_utc": "2026-10-08T20:32:41.570031+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/__init__.py",
+      "sha256": "c1f6e630dcc2dd640ded91c9906c306f5d1e61ecfc0090debbe52b923dbb7485",
+      "bytes": 89,
+      "file_modified_utc": "2026-10-08T20:32:41.428263+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/boat_sim.py",
+      "sha256": "bc83de1e864ec5e8661608b6d4019ea942c2f7184b73fde18169baa3a69e325c",
+      "bytes": 19596,
+      "file_modified_utc": "2026-10-08T20:32:41.429344+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/drainage.py",
+      "sha256": "239d4dcfa9e40b4de5c95e07bc7097517e90e8e02163d0cf25fad1a1da701198",
+      "bytes": 7113,
+      "file_modified_utc": "2026-10-08T20:32:41.429876+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/procedural_world.py",
+      "sha256": "35e9e47612074858787ff5254403fc4e12abbadf54e3bf84af2235b7b9761889",
+      "bytes": 15945,
+      "file_modified_utc": "2026-10-08T20:32:41.430434+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/rendering.py",
+      "sha256": "1cd84116e59e235a02e8e26a0b0c69e6de7af108ad01cc000d9ce569bc9fb4af",
+      "bytes": 1882,
+      "file_modified_utc": "2026-10-08T20:32:41.431451+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/server.py",
+      "sha256": "6beb0446f37dce5d3ac5b3ac3bba1c29767811ad40146730e1e29893d0927275",
+      "bytes": 11854,
+      "file_modified_utc": "2026-10-08T20:32:41.431960+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/textures.py",
+      "sha256": "8d3f3566f51df1cc8bbfd0bec661e0668c2c4a85490104abacbba2f3c2ec9718",
+      "bytes": 2258,
+      "file_modified_utc": "2026-10-08T20:32:41.436668+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/viewer.py",
+      "sha256": "0e4fb51400d67ea0654ee7d356a347288ca62d003afa2bc883038e4d5edda4c6",
+      "bytes": 1201,
+      "file_modified_utc": "2026-10-08T20:32:41.437204+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/usv/world_render.py",
+      "sha256": "e23390aa2f6823f241e619bb6496150f7491539fb4203027c5d1212b3f488c6a",
+      "bytes": 20665,
+      "file_modified_utc": "2026-10-08T20:32:41.441986+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/sim/__init__.py",
+      "sha256": "331fc40d8cac65b7748fabfa90383677ffcb95a8d17725033a802443de0026c3",
+      "bytes": 60,
+      "file_modified_utc": "2026-10-08T20:32:48.012031+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/sim/environment.py",
+      "sha256": "928d5d346b37ce346a36da18c22c8c5282a01269a75c365be770c32fd13cf02c",
+      "bytes": 2710,
+      "file_modified_utc": "2026-10-08T20:32:48.021075+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/sim/patch_px4_battery.py",
+      "sha256": "d1e3b34d6efc0cdd9af27cc8612ddf333e6669b8384163b62c4588e5b17cb117",
+      "bytes": 1739,
+      "file_modified_utc": "2026-10-08T20:32:48.022882+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/sim/propulsion.py",
+      "sha256": "7a8d4d71c693783ffb2b99f10d0cbbd7ad5021aeb1c8b2a905f428227efd0e9b",
+      "bytes": 4782,
+      "file_modified_utc": "2026-10-08T20:32:48.023898+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/sim/server.py",
+      "sha256": "c2002f65f042ce5ab82f02d293dfd76d6edf58be1b523b50a797021085cdfac4",
+      "bytes": 33090,
+      "file_modified_utc": "2026-10-08T20:32:48.027425+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/clearance_provider.py",
+      "sha256": "8405f0e1a1ef2319fe77732a68fd3cb67e02b6e6e8827bedd729e0456187f506",
+      "bytes": 1827,
+      "file_modified_utc": "2026-10-18T01:52:02.254128+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/domain_visuals.py",
+      "sha256": "1e2e3002d97a91f1e4cebdc1eda31a154dcec72ee0c727b50a5b31f827951cf1",
+      "bytes": 3407,
+      "file_modified_utc": "2026-10-18T07:52:49.572722+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/evaluate_development.py",
+      "sha256": "3bd7082195f32f0ccaed5a115e140c4c555a3c860a8ebfa2dd54a25cdbfc2c0f",
+      "bytes": 17490,
+      "file_modified_utc": "2026-10-18T09:18:10.523259+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/fast_physics.py",
+      "sha256": "2845f44c11e95ffc037084bc88915a6586e13192859636c3eea958aeefd2c9d7",
+      "bytes": 3600,
+      "file_modified_utc": "2026-10-16T13:55:49.104556+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/faults.py",
+      "sha256": "2d39347fedcc8a2ff10f196ebaf88b640f3221e11c5c7d488ba75c83bb9f57e3",
+      "bytes": 2052,
+      "file_modified_utc": "2026-10-18T02:53:00.459477+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/mission_integration.py",
+      "sha256": "2e3045c0276befbe5437fa5c6730d437267a48216bc8f4d84c37190dea0bf953",
+      "bytes": 3973,
+      "file_modified_utc": "2026-10-16T21:11:53.772442+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/mission_safety.py",
+      "sha256": "cd0b349cb3bf984f999933d94ee72cbb2938a1c7e7f5d5575e91b4288c523fe6",
+      "bytes": 16340,
+      "file_modified_utc": "2026-10-21T13:54:16.148326+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/mission_setup.py",
+      "sha256": "3df3b35a9b51348bec8e729a55749e46504128eecd4d7d577f627ce81698050c",
+      "bytes": 4215,
+      "file_modified_utc": "2026-10-16T21:16:15.416221+00:00"
+    },
+    {
+      "path": "artifacts/landing_hardening_20261018/r15_native_completion_verified/r15_fresh_E60/mission_sources/recovery_clearance.py",
+      "sha256": "4f9fb3315f1dea847f07efdbcb152a4a27b15f44c234ae3b3bce1f68130d39e6",
+      "bytes": 2193,
+      "file_modified_utc": "2026-10-18T02:05:02.571952+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/local_paths.py",
+      "sha256": "f6f3e167365555fa9f9d504296791c677f009744ffcd8676d37a663de094da34",
+      "bytes": 702,
+      "file_modified_utc": "2026-10-20T18:18:41.536669+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/windows_px4_v2.py",
+      "sha256": "6df32a245deab7da556d6cfae30ac2aff529a7d0d04aba54cb41e7f43f7672de",
+      "bytes": 6003,
+      "file_modified_utc": "2026-10-21T13:22:41.510044+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/windows_kernels.py",
+      "sha256": "54e0ab750d95b3c9d0d15808ba98fe322020222258f59af4c3a6f4a9dc70ec8f",
+      "bytes": 764,
+      "file_modified_utc": "2026-10-20T18:24:52.449510+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/fast_physics_windows.py",
+      "sha256": "3854ae2282cff56d8136f17854e3472648c78c440ff7fb26a3eb7b6ff1edc7fc",
+      "bytes": 3660,
+      "file_modified_utc": "2026-10-20T18:24:51.645621+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/windows_renderer.py",
+      "sha256": "4998c9106a101ec10b70077277258ef7c0e1dd64590300646d07ccf5baa3731f",
+      "bytes": 1414,
+      "file_modified_utc": "2026-10-20T18:13:35.196673+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/review_helpers.py",
+      "sha256": "9b0a7a8f588828ad4cf4d1294fab2ccef0975c179d4bbc4d4f7e94f0ef0ee465",
+      "bytes": 6184,
+      "file_modified_utc": "2026-10-20T18:30:27.926251+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/__init__.py",
+      "sha256": "8a3085d17370640c0f52ea307ef12fc8a614644846b70fed82c03b311cf65265",
+      "bytes": 84,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/camera_axis_continuity.py",
+      "sha256": "86dcf7e4029201d9bd3b6b5c9fa308fec1fcb3f016a41c3e0fc7ade1e679b5c6",
+      "bytes": 2911,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/camera_continuity.py",
+      "sha256": "b401f53c66fef1af71a87352c8a796c249b2118c4d5af2285365eb5533b04de2",
+      "bytes": 1471,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/dagger.py",
+      "sha256": "2bc3198094c0efc2e7442a989f9d904a205018a588ac7166624902d8308e9b46",
+      "bytes": 6156,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/dagger_v19.py",
+      "sha256": "0e9ebfa2ebced96d1742d1a191da9768b4e897ceec37ea21327e8ca7cf1d336c",
+      "bytes": 8587,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/dagger_v21.py",
+      "sha256": "49081647de2cd279c9182b57b72ba2248b6dd5cde5494ef4f53c923e0b6dea0a",
+      "bytes": 8587,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/dagger_v46.py",
+      "sha256": "7a330bde1cdc18a35b4d91248f05de68fa8c2bff9518e2c2b1ef16a2c63ed036",
+      "bytes": 8469,
+      "file_modified_utc": "2026-10-20T12:08:11.823407+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/dagger_v48.py",
+      "sha256": "1818649a8993ef492554bf15eff3da667cde17be10fc08698504f1e0eb8c718f",
+      "bytes": 8469,
+      "file_modified_utc": "2026-10-20T12:08:11.823915+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/discriminator.py",
+      "sha256": "b2a0aa6b5ed404d5c1220f66673cbf08d5436f1e6501bf62ba12863f257f5113",
+      "bytes": 2739,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/discriminator_v5.py",
+      "sha256": "d22abba8e6430e234f6d01962fe2a2740adc2b60071ccc238f995fa268873ae7",
+      "bytes": 1659,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter.py",
+      "sha256": "5da801e9c30beec58b765671ac904cc66141350fe562b3656fa513d293a0e98a",
+      "bytes": 18306,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_review_v13.py",
+      "sha256": "5757185e5d9e1fb300e5aa8c0921d57f82124c73d79525138ca9703074b87817",
+      "bytes": 20537,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v21.py",
+      "sha256": "2dc11b8b1fe48855575c8535af53b762d43d918f9841ff1e0247ff43500849f2",
+      "bytes": 21247,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v22.py",
+      "sha256": "f3e68548cf4528af1f056bfc6ed02266c36701167fc74aa0b0ec02bfb4fc991d",
+      "bytes": 21704,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v25.py",
+      "sha256": "0d1e1d97590b04aa2a52a3e8026a8d231ae73c91e3625ff33de127a756f3e64f",
+      "bytes": 22812,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v26.py",
+      "sha256": "23b1d3d150d357f0aa6b1f860b4fc1bb95d287ec1e5489746d54292aec41e821",
+      "bytes": 23588,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v28.py",
+      "sha256": "2f01e950203bae35a2f42bf869e9dd48d16cdd20e6896bce74f6d311d9dcec0e",
+      "bytes": 24683,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v30.py",
+      "sha256": "e2699d387fce1e165ac699932a72066988d1db7359d1219735b0c9eaa935b791",
+      "bytes": 24754,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v31.py",
+      "sha256": "7548f06f0a192a4090790135fa4d388117223a5ad8f4b0887f35991a99bcbacb",
+      "bytes": 25332,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v33.py",
+      "sha256": "1acd8f6f7abef6561813e5c41f344fa7b3d4f6c81c9afa6b54422e5d69ae0546",
+      "bytes": 25159,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v39.py",
+      "sha256": "25c022aa096bd8f87102d6495517c7adb38a6851f64142e5194c58e3ed2705bd",
+      "bytes": 25159,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v42.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v46.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.834390+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v48.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.835527+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_v60.py",
+      "sha256": "1edde51650ef518a74ab304a9b079fe826aad82fdc7484c4450e256814162743",
+      "bytes": 38095,
+      "file_modified_utc": "2026-10-24T11:36:15.149278+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/expert_adapter_windows_v1.py",
+      "sha256": "3a94307ff5b17f6f4d41440abfc4dfbaee5dd9b8fe298383e8ecdacfb08bd37b",
+      "bytes": 26854,
+      "file_modified_utc": "2026-10-20T18:24:51.644603+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/fixed_own_aircraft.npz",
+      "sha256": "d93557fde455fe08969496a416416d4e016afeb91cf6b30e181e812ef7a2440a",
+      "bytes": 23664162,
+      "file_modified_utc": "2026-10-20T12:08:11.856308+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/glare.py",
+      "sha256": "cf4466419b12caacf4acce88e6590ed4de6714e5b39370baccc5becd8bdb7b1a",
+      "bytes": 3406,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/inspection_feedback_v25.py",
+      "sha256": "744e3fa92e5b3aab101e952933a1f97524d8e1d7c0b3420c25e745767e5e56a1",
+      "bytes": 4038,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/inspection_feedback_v51.py",
+      "sha256": "85299f1eb556b6847720737d6ae5dc4ec4b17a07bebc0ce4c742d9ba6bb3cb0f",
+      "bytes": 696,
+      "file_modified_utc": "2026-10-20T08:35:31.383013+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/label_renderer.py",
+      "sha256": "b619d5db3322f7ba7c8087780f18dab949b779c1a776fccd3f318b2ee81ada0a",
+      "bytes": 1015,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/local_downlook_v22.py",
+      "sha256": "030766412e6ccbb8696ecc67130690feb19837cccd606874a1fdc5428a86ff42",
+      "bytes": 686,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/metric_candidate_continuity.py",
+      "sha256": "087a012feb01e7fb29370b1fbdbecc4b04102ab19b24934a40ff503ec963f8df",
+      "bytes": 1344,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/object_nms.py",
+      "sha256": "cdcdecb5b407fae08122293c9ee02491c2763af1fca0cdb56a9a104723708148",
+      "bytes": 816,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/object_verifier.py",
+      "sha256": "8e404ded7019248a0a261fef22bbff3f9928b68c452af8aed23788b6e6ff4531",
+      "bytes": 3019,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/object_verifier_v10.py",
+      "sha256": "537ea4c649db631d9cb297cb582052da42594d0903a1fe3d8ed1dd55698cf179",
+      "bytes": 1551,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/object_verifier_v11.py",
+      "sha256": "2177e800d9113082b0fd0412595063386577dacdb06a7d2fcb248a81fc0b7a54",
+      "bytes": 2961,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/object_verifier_v12.py",
+      "sha256": "d9633096f829537d2612fc30f51b231398962043dd33c00a5502c2482375e9ae",
+      "bytes": 3143,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/own_cad_occlusion_v2.py",
+      "sha256": "d616823c5035dd11dca3cad1f2a86c31374923568d662901e638a5d5e83f5cd8",
+      "bytes": 2190,
+      "file_modified_utc": "2026-10-20T12:08:11.870141+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/OWN_CAD_PRIOR.json",
+      "sha256": "45d5cf2b10b5ca8b29aadcc8eae540fe7fcdfa4d150da791f0f428f105c797fc",
+      "bytes": 115794,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol.py",
+      "sha256": "28bdf64fbd580e8ac78df79cb9e684ecc465d2a2fe472b02395d44eeb1a0ec1d",
+      "bytes": 15118,
+      "file_modified_utc": "2026-10-23T20:36:59.565613+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_elevation_v33.py",
+      "sha256": "82559c48a9ad58869b400ce2e2fc0051629a208ed1bb3d4863faa1cb92855ac0",
+      "bytes": 8094,
+      "file_modified_utc": "2026-10-20T12:08:11.870740+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_elevation_v39.py",
+      "sha256": "2f6484becd125ac4f868f7b33ddfda8fb93abce611c1111b5bc7edc01876c3e5",
+      "bytes": 8094,
+      "file_modified_utc": "2026-10-20T12:08:11.870740+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_memory_elevation_v33.py",
+      "sha256": "6cef927b1fe30adb46268ca347da2309bab4c12379b72290020b7d638318d412",
+      "bytes": 4124,
+      "file_modified_utc": "2026-10-20T12:08:11.872800+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_memory_elevation_v39.py",
+      "sha256": "b5d446e7883daf6aff28b4b3cc4fe4b51a5a14549c809074a00421df6d0476c4",
+      "bytes": 4124,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_memory_repair.py",
+      "sha256": "1d28f452760ddda2d0f518289edcc662702e1591f945653c387ab49fef0d6c09",
+      "bytes": 4117,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_priority_v60.py",
+      "sha256": "ead081d43c57f6511b5223b679048b2501bd97a751bfcd867303a275b8a3ec10",
+      "bytes": 50693,
+      "file_modified_utc": "2026-10-24T11:55:13.241230+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/protocol_repair.py",
+      "sha256": "3541aaffb4505a6bb53623d02e0a40f08f7cb058cc1c21287a9cd7cd96d6f15f",
+      "bytes": 7895,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/scenes.py",
+      "sha256": "afca04b13b1bbb69a9eab36fe98a06e49ed7bac61ae91b675c0b768a490911d8",
+      "bytes": 4443,
+      "file_modified_utc": "2026-10-20T12:08:11.875333+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/takeover.py",
+      "sha256": "2aa34a8fa06e5780adbb56333799dfe245840c03c65ddd037a05aa414d17f150",
+      "bytes": 8355,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/takeover_v19.py",
+      "sha256": "a8369fe833893c4d122d8d6ad72ec62b6724d5eb98a290d4fd54802a5926a729",
+      "bytes": 5024,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/takeover_v21.py",
+      "sha256": "a1ba7481615f848eae7d38ff53fdcaf3c34913e82e80860c85c84a2574cbd7de",
+      "bytes": 7592,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/takeover_v46.py",
+      "sha256": "6845a3444e913643d019249e6bbfa7e5be4223d5f51d31f2c18bff51a49206d5",
+      "bytes": 1027,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/takeover_v48.py",
+      "sha256": "11b305d853b86c0973b89fba9febb0f3e9acd1daec7d6c12b6dce933bd1cda9d",
+      "bytes": 1029,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/tracks.py",
+      "sha256": "87de219189965076c03073c3b2f4149e8332740f40537d04151777f24b8e097d",
+      "bytes": 7275,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/tracks_shape_v42.py",
+      "sha256": "0cd14544bded4ed10074b6d5138e51bc215704ba97a2f86a5dbdc5558a577f17",
+      "bytes": 7446,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/unverified_descent_v43.py",
+      "sha256": "c670c8aa13ada209d173a601fd099f6c1ea21535cd796917e30d2c499ab8d3ae",
+      "bytes": 2113,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/sources/target_learning/unverified_descent_v48.py",
+      "sha256": "93eb9570d87ba8441db87d694820632232128186fd987cab920beec314d03d71",
+      "bytes": 2369,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/__init__.py",
+      "sha256": "8a3085d17370640c0f52ea307ef12fc8a614644846b70fed82c03b311cf65265",
+      "bytes": 84,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/camera_axis_continuity.py",
+      "sha256": "86dcf7e4029201d9bd3b6b5c9fa308fec1fcb3f016a41c3e0fc7ade1e679b5c6",
+      "bytes": 2911,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/camera_continuity.py",
+      "sha256": "b401f53c66fef1af71a87352c8a796c249b2118c4d5af2285365eb5533b04de2",
+      "bytes": 1471,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/dagger.py",
+      "sha256": "2bc3198094c0efc2e7442a989f9d904a205018a588ac7166624902d8308e9b46",
+      "bytes": 6156,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/dagger_v19.py",
+      "sha256": "0e9ebfa2ebced96d1742d1a191da9768b4e897ceec37ea21327e8ca7cf1d336c",
+      "bytes": 8587,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/dagger_v21.py",
+      "sha256": "49081647de2cd279c9182b57b72ba2248b6dd5cde5494ef4f53c923e0b6dea0a",
+      "bytes": 8587,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/dagger_v46.py",
+      "sha256": "7a330bde1cdc18a35b4d91248f05de68fa8c2bff9518e2c2b1ef16a2c63ed036",
+      "bytes": 8469,
+      "file_modified_utc": "2026-10-20T12:08:11.823407+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/dagger_v48.py",
+      "sha256": "1818649a8993ef492554bf15eff3da667cde17be10fc08698504f1e0eb8c718f",
+      "bytes": 8469,
+      "file_modified_utc": "2026-10-20T12:08:11.823915+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/discriminator.py",
+      "sha256": "b2a0aa6b5ed404d5c1220f66673cbf08d5436f1e6501bf62ba12863f257f5113",
+      "bytes": 2739,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/discriminator_v5.py",
+      "sha256": "d22abba8e6430e234f6d01962fe2a2740adc2b60071ccc238f995fa268873ae7",
+      "bytes": 1659,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter.py",
+      "sha256": "5da801e9c30beec58b765671ac904cc66141350fe562b3656fa513d293a0e98a",
+      "bytes": 18306,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_review_v13.py",
+      "sha256": "5757185e5d9e1fb300e5aa8c0921d57f82124c73d79525138ca9703074b87817",
+      "bytes": 20537,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v21.py",
+      "sha256": "2dc11b8b1fe48855575c8535af53b762d43d918f9841ff1e0247ff43500849f2",
+      "bytes": 21247,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v22.py",
+      "sha256": "f3e68548cf4528af1f056bfc6ed02266c36701167fc74aa0b0ec02bfb4fc991d",
+      "bytes": 21704,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v25.py",
+      "sha256": "0d1e1d97590b04aa2a52a3e8026a8d231ae73c91e3625ff33de127a756f3e64f",
+      "bytes": 22812,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v26.py",
+      "sha256": "23b1d3d150d357f0aa6b1f860b4fc1bb95d287ec1e5489746d54292aec41e821",
+      "bytes": 23588,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v28.py",
+      "sha256": "2f01e950203bae35a2f42bf869e9dd48d16cdd20e6896bce74f6d311d9dcec0e",
+      "bytes": 24683,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v30.py",
+      "sha256": "e2699d387fce1e165ac699932a72066988d1db7359d1219735b0c9eaa935b791",
+      "bytes": 24754,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v31.py",
+      "sha256": "7548f06f0a192a4090790135fa4d388117223a5ad8f4b0887f35991a99bcbacb",
+      "bytes": 25332,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v33.py",
+      "sha256": "1acd8f6f7abef6561813e5c41f344fa7b3d4f6c81c9afa6b54422e5d69ae0546",
+      "bytes": 25159,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v39.py",
+      "sha256": "25c022aa096bd8f87102d6495517c7adb38a6851f64142e5194c58e3ed2705bd",
+      "bytes": 25159,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v42.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.824464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v46.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.834390+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/expert_adapter_v48.py",
+      "sha256": "7330b33c776535d4e027e3299f8143ea7f886f01c47b99bae6ddafe8199eaa74",
+      "bytes": 26514,
+      "file_modified_utc": "2026-10-20T12:08:11.835527+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/fixed_own_aircraft.npz",
+      "sha256": "d93557fde455fe08969496a416416d4e016afeb91cf6b30e181e812ef7a2440a",
+      "bytes": 23664162,
+      "file_modified_utc": "2026-10-20T12:08:11.856308+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/glare.py",
+      "sha256": "cf4466419b12caacf4acce88e6590ed4de6714e5b39370baccc5becd8bdb7b1a",
+      "bytes": 3406,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/inspection_feedback_v25.py",
+      "sha256": "744e3fa92e5b3aab101e952933a1f97524d8e1d7c0b3420c25e745767e5e56a1",
+      "bytes": 4038,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/label_renderer.py",
+      "sha256": "b619d5db3322f7ba7c8087780f18dab949b779c1a776fccd3f318b2ee81ada0a",
+      "bytes": 1015,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/local_downlook_v22.py",
+      "sha256": "030766412e6ccbb8696ecc67130690feb19837cccd606874a1fdc5428a86ff42",
+      "bytes": 686,
+      "file_modified_utc": "2026-10-20T12:08:11.863065+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/metric_candidate_continuity.py",
+      "sha256": "087a012feb01e7fb29370b1fbdbecc4b04102ab19b24934a40ff503ec963f8df",
+      "bytes": 1344,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/object_nms.py",
+      "sha256": "cdcdecb5b407fae08122293c9ee02491c2763af1fca0cdb56a9a104723708148",
+      "bytes": 816,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/object_verifier.py",
+      "sha256": "8e404ded7019248a0a261fef22bbff3f9928b68c452af8aed23788b6e6ff4531",
+      "bytes": 3019,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/object_verifier_v10.py",
+      "sha256": "537ea4c649db631d9cb297cb582052da42594d0903a1fe3d8ed1dd55698cf179",
+      "bytes": 1551,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/object_verifier_v11.py",
+      "sha256": "2177e800d9113082b0fd0412595063386577dacdb06a7d2fcb248a81fc0b7a54",
+      "bytes": 2961,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/object_verifier_v12.py",
+      "sha256": "d9633096f829537d2612fc30f51b231398962043dd33c00a5502c2482375e9ae",
+      "bytes": 3143,
+      "file_modified_utc": "2026-10-20T12:08:11.865944+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/own_cad_occlusion_v2.py",
+      "sha256": "d616823c5035dd11dca3cad1f2a86c31374923568d662901e638a5d5e83f5cd8",
+      "bytes": 2190,
+      "file_modified_utc": "2026-10-20T12:08:11.870141+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/OWN_CAD_PRIOR.json",
+      "sha256": "45d5cf2b10b5ca8b29aadcc8eae540fe7fcdfa4d150da791f0f428f105c797fc",
+      "bytes": 115794,
+      "file_modified_utc": "2026-10-20T12:08:11.817321+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol.py",
+      "sha256": "0e79b4b2b893d97a05e4fa10f1ef744e505d1f17d59d9ed73f6e34a9e77e522b",
+      "bytes": 15072,
+      "file_modified_utc": "2026-10-20T12:08:11.870740+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_elevation_v33.py",
+      "sha256": "82559c48a9ad58869b400ce2e2fc0051629a208ed1bb3d4863faa1cb92855ac0",
+      "bytes": 8094,
+      "file_modified_utc": "2026-10-20T12:08:11.870740+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_elevation_v39.py",
+      "sha256": "2f6484becd125ac4f868f7b33ddfda8fb93abce611c1111b5bc7edc01876c3e5",
+      "bytes": 8094,
+      "file_modified_utc": "2026-10-20T12:08:11.870740+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_memory_elevation_v33.py",
+      "sha256": "6cef927b1fe30adb46268ca347da2309bab4c12379b72290020b7d638318d412",
+      "bytes": 4124,
+      "file_modified_utc": "2026-10-20T12:08:11.872800+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_memory_elevation_v39.py",
+      "sha256": "b5d446e7883daf6aff28b4b3cc4fe4b51a5a14549c809074a00421df6d0476c4",
+      "bytes": 4124,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_memory_repair.py",
+      "sha256": "1d28f452760ddda2d0f518289edcc662702e1591f945653c387ab49fef0d6c09",
+      "bytes": 4117,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/protocol_repair.py",
+      "sha256": "3541aaffb4505a6bb53623d02e0a40f08f7cb058cc1c21287a9cd7cd96d6f15f",
+      "bytes": 7895,
+      "file_modified_utc": "2026-10-20T12:08:11.873308+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/scenes.py",
+      "sha256": "afca04b13b1bbb69a9eab36fe98a06e49ed7bac61ae91b675c0b768a490911d8",
+      "bytes": 4443,
+      "file_modified_utc": "2026-10-20T12:08:11.875333+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/takeover.py",
+      "sha256": "2aa34a8fa06e5780adbb56333799dfe245840c03c65ddd037a05aa414d17f150",
+      "bytes": 8355,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/takeover_v19.py",
+      "sha256": "a8369fe833893c4d122d8d6ad72ec62b6724d5eb98a290d4fd54802a5926a729",
+      "bytes": 5024,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/takeover_v21.py",
+      "sha256": "a1ba7481615f848eae7d38ff53fdcaf3c34913e82e80860c85c84a2574cbd7de",
+      "bytes": 7592,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/takeover_v46.py",
+      "sha256": "6845a3444e913643d019249e6bbfa7e5be4223d5f51d31f2c18bff51a49206d5",
+      "bytes": 1027,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/takeover_v48.py",
+      "sha256": "11b305d853b86c0973b89fba9febb0f3e9acd1daec7d6c12b6dce933bd1cda9d",
+      "bytes": 1029,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/tracks.py",
+      "sha256": "87de219189965076c03073c3b2f4149e8332740f40537d04151777f24b8e097d",
+      "bytes": 7275,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/tracks_shape_v42.py",
+      "sha256": "0cd14544bded4ed10074b6d5138e51bc215704ba97a2f86a5dbdc5558a577f17",
+      "bytes": 7446,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/unverified_descent_v43.py",
+      "sha256": "c670c8aa13ada209d173a601fd099f6c1ea21535cd796917e30d2c499ab8d3ae",
+      "bytes": 2113,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/sources/target_learning/unverified_descent_v48.py",
+      "sha256": "93eb9570d87ba8441db87d694820632232128186fd987cab920beec314d03d71",
+      "bytes": 2369,
+      "file_modified_utc": "2026-10-20T12:08:11.876343+00:00"
+    }
+  ],
+  "assets": [
+    {
+      "path": "artifacts/city80_decoys_20261023/scene.mjb",
+      "sha256": "e083c37131d6af89c94b4e6bceffdbf0bef3a6d7a3b595cf54b3b6b93269f18f",
+      "bytes": 522209598,
+      "file_modified_utc": "2026-10-24T08:51:47.377528+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/physics_math.dll",
+      "sha256": "cbfd58034d1f1415f481df0a1db69d5f18d722ffb3ef517d3825a96eee2c0406",
+      "bytes": 99404,
+      "file_modified_utc": "2026-10-20T18:23:46.028824+00:00"
+    },
+    {
+      "path": "artifacts/local_curriculum_20261020/models/index.json",
+      "sha256": "c284e33fd2ed3444bcf37411acd8a05ac7527ca40c8fe2c8261aab7e34e5e74b",
+      "bytes": 1417,
+      "file_modified_utc": "2026-10-20T18:26:32.297924+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/native_windows/marker_kernel.dll",
+      "sha256": "694cca43edd30994900bf5d577d3802d9a3d40796fd7441e22f6e69daba72fdb",
+      "bytes": 725786,
+      "file_modified_utc": "2026-10-20T06:36:01.983238+00:00"
+    },
+    {
+      "path": "AERODOCK_MuJoCo/config.json",
+      "sha256": "ecc01968a06c627330ce992df45f35715e37f513549b12a3d9ee62ab254636cb",
+      "bytes": 1006,
+      "file_modified_utc": "2026-10-08T20:32:40.979685+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/aerodynamics.json",
+      "sha256": "9285fca84546f153f9fe57c9e22152a65fa13010c0001f197e9bee67c95e7250",
+      "bytes": 4692,
+      "file_modified_utc": "2026-10-08T20:32:47.969605+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/cad_mass_properties.json",
+      "sha256": "02aa7538d2ebc091b7868170795bf2a22df51963cf17ebb407db20b08969aecb",
+      "bytes": 179511,
+      "file_modified_utc": "2026-10-08T20:32:47.974153+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/camera_optics.json",
+      "sha256": "5649dff76fb9d1f671edde4dc76099bb36602dcff1a307ae2ccf207ac1073496",
+      "bytes": 376,
+      "file_modified_utc": "2026-10-08T20:32:47.976705+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/collision_coverage.json",
+      "sha256": "41a7811b7e5995317fded18577df0aa829bcdbe39340c6b7ba40ca6aad4a4010",
+      "bytes": 59674,
+      "file_modified_utc": "2026-10-08T20:32:47.982291+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/export.json",
+      "sha256": "84283836f441df5310aae43c9373e1e9a9a7a924077506b2baa10407ea2aa232",
+      "bytes": 355038,
+      "file_modified_utc": "2026-10-08T20:32:47.987251+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/mass_model.json",
+      "sha256": "954be105b83e27bc528826b06faa89561b89182415e3c03d13b5e1ee8920f449",
+      "bytes": 307886,
+      "file_modified_utc": "2026-10-08T20:32:47.989764+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/materials.json",
+      "sha256": "671dc3ff45483fbc5c306e1b2121147b01416d8ebebaf90cc2e75803ebdf89f5",
+      "bytes": 118177,
+      "file_modified_utc": "2026-10-08T20:32:47.995246+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/position_inventory.json",
+      "sha256": "8b380b96d9cc1aa5dafa4bdb3616fd4a481704921ae18120813fc9cffc21c47b",
+      "bytes": 354592,
+      "file_modified_utc": "2026-10-08T20:32:47.998764+00:00"
+    },
+    {
+      "path": "px4-mujoco-drone-simulation/models/metadata/px4_protocol_patch.json",
+      "sha256": "50a3e9710cf7d1b4d8ee9cab7a29ea96573029fed854227ea6a30722c92f3111",
+      "bytes": 384,
+      "file_modified_utc": "2026-10-08T20:32:47.999776+00:00"
+    },
+    {
+      "path": "tidewater-game/app/public/landing/physics/configuration.json",
+      "sha256": "78f5c8b7690d36aedc2eef3069cd2aa97cb7904a6f41a441baf2ad54fc41ddfb",
+      "bytes": 287730,
+      "file_modified_utc": "2026-10-14T14:04:08.975199+00:00"
+    },
+    {
+      "path": "tidewater-game/app/public/landing/physics/px4-startup.json",
+      "sha256": "5fbb39f2cc5144af667c8c92d1d5607fcd732bc27562287dd685dcceeb794877",
+      "bytes": 1972,
+      "file_modified_utc": "2026-10-14T16:30:05.878338+00:00"
+    },
+    {
+      "path": "tidewater-game/app/public/landing/wasm/px4.mjs",
+      "sha256": "374025cb94b8118a4e6992c2745ce3994a8b9e566e69059c92537056c7b2a028",
+      "bytes": 111106,
+      "file_modified_utc": "2026-10-14T16:33:53.824801+00:00"
+    },
+    {
+      "path": "tidewater-game/app/public/landing/wasm/px4.wasm",
+      "sha256": "f2fc10a99bde0f71ecbeafebfb8048e9465d8af457c6c963cc2c0a855e1dc4ab",
+      "bytes": 1977528,
+      "file_modified_utc": "2026-10-14T16:33:53.860092+00:00"
+    }
+  ],
+  "scene": "artifacts/city80_decoys_20261023/scene.mjb",
+  "scene_recipe": "Same target/drone CAD and six authored boat distractors (three similar, three dissimilar). Clear cases hide every decoy geom and disable its collision masks. No target/drone mass, solver or scoring changes.",
+  "procedural_maps": [
+    "island",
+    "beach",
+    "city",
+    "gravel",
+    "rock"
+  ],
+  "map_recipe": "Environment \u2192 BoatSim.new_world(kind, world_seed, path_seed); exact seeds/rotation/route direction in suite.json.",
+  "benchmark_extension": "Scenario subclass permits 100 m and 240 s only for this suite; original validation and collection ranges unchanged.",
+  "harness_files": [
+    {
+      "path": "benchmark/__init__.py",
+      "sha256": "d4978ea44ce2b46aa5e25dd6b40fa9a81306027419b30bd7d43ad8cee6ebbd3b",
+      "bytes": 75,
+      "file_modified_utc": "2026-11-11T17:01:44.878369+00:00"
+    },
+    {
+      "path": "benchmark/__main__.py",
+      "sha256": "1843797730b5660246026fba397d4ea7539f628fc5b470a3831937b74844ae04",
+      "bytes": 91,
+      "file_modified_utc": "2026-11-11T17:01:44.879364+00:00"
+    },
+    {
+      "path": "benchmark/harness/actors.py",
+      "sha256": "52f5fce4aba48ba68b56b41f0721fdb6ec8d45a1645c55a5979549b698a510f9",
+      "bytes": 3035,
+      "file_modified_utc": "2026-10-24T20:21:41.939410+00:00"
+    },
+    {
+      "path": "benchmark/harness/common.py",
+      "sha256": "909946223a9ee4099cc78cc1b2efaac144e9adc37b23ac48083f9c1d7e4fe919",
+      "bytes": 1021,
+      "file_modified_utc": "2026-11-11T17:02:12.178502+00:00"
+    },
+    {
+      "path": "benchmark/harness/routes.py",
+      "sha256": "e4d181a7a301258def1a9d679fffb2e6705134c0bb44385b2f7ec1371d196079",
+      "bytes": 12497,
+      "file_modified_utc": "2026-11-11T17:02:12.779192+00:00"
+    },
+    {
+      "path": "benchmark/harness/runner.py",
+      "sha256": "45994904a85cb8eaca5f9d935504fe61f5ee867cd453cc25265740b63a63c45c",
+      "bytes": 28660,
+      "file_modified_utc": "2026-11-11T17:02:15.668741+00:00"
+    },
+    {
+      "path": "benchmark/harness/run.py",
+      "sha256": "e3d81ac9dc7d388428ddf8dbb06a14cd63bc9d62250c960a68e422ee0692890f",
+      "bytes": 19057,
+      "file_modified_utc": "2026-11-11T19:21:51.880861+00:00"
+    },
+    {
+      "path": "benchmark/harness/scoring.py",
+      "sha256": "6ccc8432ab75eb2c80f1ad03dbeb75b0859fbba43466daeef4cdcf9e24483587",
+      "bytes": 4118,
+      "file_modified_utc": "2026-10-24T13:02:08.094170+00:00"
+    },
+    {
+      "path": "benchmark/harness/student.py",
+      "sha256": "ae906efb43ea7d73ad6ee76a2a87fefd7a472840ebeda2a1f91173adc599fba0",
+      "bytes": 3040,
+      "file_modified_utc": "2026-11-11T17:04:40.201213+00:00"
+    },
+    {
+      "path": "benchmark/harness/runtime/px4_bridge.mjs",
+      "sha256": "59b90537ac75bf159f4cf5e4f3ecae9efea2ee427bfd4d9885240bf3abbc810b",
+      "bytes": 5058,
+      "file_modified_utc": "2026-11-11T17:02:16.324139+00:00"
+    }
+  ],
+  "preparation_only": true,
+  "training_eligible": false,
+  "benchmark_schema": "aerodock.benchmark.mission.v4-bounded-search",
+  "benchmark_id": "aerodock-20-wave-gate-3c2b501",
+  "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+  "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+  "harness_note": "Harness receipts cover the current benchmark flight path and PX4 bridge; reporting-only track.py is intentionally excluded."
+}

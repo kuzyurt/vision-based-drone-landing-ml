@@ -1,0 +1,1 @@
+(() => { const button=document.querySelector('#drone-hud [data-action="ml"]'); if(!button)return 'no ml button'; const before={text:button.textContent,disabled:button.disabled}; button.click(); return {clicked:true,before}; })()

@@ -71,8 +71,11 @@ export class Breakers {
 
 		this.uniforms = new UniformBlock( 'BreakersParams', {
 			cameraPos: [ 'vec3f', new Vector3() ],
-			spray: [ 'f32', 1 ], // emission multiplier
-			sheet: [ 'f32', 1 ], // lip opacity multiplier
+			// Off by default: the shore's swell is tuned not to break (ShoreWaves.gamma), so there is no
+			// collapsing crest to throw droplets or a lip. Both stay on the Sea panel for a rougher shore.
+			// (sheet is only the declaration: the lip keeps its own uniform, see BreakersLip below.)
+			spray: [ 'f32', 0 ], // emission multiplier
+			sheet: [ 'f32', 0 ], // lip opacity multiplier
 			emitRange: [ 'f32', 240 ], // no emission beyond this camera distance
 			amplitude: [ 'f32', 1 ], // WaterSurface.amplitude (FFT displacement scale), copied each update
 			budget: [ 'f32', 0.3 ], // emission scale that keeps the spray ring from wrapping (see update)
@@ -632,7 +635,9 @@ const BRK_NV: f32 = ${ f( NV ) };
 			side: 'double',
 			blending: 'premultiplied',
 			modules: [ lipModule ],
-			uniforms: { sheet: [ 'f32', 1 ] },
+			// the lip's own opacity multiplier (this is the one the shader reads, and it replaces
+			// BreakersParams.sheet on construction): off, as the default shore does not break
+			uniforms: { sheet: [ 'f32', 0 ] },
 			textures: { brkLace: lace },
 			storage: { breakersCrest: this.crest },
 			attributes: { sheetId: 'vec4f' },

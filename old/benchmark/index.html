@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AeroDock 20-case benchmark</title>
+<style>
+  :root {
+    --ink: #10232e;
+    --muted: #5b7280;
+    --line: #d9e4ea;
+    --bg: #f4f7f9;
+    --card: #ffffff;
+    --accent: #087f98;
+    --accent-soft: #e3f2f5;
+    --warn: #9a5a00;
+    --warn-bg: #fff7e7;
+    --ok: #1c7a4a;
+    --pending: #8a9aa4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  a { color: var(--accent); }
+  code, .mono { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; }
+  .page-head {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 34px 24px 12px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .eyebrow { margin: 0 0 4px; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  h1 { margin: 0; font-size: clamp(1.7rem, 3vw, 2.4rem); letter-spacing: -.02em; }
+  .sub { margin: 8px 0 0; color: var(--muted); max-width: 76ch; }
+  .button {
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 8px; padding: 9px 13px; font: inherit; font-weight: 600; cursor: pointer;
+  }
+  .button:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 1200px; margin: 0 auto; padding: 12px 24px 50px; display: grid; gap: 34px; }
+  .notice { max-width: 1200px; margin: 12px auto 0; padding: 14px 16px; border: 1px solid var(--line); background: var(--card); border-radius: 10px; color: var(--muted); }
+  .notice strong { color: var(--ink); }
+  .notice code { display: inline-block; margin: 6px 0; padding: 4px 7px; background: var(--accent-soft); border-radius: 5px; color: var(--ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; }
+  .chip { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 6px 11px; font-size: 12.5px; color: var(--muted); }
+  .chip b { color: var(--ink); }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 10px; }
+  .section-head h2 { margin: 0; font-size: 1.15rem; letter-spacing: -.01em; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 13px; }
+  .scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { padding: 9px 11px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { background: #eef4f7; color: #3e5967; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.pending td { color: var(--pending); }
+  tr.invalid td { background: #fffaf1; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 15px 16px; }
+  .card-top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; }
+  .card h3 { margin: 0; font-size: 15px; line-height: 1.3; }
+  .card .score { font-size: 1.45rem; font-weight: 750; letter-spacing: -.03em; white-space: nowrap; }
+  .card .role { margin: 3px 0 12px; color: var(--muted); font-size: 12.5px; }
+  .card .note { margin: 0 0 13px; color: var(--muted); font-size: 12.5px; }
+  .bar-row { display: grid; grid-template-columns: 108px 1fr 54px; align-items: center; gap: 8px; margin: 6px 0; font-size: 12px; }
+  .bar-row .label { color: #405965; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .bar-row .track { height: 8px; background: #edf3f6; border-radius: 99px; overflow: hidden; }
+  .bar-row .fill { height: 100%; background: var(--accent); border-radius: 99px; }
+  .bar-row .value { text-align: right; color: #405965; font-variant-numeric: tabular-nums; }
+  .meta { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); color: var(--muted); font-size: 11.5px; display: grid; gap: 3px; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 700; }
+  .tag.warn { background: var(--warn-bg); color: var(--warn); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 9px; }
+  .tab { border: 1px solid var(--line); background: var(--card); color: var(--muted); border-radius: 999px; padding: 6px 11px; font: inherit; font-size: 12.5px; cursor: pointer; }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 650; }
+  .pending-label { color: var(--pending); }
+  .ok { color: var(--ok); font-weight: 650; }
+  .bad { color: #a23b2b; font-weight: 650; }
+  .warn-text { color: var(--warn); }
+  .design-note { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+  .weights { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .weight { border: 1px solid var(--line); background: var(--card); border-radius: 8px; padding: 6px 10px; font-size: 12.5px; }
+  .weight b { color: var(--accent); }
+  .prose { color: var(--muted); font-size: 13.5px; }
+  .prose ul { margin: 6px 0 14px; padding-left: 20px; }
+  .prose li { margin: 3px 0; }
+  details { border: 1px solid var(--line); background: var(--card); border-radius: 9px; padding: 10px 12px; margin: 8px 0; }
+  summary { cursor: pointer; font-weight: 650; }
+  .source-list { margin: 8px 0 0; padding-left: 18px; font-size: 12px; color: var(--muted); }
+  .source-list li { margin: 2px 0; overflow-wrap: anywhere; }
+  footer { max-width: 1200px; margin: 0 auto; padding: 0 24px 32px; color: var(--muted); font-size: 12.5px; }
+  @media (max-width: 700px) {
+    .page-head { padding: 24px 16px 8px; flex-direction: column; }
+    main { padding: 10px 16px 40px; }
+    .section-head { flex-direction: column; gap: 3px; }
+    .bar-row { grid-template-columns: 96px 1fr 50px; }
+  }
+</style>
+</head>
+<body>
+<header class="page-head">
+  <div>
+    <p class="eyebrow">AeroDock · MuJoCo / PX4</p>
+    <h1>20-case landing benchmark</h1>
+    <p class="sub" id="subtitle">Loading benchmark.json…</p>
+  </div>
+  <button class="button" id="reload" type="button">Reload JSON</button>
+</header>
+
+<div class="notice" id="status">Loading benchmark.json…</div>
+<div class="notice" id="fallback" hidden>
+  <p><strong>benchmark.json could not be fetched.</strong> Browsers block <code>file://</code> fetches. Choose the JSON file below, or serve this folder:</p>
+  <code>python -m http.server 8765 --directory benchmark</code>
+  <p><input id="file" type="file" accept="application/json,.json"></p>
+</div>
+
+<main id="content" hidden>
+  <section class="chips" id="chips"></section>
+
+  <section>
+    <div class="section-head">
+      <h2>Model comparison</h2>
+      <p>One frozen 20-case plan. Pending models are not scored.</p>
+    </div>
+    <div class="scroll" id="comparison"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Model detail</h2>
+      <p>Weighted categories plus coverage. A total requires all 20 valid cases.</p>
+    </div>
+    <div class="grid" id="models"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Per-case results</h2>
+      <p id="case-caption"></p>
+    </div>
+    <div class="tabs" id="case-tabs"></div>
+    <div class="scroll" id="case-table"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Benchmark design</h2>
+      <p>Frozen cases, conditions and weights.</p>
+    </div>
+    <div id="design"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>Provenance &amp; evidence</h2>
+      <p>Every value is traceable to a recorded episode.</p>
+    </div>
+    <div id="provenance"></div>
+  </section>
+</main>
+
+<footer>
+  <span id="generated">Loading…</span> ·
+  <a href="benchmark.json">benchmark.json</a> ·
+  <a href="evidence/teacher/FULL20_verification.json">teacher verification</a>
+</footer>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const node = (tag, text, cls) => {
+  const element = document.createElement(tag);
+  if (text !== undefined && text !== null) element.textContent = String(text);
+  if (cls) element.className = cls;
+  return element;
+};
+const pct = value => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : `${Number(value).toFixed(1)}%`;
+const num = (value, digits = 1) => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : Number(value).toFixed(digits);
+const secs = value => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : `${Number(value).toFixed(1)} s`;
+const stamp = value => value ? String(value).replace('T', ' ').replace(/\.\d+/, '').replace('+00:00', ' UTC') : '—';
+const short = value => value ? String(value).slice(0, 12) + '…' : '—';
+
+let DATA = null;
+let activeModel = 0;
+
+function chips() {
+  const benchmark = DATA.benchmark;
+  const complete = DATA.models.filter(model => model.summary && model.summary.complete).length;
+  const valid = DATA.models.reduce((sum, model) => sum + (model.summary?.valid_cases || 0), 0);
+  const planned = DATA.models.length * benchmark.case_count;
+  const values = [
+    ['Plan', short(benchmark.plan_sha256)],
+    ['Cases', benchmark.case_count],
+    ['Models', DATA.models.length],
+    ['Complete suites', `${complete}/${DATA.models.length}`],
+    ['Recorded flights', `${valid}/${planned} valid`],
+    ['Updated', stamp(DATA.updated_utc)],
+  ];
+  $('chips').replaceChildren(...values.map(([label, value]) => {
+    const chip = node('span', undefined, 'chip');
+    chip.append(node('b', value), ` ${label}`);
+    return chip;
+  }));
+}
+
+function comparison() {
+  const table = node('table');
+  const head = node('thead');
+  const headRow = node('tr');
+  headRow.append(node('th', 'Model'), node('th', 'Total', 'num'));
+  for (const category of Object.values(DATA.benchmark.categories)) {
+    headRow.append(node('th', category.label, 'num'));
+  }
+  headRow.append(node('th', 'Landings', 'num'), node('th', 'Valid', 'num'), node('th', 'State'));
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const model of DATA.models) {
+    const row = node('tr', undefined, model.summary?.total === null || model.summary?.total === undefined ? 'pending' : '');
+    const name = node('td');
+    name.append(node('strong', model.label), node('div', model.role, 'pending-label'));
+    row.append(name, node('td', pct(model.summary?.total), 'num'));
+    for (const key of Object.keys(DATA.benchmark.categories)) {
+      row.append(node('td', pct(model.summary?.categories?.[key]?.score), 'num'));
+    }
+    row.append(node('td', `${model.summary?.landings ?? 0}/${model.summary?.planned_cases ?? DATA.benchmark.case_count}`, 'num'));
+    row.append(node('td', `${model.summary?.valid_cases ?? 0}/${model.summary?.planned_cases ?? DATA.benchmark.case_count}`, 'num'));
+    const state = model.summary?.complete ? node('span', 'complete', 'ok')
+      : model.summary?.error ? node('span', 'error', 'bad')
+      : node('span', 'pending', 'warn-text');
+    const stateCell = node('td');
+    stateCell.append(state);
+    row.append(stateCell);
+    body.append(row);
+  }
+  table.append(body);
+  $('comparison').replaceChildren(table);
+}
+
+function modelCards() {
+  const cards = DATA.models.map(model => {
+    const card = node('article', undefined, 'card');
+    const top = node('div', undefined, 'card-top');
+    top.append(node('h3', model.label), node('div', pct(model.summary?.total), 'score'));
+    card.append(top);
+    card.append(node('p', model.role, 'role'));
+    card.append(node('p', model.note, 'note'));
+    for (const [key, category] of Object.entries(DATA.benchmark.categories)) {
+      const item = model.summary?.categories?.[key];
+      const row = node('div', undefined, 'bar-row');
+      row.append(node('span', category.label, 'label'));
+      const track = node('div', undefined, 'track');
+      const fill = node('div', undefined, 'fill');
+      fill.style.width = item && item.score !== null && item.score !== undefined
+        ? `${Math.max(0, Math.min(100, item.score))}%` : '0%';
+      track.append(fill);
+      row.append(track, node('span', pct(item?.score), 'value'));
+      card.append(row);
+    }
+    const meta = node('div', undefined, 'meta');
+    meta.append(node('div', `Valid ${model.summary?.valid_cases ?? 0}/${model.summary?.planned_cases ?? DATA.benchmark.case_count} · ${model.summary?.landings ?? 0} strict landings · ${model.summary?.complete ? 'complete suite' : 'incomplete suite'}`));
+    meta.append(node('div', `Identity ${short(model.identity_sha256)}`));
+    meta.append(node('div', `${model.sources?.length || 0} recorded episodes · ${model.available ? 'local assets verified' : 'incomplete bundle'}`));
+    if (model.summary?.error) meta.append(node('div', model.summary.error, 'bad'));
+    card.append(meta);
+    return card;
+  });
+  $('models').replaceChildren(...cards);
+}
+
+function tabs() {
+  const buttons = DATA.models.map((model, index) => {
+    const button = node('button', model.label, index === activeModel ? 'tab active' : 'tab');
+    button.type = 'button';
+    button.addEventListener('click', () => {
+      activeModel = index;
+      tabs();
+      caseTable();
+    });
+    return button;
+  });
+  $('case-tabs').replaceChildren(...buttons);
+}
+
+function caseTable() {
+  const model = DATA.models[activeModel];
+  const byId = Object.fromEntries((model.results || []).map(result => [result.case_id, result]));
+  const table = node('table');
+  const head = node('thead');
+  const headRow = node('tr');
+  for (const label of ['Case', 'Condition', 'Outcome', 'Valid', 'Landing', 'Acquisition', 'Mission time', 'Source']) {
+    headRow.append(node('th', label));
+  }
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const item of DATA.benchmark.cases) {
+    const result = byId[item.id];
+    const scenario = item.scenario || {};
+    const orbit = item.bounded_route ? `; orbit ${num(item.bounded_route.radius_m, 0)} m` : '';
+    const condition = `${num(scenario.distance, 0)} m; boat ${num(scenario.boat_speed, 1)} m/s; `
+      + `wind ${num(scenario.wind_mean_m_s, 1)} m/s; wave ${num(scenario.wave_height, 2)} m; `
+      + `radio ${item.radio}; decoys ${item.decoys ? 'on' : 'off'}${orbit}`;
+    const notRun = !result || result.status === 'not_run';
+    const row = node('tr', undefined, notRun ? 'pending' : (result.condition_valid === false ? 'invalid' : ''));
+    const caseCell = node('td');
+    caseCell.append(node('strong', item.id), node('div', item.category, 'pending-label'));
+    const outcome = notRun ? 'Not run'
+      : result.status === 'completed' ? (result.outcome || 'completed')
+      : `${result.status}${result.outcome ? ': ' + result.outcome : ''}`;
+    const source = result?.source
+      ? (result.source.carried_forward ? 'carried' : 'current')
+      : '—';
+    row.append(
+      caseCell,
+      node('td', condition),
+      node('td', outcome),
+      node('td', notRun ? '—' : (result.condition_valid === true ? 'Yes' : 'No')),
+      node('td', notRun ? '—' : (result.strict_landing ? 'Yes' : 'No')),
+      node('td', notRun ? '—' : secs(result.verified_acquisition_s)),
+      node('td', notRun ? '—' : secs(result.mission_time_s)),
+      node('td', source),
+    );
+    if (result?.source?.path) row.title = result.source.path;
+    body.append(row);
+  }
+  table.append(body);
+  const complete = model.summary?.complete ? 'complete' : 'incomplete';
+  $('case-caption').textContent = `${model.label} · ${model.summary?.landings ?? 0}/${model.summary?.planned_cases ?? DATA.benchmark.case_count} landings · ${model.summary?.valid_cases ?? 0}/${model.summary?.planned_cases ?? DATA.benchmark.case_count} valid · ${complete}`;
+  $('case-table').replaceChildren(table);
+}
+
+function design() {
+  const weights = Object.entries(DATA.benchmark.categories).map(([key, category]) => {
+    const item = node('span', undefined, 'weight');
+    item.append(node('b', `${Math.round((category.weight || 0) * 100)}%`), ` ${category.label}`);
+    return item;
+  });
+  const wrapper = node('div');
+  wrapper.append(node('p', DATA.benchmark.design_note, 'design-note'));
+  const weightRow = node('div', undefined, 'weights');
+  weightRow.append(...weights);
+  wrapper.append(weightRow);
+
+  const table = node('table');
+  const head = node('thead');
+  const headRow = node('tr');
+  for (const label of ['Case', 'Category', 'Map / repeat', 'Range', 'Boat', 'Wind', 'Waves', 'Radio', 'Decoys', 'Start view', 'Speed ref', 'Orbit']) {
+    headRow.append(node('th', label));
+  }
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const item of DATA.benchmark.cases) {
+    const scenario = item.scenario || {};
+    const row = node('tr');
+    row.append(
+      node('td', item.id),
+      node('td', item.category),
+      node('td', `${item.map} / r${item.repeat}`),
+      node('td', `${num(scenario.distance, 0)} m`),
+      node('td', `${num(scenario.boat_speed, 1)} m/s`),
+      node('td', `${num(scenario.wind_mean_m_s, 1)} m/s`),
+      node('td', `${num(scenario.wave_height, 2)} m`),
+      node('td', item.radio),
+      node('td', item.decoys ? 'on' : 'off'),
+      node('td', item.initial_view),
+      node('td', secs(item.speed_reference_s)),
+      node('td', item.bounded_route ? `${num(item.bounded_route.radius_m, 0)} m` : '—'),
+    );
+    body.append(row);
+  }
+  table.append(body);
+  const scroll = node('div', undefined, 'scroll');
+  scroll.append(table);
+  wrapper.append(scroll);
+  $('design').replaceChildren(wrapper);
+}
+
+function provenance() {
+  const wrapper = node('div', undefined, 'prose');
+  const notes = node('ul');
+  for (const note of DATA.notes || []) notes.append(node('li', note));
+  if (DATA.warnings?.length) {
+    wrapper.append(node('h3', 'Warnings'));
+    const warnings = node('ul');
+    for (const warning of DATA.warnings) warnings.append(node('li', warning, 'warn-text'));
+    wrapper.append(warnings);
+  }
+  wrapper.append(node('h3', 'Run receipts'), notes);
+
+  if (DATA.runs?.length) {
+    const table = node('table');
+    const head = node('thead');
+    const headRow = node('tr');
+    for (const label of ['Run', 'Created', 'Device / workers', 'Policies', 'Cases', 'Progress']) {
+      headRow.append(node('th', label));
+    }
+    head.append(headRow);
+    table.append(head);
+    const body = node('tbody');
+    for (const run of DATA.runs) {
+      const row = node('tr');
+      const progress = run.progress
+        ? `${run.progress.status} · ${run.progress.completed}/${run.progress.planned}`
+        : '—';
+      row.append(
+        node('td', run.id),
+        node('td', stamp(run.created_utc)),
+        node('td', `${run.device || '—'} / ${run.workers ?? '—'}`),
+        node('td', (run.policies || []).join(', ') || '—'),
+        node('td', Array.isArray(run.cases) ? String(run.cases.length) : String(run.cases ?? '—')),
+        node('td', progress),
+      );
+      body.append(row);
+    }
+    table.append(body);
+    const scroll = node('div', undefined, 'scroll');
+    scroll.append(table);
+    wrapper.append(scroll);
+  } else {
+    wrapper.append(node('p', 'No new runs recorded yet. Existing evidence is listed below.'));
+  }
+
+  wrapper.append(node('h3', 'Evidence by model'));
+  for (const model of DATA.models) {
+    const details = node('details');
+    details.append(node('summary', `${model.label} · ${model.sources?.length || 0} episodes`));
+    const list = node('ul', undefined, 'source-list');
+    for (const source of model.sources || []) list.append(node('li', source));
+    details.append(list);
+    wrapper.append(details);
+  }
+  $('provenance').replaceChildren(wrapper);
+}
+
+function init(data) {
+  DATA = data;
+  $('status').hidden = true;
+  $('fallback').hidden = true;
+  $('content').hidden = false;
+  $('subtitle').textContent = `${data.benchmark.label} · plan ${short(data.benchmark.plan_sha256)} · ${data.benchmark.case_count} cases`;
+  $('generated').textContent = `Generated ${stamp(data.updated_utc)}`;
+  activeModel = 0;
+  chips();
+  comparison();
+  modelCards();
+  tabs();
+  caseTable();
+  design();
+  provenance();
+}
+
+async function load() {
+  $('status').hidden = false;
+  $('status').textContent = 'Loading benchmark.json…';
+  $('fallback').hidden = true;
+  try {
+    const response = await fetch('benchmark.json', {cache: 'no-store'});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    init(await response.json());
+  } catch (error) {
+    $('status').textContent = `benchmark.json could not be loaded (${error.message}).`;
+    $('fallback').hidden = false;
+  }
+}
+
+async function readFile(file) {
+  if (!file) return;
+  try {
+    init(JSON.parse(await file.text()));
+  } catch (error) {
+    $('status').hidden = false;
+    $('status').textContent = `That file is not valid benchmark JSON (${error.message}).`;
+  }
+}
+
+$('reload').addEventListener('click', load);
+$('file').addEventListener('change', event => readFile(event.target.files[0]));
+document.addEventListener('dragover', event => event.preventDefault());
+document.addEventListener('drop', event => {
+  event.preventDefault();
+  readFile(event.dataTransfer.files[0]);
+});
+load();
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+{
+  "created_utc": "2026-10-25T17:37:51.853683+00:00",
+  "configuration": {
+    "schema": "drone.search.transfer.110gb.v1",
+    "seed": 20261025,
+    "episodes": 8,
+    "duration_s": 240,
+    "control_hz": 25,
+    "total_budget_bytes": 110000000000,
+    "dataset_budget_bytes": 40000000000,
+    "disk_free_reserve_bytes": 5000000000,
+    "minimum_free_ram_bytes": 2000000000,
+    "worker_ram_estimate_bytes": 1800000000,
+    "worker_ram_headroom_bytes": 500000000,
+    "episode_reservation_bytes": 5000000000,
+    "database_limit_bytes": 4500000000,
+    "rgb_shape": [
+      360,
+      640,
+      3
+    ],
+    "compression": "lossless_rgb_png_or_raw_if_smaller",
+    "pose_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+    "spatial_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+    "epochs": 15,
+    "batch_size": 8,
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "gradient_clip": 1.0,
+    "identity_support_s": 0.16,
+    "max_objects": 7,
+    "proposal_threshold": 0.5,
+    "evidence_threshold": 0.8,
+    "identity_threshold": 0.98,
+    "data_directory": "data",
+    "minimum_episodes": {
+      "training": 8,
+      "validation": 2,
+      "test": 2
+    }
+  },
+  "dataset_manifest_sha256": "3997602d9125609eb679b876e2fa2b18116e036e1dea9725d141b2b5fc46a648",
+  "original_sources": {
+    "train.py": "857d00e640c60e1b63ed12e3e809214e8c3c4d55c8e3de4e45c14a63218e7f33",
+    "model.py": "c0e5631eabaa0ae234ab1808b9babf48ec44e0ddbd9256e044070c0f7756a702",
+    "storage.py": "5f2b82b525fadb8e80f65c1e49ab204807ab698aade2b8f64528d4041a8b7e9c",
+    "config.json": "e5adaabcae048d31acd788bae83d247b5f9970801a071e259e3c73d21ec1532b"
+  },
+  "implementation": {
+    "train_optimized.py": "7d3a5d8e6edc2f9ef245645fe852a9c958ffcdee8245f6f2f256250cf4c3d512",
+    "input_pipeline.py": "84625a7e54a6277813c05e91e938797c3fa37509e147aad4a464e2a204030165"
+  },
+  "source_fingerprint": "7b4950efe5f600ae40bb6de2d22d27302e02bedbcb7729b1b5ed20bc07508a12",
+  "base_frozen": true,
+  "old_records_used": 0,
+  "test_frames_used": 0,
+  "pose_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+  "spatial_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+  "initialization": "same R15 weights, seed, constructor order, original batch size and curriculum",
+  "previous_run_optimizer_imported": false,
+  "decode_threads": 2,
+  "precision": "float32",
+  "prefetch_batches": 1
+}

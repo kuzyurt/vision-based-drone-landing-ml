@@ -873,6 +873,10 @@ export class SoundScape {
 		const P = Math.max( 1, sh.period.value ), tNow = sh.time.value, gamma = sh.gamma.value;
 		const audioNow = this.ctx.currentTime, LOOK = 0.2;
 		const A0 = Math.max( 0.05, sh.amplitude.value );
+		// Only breaking waves crash. The shore is tuned so the swell never breaks (gamma far above the
+		// ~0.8 breaker index): then there is no crash at all, and the calm swell only laps on the sand.
+		const breaking = this._breakingShare();
+		const lap = this._lapGain();
 		for ( const st of this._stations ) {
 
 			const d = Math.hypot( st.x - e.lx, st.z - e.lz );
@@ -892,9 +896,9 @@ export class SoundScape {
 
 					st.last.crash = m;
 					const x = st.x - st.dx * rb, z = st.z - st.dz * rb;
-					if ( Math.hypot( x - e.lx, z - e.lz ) < 150 && A > 0.06 ) {
+					if ( breaking > 0.05 && Math.hypot( x - e.lx, z - e.lz ) < 150 && A > 0.06 ) {
 
-						this._shotAt( 'surf_crash', 'crash', x, 0.4, z, MIX.crash + lvl + ( Math.random() - 0.5 ) * 3,
+						this._shotAt( 'surf_crash', 'crash', x, 0.4, z, MIX.crash + lvl + 20 * Math.log10( breaking ) + ( Math.random() - 0.5 ) * 3,
 							clamp( 1.06 - 0.25 * rel, 0.82, 1.08 ) * ( 0.96 + Math.random() * 0.08 ), audioNow + Math.max( 0, tc - tNow ), 10, 0.65 );
 
 					}
@@ -906,7 +910,7 @@ export class SoundScape {
 				if ( m > st.last.wash && tw >= tNow - 0.1 && tw < tNow + LOOK ) {
 
 					st.last.wash = m;
-					if ( d < 70 ) this._shotAt( 'surf_wash', 'wash', st.x - st.dx, 0.1, st.z - st.dz, MIX.wash + lvl + ( Math.random() - 0.5 ) * 3,
+					if ( d < 70 ) this._shotAt( 'surf_wash', 'wash', st.x - st.dx, 0.1, st.z - st.dz, MIX.wash + lvl + lap + ( Math.random() - 0.5 ) * 3,
 						0.95 + Math.random() * 0.1, audioNow + Math.max( 0, tw - tNow ), 5, 0.8 );
 
 				}
@@ -914,7 +918,7 @@ export class SoundScape {
 				if ( m > st.last.back && tb >= tNow - 0.1 && tb < tNow + LOOK ) {
 
 					st.last.back = m;
-					if ( d < 60 ) this._shotAt( 'surf_backwash', 'back', st.x - st.dx * 2, 0, st.z - st.dz * 2, MIX.backwash + lvl + ( Math.random() - 0.5 ) * 3,
+					if ( d < 60 ) this._shotAt( 'surf_backwash', 'back', st.x - st.dx * 2, 0, st.z - st.dz * 2, MIX.backwash + lvl + lap + ( Math.random() - 0.5 ) * 3,
 						0.95 + Math.random() * 0.1, audioNow + Math.max( 0, tb - tNow ), 5, 0.8 );
 
 				}
@@ -922,6 +926,26 @@ export class SoundScape {
 			}
 
 		}
+
+	}
+
+	// 1 when the shore's waves break like real surf (breaker index ~0.8), 0 when they are tuned never
+	// to break (ShoreWaves.gamma well above 1.6): no crash, no distant surf roar.
+	_breakingShare() {
+
+		const sh = this._shoreSrc()?.shore;
+		if ( ! sh || ! sh.gamma ) return 1;
+		return clamp( ( 1.6 - sh.gamma.value ) / 0.6, 0, 1 );
+
+	}
+
+	// Up-rush and backwash levels follow the swell height (dB, 0 at the 0.34 m reference swell):
+	// a calm sea laps quietly instead of washing up like surf.
+	_lapGain() {
+
+		const sh = this._shoreSrc()?.shore;
+		if ( ! sh || ! sh.amplitude ) return 0;
+		return clamp( 12 * Math.log10( Math.max( 0.01, sh.amplitude.value ) / 0.34 ), - 14, 0 );
 
 	}
 
@@ -1044,7 +1068,7 @@ export class SoundScape {
 		}
 
 		// distant surf (the waves themselves are events, see _surf)
-		const lvl = 0.6 + 0.7 * e.surf;
+		const lvl = ( 0.6 + 0.7 * e.surf ) * ( 0.2 + 0.8 * this._breakingShare() ); // no surf roar from an unbroken swell
 		this._bed( 'surf_far', dB( MIX.surfFar ) * 1.25 / ( 1 + d / 200 ) * lvl / dB( BANK.surf_far.lufs ), now, 0.5 );
 
 		// wind in gusts: a random target every 2-8 s (lulls near silent), eased towards

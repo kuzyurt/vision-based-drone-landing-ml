@@ -573,18 +573,23 @@ const TERRAIN_SURFACE = /* wgsl */`
 		let swashLine = smoothstep( slW * 1.5 + 0.04, 0.0, slD ) * smoothstep( 0.2, 0.4, h ) * smoothstep( 1.6, 1.2, h )
 			* smoothstep( 0.45, 0.65, dM.y + ( macroB - 0.5 ) * 0.4 ) * sandW * ( 1.0 - smoothstep( 0.8, 2.0, slW * 10.0 ) );
 		albedo = mix( albedo * ( 1.0 - swashLine * 0.3 ), ${ S( 0.9, 0.88, 0.84 ) }, swashLine * smoothstep( 0.6, 0.75, dF.z ) * 0.5 );
-		// foam residue: lacy patterns stranded on the sand
+		// foam residue: the lacy pattern left where the wash dried out. Stranded foam is a thin, patchy
+		// film over sand that is still damp underneath, so it only lightens the sand by a limited amount
+		// and keeps the sand's own colour in it; mixing all the way to flat white made the whole upper
+		// wash zone read as one pale stripe instead of as drying sand.
 		var residue = sat( wetFoam.y ) * landW * notRock;
 		if ( residue > 0.0 ) { residue *= smoothstep( 0.42, 0.18, terDetail( ${ rot2( 'xz', 0.4 ) } / 0.9 ).x ) * 0.7 + 0.3; }
-		albedo = mix( albedo, ${ S( 0.88, 0.9, 0.9 ) }, residue );
+		albedo = mix( albedo, terrainSaturation( albedo * 1.5, 0.85 ) * ${ S( 1.0, 0.98, 0.94 ) }, min( residue, 0.45 ) );
 
 		// ---- roughness
 		var rough = mix( 0.88, 0.93, sandW );
 		rough = mix( rough, 0.9, pathW );
 		rough = mix( rough, rockRough, rockW );
-		// wet sand has a film of water: glossy while fresh, satin as it drains
-		rough = mix( rough, mix( 0.42, 0.16, wet ), wetK );
-		rough = mix( rough, 0.7, residue );
+		// wet sand has a film of water: glossy while fresh, satin as it drains. Even a fresh film keeps
+		// some roughness - it lies over granular, rippled sand, and a mirror-flat 0.16 over the whole
+		// wash zone reflected the sky so strongly that the wet sand read as a pale sheet of water.
+		rough = mix( rough, mix( 0.5, 0.3, wet ), wetK );
+		rough = mix( rough, 0.62, residue );
 		rough = mix( rough, 0.75, underW );
 		rough = mix( rough, 0.94, scarpW );
 		outRough = rough;
@@ -593,7 +598,9 @@ const TERRAIN_SURFACE = /* wgsl */`
 		let windR = rip1 * 0.005 * windK;
 		let waveR = rip3 * 0.012 * fade3 * smoothstep( -0.3, -0.9, h ) * ( 1.0 - seagrassW );
 		let megaR = rip2 * 0.035 * fade2 * fieldW * ( 1.0 - seagrassW );
-		let sandH = ( grain * 0.004 + grainF * 0.003 + pebW * 0.004 + windR + waveR + megaR ) * ( 1.0 - wet * 0.6 )
+		// water damps the grain relief, but only partly: a film of water follows the grains, it does not
+		// iron them flat
+		let sandH = ( grain * 0.004 + grainF * 0.003 + pebW * 0.004 + windR + waveR + megaR ) * ( 1.0 - wet * 0.35 )
 			+ rill * 0.006 * rillK;
 		// seagrass canopy stands proud of the sand with a ragged scarp; rubble is knobbly
 		let seabedH = seagrassW * ( blades * 0.05 + 0.08 ) + rubbleW * ( dN.x * 0.07 + dF.x * 0.015 );

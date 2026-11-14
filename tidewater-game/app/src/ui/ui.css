@@ -138,43 +138,23 @@ body {
 	bottom: clamp(24px, 7vh, 96px);
 	display: flex;
 	flex-direction: column;
-	gap: clamp(20px, 3.2vh, 40px);
+	gap: clamp(14px, 2.2vh, 26px);
 	max-width: 1320px;
 	container-type: inline-size;
+	/* the one column on this screen: the sentence, the status/percentage row and the bar all end at it */
+	--loader-col: 520px;
 }
 
-.loader-kicker {
-	margin: 0 0 calc(10 * var(--tw-u));
-	font-size: clamp(10px, 1vw, 13px);
-	font-weight: 600;
-	letter-spacing: 0.34em;
-	text-transform: uppercase;
-	color: var(--tw-sun);
-	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
-}
-
-.loader-title {
-	margin: 0 -0.3em 0 -0.04em; /* optical: the trailing tracking and the T's side bearing */
-	/* always fits its column: 9 letters at 0.3em tracking are ~9.2em wide, trailing tracking included */
-	font-size: min(136px, 10.4cqi);
-	white-space: nowrap;
-	font-weight: 600;
-	letter-spacing: 0.3em;
-	line-height: 0.95;
-	color: transparent;
-	background: linear-gradient(180deg, #ffffff 20%, #fff0dc 70%, #ffd7a8 100%);
-	-webkit-background-clip: text;
-	background-clip: text;
-	filter: drop-shadow(0 2px 18px rgba(0, 0, 0, 0.45));
-}
-
-.loader-tagline {
-	margin: calc(12 * var(--tw-u)) 0 0;
-	max-width: 30em;
-	font-size: clamp(13px, 1.25vw, 16px);
-	line-height: 1.5;
-	color: var(--tw-ink-2);
-	text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
+/* What the loader says about the game: one line. It used to carry a wordmark, a kicker, a tagline and a
+   rotating tip feed over the still; the still plus how far the load has got carries the screen now. */
+.loader-lead {
+	margin: 0;
+	max-width: var(--loader-col);
+	font-size: clamp(15px, 1.5vw, 20px);
+	font-weight: 500;
+	line-height: 1.45;
+	color: var(--tw-ink);
+	text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
 }
 
 .loader-panel {
@@ -182,7 +162,7 @@ body {
 	flex-direction: column;
 	gap: calc(10 * var(--tw-u));
 	width: 100%;
-	max-width: 520px;
+	max-width: var(--loader-col);
 }
 
 .loader-row {
@@ -202,17 +182,12 @@ body {
 	font-weight: 500;
 }
 
-.loader-meta {
-	display: flex;
-	flex: none;
-	gap: calc(12 * var(--tw-u));
-	font-family: var(--tw-mono);
-	font-size: 0.92em;
-	font-variant-numeric: tabular-nums;
-	color: var(--tw-ink-3);
-}
-
+/* the only number on the screen, so it is the largest thing in its row */
 .loader-pct {
+	flex: none;
+	font-family: var(--tw-mono);
+	font-size: 1.5em;
+	font-variant-numeric: tabular-nums;
 	color: var(--tw-ink-2);
 }
 
@@ -273,73 +248,9 @@ body {
 	box-shadow: none;
 }
 
-#loader.tw-error .loader-glint,
-#loader.tw-error .loader-tips {
+#loader.tw-error .loader-glint {
 	display: none;
 }
-
-/* rotating tips: stacked in one grid cell (no layout shift), cross-faded by a CSS cycle so they keep
-   turning while scripts are blocked. 8 tips x 6 s. */
-.loader-tips {
-	display: flex;
-	align-items: flex-start;
-	gap: calc(12 * var(--tw-u));
-	padding-top: calc(14 * var(--tw-u));
-	border-top: 1px solid rgba(200, 225, 235, 0.14);
-}
-
-.loader-tip-label {
-	flex: none;
-	padding: calc(3 * var(--tw-u)) calc(7 * var(--tw-u));
-	border: 1px solid rgba(var(--tw-aqua-rgb), 0.45);
-	border-radius: calc(4 * var(--tw-u));
-	font-size: clamp(9.5px, 0.8vw, 11px);
-	font-weight: 600;
-	letter-spacing: 0.16em;
-	text-transform: uppercase;
-	color: var(--tw-aqua);
-}
-
-.loader-tip-list {
-	display: grid;
-	flex: 1;
-	min-width: 0;
-}
-
-.loader-tip {
-	grid-area: 1 / 1;
-	margin: 0;
-	font-size: clamp(12.5px, 1.05vw, 14.5px);
-	line-height: 1.5;
-	color: var(--tw-ink-2);
-	opacity: 0;
-	animation: tw-tip 48s linear infinite;
-}
-
-.loader-tip kbd {
-	display: inline-block;
-	min-width: 1.4em;
-	padding: 0 0.4em;
-	border: 1px solid rgba(200, 225, 235, 0.35);
-	border-bottom-width: 2px;
-	border-radius: 4px;
-	font-family: var(--tw-mono);
-	font-size: 0.85em;
-	line-height: 1.45;
-	text-align: center;
-	color: var(--tw-ink);
-	background: rgba(200, 225, 235, 0.08);
-}
-
-/* the cycle starts 0.8 s in, so the first tip is readable at once */
-.loader-tip:nth-child(1) { animation-delay: -0.8s; }
-.loader-tip:nth-child(2) { animation-delay: 5.2s; }
-.loader-tip:nth-child(3) { animation-delay: 11.2s; }
-.loader-tip:nth-child(4) { animation-delay: 17.2s; }
-.loader-tip:nth-child(5) { animation-delay: 23.2s; }
-.loader-tip:nth-child(6) { animation-delay: 29.2s; }
-.loader-tip:nth-child(7) { animation-delay: 35.2s; }
-.loader-tip:nth-child(8) { animation-delay: 41.2s; }
 
 @keyframes tw-kenburns {
 	from { transform: scale(1.06) translate3d(0, 0, 0); }
@@ -349,14 +260,6 @@ body {
 @keyframes tw-glint {
 	from { transform: translateX(-100%); }
 	to { transform: translateX(560%); }
-}
-
-@keyframes tw-tip {
-	0% { opacity: 0; transform: translateY(4px); }
-	1.6% { opacity: 1; transform: translateY(0); }
-	11% { opacity: 1; transform: translateY(0); }
-	12.5% { opacity: 0; transform: translateY(-3px); }
-	100% { opacity: 0; transform: translateY(-3px); }
 }
 
 @media (max-width: 600px) {
@@ -369,12 +272,6 @@ body {
 		background:
 			linear-gradient(0deg, rgba(3, 7, 11, 0.94) 0%, rgba(3, 7, 11, 0.7) 40%, rgba(3, 7, 11, 0.15) 66%, transparent 80%),
 			radial-gradient(140% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.45) 100%);
-	}
-
-	.loader-title {
-		letter-spacing: 0.22em;
-		margin-right: -0.22em;
-		font-size: min(136px, 11.2cqi);
 	}
 
 }
@@ -2571,14 +2468,6 @@ body {
 
 	.loader-glint {
 		display: none;
-	}
-
-	.loader-tip {
-		animation: none !important;
-	}
-
-	.loader-tip:first-child {
-		opacity: 1;
 	}
 
 }

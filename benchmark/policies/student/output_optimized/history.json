@@ -1,0 +1,362 @@
+[
+  {
+    "epoch": 1,
+    "maximum_distance_m": 60,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.4807921415737855,
+      "heat": 0.3294111198646125,
+      "offset": 0.01297552563623413,
+      "presence": 0.015595154207875604,
+      "evidence": 0.12809327340261326,
+      "identity": 0.008752697628312819,
+      "frames": 33429
+    },
+    "validation": {
+      "total": 0.43515672241312525,
+      "heat": 0.38431732653215694,
+      "offset": 0.008799338913675337,
+      "presence": 0.016400591850913717,
+      "evidence": 0.03910960526058431,
+      "identity": 0.0012903936506254911,
+      "frames": 20801
+    },
+    "selection_score": 0.42471732544336677
+  },
+  {
+    "epoch": 2,
+    "maximum_distance_m": 60,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.1612064770963828,
+      "heat": 0.10021108295803324,
+      "offset": 0.008124403863153584,
+      "presence": 0.003283427819093201,
+      "evidence": 0.052451843586698674,
+      "identity": 9.080410241657366e-05,
+      "frames": 33429
+    },
+    "validation": {
+      "total": 0.43951228534634607,
+      "heat": 0.3713532267996408,
+      "offset": 0.008029174158667253,
+      "presence": 0.017655105527656832,
+      "evidence": 0.05734030776267754,
+      "identity": 0.0010240666229444104,
+      "frames": 20801
+    },
+    "selection_score": 0.4297176011852627
+  },
+  {
+    "epoch": 3,
+    "maximum_distance_m": 60,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.12438407517055698,
+      "heat": 0.07922965407885199,
+      "offset": 0.006885416480895485,
+      "presence": 0.0022683278026715058,
+      "evidence": 0.038017179940154744,
+      "identity": 2.4992180350695462e-05,
+      "frames": 33429
+    },
+    "validation": {
+      "total": 0.443287843658919,
+      "heat": 0.37539242341516577,
+      "offset": 0.007346248056964111,
+      "presence": 0.034692473546739995,
+      "evidence": 0.056250711569244716,
+      "identity": 0.0008292145492179214,
+      "frames": 20801
+    },
+    "selection_score": 0.4324723495336284
+  },
+  {
+    "epoch": 4,
+    "maximum_distance_m": 80,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.18977955551394995,
+      "heat": 0.12729167275941874,
+      "offset": 0.007733646531719781,
+      "presence": 0.019293453071981968,
+      "evidence": 0.0523235876187159,
+      "identity": 0.0005013038171662696,
+      "frames": 78003
+    },
+    "validation": {
+      "total": 0.2884450624540695,
+      "heat": 0.21512327119988076,
+      "offset": 0.006900921451956719,
+      "presence": 0.009025886530809654,
+      "evidence": 0.06547999957949543,
+      "identity": 3.8281662676596284e-05,
+      "frames": 20801
+    },
+    "selection_score": 0.2806415524420528
+  },
+  {
+    "epoch": 5,
+    "maximum_distance_m": 80,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.13901142093362512,
+      "heat": 0.09752523666691877,
+      "offset": 0.006695515683142699,
+      "presence": 0.013388988600775413,
+      "evidence": 0.03339508003760443,
+      "identity": 5.6689778789276725e-05,
+      "frames": 78003
+    },
+    "validation": {
+      "total": 0.32766422150484065,
+      "heat": 0.23870474567805847,
+      "offset": 0.006978812747726553,
+      "presence": 0.012387424929124535,
+      "evidence": 0.08068730722166127,
+      "identity": 5.46152933858178e-05,
+      "frames": 20801
+    },
+    "selection_score": 0.3194466681931055
+  },
+  {
+    "epoch": 6,
+    "maximum_distance_m": 80,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.11973867025224444,
+      "heat": 0.08566944006171366,
+      "offset": 0.006206081947144605,
+      "presence": 0.011183667288632036,
+      "evidence": 0.026717683371076797,
+      "identity": 2.709839270700947e-05,
+      "frames": 78003
+    },
+    "validation": {
+      "total": 0.3492011540885907,
+      "heat": 0.2562408094103385,
+      "offset": 0.006990032858680083,
+      "presence": 0.01395931005060001,
+      "evidence": 0.0844577562764824,
+      "identity": 0.00011662557074250651,
+      "frames": 20801
+    },
+    "selection_score": 0.3408151912575634
+  },
+  {
+    "epoch": 7,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.15092664553906085,
+      "heat": 0.09137934900432856,
+      "offset": 0.007074218194922415,
+      "presence": 0.013959937282092653,
+      "evidence": 0.05103347102175216,
+      "identity": 4.361390838186815e-05,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.2221956086492313,
+      "heat": 0.16136162966470172,
+      "offset": 0.0057514007643874945,
+      "presence": 0.007103101083988003,
+      "evidence": 0.05436914213158566,
+      "identity": 3.1279613362482004e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.21573389975762364
+  },
+  {
+    "epoch": 8,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.12256812777165334,
+      "heat": 0.0785559398272181,
+      "offset": 0.006372444739939052,
+      "presence": 0.01124917954398532,
+      "evidence": 0.0364936201131289,
+      "identity": 2.120541461654422e-05,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.22338446345663224,
+      "heat": 0.16643592784734793,
+      "offset": 0.005530016881689369,
+      "presence": 0.007771323719530084,
+      "evidence": 0.05063961724282958,
+      "identity": 1.770051794578683e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.2170773151419721
+  },
+  {
+    "epoch": 9,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.11015645699145922,
+      "heat": 0.07176761112360487,
+      "offset": 0.006077373822918023,
+      "presence": 0.01028113665903135,
+      "evidence": 0.03126923085505181,
+      "identity": 1.4127746435560789e-05,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.2259312758184046,
+      "heat": 0.16630223340054626,
+      "offset": 0.005387251383803694,
+      "presence": 0.008757070670864904,
+      "evidence": 0.053364176070784225,
+      "identity": 1.9090585828887078e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.21966831852991336
+  },
+  {
+    "epoch": 10,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.10129487615150808,
+      "heat": 0.06680393169730094,
+      "offset": 0.0058951934848130265,
+      "presence": 0.009513077645125184,
+      "evidence": 0.027633989106317564,
+      "identity": 1.0454226160007309e-05,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.23278925986861815,
+      "heat": 0.17376405195309014,
+      "offset": 0.00526333492895747,
+      "presence": 0.010690360725057255,
+      "evidence": 0.052691553563794374,
+      "identity": 1.2841640861605433e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.22645688968097066
+  },
+  {
+    "epoch": 11,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.09440283237731412,
+      "heat": 0.0629077838536228,
+      "offset": 0.005761905053521057,
+      "presence": 0.008918095147327592,
+      "evidence": 0.024837429836268337,
+      "identity": 3.904296033796179e-06,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.25105508746201444,
+      "heat": 0.18382506895579107,
+      "offset": 0.005185959393286248,
+      "presence": 0.011465057070396578,
+      "evidence": 0.060896280892797305,
+      "identity": 1.2744959590612709e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.24472262434454745
+  },
+  {
+    "epoch": 12,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.08915688349170833,
+      "heat": 0.059689648887937014,
+      "offset": 0.005658197671872525,
+      "presence": 0.008351446164819403,
+      "evidence": 0.02297173199786527,
+      "identity": 2.1604274440542293e-06,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.260066920836216,
+      "heat": 0.19559320332189997,
+      "offset": 0.005173111673643122,
+      "presence": 0.01147250554061698,
+      "evidence": 0.05815039857219158,
+      "identity": 2.9561126104613786e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.25374655800670204
+  },
+  {
+    "epoch": 13,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.08506138515494745,
+      "heat": 0.05706638336223167,
+      "offset": 0.005581986091786609,
+      "presence": 0.00809663955315882,
+      "evidence": 0.021601112744237677,
+      "identity": 2.239073176939921e-06,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.2732795510870604,
+      "heat": 0.2043971759455952,
+      "offset": 0.005120425073532562,
+      "presence": 0.0122817046292066,
+      "evidence": 0.06253000093222878,
+      "identity": 3.780339004836346e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.2669309572168288
+  },
+  {
+    "epoch": 14,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.08104180605922512,
+      "heat": 0.05465229138889395,
+      "offset": 0.005511927614552988,
+      "presence": 0.0078042079053860436,
+      "evidence": 0.020095759957078664,
+      "identity": 1.4063844830717824e-06,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.2862543682167164,
+      "heat": 0.210467280795408,
+      "offset": 0.005050213891324965,
+      "presence": 0.01257368421779149,
+      "evidence": 0.06947171670349493,
+      "identity": 7.78910414982678e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.2799467866030528
+  },
+  {
+    "epoch": 15,
+    "maximum_distance_m": 100,
+    "curriculum_fallback": false,
+    "training": {
+      "total": 0.07754490488264125,
+      "heat": 0.05253730233679192,
+      "offset": 0.005455540725173857,
+      "presence": 0.007454508121816501,
+      "evidence": 0.01880572095881234,
+      "identity": 8.901694774778127e-07,
+      "frames": 167940
+    },
+    "validation": {
+      "total": 0.2919471105732858,
+      "heat": 0.2162962268509151,
+      "offset": 0.005029468562533232,
+      "presence": 0.013001955716459073,
+      "evidence": 0.06931529829366544,
+      "identity": 5.920585721996964e-06,
+      "frames": 20801
+    },
+    "selection_score": 0.28561744573030257
+  }
+]

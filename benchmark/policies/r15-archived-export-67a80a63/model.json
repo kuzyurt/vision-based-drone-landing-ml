@@ -1,0 +1,268 @@
+{
+  "id": "r15-archived-export-67a80a63",
+  "label": "R15 / archived export",
+  "identity_sha256": "67a80a637b03d28b08321544b1f9202ffdeffff6e278dc31da4c131089547ca4",
+  "manifest": {
+    "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/policy.json",
+    "sha256": "5543ee9eaa419400e5a239d6c2bb1c08e9344fa57cf181811f90e0e4a7a81a35",
+    "bytes": 22615,
+    "file_modified_utc": "2026-10-20T06:31:53.541718+00:00"
+  },
+  "aliases": [
+    "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/policy.json",
+    "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v46/package/base_r15/policy.json",
+    "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v48_local_recovery/package/base_r15/policy.json"
+  ],
+  "source_root": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training",
+  "source_files": [
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/__init__.py",
+      "sha256": "7bb76b4104abe3edb1938efb08c2351c42e3288926a7f93d93136b0ea432d55e",
+      "bytes": 80,
+      "file_modified_utc": "2026-10-20T06:31:53.549796+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/policy.py",
+      "sha256": "48c5c54b078169c3c16aa30726f6fd8fd95557abf1c11b92655d715a2ed7c992",
+      "bytes": 5280,
+      "file_modified_utc": "2026-10-20T06:31:53.549245+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/pose_model.py",
+      "sha256": "5a3500189f760d35a27e2ad31a9ad6d649ed5219df69d3cf034be09a6f6dcc2e",
+      "bytes": 3113,
+      "file_modified_utc": "2026-10-20T06:31:53.546017+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/__init__.py",
+      "sha256": "6caec4e63be72086debd1316652acc5d3ec710a1b099f74ffd76e7169db66c57",
+      "bytes": 77,
+      "file_modified_utc": "2026-10-20T06:31:53.573667+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/acquisition.py",
+      "sha256": "7b5413b7f6d327674e022ffd98c6ceb9408b2a3fd4cf977bea3d52b888d6c7bc",
+      "bytes": 422,
+      "file_modified_utc": "2026-10-20T06:31:53.572086+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/augmentation.py",
+      "sha256": "1fdf7fe2294e5d5354ccc414e280ba933b58316a100f87e88f85ad4b1313e463",
+      "bytes": 3282,
+      "file_modified_utc": "2026-10-20T06:31:53.549796+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "file_modified_utc": "2026-10-20T06:31:53.611516+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/action_guard.py",
+      "sha256": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
+      "bytes": 6456,
+      "file_modified_utc": "2026-10-20T06:31:53.583124+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/approach_envelope.py",
+      "sha256": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
+      "bytes": 4766,
+      "file_modified_utc": "2026-10-20T06:31:53.608724+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/camera_feedback.py",
+      "sha256": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
+      "bytes": 723,
+      "file_modified_utc": "2026-10-20T06:31:53.614274+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/camera_geometry.py",
+      "sha256": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+      "bytes": 2864,
+      "file_modified_utc": "2026-10-20T06:31:53.605001+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/camera_geometry_fast.py",
+      "sha256": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+      "bytes": 2243,
+      "file_modified_utc": "2026-10-20T06:31:53.584823+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/camera_obstruction_map.json",
+      "sha256": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
+      "bytes": 33028,
+      "file_modified_utc": "2026-10-20T06:31:53.594042+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/hybrid_policy.py",
+      "sha256": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+      "bytes": 9187,
+      "file_modified_utc": "2026-10-20T06:31:53.603368+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/marker_geometry.py",
+      "sha256": "f6aa5c5d1bc0ec96532106b19753f16fa1902f4e5d507d7c6bb8ee645f59b5d1",
+      "bytes": 9327,
+      "file_modified_utc": "2026-10-20T06:31:53.590221+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/marker_geometry_fast.py",
+      "sha256": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+      "bytes": 3296,
+      "file_modified_utc": "2026-10-20T06:31:53.586455+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/marker_policy.py",
+      "sha256": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
+      "bytes": 34275,
+      "file_modified_utc": "2026-10-20T06:31:53.599583+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/nearfield_visibility.py",
+      "sha256": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
+      "bytes": 4071,
+      "file_modified_utc": "2026-10-20T06:31:53.610378+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/observable_acquisition.py",
+      "sha256": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
+      "bytes": 8252,
+      "file_modified_utc": "2026-10-20T06:31:53.595767+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/persistent_target.py",
+      "sha256": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
+      "bytes": 5623,
+      "file_modified_utc": "2026-10-20T06:31:53.607125+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/physical_pose_context.py",
+      "sha256": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
+      "bytes": 1871,
+      "file_modified_utc": "2026-10-20T06:31:53.591811+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/recording.py",
+      "sha256": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+      "bytes": 1093,
+      "file_modified_utc": "2026-10-20T06:31:53.597414+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/source.json",
+      "sha256": "5782cf045aeb2d7bd7ee25f23a8a38a176ae366e3b7baee1e3ab4b81764f65b1",
+      "bytes": 1148,
+      "file_modified_utc": "2026-10-20T06:31:53.579109+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/supervision.py",
+      "sha256": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
+      "bytes": 2103,
+      "file_modified_utc": "2026-10-20T06:31:53.588611+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/visibility_recovery.py",
+      "sha256": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
+      "bytes": 14318,
+      "file_modified_utc": "2026-10-20T06:31:53.601178+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/controller/visual_acquisition.py",
+      "sha256": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095",
+      "bytes": 10282,
+      "file_modified_utc": "2026-10-20T06:31:53.581388+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/marker_kernel.cpp",
+      "sha256": "0b70a9263dfc75ddba3b3771fba17391692d43bc0dbffaafe92aa33de2e58c66",
+      "bytes": 12263,
+      "file_modified_utc": "2026-10-20T06:31:53.577464+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/marker_kernel.so",
+      "sha256": "1f797538588477f0e4e516054f8d2817aa65776c0dfa72f7cfd842f2a89545c5",
+      "bytes": 62024,
+      "file_modified_utc": "2026-10-20T06:31:53.568806+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/marker_trf.h",
+      "sha256": "f8a83533f6cc1efd40cd0659a177c1881fa5a2fbf0b40bfc9c28bae2ab37287a",
+      "bytes": 7296,
+      "file_modified_utc": "2026-10-20T06:31:53.564005+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/model.py",
+      "sha256": "8d5bc22786e27a85228312f512eaa26b2c44501c70bff15bff8546ce21928469",
+      "bytes": 2997,
+      "file_modified_utc": "2026-10-20T06:31:53.564005+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/native_marker.py",
+      "sha256": "77f54d0a2af071de03f24ff22a9ef919aeab2a6e1c9a39ada2c0df5bb34ccb9c",
+      "bytes": 2445,
+      "file_modified_utc": "2026-10-20T06:31:53.569907+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/parent_model.py",
+      "sha256": "34b1f707559184ff89ff2867c6c299fed09c76fc79119b1356b0e99232d9b7f5",
+      "bytes": 4541,
+      "file_modified_utc": "2026-10-20T06:31:53.560497+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/runtime.py",
+      "sha256": "c1254453f06865f2532eb2dd70406b92f5458b85dce635f0d472491d5e0be561",
+      "bytes": 7379,
+      "file_modified_utc": "2026-10-20T06:31:53.556123+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/runtime_fixes.py",
+      "sha256": "df96686d45000a1a633c886b171fa498a0f4a7b4bd37dbb32126a638a5f41b62",
+      "bytes": 4938,
+      "file_modified_utc": "2026-10-20T06:31:53.558281+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/spatial_acquisition.py",
+      "sha256": "fc621eaaea3a51e9bf314e4b59c8229783c3f7f292ee87c350dfbf8ea568850f",
+      "bytes": 1709,
+      "file_modified_utc": "2026-10-20T06:31:53.575825+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/train.py",
+      "sha256": "fc913363dab3f67812db1aa74e6fd0335bfa791d407b97b4e3b8b76ac33ce8ed",
+      "bytes": 15440,
+      "file_modified_utc": "2026-10-20T06:31:53.549796+00:00"
+    },
+    {
+      "path": "artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/recording.py",
+      "sha256": "774965312cc5c8af2bfee721f5add5f580835fafe4df53c8059a09670caf8d26",
+      "bytes": 3589,
+      "file_modified_utc": "2026-10-20T06:31:53.547604+00:00"
+    }
+  ],
+  "actor": "radio_robust",
+  "actor_source_root": null,
+  "actor_source_files": [],
+  "weights": {
+    "pose.pt": {
+      "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+      "path": "policies/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt"
+    },
+    "acquisition.pt": {
+      "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65",
+      "path": "policies/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt"
+    },
+    "spatial_acquisition.pt": {
+      "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+      "path": "policies/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt"
+    }
+  },
+  "architecture": "radio_robust",
+  "architecture_base": "radio_robust",
+  "available": true,
+  "missing": [],
+  "role": "flight policy",
+  "benchmark_status": "not_run",
+  "captured_utc": "2026-10-24T17:18:36.849253+00:00",
+  "file_modified_utc": "2026-10-20T06:31:53.541718+00:00",
+  "timestamp_basis": "Preserved manifest file modification time; capture timestamp is inventory time.",
+  "historical_qualification": "See original bundle. No historical success rate is imported into this suite."
+}

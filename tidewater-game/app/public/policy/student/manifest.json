@@ -1,0 +1,287 @@
+{
+  "schema": "aerodock.landing.search_student_policy.v1",
+  "policy_class": "reference.student_radio.RadioSearchRuntime",
+  "checkpoint": "search_best.pt",
+  "checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "base": "base/pose.pt",
+  "base_checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "source_policy_schema": "drone.search.student.v1",
+  "source_policy_runtime": "runtime.SearchRuntime",
+  "source_fingerprint": "7b4950efe5f600ae40bb6de2d22d27302e02bedbcb7729b1b5ed20bc07508a12",
+  "selected_epoch": null,
+  "calibration": {
+    "foot_local_flu": [
+      [
+        -0.06749999999999545,
+        0.1199536179753693,
+        -0.21527643348940007
+      ],
+      [
+        0.06749999999999545,
+        0.1199536179753693,
+        -0.21527643348940007
+      ],
+      [
+        0.06749999999999545,
+        -0.1199533886276356,
+        -0.21527643348940007
+      ],
+      [
+        -0.06749999999999545,
+        -0.1199533886276356,
+        -0.21527643348940007
+      ]
+    ],
+    "camera_fovy_deg": 36.1,
+    "source": "static compiled aircraft geometry; no flight simulator state supplied to policy",
+    "camera_chain": [
+      {
+        "name": "drone_camera_mount",
+        "pos": [
+          0.0195,
+          -0.1,
+          -0.115
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": []
+      },
+      {
+        "name": "drone_cam_x_pan",
+        "pos": [
+          -0.019598976,
+          0.100084488,
+          0.0705
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": [
+          {
+            "axis": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "reference": 0.0,
+            "encoder_index": 0
+          }
+        ]
+      },
+      {
+        "name": "drone_cam_y_tilt",
+        "pos": [
+          0.007604736,
+          -0.030084488,
+          -0.0705
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": [
+          {
+            "axis": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "reference": 0.0,
+            "encoder_index": 1
+          }
+        ]
+      }
+    ],
+    "camera_pos": [
+      0.03699424,
+      0.030939178,
+      -1.734723476e-18
+    ],
+    "camera_quat": [
+      0.5,
+      0.5,
+      -0.5,
+      -0.5
+    ],
+    "camera_fk_max_verified_error": 4.140437992461443e-14
+  },
+  "slew_limits": [
+    1.3824024200439453,
+    1.6631193161010742,
+    0.583295464515686,
+    0.41913262009620667,
+    8.61294937133789,
+    1.3863097429275513
+  ],
+  "mission_budget_s": 180.0,
+  "allow_visual_landing": true,
+  "boat_radio": true,
+  "unknown_dock_observation_mean": 0.9898932576179504,
+  "algorithm_version": "radio_search_student_v1",
+  "browser_schema": "tidewater.search_student.browser.v1",
+  "model": "student.onnx",
+  "model_sha256": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
+  "model_bytes": 6436831,
+  "input_contract": {
+    "image": [
+      1,
+      1,
+      3,
+      360,
+      640
+    ],
+    "numeric": [
+      1,
+      1,
+      32
+    ],
+    "hidden": [
+      1,
+      1,
+      128
+    ],
+    "prediction": [
+      1,
+      1,
+      15
+    ],
+    "numeric_fields": "original 32-value sensor contract",
+    "prediction_fields": "fused pose[15]",
+    "image_dtype": "float32",
+    "image_value_range": [
+      0,
+      255
+    ]
+  },
+  "output_contract": {
+    "search": {
+      "heat": [
+        1,
+        45,
+        80
+      ],
+      "offset": [
+        1,
+        2,
+        45,
+        80
+      ],
+      "presence": [
+        1,
+        1
+      ],
+      "evidence": [
+        1,
+        4,
+        45,
+        80
+      ],
+      "identity": [
+        1,
+        2,
+        45,
+        80
+      ]
+    }
+  },
+  "search_thresholds": {
+    "proposal_threshold": 0.5,
+    "max_objects": 7,
+    "evidence_threshold": 0.8,
+    "identity_threshold": 0.98,
+    "target_like_threshold": 0.6,
+    "target_identity_threshold": 0.85
+  },
+  "reference_entry": "student_api.py",
+  "reference_adapter_sha256": {
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
+    "approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
+    "browser_api.py": "432b1cd89d5d2dcffbab98fcb4f401e2f147b1650cdf21f59b7576bfb74a283d",
+    "camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
+    "camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+    "camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+    "camera_obstruction_map.json": "7a89100f9f3b7325ffd481521e6ad79c050106c1f4a331ee0e5ee444ff78a479",
+    "hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+    "marker_geometry.py": "f533d1aa07f818773bb79feb35a883106d6afb34aedda32a33bfb752d89b0d4d",
+    "marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+    "marker_policy.py": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
+    "nearfield_visibility.py": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
+    "observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
+    "persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
+    "physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
+    "recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+    "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
+    "search_decision.py": "a41e9ab11bd8d52805a3a787d1f2883918a0d7fc2632a28cdf46e6d6c26d7d15",
+    "student_api.py": "ed81d662ce28faf7c77c5bd46ab332b183d514d956e2b88cbfe92bea4f58e770",
+    "student_radio.py": "5ebf5da604f97413ceb89e72175b2cbe7472a586cd0ee88f7ce2f6b841aa5254",
+    "student_runtime.py": "23f0af801230938a44bc8b977cc2a36e12c1b21a50de95dc49ada010c993b4d6",
+    "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
+    "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
+    "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095"
+  },
+  "runtime": {
+    "onnxruntime_web": "1.30.0",
+    "pyodide": "314.0.7"
+  },
+  "marker_kernel": "marker_kernel.wasm",
+  "marker_kernel_sha256": "ec6f9a2f1147323ecab27d5add5f13abdbab5ad965df2047c24af9bdc124f1ba",
+  "marker_kernel_source_sha256": "0b70a9263dfc75ddba3b3771fba17391692d43bc0dbffaafe92aa33de2e58c66",
+  "marker_solver_source_sha256": "f8a83533f6cc1efd40cd0659a177c1881fa5a2fbf0b40bfc9c28bae2ab37287a",
+  "pre360": {
+    "tilt_deg": 75.0,
+    "nadir_s": 2.5,
+    "yaw_rate_rad_s": 0.5,
+    "settle_yaw_rate_rad_s": 0.1,
+    "stop_settle_s": 0.4,
+    "lost_s": 0.6,
+    "handoff_frames": 4,
+    "handoff_confidence": 0.5
+  },
+  "export_parity": {
+    "prediction": 1.3113021850585938e-06,
+    "next_hidden": 1.1920928955078125e-06,
+    "search_heat": 1.811981201171875e-05,
+    "search_offset": 1.5497207641601562e-06,
+    "search_presence": 2.205371856689453e-05,
+    "search_evidence": 2.4318695068359375e-05,
+    "search_identity": 2.2172927856445312e-05
+  },
+  "native_parity": {
+    "prediction": 1.1920928955078125e-07,
+    "hidden": 7.450580596923828e-08,
+    "heat": 0.0,
+    "offset": 0.0,
+    "presence": 0.0,
+    "evidence": 0.0,
+    "identity": 0.0
+  },
+  "search_engine": {
+    "input_proposals": "decoded SearchHead proposals; no radio coordinates enter search/identity",
+    "search_decision": "benchmark/policies/student/revised_teacher.py SearchDecision",
+    "radio_first": "RadioSearchRuntime; fresh/plausible packet only until pre360/handoff",
+    "base_landing": "frozen R15 MarkerPosePolicy controller, radio-free observation"
+  },
+  "qualification": "staged browser port; benchmark policy is not closed-loop qualified",
+  "rollback": "legacy vision-first manifest preserved in public/policy-legacy-vision-first",
+  "staged_at": "2026-11-12"
+}

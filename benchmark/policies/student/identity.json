@@ -1,0 +1,15 @@
+{
+  "identity_sha256": "f228a50797ee20ea201081a832c790e30b0c8e184afeace5f95effc94effca8b",
+  "identity": {
+    "checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+    "sources": {
+      "runtime.py": "b68f1033e047ec69e1ff232db2f674cbd2a7fd79fcd363dc75d3618705010037",
+      "model.py": "f0eb50d6c4ec9b8fa041ebc9e7896228ba528a2204784d82f795e84ac53cfb67",
+      "common.py": "f7bae5be1c2fc02bec04b69f7f6fa4a55c97b445b8a2ddbe634b9c5e9ab6dd12",
+      "revised_teacher.py": "85fd03769fbe12bf8a2d8b5832c0e1addd415538b58ca822c3f0a414c4ef4829"
+    },
+    "base_identity_sha256": "67a80a637b03d28b08321544b1f9202ffdeffff6e278dc31da4c131089547ca4",
+    "input_adapter_sha256": "70891786e7cd236392b1b358adedda5b36187eb1440dc804cc71012f6d1bec90"
+  },
+  "note": "Canonical student identity carried unchanged from benchmark/student.py; V2 relocation only."
+}

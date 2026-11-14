@@ -1,0 +1,67 @@
+{
+  "schema": "aerodock.benchmark.trial.v1",
+  "policy_id": "fresh-search-f62c10a2",
+  "case_id": "combined-stress-visual-traffic-rock-r0-bounded-v1",
+  "policy_identity_sha256": "f228a50797ee20ea201081a832c790e30b0c8e184afeace5f95effc94effca8b",
+  "started_utc": "2026-11-11T15:43:52.403237+00:00",
+  "context": {
+    "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+    "runtime_sha256": "7f4832a6389d55f7f4fed963e57afe383b569eee04d729932d7d6f5f66b689cb",
+    "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+    "inference_device": "cuda",
+    "control_hz": 25,
+    "backend": "windows_mujoco_px4_wasm",
+    "benchmark": "aerodock-20-wave-gate-3c2b501",
+    "workers": 1
+  },
+  "training_eligible": false,
+  "status": "completed",
+  "condition_valid": true,
+  "actor_role": "unprivileged learned search policy",
+  "privileged_reference": false,
+  "outcome": "collision_failure",
+  "disarmed": false,
+  "px4_landed": false,
+  "stable_disarmed_contact_s": 0.0,
+  "collision": true,
+  "water_strike": false,
+  "assistance_frames": 0,
+  "wrong_target_contacts": 0,
+  "verified_acquisition_s": 55.039999999994365,
+  "false_acquisition_events": 0,
+  "mission_time_s": 106.96000000024056,
+  "path_length_m": 129.77065832741314,
+  "actual_start_distance_m": 99.96506229000252,
+  "final_lateral_error_m": 0.2719418683581107,
+  "touchdown_relative_velocity_m_s": [
+    0.03587946692503692,
+    -0.12211783925982816,
+    -0.20365615485511276
+  ],
+  "final_deck_tilt_deg": 3.5208260117621912,
+  "requested_boat_speed_m_s": 1.0,
+  "measured_boat_speed_mean_m_s": 0.9895313942827669,
+  "speed_outside_tolerance_fraction": 0.0,
+  "route_completed": false,
+  "inference_p50_ms": 42.576849999932165,
+  "inference_p95_ms": 70.9815299998354,
+  "control_deadline_miss_fraction": 0.5366492146596858,
+  "events": [
+    {
+      "time_s": 117.6280000001976,
+      "kind": "touchdown",
+      "relative_velocity": [
+        0.03587946692503692,
+        -0.12211783925982816,
+        -0.20365615485511276
+      ]
+    },
+    {
+      "time_s": 126.89700000024186,
+      "kind": "collision_failure"
+    }
+  ],
+  "trace_sha256": "111e226e1bad1888d8ea72b6da25c3e4b379647666a164c215f2fd654fc8e7e8",
+  "wall_seconds": 661.0952925000001,
+  "completed_utc": "2026-11-11T15:54:54.664008+00:00"
+}

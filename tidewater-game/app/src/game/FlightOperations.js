@@ -1,6 +1,7 @@
 import { Euler, Vector3 } from '../engine/index.js';
 import { SimulationBridge } from '../landing/SimulationBridge.js';
 import { recordPerformance } from '../landing/PerformanceRecording.js';
+import { SessionRecorder } from './SessionRecorder.js';
 
 const MAP = { xMin: - 250, xMax: 330, zMin: - 125, zMax: 285 };
 const clamp = ( value, low, high ) => Math.max( low, Math.min( high, value ) );
@@ -20,6 +21,8 @@ export class FlightOperations {
 
 		this.app = app;
 		this.active = false;
+		// Developer key Z: record the whole session to tidewater-game/recordings/.
+		this.recorder = new SessionRecorder( this );
 		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
@@ -433,6 +436,7 @@ export class FlightOperations {
 					<span><kbd>V</kbd>Free camera</span>
 					<span><kbd>G</kbd>Frame</span>
 					<span><kbd>Home</kbd>Reset</span>
+					<span><kbd>Z</kbd>Record session</span>
 				</div>
 				<button class="fs-go" type="button">Start flight operations</button>
 				<div class="fs-status" data-bind="start-status" role="status">Browser PX4 · MuJoCo · WebGPU</div>
@@ -665,6 +669,9 @@ export class FlightOperations {
 		this.app.boat.update = () => {};
 		this.app.game.update = () => {};
 		this.bridge = new SimulationBridge( this.app, state => this._receive( state ) );
+		// Load the trained policy in the background while the start image is shown,
+		// so ML takes over instantly when the player enables it.
+		if ( typeof Worker !== 'undefined' && globalThis.navigator?.gpu ) this.bridge.policy.preload();
 		// Input installs its listeners first; transport changes after its key set
 		// is updated, independently of slow GPU frames. PX4 keeps its 25 Hz pilot.
 		const sendKeys = event => {
@@ -833,6 +840,7 @@ export class FlightOperations {
 
 	toggleML() {
 		const policy=this.bridge?.policy;if(!policy)return;
+		this.recorder?.mark( policy.status.enabled||policy.status.loading?'ml_disable_requested':'ml_enable_requested' );
 		if(policy.status.enabled||policy.status.loading)policy.disable();
 		else policy.enable().catch(error=>this._toast(error.message));
 	}
@@ -843,7 +851,7 @@ export class FlightOperations {
 		if ( drone?.takeoff_pending ) return { label: 'Preparing takeoff…', action: 'land', busy: true };
 		if ( drone?.landing_requested ) return { label: 'Landing…', action: 'land', busy: true };
 		if ( drone?.armed ) return { label: 'Land', action: 'land', busy: false };
-		if ( drone?.flight_requested ) return { label: 'Cancel takeoff', action: 'land', busy: false };
+		if ( drone?.flight_requested ) return { label: 'Cancel', action: 'land', busy: false };
 		return { label: 'Take off', action: 'takeoff', busy: false };
 
 	}
@@ -899,6 +907,7 @@ export class FlightOperations {
 
 	beforePhysics( dt ) {
 
+		if ( this.active && this.app.input.hit( 'KeyZ' ) ) this.recorder.toggle();
 		if ( ! this.active || this._holding ) return;
 		const input = this.app.input;
 		if ( input.hit( 'KeyG' ) ) this.captureScreenshot();
@@ -1522,6 +1531,7 @@ export class FlightOperations {
 
 	_toast( text ) {
 
+		this.recorder?.mark( 'message', { text: String( text ) } );
 		const elements = [ this._bind( 'toast' ), this._hBind( 'toast' ), this._dBind( 'toast' ) ].filter( Boolean );
 		if ( ! elements.length ) return;
 		for ( const element of elements ) {

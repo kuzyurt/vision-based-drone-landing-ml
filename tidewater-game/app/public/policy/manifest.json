@@ -233,8 +233,8 @@
     "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
     "search_decision.py": "a41e9ab11bd8d52805a3a787d1f2883918a0d7fc2632a28cdf46e6d6c26d7d15",
     "student_api.py": "ed81d662ce28faf7c77c5bd46ab332b183d514d956e2b88cbfe92bea4f58e770",
-    "student_radio.py": "5ebf5da604f97413ceb89e72175b2cbe7472a586cd0ee88f7ce2f6b841aa5254",
-    "student_runtime.py": "23f0af801230938a44bc8b977cc2a36e12c1b21a50de95dc49ada010c993b4d6",
+    "student_radio.py": "d3a614f7154e90578ddf4652e483e8dc07049c85ab0b7117ff50f4c663cba42e",
+    "student_runtime.py": "9e524a780d100fdae7b9f08486afeaa25e74e6394c4041cd2d16c491eab59d44",
     "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
     "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
     "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095"
@@ -251,11 +251,9 @@
     "tilt_deg": 75.0,
     "nadir_s": 2.5,
     "yaw_rate_rad_s": 0.5,
-    "settle_yaw_rate_rad_s": 0.1,
-    "stop_settle_s": 0.4,
-    "lost_s": 0.6,
-    "handoff_frames": 4,
-    "handoff_confidence": 0.5
+    "sweep_timeout_s": 45.0,
+    "handoff_rule": "normal_search_evidence",
+    "handoff_note": "pre360 ends as soon as the normal search would inspect (target_or_similar) or confirm (target_boat) a boat; same thresholds and 0.12 s stable support as the normal search"
   },
   "export_parity": {
     "prediction": 1.3113021850585938e-06,
@@ -283,5 +281,6 @@
   },
   "qualification": "staged browser port; benchmark policy is not closed-loop qualified",
   "rollback": "legacy vision-first manifest preserved in public/policy-legacy-vision-first",
-  "staged_at": "2026-11-12"
+  "staged_at": "2026-11-12",
+  "min_search_height_m": 5.0
 }

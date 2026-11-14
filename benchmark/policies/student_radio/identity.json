@@ -1,0 +1,16 @@
+{
+  "identity_sha256": "16b0f1407bf6c7065b6d5b249dabb3526d4340be2ed3b8381daa0646dd18239f",
+  "identity": {
+    "checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+    "sources": {
+      "radio_runtime.py": "bf1a3b8a823df51cc4c786e4093741c90545cafd5fc43a696313bbba6b53f2cb",
+      "student/runtime.py": "b68f1033e047ec69e1ff232db2f674cbd2a7fd79fcd363dc75d3618705010037",
+      "student/model.py": "f0eb50d6c4ec9b8fa041ebc9e7896228ba528a2204784d82f795e84ac53cfb67",
+      "student/common.py": "f7bae5be1c2fc02bec04b69f7f6fa4a55c97b445b8a2ddbe634b9c5e9ab6dd12",
+      "student/revised_teacher.py": "85fd03769fbe12bf8a2d8b5832c0e1addd415538b58ca822c3f0a414c4ef4829"
+    },
+    "base_identity_sha256": "67a80a637b03d28b08321544b1f9202ffdeffff6e278dc31da4c131089547ca4",
+    "input_adapter_sha256": "c89236e38444c0c42a54360603856fe1fb6ff94c87d3beb96333dd87fbc91c2b"
+  },
+  "note": "Radio-first working variant. The canonical zero-radio student bundle is reused unchanged; only the wrapper and the declared radio input are new."
+}

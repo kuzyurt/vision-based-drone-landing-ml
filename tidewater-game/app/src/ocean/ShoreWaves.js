@@ -178,14 +178,24 @@ export class ShoreWaves {
 		this.terrain = terrainGPU;
 		this.uniforms = new UniformBlock( 'ShoreParams', {
 			period: [ 'f32', 9.0 ],
-			amplitude: [ 'f32', 0.34 ], // offshore amplitude (H/2)
-			variation: [ 'f32', 0.55 ],
-			gamma: [ 'f32', 0.78 ],
+			// Tuned for a gentle beach: with the shoaling law below, 0.075 breaks as a ~0.4 m face in
+			// ~0.4 m of water, and even the largest wave of a set stays under ~0.6 m. Higher values make
+			// the waves stand up into a wall of water offshore of the shoreline.
+			amplitude: [ 'f32', 0.075 ], // offshore amplitude (H/2)
+			// Set peaks and the peeling along-crest peaks multiply this, so it is what caps the largest
+			// wave of a set. Kept low enough that no section of a crest ever piles up much above the mean.
+			variation: [ 'f32', 0.3 ],
+			// Well above the usual breaker index (~0.8): with the shoaling law below, no wave ever gets
+			// tall enough relative to the water it runs in to collapse, so the swell comes in unbroken and
+			// there is no lip, roller, bore or whitewater — the shore only has the wash of the uprush.
+			gamma: [ 'f32', 4.0 ],
 			// fraction of the break depth over which the lip plunges. Also sets how fast the breaking state
 			// changes along a crest whose height varies: wide enough that a broken section joins the clean
 			// face through a shoulder where the lip is still falling (peeling), not a vertical cut
 			breakSpan: [ 'f32', 0.13 ],
-			curl: [ 'f32', 1.0 ],
+			// Steepening of a breaking crest into a lip. Off, so a crest that is pushed back into breaking
+			// (this slider, or a larger wave height) still reads as a swell rather than curling over.
+			curl: [ 'f32', 0 ],
 			runup: [ 'f32', 1.0 ],
 			enabled: [ 'f32', 1.0 ],
 			turbidity: [ 'f32', 0.16 ], // sediment + bubble scattering in the surf zone (1/m)
@@ -499,7 +509,12 @@ fn shoreSurfMedium( xz: vec2f, depth: f32 ) -> ShoreMedium {
 	if ( depth < 4.5 && depth > -0.2 ) {
 		var expo: f32;
 		if ( shoreP.dirOn > 0.5 ) { expo = shoreDirAt( xz ).z; } else { expo = sat( length( terrainShoreSample( xz ).yz ) * 1.4 ); }
-		k = smoothstep( 4.5, 1.2, depth ) * smoothstep( -0.2, 0.15, depth ) * expo * shoreP.turbidity * shoreP.enabled;
+		// how hard the water is stirred here. Suspended sand and bubbles need turbulence: the load rises
+		// while the swell steepens on the shoal and stays high once it has collapsed into a bore. Without
+		// this the whole shallow beach face went milky brown even though nothing was breaking on it.
+		let brk = shoreBreakParams( shoreP.amplitude, depth );
+		let churn = 0.12 + smoothstep( -1.2, -0.1, brk.b ) * 0.5 + smoothstep( 0.0, 0.8, brk.b ) * 0.4;
+		k = smoothstep( 4.5, 1.2, depth ) * smoothstep( -0.2, 0.15, depth ) * expo * shoreP.turbidity * shoreP.enabled * churn;
 	}
 	return ShoreMedium( vec3f( 0.9, 1.0, 0.85 ) * k, vec3f( 0.1, 0.2, 0.62 ) * k );
 }
@@ -591,8 +606,11 @@ fn shoreSwashRunup( sh: vec4f, along: f32, groundH: f32 ) -> ShoreRunup {
 	// the front is lobed, not a straight line: each wave runs up a little differently along the beach
 	let lobes = sin( along * 0.61 + ms * 2.3 ) * 0.5 + sin( along * 1.73 + ms * 5.1 ) * 0.3 + sin( along * 4.3 + ms * 1.7 ) * 0.2;
 	// the backwash never quite exposes the lower beach face: a film of water always covers the
-	// first decimetres past the shoreline, so the sea never meets the sand along mesh triangles
-	let Rt = max( Rh + lobes * ( max( Rh, 0.0 ) * 0.07 + 0.35 ), 0.35 ) * shoreP.enabled;
+	// first decimetres past the shoreline, so the sea never meets the sand along mesh triangles.
+	// That film does not sit on one height contour either - it pools a little farther up in some
+	// stretches than others - otherwise the waterline comes out as a ruler-straight line.
+	let film = 0.35 + ( lobes * 0.35 + sin( along * 0.23 + ms * 0.7 ) * 0.5 ) * 0.14;
+	let Rt = max( Rh + lobes * ( max( Rh, 0.0 ) * 0.07 + 0.35 ), film ) * shoreP.enabled;
 	return ShoreRunup( tau, Rt, inland, RhMax, su, sb, isUp );
 }
 

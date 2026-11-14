@@ -3,6 +3,19 @@ import { clamp } from './BrowserForces.js';
 import {velocityPacket,estimatorObservation} from './PolicyTelemetry.js';
 
 const FRD = [1,-1,-1];
+// Launch and recovery on a moving AERODOCK. PX4's GNSS drift and speed checks
+// (EKF2_GPS_CHECK bits 5-8) assume a vehicle that stands still while landed.
+// On a moving deck they fail: arming is refused ("GPS Horizontal Pos Drift too
+// high") and after ~5 s EKF2 stops using GPS, so offboard setpoints become
+// invalid and PX4 falls back to a blind descent. PX4's guidance for moving
+// platforms is to disable exactly these checks; all other GNSS quality checks
+// (satellites, PDOP, accuracy, spoofing) stay on.
+const MOVING_PLATFORM_PARAMETERS = {EKF2_GPS_CHECK: 1023 & ~(32|64|128|256)};
+// Take-off from a moving deck: before lift-off the drone's own velocity
+// estimate is the deck's velocity. That velocity is carried through the climb
+// so the drone leaves the bay without being dragged against it, then eased
+// out once it is clear of the boat.
+const TAKEOFF = {clearHeight: .9, liftoffHeight: .15, release: .6, filter: .5};
 const NED = vector => [vector[1],vector[0],-vector[2]];
 
 export class BrowserPX4 {
@@ -38,6 +51,7 @@ export class BrowserPX4 {
 		this.parameterWarnings=[];
 		for(const command of boot){const result=this.command(command);if(result!==0)this.parameterWarnings.push({command,result});}
 		for(const [name,value] of Object.entries(this.configuration.parameters)){const result=this.command(`param set ${name} ${value}`);if(result!==0)throw new Error(`Required reference parameter ${name} failed: ${result}`);}
+		for(const [name,value] of Object.entries(MOVING_PLATFORM_PARAMETERS)){const result=this.command(`param set ${name} ${value}`);if(result!==0)this.parameterWarnings.push({command:`param set ${name} ${value}`,result});}
 		for(const command of ['dataman start','simulator_mavlink start -t 127.0.0.1 4560',
 			'system_power_simulator start','rc_update start','manual_control start','sensors start','commander start',
 			'ekf2 start','pwm_out_sim start -m sim','control_allocator start','mc_rate_control start','mc_att_control start',
@@ -92,6 +106,7 @@ export class BrowserPX4 {
 		// setpoint made the X500 slower than the boat while MPC_XY_VEL_MAX already caps it.
 		const maxSpeed=this.configuration.parameters?.MPC_XY_VEL_MAX??2;
 		const velocity=NED([R[0]*x+R[1]*y,R[3]*x+R[4]*y,R[6]*x+R[7]*y]).map(v=>v*maxSpeed);
+		const carry=this.takeoffCarry(.04);velocity[0]+=carry[0];velocity[1]+=carry[1];
 		const values=this.buffer();values[0]=Math.trunc(t*1000)>>>0;values[1]=-(this.targetHeight-.216);values.set(velocity,2);
 		values[5]=((held('KeyE')?1:0)-(held('KeyQ')?1:0))*.5;
 		this.module._tw_setpoint(this.pointer);
@@ -99,6 +114,29 @@ export class BrowserPX4 {
 		if(!this.landingRequested && this.flightRequested && !this.armed && observation[0] && t>=8 && t-this.armRequestTime>2 && t-this.lastArmTry>2) {
 			this.vehicleCommand(176,[1,6]);this.vehicleCommand(400,[1]);this.lastArmTry=t;
 		}
+	}
+	// Deck velocity carried through a take-off (see TAKEOFF). Uses only PX4's
+	// own estimate (status 3: NED z, 4-5: NED vx/vy, 12: landed).
+	takeoffCarry(dt) {
+		const s=this.status;
+		if(!this.flightRequested||this.landingRequested){this.carry=null;return [0,0];}
+		const height=-s[3],landed=!!s[12];
+		if(!this.carry){
+			// A flight request while already well above the deck needs no carry.
+			if(!landed&&height>TAKEOFF.liftoffHeight)return [0,0];
+			this.carry={phase:'deck',velocity:[0,0]};
+		}
+		const c=this.carry;
+		if(c.phase==='deck'){
+			if(Number.isFinite(s[4])&&Number.isFinite(s[5])){const k=Math.min(1,dt/TAKEOFF.filter);c.velocity[0]+=(s[4]-c.velocity[0])*k;c.velocity[1]+=(s[5]-c.velocity[1])*k;}
+			if(this.armed&&!landed&&height>TAKEOFF.liftoffHeight)c.phase='climb';
+		}else if(c.phase==='climb'){
+			if(height>TAKEOFF.clearHeight)c.phase='release';
+		}else if(c.phase==='release'){
+			const speed=Math.hypot(...c.velocity),next=Math.max(0,speed-TAKEOFF.release*dt);
+			if(next<.02){c.phase='done';c.velocity=[0,0];}else c.velocity=c.velocity.map(v=>v*next/speed);
+		}
+		return c.phase==='done'?[0,0]:c.velocity;
 	}
 	sensors() {
 		const d=this.data,c=this.configuration,b=c.drone.base,R=d.xmat.subarray(b*9,b*9+9),s=d.sensordata;

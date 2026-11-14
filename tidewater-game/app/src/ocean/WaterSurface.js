@@ -31,6 +31,7 @@ export class WaterSurface {
 		this.foamTexture = foamTexture;
 		this.shore = null; // ShoreWaves (optional)
 		this.wake = null; // WakeSim (optional)
+		this.aerodockWake = null; // AerodockWake, visual trail in the flight water (optional)
 		this.terrain = null; // TerrainGPU (optional)
 		this.detail = null; // SeaDetail: gusts, slicks, windrows (optional)
 		this.shoreSim = null; // ShoreSim (optional)
@@ -109,7 +110,7 @@ fn waterSurfaceCascadeAttenuation( c: i32, depth: f32 ) -> f32 {
 
 		const fft = this.fft;
 		const C = fft.cascades;
-		const T = !! this.terrain, SH = !! this.shore, WK = !! this.wake, DT = !! this.detail;
+		const T = !! this.terrain, SH = !! this.shore, WK = !! this.wake, DT = !! this.detail, AW = !! this.aerodockWake;
 		const SF = this.surfFoam;
 		const SIM = !! this.shoreSim;
 		const cd = this.cdlod.module.name;
@@ -297,7 +298,7 @@ fn waterSurfaceFragment( lagXZ: vec2f, footprint: f32, depth: f32, vertexFoam: f
 	var aeration = 0.0;
 
 	// world-space gusts / slicks modulate the short wind waves (non-repeating dark and bright patches)
-${ DT ? '	let det = seaDetailSample( lagXZ );\n	let rough = det.rough;' : '	let rough = 1.0;' }
+${ DT ? '	let det = seaDetailSample( lagXZ );\n	var rough = det.rough;' : '	var rough = 1.0;' }
 
 ${ cascadesF }
 	d *= waterSurface.amplitude;
@@ -355,28 +356,39 @@ ${ SH ? /* wgsl */`
 	// more of them inside gusts, plus windrow lines in fresh wind
 	let fresh = sat( ( ocean.foamBias - 0.15 - jac ) * 2.0 );
 	var whitecaps = vertexFoam + fresh;
-    if ( landingWaves.enabled > 0.5 ) {
-        let physicalSlope = landingWaveSlope( lagXZ );
-        baseNormal = normalize( vec3f( -physicalSlope.x, 1.0, -physicalSlope.y ) );
-        // Optical ripples affect reflection/refraction only. The vertex height,
-        // water queries and buoyancy still use exactly the shared coefficients.
-        let rippleSlope = slopes / max( 1.0, length( slopes ) / 0.3 );
-        let detailNormal = normalize( vec3f( -rippleSlope.x, 1.0, -rippleSlope.y ) );
-        let tq = baseNormal + vec3f( 0.0, 1.0, 0.0 );
-        let uq = vec3f( rippleSlope.x, 1.0, rippleSlope.y ) * detailNormal.y;
-        normal = normalize( tq * ( dot( tq, uq ) / tq.y ) - uq );
-        slopes = physicalSlope + rippleSlope;
-        // Fine lace at the actual wet shoreline follows the same physical
-        // crest phase; the former metre-high breaking surf stays disabled.
-        let wetDepth = depth + landingWaveHeight( lagXZ );
-        let contact = smoothstep( 0.0, 0.035, wetDepth ) * ( 1.0 - smoothstep( 0.08, 0.24, wetDepth ) );
-        let crest = smoothstep( -0.018, 0.018, landingWaveHeight( lagXZ ) );
-        foamSum += contact * mix( 0.12, 0.42, crest );
-        aeration += contact * 0.08;
-        whitecaps = 0.0;
-    }
 ${ DT ? '	whitecaps = whitecaps * mix( 0.5, 1.5, det.gust ) + det.streak * 0.5;' : '' }
-	let coverage = sat( ( foamSum + whitecaps ) * waterSurface.foamCoverage );
+${ AW ? '	var aw: AerodockWakeFrag;' : '' }
+	if ( landingWaves.enabled > 0.5 ) {
+		let lWaveH = landingWaveHeight( lagXZ );
+		let physicalSlope = landingWaveSlope( lagXZ );
+		baseNormal = normalize( vec3f( -physicalSlope.x, 1.0, -physicalSlope.y ) );
+		var wakeSlopes = vec2f( 0.0 );
+		var wakeSlick = 0.0;
+${ AW ? /* wgsl */`		// AERODOCK wake: visual only, the surface height above still comes from the shared waves
+		aw = aerodockWakeFragment( lagXZ, footprint, lWaveH );
+		wakeSlopes = aw.slopes;
+		wakeSlick = aw.slick;
+		rough = clamp( rough * ( 1.0 - aw.slick * 0.42 ) + aw.roughBoost, 0.15, 1.5 );
+		aeration += aw.aeration;
+` : '' }
+		// Optical ripples affect reflection/refraction only. The vertex height,
+		// water queries and buoyancy still use exactly the shared coefficients.
+		let rippleSlope = ( slopes / max( 1.0, length( slopes ) / 0.3 ) ) * ( 1.0 - wakeSlick * 0.62 ) + wakeSlopes;
+		let detailNormal = normalize( vec3f( -rippleSlope.x, 1.0, -rippleSlope.y ) );
+		let tq = baseNormal + vec3f( 0.0, 1.0, 0.0 );
+		let uq = vec3f( rippleSlope.x, 1.0, rippleSlope.y ) * detailNormal.y;
+		normal = normalize( tq * ( dot( tq, uq ) / tq.y ) - uq );
+		slopes = physicalSlope + rippleSlope;
+		// Fine lace at the actual wet shoreline follows the same physical
+		// crest phase; the former metre-high breaking surf stays disabled.
+		let wetDepth = depth + lWaveH;
+		let contact = smoothstep( 0.0, 0.035, wetDepth ) * ( 1.0 - smoothstep( 0.08, 0.24, wetDepth ) );
+		let crest = smoothstep( -0.018, 0.018, lWaveH );
+		foamSum = contact * mix( 0.12, 0.42, crest );
+		aeration += contact * 0.08;
+		whitecaps = 0.0;
+	}
+	var coverage = sat( ( foamSum + whitecaps ) * waterSurface.foamCoverage );
 
 	// foam pattern: an irregular bubbly mat thresholded by coverage, so foam grows, tears into
 	// lace and dissolves naturally
@@ -392,16 +404,31 @@ ${ DT ? '	whitecaps = whitecaps * mix( 0.5, 1.5, det.gust ) + det.streak * 0.5;'
 	// at distance the pattern averages out -> use coverage directly
 	let far = smoothstep( 0.15, 1.2, footprint );
 	var foam = mix( detail, coverage * 0.85, far );
+${ AW ? /* wgsl */`	var awFoam = 0.0;
+	var awBubbles = p1.y;
+	if ( landingWaves.enabled > 0.5 && aw.coverage > 1e-4 ) {
+		let wuv = lagXZ * 0.34;
+		let wr2 = vec2f( wuv.x * 0.8 - wuv.y * 0.6, wuv.x * 0.6 + wuv.y * 0.8 ) * 2.37 + vec2f( 0.31, 0.77 );
+		let wf1 = textureSampleLevel( waterFoamTex, smpLinearRepeat, wuv, max( log2( footprint * 180.0 ), 0.0 ) );
+		let wf2 = textureSampleLevel( waterFoamTex, smpLinearRepeat, wr2, max( log2( footprint * 425.0 ), 0.0 ) );
+		awFoam = aerodockWakeShadeFoam( lagXZ, footprint, aw, wf1, wf2 );
+		awBubbles = mix( p1.y, wf1.y * 0.55 + wf2.y * 0.45, sat( aw.coverage ) );
+	}` : '' }
 
 	var o: WaterSurfaceFrag;
 ${ SF ? /* wgsl */`
 	// foam look (surf zone whitewater / lace, see SurfFoam)
 	var fa: SurfFoamArgs;
-	fa.coverage = coverage; fa.foam = foam; fa.footprint = footprint; fa.depth = depth; fa.bubbles = p1.y;
+	fa.coverage = coverage; fa.foam = foam; fa.footprint = footprint; fa.depth = depth; fa.bubbles = ${ AW ? 'awBubbles' : 'p1.y' };
 	fa.lagXZ = lagXZ; fa.normal = normal; fa.baseNormal = baseNormal;
-	fa.fresh = ${ SH ? 'shoreFoam' : '0.0' }; fa.sim = simFoam; fa.simState = simState; fa.roller = ${ SH ? 'surfMask.y' : '0.0' }; fa.P = P;
+	fa.fresh = ${ SH ? ( AW ? 'select( shoreFoam, aw.fresh * 0.45, landingWaves.enabled > 0.5 )' : 'shoreFoam' ) : ( AW ? 'aw.fresh * 0.45' : '0.0' ) }; fa.sim = simFoam; fa.simState = simState; fa.roller = ${ SH ? 'surfMask.y' : '0.0' }; fa.P = P;
 	o.foamInfo = surfFoamShading( fa );
 	foam = o.foamInfo.foam;` : '' }
+${ AW ? /* wgsl */`	if ( landingWaves.enabled > 0.5 && aw.coverage > 1e-4 ) {
+		foam = max( foam, awFoam );
+		coverage = max( coverage, sat( aw.coverage * 0.82 ) );
+${ SF ? '		o.foamInfo.foam = foam;' : '' }
+	}` : '' }
 
 	o.normal = normal;
 	o.foam = foam;
@@ -411,7 +438,7 @@ ${ SF ? /* wgsl */`
 	o.rough = rough;
 	o.aeration = sat( aeration );
 	o.gust = ${ DT ? 'det.gust' : '0.5' };
-	o.slick = ${ DT ? 'det.slick' : '0.0' };
+	o.slick = ${ DT ? ( AW ? 'max( det.slick, select( 0.0, aw.slick, landingWaves.enabled > 0.5 ) )' : 'det.slick' ) : ( AW ? 'select( 0.0, aw.slick, landingWaves.enabled > 0.5 )' : '0.0' ) };
 	return o;
 }
 `;
@@ -419,7 +446,7 @@ ${ SF ? /* wgsl */`
 		return new ShaderModule( {
 			name: 'waterSurface',
 			deps: [ landingWaveModule, commonModule, fft.module, this.cdlod.module, this.attenuationModule, T && this.terrain.module, SH && this.shore.module,
-				WK && this.wake.module, DT && this.detail.module, SF && SF.module ],
+				WK && this.wake.module, AW && this.aerodockWake.module, DT && this.detail.module, SF && SF.module ],
 			uniforms: this.params,
 			uniformName: 'waterSurface',
 			bindings: { waterFoamTex: { texture: this.foamTexture } },

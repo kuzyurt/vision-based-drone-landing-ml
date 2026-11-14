@@ -1,0 +1,39 @@
+{
+  "schema": "drone.search.transfer.110gb.v1",
+  "seed": 20261025,
+  "episodes": 8,
+  "duration_s": 240,
+  "control_hz": 25,
+  "total_budget_bytes": 110000000000,
+  "dataset_budget_bytes": 40000000000,
+  "disk_free_reserve_bytes": 5000000000,
+  "minimum_free_ram_bytes": 2000000000,
+  "worker_ram_estimate_bytes": 1800000000,
+  "worker_ram_headroom_bytes": 500000000,
+  "episode_reservation_bytes": 5000000000,
+  "database_limit_bytes": 4500000000,
+  "rgb_shape": [
+    360,
+    640,
+    3
+  ],
+  "compression": "lossless_rgb_png_or_raw_if_smaller",
+  "pose_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+  "spatial_sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+  "epochs": 15,
+  "batch_size": 8,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "gradient_clip": 1.0,
+  "identity_support_s": 0.16,
+  "max_objects": 7,
+  "proposal_threshold": 0.5,
+  "evidence_threshold": 0.8,
+  "identity_threshold": 0.98,
+  "data_directory": "data",
+  "minimum_episodes": {
+    "training": 8,
+    "validation": 2,
+    "test": 2
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "schema": "aerodock.landing.radio_robust_policy.v1",
+  "policy_class": "landing_training.radio_robust_20261015.runtime.RadioRobustRuntime",
+  "checkpoint": "pose.pt",
+  "checkpoint_sha256": "20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749",
+  "source_epoch_checkpoint_sha256": "c6495b6db79acf5941e45901242f31341b6ca64f551e7905798017bd7f489527",
+  "selected_epoch": 11,
+  "source_checkpoint_sha256": "795825dec351fc894c9f95b6f9a44120c6f2e12f20c13ceda4e05d237443d42e",
+  "dataset_sha256": "5840294d08b700262cfac01480a8e5ee9c40ba29946747f6942db496642e802e",
+  "review_manifest_sha256": "ef5b0dce18357ba4e6d8e0b743ddf00d06a9eeb28ac8c90580940c883193393d",
+  "calibration": {
+    "foot_local_flu": [
+      [
+        -0.06749999999999545,
+        0.1199536179753693,
+        -0.21527643348940007
+      ],
+      [
+        0.06749999999999545,
+        0.1199536179753693,
+        -0.21527643348940007
+      ],
+      [
+        0.06749999999999545,
+        -0.1199533886276356,
+        -0.21527643348940007
+      ],
+      [
+        -0.06749999999999545,
+        -0.1199533886276356,
+        -0.21527643348940007
+      ]
+    ],
+    "camera_fovy_deg": 36.1,
+    "source": "static compiled aircraft geometry; no flight simulator state supplied to policy",
+    "camera_chain": [
+      {
+        "name": "drone_camera_mount",
+        "pos": [
+          0.0195,
+          -0.1,
+          -0.115
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": []
+      },
+      {
+        "name": "drone_cam_x_pan",
+        "pos": [
+          -0.019598976,
+          0.100084488,
+          0.0705
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": [
+          {
+            "axis": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "reference": 0.0,
+            "encoder_index": 0
+          }
+        ]
+      },
+      {
+        "name": "drone_cam_y_tilt",
+        "pos": [
+          0.007604736,
+          -0.030084488,
+          -0.0705
+        ],
+        "quat": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "joints": [
+          {
+            "axis": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "pos": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "reference": 0.0,
+            "encoder_index": 1
+          }
+        ]
+      }
+    ],
+    "camera_pos": [
+      0.03699424,
+      0.030939178,
+      -1.734723476e-18
+    ],
+    "camera_quat": [
+      0.5,
+      0.5,
+      -0.5,
+      -0.5
+    ],
+    "camera_fk_max_verified_error": 4.140437992461443e-14
+  },
+  "slew_limits": [
+    1.3824024200439453,
+    1.6631193161010742,
+    0.583295464515686,
+    0.41913262009620667,
+    8.61294937133789,
+    1.3863097429275513
+  ],
+  "training": {
+    "encoder_frozen": true,
+    "observation_mode": "periodic_no_action_v1",
+    "batch_lanes": 8,
+    "sequence_steps": 64,
+    "radio_augmentation": {
+      "clean": 0.25,
+      "noisy": 0.35,
+      "missing_entire_episode": 0.4
+    },
+    "uncertainty_contract": "reported sigma in metres and metres/second; absent radio explicitly invalid",
+    "new_absolute_visual_branch": true
+  },
+  "validation_metrics": {
+    "clean": {
+      "near_frames": 45183,
+      "frames": 139302,
+      "visible_frames": 135972,
+      "columns": [
+        "xy_m",
+        "z_m",
+        "velocity_m_s",
+        "heading_deg"
+      ],
+      "rms": [
+        0.09362678381318365,
+        0.10892872172235642,
+        0.0437900488695698,
+        1.6894144678787613
+      ],
+      "score": 0.1819887141222507,
+      "visual_bearing_rms_px": 8.794054122191122,
+      "visibility_brier": 0.0045091494368085655
+    },
+    "noisy": {
+      "near_frames": 45183,
+      "frames": 139302,
+      "visible_frames": 135972,
+      "columns": [
+        "xy_m",
+        "z_m",
+        "velocity_m_s",
+        "heading_deg"
+      ],
+      "rms": [
+        0.1437768227541272,
+        0.13741147505548207,
+        0.17778447155653415,
+        1.9345504337479038
+      ],
+      "score": 0.31258350972399696,
+      "visual_bearing_rms_px": 9.687598470207787,
+      "visibility_brier": 0.0047688532881710885
+    },
+    "missing": {
+      "near_frames": 45183,
+      "frames": 139302,
+      "visible_frames": 135972,
+      "columns": [
+        "xy_m",
+        "z_m",
+        "velocity_m_s",
+        "heading_deg"
+      ],
+      "rms": [
+        0.04138599008047727,
+        0.0390508202374847,
+        0.06472097142842625,
+        0.773722595013278
+      ],
+      "score": 0.10093617376620137,
+      "visual_bearing_rms_px": 8.553550910416025,
+      "visibility_brier": 0.005734801957855125
+    }
+  },
+  "validation_selection_score": 0.25554315446407333,
+  "original_clean_score": 0.23569676280021667,
+  "clean_preservation_limit": 0.29462095350027084,
+  "closed_loop_evaluated": false,
+  "automatic_deployment": false,
+  "interface": {
+    "rgb_shape": [
+      360,
+      640,
+      3
+    ],
+    "telemetry": "original 32-value sensor contract",
+    "uncertainty": [
+      "beacon.position_sigma_m",
+      "beacon.velocity_sigma_m_s"
+    ],
+    "missing": "beacon.valid=false; invalid numeric placeholders are masked after normalization",
+    "visual_landing_authorization": "allow_visual_landing constructor option, default false"
+  },
+  "file_hashes": {
+    "code/landing_training/pose_model.py": "5a3500189f760d35a27e2ad31a9ad6d649ed5219df69d3cf034be09a6f6dcc2e",
+    "code/landing_training/recording.py": "774965312cc5c8af2bfee721f5add5f580835fafe4df53c8059a09670caf8d26",
+    "code/landing_training/policy.py": "48c5c54b078169c3c16aa30726f6fd8fd95557abf1c11b92655d715a2ed7c992",
+    "code/landing_training/__init__.py": "7bb76b4104abe3edb1938efb08c2351c42e3288926a7f93d93136b0ea432d55e",
+    "code/landing_training/radio_robust_20261015/runtime.py": "129eb501584230dc69c79ed456a3fde25ddc5a301d154cacbe87aae3a1bb66bd",
+    "code/landing_training/radio_robust_20261015/README.md": "a1131f87197a379f140d4dd363b7bd42bc35fea215ca6f96ac404d2fdb04f7a1",
+    "code/landing_training/radio_robust_20261015/model.py": "34b1f707559184ff89ff2867c6c299fed09c76fc79119b1356b0e99232d9b7f5",
+    "code/landing_training/radio_robust_20261015/__init__.py": "6caec4e63be72086debd1316652acc5d3ec710a1b099f74ffd76e7169db66c57",
+    "code/landing_training/radio_robust_20261015/controller/source.json": "5782cf045aeb2d7bd7ee25f23a8a38a176ae366e3b7baee1e3ab4b81764f65b1",
+    "code/landing_training/radio_robust_20261015/controller/visual_acquisition.py": "c87c096722ac3c624f4abb65bb8a02f98dc19bf0de50bc077617bf8af606be24",
+    "code/landing_training/radio_robust_20261015/controller/action_guard.py": "0a8a84c67e914c8eb95473df7ce9740f42a0a866fea6bd41353163d4301437ab",
+    "code/landing_training/radio_robust_20261015/controller/camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+    "code/landing_training/radio_robust_20261015/controller/marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+    "code/landing_training/radio_robust_20261015/controller/supervision.py": "b23c9a8b6ea2bb8e9459a3d863e7a423fa6bc10574091150146467377de60774",
+    "code/landing_training/radio_robust_20261015/controller/marker_geometry.py": "f6aa5c5d1bc0ec96532106b19753f16fa1902f4e5d507d7c6bb8ee645f59b5d1",
+    "code/landing_training/radio_robust_20261015/controller/recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+    "code/landing_training/radio_robust_20261015/controller/marker_policy.py": "53c2587aa054fe2b43149f1a7a6bfdb2ee0f3ce51cdef934ddc007437ab582d0",
+    "code/landing_training/radio_robust_20261015/controller/hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+    "code/landing_training/radio_robust_20261015/controller/camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+    "code/landing_training/radio_robust_20261015/controller/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

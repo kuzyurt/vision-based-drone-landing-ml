@@ -1,0 +1,65 @@
+{
+  "model": "student.onnx",
+  "model_sha256": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
+  "model_bytes": 6436831,
+  "search_checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "base_pose_sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+  "outputs": {
+    "prediction": [
+      1,
+      1,
+      15
+    ],
+    "next_hidden": [
+      1,
+      1,
+      128
+    ],
+    "search_heat": [
+      1,
+      45,
+      80
+    ],
+    "search_offset": [
+      1,
+      2,
+      45,
+      80
+    ],
+    "search_presence": [
+      1,
+      1
+    ],
+    "search_evidence": [
+      1,
+      4,
+      45,
+      80
+    ],
+    "search_identity": [
+      1,
+      2,
+      45,
+      80
+    ]
+  },
+  "export_parity": {
+    "prediction": 1.3113021850585938e-06,
+    "next_hidden": 1.1920928955078125e-06,
+    "search_heat": 1.811981201171875e-05,
+    "search_offset": 1.5497207641601562e-06,
+    "search_presence": 2.205371856689453e-05,
+    "search_evidence": 2.4318695068359375e-05,
+    "search_identity": 2.2172927856445312e-05
+  },
+  "native_parity": {
+    "prediction": 1.1920928955078125e-07,
+    "hidden": 7.450580596923828e-08,
+    "heat": 0.0,
+    "offset": 0.0,
+    "presence": 0.0,
+    "evidence": 0.0,
+    "identity": 0.0
+  },
+  "status": "staged"
+}

@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+# Large local evidence. benchmark.json and index.html remain tracked.
+runs/
+evidence/
+archive/

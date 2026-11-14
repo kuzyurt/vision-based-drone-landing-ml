@@ -1,0 +1,71 @@
+{
+  "schema": "aerodock.benchmark.trial.v1",
+  "policy_id": "radio-robust-20261015-policy-bundle-44826e5a",
+  "case_id": "wind-wind-crosswind-gravel-r1",
+  "policy_identity_sha256": "44826e5a3df8aecafd8bbc85b3e88247b6c2dd9310f4e46b33574870e20ce0ed",
+  "started_utc": "2026-11-11T14:20:14.415470+00:00",
+  "context": {
+    "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+    "runtime_sha256": "49bbafc2b1af0d302da6de6895158ffe37cb8f9f257d054c1f4cc7ee8dbcd47f",
+    "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+    "inference_device": "cuda",
+    "control_hz": 25,
+    "backend": "windows_mujoco_px4_wasm",
+    "benchmark": "aerodock-20-wave-gate-3c2b501",
+    "workers": 4
+  },
+  "training_eligible": false,
+  "status": "completed",
+  "condition_valid": true,
+  "actor_role": "flight policy",
+  "privileged_reference": false,
+  "outcome": "landed",
+  "disarmed": true,
+  "px4_landed": true,
+  "stable_disarmed_contact_s": 2.0009999999998906,
+  "collision": false,
+  "water_strike": false,
+  "assistance_frames": 0,
+  "wrong_target_contacts": 0,
+  "verified_acquisition_s": 20.67999999999331,
+  "false_acquisition_events": 0,
+  "mission_time_s": 59.52000000001446,
+  "path_length_m": 66.62395199338762,
+  "actual_start_distance_m": 29.911121978532336,
+  "final_lateral_error_m": 0.02650585586030057,
+  "touchdown_relative_velocity_m_s": [
+    0.006287362654095199,
+    0.03408963385330196,
+    -0.14202478897830056
+  ],
+  "final_deck_tilt_deg": 1.3506484677675732,
+  "requested_boat_speed_m_s": 0.6,
+  "measured_boat_speed_mean_m_s": 0.613796038610555,
+  "speed_outside_tolerance_fraction": 0.0,
+  "route_completed": false,
+  "inference_p50_ms": 183.0312499998854,
+  "inference_p95_ms": 355.5964049999601,
+  "control_deadline_miss_fraction": 1.0,
+  "events": [
+    {
+      "time_s": 74.07899999998966,
+      "kind": "touchdown",
+      "relative_velocity": [
+        0.006287362654095199,
+        0.03408963385330196,
+        -0.14202478897830056
+      ]
+    },
+    {
+      "time_s": 75.10899999999458,
+      "kind": "stable_contact"
+    },
+    {
+      "time_s": 79.56900000001588,
+      "kind": "landed"
+    }
+  ],
+  "trace_sha256": "8643cfe9ce9ea48c002037d094a6c323c0f377d458d6a7a665decfcab30aed6a",
+  "wall_seconds": 739.9874904999999,
+  "completed_utc": "2026-11-11T14:32:41.711864+00:00"
+}
