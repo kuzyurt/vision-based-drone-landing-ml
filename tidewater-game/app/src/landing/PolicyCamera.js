@@ -54,13 +54,15 @@ export class PolicyCamera {
  async capture(state,{onSubmitted}={}) {
   if(this.closed)throw new Error('ML camera is closed');if(this.busy)throw new Error('ML capture already in progress');this.busy=true;
   const started=performance.now();let submitted,restored,mapped;
-  const a=this.app,b=this.bridge,saved=[],swapped=[],oldWater=a.ocean.material,oldWaves=[0,1,2,3].map(i=>landingWaveParams.fields['c'+i].value.clone());
+  const a=this.app,b=this.bridge,saved=[],swapped=[],hidden=[],oldWater=a.ocean.material,oldWaves=[0,1,2,3].map(i=>landingWaveParams.fields['c'+i].value.clone());
   try {
    GPU.submit();GPU.beginFrame(); // Own draw buffer and camera history.
    for(const [name,values] of state.bodies){const group=b.groups.get(name);if(!group)continue;saved.push([group,group.position.clone(),group.quaternion.clone(),group.scale.clone()]);new Matrix4().set(...values).decompose(group.position,group.quaternion,group.scale);}
    if(b.hull&&state.hull_pose){saved.push([b.hull,b.hull.position.clone(),b.hull.quaternion.clone(),b.hull.scale.clone()]);new Matrix4().set(...state.hull_pose).decompose(b.hull.position,b.hull.quaternion,b.hull.scale);}
    // The sensor sees exactly the meshes the policy was trained on, never the operator-view detail meshes.
    for(const [trained,detail] of b.detailPairs||[])if(detail.visible){swapped.push([trained,detail]);detail.visible=false;trained.visible=true;}
+   // Parts of the operator view only (the battery cradle) are not part of the trained scene either.
+   for(const extra of b.detailExtras||[])if(extra.visible){hidden.push(extra);extra.visible=false;}
    const view=state.views.drone;if(Math.abs(view.fovy-36.1)>1e-5)throw new Error('Onboard camera calibration does not match trained policy');
    new Matrix4().set(...view.matrix).decompose(this.camera.position,this.camera.quaternion,this.camera.scale);this.camera.updateProjectionMatrix();setFrameCamera(this.camera,640,360,{block:this.block});
    for(const key of Object.keys(this.water.uniforms))if(key!=='hullActive'&&oldWater.uniforms[key])this.water.uniforms[key].value=oldWater.uniforms[key].value;
@@ -73,6 +75,7 @@ export class PolicyCamera {
    onSubmitted?.(this.output.texture.getGPU());
   }catch(error){this.busy=false;throw error;}finally{
    for(const [trained,detail] of swapped){trained.visible=false;detail.visible=true;}
+   for(const extra of hidden)extra.visible=true;
    a.ocean.material=oldWater;oldWaves.forEach((c,i)=>landingWaveParams.fields['c'+i].value.copy(c));for(const [g,p,q,s] of saved){g.position.copy(p);g.quaternion.copy(q);g.scale.copy(s);}a.scene.updateMatrixWorld(true);restored=performance.now();
   }
   try {await this.readback.mapAsync(GPUMapMode.READ);mapped=performance.now();const buffer=this.readback.getMappedRange(),rgba=new Uint8Array(buffer,0,640*360*4),metered=this.meter(rgba),rgb=new Uint8Array(640*360*3);for(let i=0,j=0;i<rgba.length;i+=4){rgb[j++]=rgba[i];rgb[j++]=rgba[i+1];rgb[j++]=rgba[i+2];}this.timings={camera_encode_ms:submitted-started,camera_restore_ms:restored-submitted,camera_readback_wait_ms:mapped-restored,camera_rgb_ms:performance.now()-mapped};if(this.timestampQuery){const ticks=new BigUint64Array(buffer,640*360*4,2);this.timings.camera_gpu_ms=Number(ticks[1]-ticks[0])/1e6;}if(!this.prepared){this.readback.unmap();this.busy=false;await GPU.pipelinesReady();this.prepared=true;return await this.capture(state);}return rgb;}

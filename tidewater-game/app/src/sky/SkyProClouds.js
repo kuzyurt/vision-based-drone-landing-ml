@@ -737,29 +737,30 @@ fn main( @builtin( global_invocation_id ) id: vec3u, @builtin( local_invocation_
 		let history = textureLoad( scPreviousColor, vec2i( id.xy ), 0 );
 		if ( fresh ) {
 			let weight = scFreshHistoryWeight( central, currentDepth );
-			scResolve( id.xy, mix( central, history, weight ), currentDepth, currentDepth, metadata.z, weight );
+			scResolve( id.xy, mix( central, history, weight ), currentDepth, currentDepth, metadata.z, 1.0 );
 		} else {
-			scResolve( id.xy, history, stored.x, stored.y, stored.z, 1.0 );
+			scResolve( id.xy, history, stored.x, stored.y, stored.z, stored.w );
 		}
 		return;
 	}
 
-	var color = vec4f( 0.0 ); var weightSum = 0.0;
+	// Pixels without a trace of their own are filled from the four surrounding traces of this
+	// frame. Plain bilinear weights: the former depth- and alpha-aware weights rejected the
+	// neighbours across every cloud edge, which turned the fill into nearest-neighbour blocks of
+	// the 1/8 resolution trace (the "pixelated" clouds after a camera cut or a turn).
+	var color = vec4f( 0.0 );
 	let base = vec2i( floor( source ) ); let fraction = fract( source );
 	for ( var y = 0; y < 2; y++ ) {
 		for ( var x = 0; x < 2; x++ ) {
 			let pos = scSourceClamp( base + vec2i( x, y ) );
-			let index = scTileIndex( pos, tileOrigin, tileWidth );
-			let tap = scTileColor[ index ]; let depth = scTileMeta[ index ].x;
-			let bilinear = select( 1.0 - fraction.x, fraction.x, x == 1 ) * select( 1.0 - fraction.y, fraction.y, y == 1 );
-			let weight = bilinear * exp( -abs( depth - metadata.x ) / max( 0.1, metadata.x * 0.1 ) - abs( tap.a - central.a ) * 4.0 );
-			color += tap * weight; weightSum += weight;
+			let tap = scTileColor[ scTileIndex( pos, tileOrigin, tileWidth ) ];
+			color += tap * ( select( 1.0 - fraction.x, fraction.x, x == 1 ) * select( 1.0 - fraction.y, fraction.y, y == 1 ) );
 		}
 	}
-	color = select( central, color / max( weightSum, 0.00001 ), weightSum > 0.00001 );
+	let filled = color;
 	if ( fresh ) { color = central; }
 	if ( ! historyValid ) {
-		scResolve( id.xy, color, currentDepth, currentDepth, metadata.z, 0.0 );
+		scResolve( id.xy, color, currentDepth, currentDepth, metadata.z, select( 0.0, 1.0, fresh ) );
 		return;
 	}
 
@@ -782,17 +783,29 @@ fn main( @builtin( global_invocation_id ) id: vec3u, @builtin( local_invocation_
 	let oldMeta = textureLoad( scPreviousMeta, previousPixel, 0 );
 	let valid = previous.z > 0.0 && all( previous.xy >= vec2f( 0.0 ) ) && all( previous.xy <= vec2f( 1.0 ) ) && oldMeta.y >= 0.001;
 	var carriedDepth = currentDepth; var historyFraction = 0.0;
+	// the history's fourth metadata channel: 1 once this pixel holds a trace of its own, 0 while
+	// it is only a fill. A fill is not worth preserving: the first trace replaces it outright
+	// (it used to keep 25-65 % of it per 16-frame cycle, so the coarse fill lingered for
+	// seconds), and until then it follows this frame's fill instead of freezing the first one.
+	var traced = select( 0.0, 1.0, fresh );
 	if ( valid ) {
 		let history = clamp( scHistoryAt( previous.xy, vec2f( size ) ), low, high );
 		let motionPixels = length( ( previous.xy - uv ) * vec2f( size ) );
-		historyFraction = select( 1.0, scFreshHistoryWeight( central, currentDepth ), fresh );
+		let wasTraced = oldMeta.w > 0.5;
+		if ( fresh ) {
+			historyFraction = select( 0.0, scFreshHistoryWeight( central, currentDepth ), wasTraced );
+		} else {
+			historyFraction = select( 0.5, 1.0, wasTraced );
+			color = filled;
+			traced = select( 0.0, 1.0, wasTraced );
+		}
 		color = mix( color, history, historyFraction );
 		let expectedDepth = length( world - scf.previousPosition.xyz ) * 0.001;
 		if ( ! fresh && ( motionPixels <= 0.5 || abs( oldMeta.y - expectedDepth ) < max( 0.001, expectedDepth * 0.15 ) ) ) {
 			carriedDepth = oldMeta.y;
 		}
 	}
-	scResolve( id.xy, color, currentDepth, carriedDepth, metadata.z, historyFraction );
+	scResolve( id.xy, color, currentDepth, carriedDepth, metadata.z, traced );
 }`,
 		} );
 
