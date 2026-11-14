@@ -147,8 +147,23 @@ export class SessionRecorder {
 		this._showBadge( false );
 		const name = this.id + '.json';
 		this._download( name );
+		this._saveLocal();
 		this.ops._toast( `Recording saved to Downloads · ${ name }` );
 		this.lines = [];
+
+	}
+
+	// Also keep a copy on the local dev/static server (tidewater-game/recordings/<id>.jsonl:
+	// first line { header }, then one row per line). Only works on a local host; silently
+	// skipped anywhere else.
+	_saveLocal() {
+
+		if ( ! /^(127\.0\.0\.1|localhost|\[::1\])$/.test( globalThis.location?.hostname ?? '' ) ) return;
+		const body = [ JSON.stringify( { header: this.header } ), ...this.lines ].join( '\n' ) + '\n';
+		const url = new URL( '__session-recording', location.href );
+		url.searchParams.set( 'id', this.id );
+		this.lastSaved = fetch( url, { method: 'POST', body, headers: { 'Content-Type': 'application/x-ndjson' } } )
+			.then( r => r.ok ? r.text() : null ).catch( () => null );
 
 	}
 
@@ -211,6 +226,7 @@ export class SessionRecorder {
 		const ops = this.ops, policy = ops.bridge?.policy;
 		const drone = state.drone, boat = state.boat, ml = state.ml || {};
 		const diag = policy?.latestDiagnostics ?? ml.diagnostics ?? {};
+		const guidance = diag.guidance ?? null;
 		const dt = this.prev ? t - this.prev.t : 0;
 
 		// ---- vehicles
@@ -272,6 +288,13 @@ export class SessionRecorder {
 				identity_confirmed: diag.search_identity_confirmed ?? null, selected: diag.search_selected ?? diag.selected_visual_track ?? null,
 				warning: diag.search_warning ?? null, pre360_done: diag.pre360_done ?? null,
 			},
+			// radio approach (intercept + braking): metres to the waiting point, closing speed, warnings
+			approach: diag.approach_hold_distance_m === undefined ? null : {
+				hold_dist: round( diag.approach_hold_distance_m, 1 ), closing: round( diag.approach_closing_m_s ),
+				closing_max: round( diag.approach_closing_limit_m_s ), boat_speed: round( diag.approach_boat_speed_m_s ),
+				warning: diag.approach_warning ?? null,
+			},
+			guidance: guidance ? { ...guidance, pause_respected_s: round( guidance.pause_respected_s ) } : null,
 		};
 		const padFinder = {
 			heat_peak: peak,
@@ -294,6 +317,15 @@ export class SessionRecorder {
 				on: policyRow.on, landed_on_boat: policyRow.landed, collision: policyRow.collision, armed: droneRow?.armed, landed: droneRow?.landed,
 				radio: radio?.status ?? null, boat_in_view: boatInCam ? boatInCam.in_view : null,
 				proposals: proposals.length > 0, pose_valid: padFinder.pose_valid, metric: padFinder.metric_confirmed,
+				// guidance decisions (glare / approach / near-deck); each change is one event row
+				early_commit: guidance?.early_commit_active ?? null, hop: guidance?.hop_active ?? null,
+				commit_gate: guidance?.last_gate ?? null, commit_abort: guidance?.last_abort ?? null,
+				glare_flags: guidance?.glare_flags ?? null, radio_blocking: guidance ? guidance.radio_blocked_views > 0 : null,
+				approach_warning: policyRow.approach?.warning ?? null,
+				// sun-glare zone and horizon evidence
+				zone_glare: guidance?.zone_glare ?? null, zone_real: guidance?.zone_real ?? null,
+				glare_active: guidance?.glare_active ?? null, glare_protocols: guidance?.glare_protocols ?? null,
+				horizon_evidence: guidance ? guidance.horizon_promoted_frames > 0 : null,
 			},
 			detail: { boat_in_cam: boatInCam, rel },
 			row: { boat: boatRow, drone: droneRow, camera: cameraRow, rel, boat_in_cam: boatInCam, policy: policyRow, pad_finder: padFinder, radio },

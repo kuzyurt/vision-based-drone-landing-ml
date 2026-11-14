@@ -107,7 +107,10 @@ def step(rgb, prediction, proposals_json, observation_json, elapsed_s):
     diagnostics['scan_passes_completed'] = int(
         getattr(runtime.search, 'scan_passes_completed', 0) or 0)
     diagnostics['search_selected'] = getattr(runtime, 'selected', None)
-    diagnostics['search_proposals'] = proposals
+    diagnostics['search_proposals'] = [p for p in proposals if not p.get('weak')]
+    summary = getattr(runtime, 'guidance_summary', None)
+    if summary is not None:
+        diagnostics['guidance'] = summary()
     diagnostics['pre360_done'] = bool(getattr(runtime, 'pre360_done', False))
     diagnostics['pre360_phase'] = getattr(runtime, 'pre360_phase', None)
     diagnostics['radio_active'] = bool(diagnostics.get('boat_radio', False))

@@ -28,6 +28,31 @@ function softmax(logits, offset, count, stride = 1) {
   return values;
 }
 
+// Weak heat-map peaks below the proposal threshold. A boat near the horizon
+// (~90-100 m) peaks at only 0.06-0.25 but in the same place frame after frame;
+// the policy accumulates these by direction (they are never boats on their
+// own). The outermost heat cells are skipped: they carry edge artefacts.
+export function weakSearchPeaks(search, proposals = [], {minimum = 0.07, maximum = 0.36, count = 5} = {}) {
+  if (!search?.search_heat) return [];
+  const heat = search.search_heat, offset = search.search_offset, out = [];
+  for (let row = 1; row < HEIGHT - 1; row++) {
+    for (let col = 1; col < WIDTH - 1; col++) {
+      const value = sigmoid(heat[row * WIDTH + col]);
+      if (value < minimum || value >= maximum) continue;
+      let peak = true;
+      for (let dy = -2; dy <= 2 && peak; dy++) for (let dx = -2; dx <= 2; dx++) {
+        const y = row + dy, x = col + dx;
+        if ((dx || dy) && y >= 0 && y < HEIGHT && x >= 0 && x < WIDTH && sigmoid(heat[y * WIDTH + x]) > value) { peak = false; break; }
+      }
+      if (!peak) continue;
+      const px = (col + 0.5 + offset[row * WIDTH + col]) * 640 / WIDTH, py = (row + 0.5 + offset[HEIGHT * WIDTH + row * WIDTH + col]) * 360 / HEIGHT;
+      if (proposals.some(item => (px - item.pixel[0]) ** 2 + (py - item.pixel[1]) ** 2 < 28 ** 2)) continue;
+      out.push({pixel: [px, py], confidence: value, evidence: 'weak', identity_target_probability: 0, weak: true});
+    }
+  }
+  return out.sort((a, b) => b.confidence - a.confidence).slice(0, count);
+}
+
 export function decodeStudentSearch(search, options = {}) {
   if (!search) return [];
   const heat = search.search_heat, offset = search.search_offset, evidence = search.search_evidence, identity = search.search_identity;
