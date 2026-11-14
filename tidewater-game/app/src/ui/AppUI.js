@@ -4,11 +4,13 @@ import { G } from '../core/Globals.js';
 import { GroundBounce } from '../materials/GroundBounce.js';
 
 // Binds the Tidewater UI (panel + HUD) to the running app.
+// surf is capped well below what the shore break can carry: every preset keeps a moving surf line
+// and wash on the sand, none of them builds a wall of water in front of the beach (see ShoreWaves).
 const SEA = {
-	Calm: { wind: 3.5, fetch: 40, chop: 0.75, swell: 0.28, surf: 0.18, period: 11, whitecaps: 0.2 },
-	Breezy: { wind: 7, fetch: 120, chop: 0.9, swell: 0.48, surf: 0.34, period: 9, whitecaps: 0.5 },
-	Choppy: { wind: 12, fetch: 300, chop: 1.05, swell: 0.68, surf: 0.56, period: 8.5, whitecaps: 0.75 },
-	Storm: { wind: 20, fetch: 900, chop: 1.2, swell: 1.0, surf: 0.9, period: 12, whitecaps: 1 },
+	Calm: { wind: 3.5, fetch: 40, chop: 0.75, swell: 0.28, surf: 0.035, period: 11, whitecaps: 0.2 },
+	Breezy: { wind: 7, fetch: 120, chop: 0.9, swell: 0.48, surf: 0.075, period: 9, whitecaps: 0.5 },
+	Choppy: { wind: 12, fetch: 300, chop: 1.05, swell: 0.68, surf: 0.11, period: 8.5, whitecaps: 0.75 },
+	Storm: { wind: 20, fetch: 900, chop: 1.2, swell: 1.0, surf: 0.16, period: 12, whitecaps: 1 },
 };
 
 export class AppUI {
@@ -124,7 +126,7 @@ export class AppUI {
 		const surf = shoreTab.addFolder( 'Surf', { icon: 'wave' } );
 		surf.addSlider( { label: 'Wave height', object: s, key: 'surf', min: 0, max: 1.4, step: 0.01, unit: 'm', format: ( v ) => `${ ( v * 2 ).toFixed( 2 ) } m`, onChange: ( v ) => { shore.amplitude.value = v; } } );
 		surf.addSlider( { label: 'Wave period', object: s, key: 'period', min: 5, max: 16, step: 0.1, unit: 's', onChange: ( v ) => { shore.period.value = v; } } );
-		surf.addSlider( { label: 'Breaking depth ratio', object: s, key: 'gamma', min: 0.5, max: 1.1, step: 0.01, tooltip: 'Waves break when height exceeds this fraction of the depth.', onChange: ( v ) => { shore.gamma.value = v; } } );
+		surf.addSlider( { label: 'Breaking depth ratio', object: s, key: 'gamma', min: 0.5, max: 4, step: 0.05, tooltip: 'Waves break when height exceeds this fraction of the depth. The default of 4 is out of reach for any swell here, so the shore has wash but no breakers.', onChange: ( v ) => { shore.gamma.value = v; } } );
 		surf.addSlider( { label: 'Curl', object: s, key: 'curl', min: 0, max: 1.5, step: 0.01, onChange: ( v ) => { shore.curl.value = v; } } );
 		if ( app.breakers ) {
 

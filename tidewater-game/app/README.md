@@ -45,9 +45,10 @@ breach. It runs directly on WebGPU and WGSL with its own small rendering engine,
 
 **Ocean**
 - Four-cascade FFT ocean (Tessendorf spectra) with foam, whitecaps, wind streaks and swell.
-- Depth-aware breaking waves with peeling shoulders, whitewater, spray and foam lace.
+- Breaking waves with peeling shoulders, whitewater, spray and foam lace - off by default: the shore's
+  swell is tuned to run in unbroken, so the beach has wash rather than breakers (restored on the Sea panel).
 - A shallow-water simulation for swash running up and down the sand.
-- Boat wake and bow spray, and a whale wake.
+- Boat wake and bow spray.
 - Caustics on the seabed and in the water, with light shafts.
 - A split underwater/above-water view at the waterline, with water droplets on the lens after surfacing.
 - Refraction of the seabed through the surface, including behind the pier and boats.
@@ -67,7 +68,6 @@ breach. It runs directly on WebGPU and WGSL with its own small rendering engine,
   grass, with impostors and dithered LOD fades.
 - Beach debris.
 - Birds, crabs and marine snow.
-- A humpback whale with an escort of fish, blows, fluke dives and breaches.
 
 **Lighting and post**
 - Cascaded shadows with contact-hardening penumbrae, and screen-space contact shadows.
@@ -79,7 +79,7 @@ breach. It runs directly on WebGPU and WGSL with its own small rendering engine,
 
 **Audio**
 - Positional audio from real CC0 field recordings: surf timed to each breaking wave, wind, birds, the boat
-  engine, footsteps by surface, underwater ambience, whale song, and the rod and reel (casts, the bail,
+  engine, footsteps by surface, underwater ambience, and the rod and reel (casts, the bail,
   reeling, the drag, line snaps, splashes).
 
 ## Flight controls
@@ -183,3 +183,21 @@ Serve `dist/` over HTTPS or localhost with COOP/COEP headers. The included serve
 The code is released under the MIT license; see [LICENSE](LICENSE). Third-party assets (CC0 audio from
 Freesound, CC0 scans from Poly Haven, MIT characters from Microsoft Rocketbox, OFL / Apache fonts) and
 technique references are listed in [CREDITS.md](CREDITS.md).
+
+## Developer notes (2026-11-14)
+
+- **Z** starts/stops a session recording. Rows (vehicles, policy phase, actions,
+  diagnostics, search output, camera exposure, key presses, messages) are
+  appended every 2 s to `tidewater-game/recordings/session-<time>.jsonl` by the
+  local server (`npm start` or `npm run dev`). On another host the file is
+  downloaded when recording stops.
+- The trained policy loads in the background while the start image is shown;
+  switching ML on only resets it. Manual control keeps it loaded.
+- After editing `public/policy/reference/*.py`, run
+  `python tools/refresh-policy-manifest.py` (the game refuses files whose
+  checksum does not match) and `python test/policy-pre360-rules.py`.
+- `public/landing/detail/` holds operator-view-only meshes built by
+  `python tools/build-detail-meshes.py`. The drone camera always renders the
+  trained meshes.
+- `Start-TidewaterGame.ps1` rebuilds when sources are newer than `dist/`. After a
+  rebuild, click the "Update ready" badge (bottom right) once to load it.

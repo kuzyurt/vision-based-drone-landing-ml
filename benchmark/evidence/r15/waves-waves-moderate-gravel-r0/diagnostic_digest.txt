@@ -1,0 +1,63 @@
+=== ROLLOUT DIAGNOSTIC DIGEST (NO RGB) ===
+CASE: waves-waves-moderate-gravel-r0
+OUTCOME: mission_fallback | status=completed | valid=True | training_eligible=False
+SCENARIO: gravel | start=30.0m | requested boat=0.60m/s | measured=0.60m/s | wave=0.15m | decoys=False
+SUMMARY: frames=5960 duration=238.4s | range min/median/max=0.43/ 0.80/30.61m
+TARGET GEOMETRY: in_fov=236.0s (99.0%) | edge=0.8s | out=2.4s | unlocked_in_fov=21.7s
+POLICY/LOCK: verified_acq=21.72s | policy_lock=216.7s | support=208.8s | gimbal_limit=0.0s | return_slack_min=-170.4s
+FINDINGS: TARGET_IN_FOV_WHILE_UNLOCKED_21.7s, RETURN_RESERVE_PRESSURE
+
+READ THIS AS: a text replay of the logged situation, not a pixel recording. Deck = target motion frame (fwd/right/alt), camera fov_r is geometric (0 center, 1 edge). Occlusion and decoy pixels are not available in these traces.
+TRUTH NOTE: pad position is post-flight scoring truth. It was never supplied to the policy.
+
+TIMELINE (event-driven; max 40 rows)
+t(s)  | phase            | event                    | deck fwd/right/alt | vel fwd/right/up | pitch | gimbal pan/tilt | target cam fov_r/edge | range | clr | lock | support
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0.0 | visual_acquire   | START(visual_acquire), P |   -29.9/   -1.9/   +6.1 |    -0.0/   +0.0/   +0.1 |   0.0 |   -0.2/  11.4 |               0.08/IN |  30.6 |   5.9 |    - | N
+  0.1 | visual_acquire   | SUPPORTED_FINISH         |   -29.9/   -2.6/   +6.1 |    -0.0/   +0.0/   +0.0 |   0.0 |   -0.0/  11.4 |               0.08/IN |  30.6 |   5.9 |    - | Y
+  5.0 | visual_acquire   | HB                       |   -24.2/   -0.2/   +6.0 |    +1.4/   +0.0/   -0.1 |  -0.2 |    0.3/  13.2 |               0.04/IN |  25.0 |   5.8 |    - | Y
+  8.0 | visual_acquire   | HB                       |   -20.2/   -0.3/   +6.0 |    +1.3/   +0.0/   -0.1 |  -0.1 |    0.3/  15.5 |               0.05/IN |  21.1 |   5.7 |    - | Y
+ 11.0 | visual_acquire   | HB                       |   -16.2/   +0.2/   +5.9 |    +1.3/   +0.0/   +0.1 |  -0.2 |    0.4/  19.1 |               0.05/IN |  17.3 |   5.7 |    - | Y
+ 14.1 | visual_acquire   | HB                       |   -12.1/   -0.3/   +6.0 |    +1.4/   +0.0/   +0.0 |  -0.2 |    0.6/  24.7 |               0.08/IN |  13.5 |   5.7 |    - | Y
+ 17.1 | visual_acquire   | HB                       |    -7.9/   -0.2/   +6.0 |    +1.4/   +0.0/   -0.0 |  -0.2 |    0.7/  34.9 |               0.11/IN |   9.9 |   5.7 |    - | Y
+ 19.5 | align            | PHASE(align), POLICY_LOC |    -4.6/   -0.1/   +6.0 |    +1.4/   -0.0/   -0.1 |   0.0 |    1.4/  48.7 |               0.17/IN |   7.6 |   5.7 |    P | Y
+ 20.2 | align            | HB                       |    -3.8/   +0.1/   +5.8 |    +1.1/   +0.0/   -0.2 |   4.5 |    1.1/  57.4 |               0.27/IN |   6.9 |   5.6 |    P | Y
+ 21.2 | local_recovery   | PHASE(local_recovery)    |    -2.9/   -0.1/   +5.9 |    +0.8/   -0.1/   +0.1 |  -4.4 |    1.6/  60.5 |               0.41/IN |   6.6 |   5.7 |    P | Y
+ 21.4 | local_recovery   | POLICY_LOCK_LOST         |    -2.8/   -0.1/   +6.0 |    +0.9/   -0.1/   +0.0 |  -4.2 |   -0.9/  60.1 |               0.48/IN |   6.6 |   5.7 |    - | Y
+ 21.4 | align            | POLICY_LOCK              |    -2.8/   -0.1/   +6.0 |    +0.9/   -0.1/   +0.0 |  -3.5 |   -0.8/  60.4 |               0.44/IN |   6.6 |   5.7 |    P | Y
+ 21.7 | align            | VERIFIED_ACQUISITION(21. |    -2.4/   -0.1/   +5.9 |    +1.0/   -0.0/   -0.1 |  -1.7 |   -2.1/  63.5 |               0.31/IN |   6.4 |   5.7 |    Y | Y
+ 24.3 | visual_approach  | PHASE(visual_approach)   |    -0.3/   -0.0/   +6.0 |    +0.3/   +0.0/   -0.1 |   1.7 |   -1.7/  87.8 |               0.13/IN |   6.0 |   5.7 |    Y | Y
+ 26.8 | descend          | PHASE(descend)           |    -0.1/   -0.0/   +5.5 |    +0.0/   -0.0/   -0.4 |   0.4 |    7.1/  89.1 |               0.03/IN |   5.5 |   5.3 |    Y | Y
+ 28.5 | descend          | PHASE(descend)           |    -0.0/   +0.0/   +5.2 |    +0.0/   -0.1/   -0.2 |   0.1 |   28.8/  88.6 |               0.08/IN |   5.2 |   5.0 |    Y | Y
+ 30.0 | visual_approach  | PHASE(visual_approach)   |    +0.0/   +0.0/   +4.7 |    -0.0/   +0.0/   -0.1 |  -0.1 |   -3.1/  88.5 |               0.15/IN |   4.7 |   4.5 |    Y | Y
+ 48.0 | visibility_align | PHASE(visibility_align)  |    +0.0/   -0.0/   +0.9 |    -0.0/   -0.0/   -0.3 |   0.0 | -166.4/  87.3 |               0.21/IN |   0.9 |   0.6 |    Y | Y
+ 49.6 | recover          | PHASE(recover)           |    +0.0/   +0.0/   +0.9 |    +0.0/   -0.0/   +0.1 |   0.2 | -180.1/  88.9 |               0.17/IN |   0.9 |   0.7 |    Y | Y
+ 51.8 | recover          | PHASE(recover)           |    +0.0/   +0.0/   +0.9 |    -0.0/   -0.1/   +0.1 |  -0.0 | -180.1/  88.9 |               0.14/IN |   0.9 |   0.7 |    Y | Y
+ 55.8 | descend          | PHASE(descend)           |    +0.0/   -0.0/   +0.8 |    -0.0/   +0.0/   +0.0 |   0.0 | -180.0/  88.7 |               0.26/IN |   0.8 |   0.6 |    Y | Y
+ 59.0 | recover          | PHASE(recover)           |    +0.0/   +0.0/   +0.9 |    +0.0/   -0.1/   +0.0 |   0.3 | -180.1/  89.1 |               0.16/IN |   0.9 |   0.7 |    Y | Y
+ 81.9 | recovery_climb   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.1 |  -0.1 | -168.5/  88.5 |               0.40/IN |   0.5 |   0.3 |    Y | Y
+ 82.0 | recovery_climb   | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.2 |  -0.0 | -166.3/  88.1 |               0.41/IN |   0.5 |   0.3 |    Y | Y
+171.7 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    -0.0/   +0.2/   +0.1 |  -0.1 | -170.4/  87.8 |               0.34/IN |   0.5 |   0.3 |    Y | Y
+171.8 | visibility_align | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.2/   +0.1 |  -0.1 | -168.2/  87.8 |               0.32/IN |   0.5 |   0.3 |    Y | Y
+179.0 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.1 |  -0.1 | -170.4/  89.2 |               0.42/IN |   0.5 |   0.3 |    Y | Y
+179.0 | visibility_align | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.1 |  -0.1 | -168.3/  89.0 |               0.41/IN |   0.5 |   0.3 |    Y | Y
+180.9 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   -0.0 |  -0.0 | -168.2/  88.5 |               0.36/IN |   0.5 |   0.3 |    Y | Y
+181.0 | visibility_align | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   -0.0 |  -0.0 | -166.1/  88.2 |               0.38/IN |   0.5 |   0.3 |    Y | Y
+186.1 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    -0.0/   +0.1/   -0.0 |  -0.1 | -166.8/  88.4 |               0.42/IN |   0.5 |   0.3 |    Y | Y
+186.2 | visibility_align | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    -0.0/   +0.1/   -0.0 |  -0.1 | -165.5/  88.2 |               0.45/IN |   0.5 |   0.3 |    Y | Y
+202.7 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.0 |  -0.0 | -164.3/  86.9 |               0.39/IN |   0.5 |   0.3 |    Y | Y
+202.8 | recover          | POLICY_LOCK              |    +0.0/   +0.0/   +0.5 |    +0.0/   +0.1/   +0.0 |  -0.0 | -162.1/  86.8 |               0.40/IN |   0.5 |   0.3 |    Y | Y
+208.9 | visibility_align | SUPPORT_LOST, RETURN_RES |    +0.0/   -0.0/   +0.7 |    +0.0/   -0.0/   -0.1 |   0.2 | -179.9/  88.6 |               0.26/IN |   0.7 |   0.5 |    Y | N
+233.2 | local_recovery   | POLICY_LOCK_LOST         |    +0.0/   -0.0/   +0.4 |    +0.0/   -0.1/   +0.0 |   0.0 | -190.5/  87.5 |               0.52/IN |   0.5 |   0.2 |    Y | N
+233.3 | recover          | POLICY_LOCK              |    +0.0/   -0.0/   +0.5 |    +0.0/   -0.1/   +0.0 |   0.0 | -189.1/  87.6 |               0.54/IN |   0.5 |   0.2 |    Y | N
+236.0 | recover          | TARGET_EXIT_FOV(OUT_BOTT |    -0.3/   -0.1/   +1.3 |    -0.5/   -0.0/   +0.4 |   1.4 | -180.0/  89.2 |       1.00/OUT_BOTTOM |   1.3 |   1.0 |    Y | N
+236.8 | local_recovery   | POLICY_LOCK_LOST         |    -0.7/   -0.0/   +1.6 |    -0.6/   +0.0/   +0.6 |   0.3 | -160.4/  82.1 |       2.06/OUT_BOTTOM |   1.8 |   1.4 |    Y | N
+238.4 | local_recovery   | END(mission_fallback)    |    -1.7/   -0.0/   +2.5 |    -0.6/   +0.0/   +0.5 |   0.0 |  -82.5/  53.2 |       2.32/OUT_BOTTOM |   3.0 |   2.3 |    Y | N
+
+INTERPRETATION LIMITS:
+- fov_r is a geometric projection of the true pad center. A value inside the frame does not prove the target was visible; occlusion/decoy pixels are not in this trace.
+- deck fwd/right/alt uses the pad rotation when recorded, otherwise the pad's motion heading. Motion heading is a proxy for the hull heading and can differ while turning.
+- policy_lock is the policy's own reported lock; verified_acq is the independent scoring acquisition. They are intentionally reported separately.
+- verified acquisition is not a target identity proof beyond the benchmark's own 0.75 m / 10-frame test.
+
+=== END DIGEST ===

@@ -1,0 +1,7 @@
+{
+  "status": "trained",
+  "best_validation_score": 0.21573389975762364,
+  "frozen_base_unchanged": true,
+  "test_frames_used": 0,
+  "production_policy_changed": false
+}

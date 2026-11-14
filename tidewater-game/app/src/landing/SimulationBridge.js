@@ -96,6 +96,7 @@ export class SimulationBridge {
 			this.meshes.set( part.name, mesh );
 			this.app.scene.add( mesh );
 		}
+		await this._installDetailMeshes();
 		if ( payload.hull ) {
 			const bytes = await ( await fetch( new URL(payload.hull.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer();
 			const geometry = new E.BufferGeometry();
@@ -110,6 +111,46 @@ export class SimulationBridge {
 		await this.app.gpu.pipelinesReady();
 		this.installed = true;
 		if ( this.layout ) this._applyTransforms( this.layout );
+
+	}
+
+	// Optional higher-detail meshes for the operator view only (tools/build-detail-meshes.py).
+	// The drone camera keeps drawing the trained meshes: PolicyCamera swaps them back for its
+	// capture. A missing or broken detail set only means the trained meshes are shown everywhere.
+	async _installDetailMeshes() {
+
+		this.detailPairs = [];
+		const base = new URL( import.meta.env?.BASE_URL || './', location.href );
+		try {
+			const response = await fetch( new URL( 'landing/detail/detail.json', base ), { cache: 'force-cache', signal: this.assetAbort.signal } );
+			if ( ! response.ok ) return;
+			const manifest = await response.json();
+			for ( const part of manifest.geoms || [] ) {
+				const trained = this.meshes.get( part.name );
+				if ( ! trained || trained.detailMesh ) continue;
+				const bytes = await ( await fetch( new URL( part.url.replace( /^\/+/, '' ), base ), { signal: this.assetAbort.signal } ) ).arrayBuffer();
+				const count = part.vertex_count;
+				if ( bytes.byteLength !== count * 32 + part.index_count * 4 ) continue;
+				const geometry = new E.BufferGeometry();
+				geometry.setAttribute( 'position', new E.Float32BufferAttribute( new Float32Array( bytes, 0, count * 3 ), 3 ) );
+				geometry.setAttribute( 'normal', new E.Float32BufferAttribute( new Float32Array( bytes, count * 12, count * 3 ), 3 ) );
+				geometry.setAttribute( 'uv', new E.Float32BufferAttribute( new Float32Array( bytes, count * 24, count * 2 ), 2 ) );
+				geometry.setIndex( new E.Uint32BufferAttribute( new Uint32Array( bytes, count * 32, part.index_count ), 1 ) );
+				const mesh = new E.Mesh( geometry, trained.material );
+				mesh.matrixAutoUpdate = false;
+				mesh.castShadow = trained.castShadow;
+				mesh.receiveShadow = trained.receiveShadow;
+				mesh.frustumCulled = true;
+				mesh.name = `${ part.name } (operator view detail)`;
+				mesh.visible = false;
+				trained.detailMesh = mesh;
+				this.detailPairs.push( [ trained, mesh ] );
+				this.app.scene.add( mesh );
+			}
+		} catch ( error ) {
+			if ( error?.name === 'AbortError' ) throw error;
+			console.warn( 'Operator-view detail meshes unavailable; showing the trained meshes:', error );
+		}
 
 	}
 
@@ -181,6 +222,16 @@ export class SimulationBridge {
 			mesh.matrix.set( ...values );
 			mesh.matrixWorldNeedsUpdate = true;
 			mesh.visible = true;
+			const detail = mesh.detailMesh;
+			if ( detail ) {
+				// The operator view shows the detail mesh; the trained mesh stays in place for the
+				// drone camera, which swaps it back in for its own capture.
+				if ( detail.parent !== group ) group.add( detail );
+				detail.matrix.copy( mesh.matrix );
+				detail.matrixWorldNeedsUpdate = true;
+				detail.visible = true;
+				mesh.visible = false;
+			}
 		}
 
 	}
@@ -191,6 +242,7 @@ export class SimulationBridge {
 		if ( ! group ) {
 			group = new E.Group();
 			group.name = `Physics body ${ name }`;
+			if ( name === 'boat' ) this.boatObject = group;
 			group.target = { position: new E.Vector3(), quaternion: new E.Quaternion(), scale: new E.Vector3() };
 			this.groups.set( name, group );
 			this.app.scene.add( group );

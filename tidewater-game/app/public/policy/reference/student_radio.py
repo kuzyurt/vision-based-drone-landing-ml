@@ -1,0 +1,334 @@
+"""Browser radio-first/pre360 layer over the frozen student search runtime."""
+from __future__ import annotations
+
+import math
+import numpy as np
+
+from .student_runtime import SearchRuntime, MIN_SEARCH_HEIGHT_M
+
+FAST_RANGE_M = 30.0
+FAST_MPS = 2.0
+CLOSE_MPS = 1.0
+STOP_RANGE_M = 3.0
+HANDOFF_FRAMES = 4
+HANDOFF_CONFIDENCE = 0.50
+PRE360_TILT_DEG = 75.0
+PRE360_NADIR_S = 2.5
+PRE360_YAW_RATE = 0.5
+PRE360_SWEEP_TIMEOUT_S = 45.0
+MAX_PACKET_AGE_S = 3.0
+MAX_POSITION_SIGMA_M = 1.5
+MAX_VELOCITY_SIGMA_MPS = 0.20
+
+class RadioSearchRuntime(SearchRuntime):
+    """The frozen visual student plus a bounded radio-first approach mode."""
+
+    def __init__(self, config, policy):
+        self.radio_target = None
+        self.radio_velocity = np.zeros(2)
+        self.radio_age = 0.0
+        self.radio_active = False
+        self.radio_handoff_frames = 0
+        self.radio_dock_ready = False
+        self.pre360_done = False
+        self.pre360_skipped = False
+        self.pre360_phase = 'check'
+        self.pre360_nadir_start = None
+        self.pre360_sweep_start = None
+        self.pre360_last_yaw = None
+        self.pre360_yaw_accum = 0.0
+        self.pre360_candidate_frames = 0
+        self.pre360_stop_start = None
+        self.pre360_settle_s = 0.0
+        self.pre360_search_handover = False
+        super().__init__(config, policy)
+
+    def reset(self):
+        super().reset()
+        self.radio_target = None
+        self.radio_velocity = np.zeros(2)
+        self.radio_age = 0.0
+        self.radio_active = False
+        self.radio_handoff_frames = 0
+        self.radio_dock_ready = False
+        self.pre360_done = False
+        self.pre360_skipped = False
+        self.pre360_phase = 'check'
+        self.pre360_nadir_start = None
+        self.pre360_sweep_start = None
+        self.pre360_last_yaw = None
+        self.pre360_yaw_accum = 0.0
+        self.pre360_candidate_frames = 0
+        self.pre360_stop_start = None
+        self.pre360_settle_s = 0.0
+        self.pre360_search_handover = False
+
+    @staticmethod
+    def radio_free(observation):
+        return {key: value for key, value in observation.items() if key != 'beacon'}
+
+    def usable_beacon(self, observation):
+        """Only a fresh, metrically plausible packet may steer the aircraft."""
+        packet = observation.get('beacon')
+        if not isinstance(packet, dict) or packet.get('valid') is not True:
+            return None
+        try:
+            age = float(packet['age_s'])
+            position_sigma = float(packet['position_sigma_m'])
+            velocity_sigma = float(packet['velocity_sigma_m_s'])
+            relative = np.asarray(packet['relative_heading_m'], dtype=float)
+            velocity = np.asarray(packet['velocity_heading_m_s'], dtype=float)
+        except (KeyError, TypeError, ValueError):
+            return None
+        if not all(math.isfinite(value) for value in
+                   (age, position_sigma, velocity_sigma)):
+            return None
+        if age < 0.0 or age > MAX_PACKET_AGE_S:
+            return None
+        if position_sigma > MAX_POSITION_SIGMA_M or velocity_sigma > MAX_VELOCITY_SIGMA_MPS:
+            return None
+        if relative.shape != (3,) or velocity.shape != (3,):
+            return None
+        if not np.isfinite(relative).all() or not np.isfinite(velocity).all():
+            return None
+        return dict(age=age, relative=relative, velocity=velocity,
+                    dock_ready=packet.get('dock_ready') is True)
+
+    def _target_boat_visible(self, proposals):
+        return any(item.get('evidence') == 'target_boat'
+                   and float(item.get('confidence', 0.0)) >= HANDOFF_CONFIDENCE
+                   for item in proposals)
+
+    def _handoff(self, rgb, observation, point, velocity, t, key):
+        self.selected = key
+        self.last_point = np.asarray(point, dtype=float).copy()
+        self.boat_velocity = np.asarray(velocity, dtype=float).copy()
+        self.landing_latched = True
+        self.latched_since = t
+        self.base.reset()
+        self._harden_base_recovery()
+        return super().act(rgb, self.radio_free(observation))
+
+    def _pre360_search(self, observation, position, yaw, t):
+        """Run the normal search's evidence rules on the current pre360 view.
+
+        Returns True when the normal search would act on what it sees now:
+        a boat it would inspect (for example ``target_or_similar``) or the
+        confirmed ``target_boat``.  The pre360 look-around then ends and the
+        normal search continues from this view, so a boat seen during pre360
+        is treated exactly as it would be right after pre360.
+        """
+        rotation, _, focal, _ = self.visual.camera_geometry(observation, self.calibration)
+        selected, _ = self._update_search(observation, position, yaw,
+                                          self._rotation(yaw), np.diag([1., -1., -1.]),
+                                          rotation, focal, t)
+        return selected is not None or bool(self.search.confirmed)
+
+    def _pre360_action(self, observation, position, pan, tilt, yaw_rate=0.0,
+                       tilt_target=PRE360_TILT_DEG):
+        action = np.zeros(6)
+        action[2] = -float(np.clip(.8 * (self.height - position[2]), -.5, .5))
+        action[3] = float(np.clip(yaw_rate, -.5, .5))
+        action[4] = float(np.clip(3.0 * (0.0 - pan), -math.radians(50), math.radians(50)))
+        action[5] = float(np.clip(3.0 * (math.radians(tilt_target) - tilt),
+                                  -math.radians(40), math.radians(40)))
+        return self.guard.apply(action, observation, dict(pad_visibility_probability=0.))
+
+    def _pre360_diag(self, phase, extra):
+        return dict(control_phase=phase, boat_radio=False, radio_mode=False,
+                    pre360=True, pre360_done=self.pre360_done,
+                    pre360_skipped=self.pre360_skipped,
+                    pre360_phase=self.pre360_phase,
+                    pre360_yaw_accum_rad=self.pre360_yaw_accum,
+                    pre360_last_yaw_rad=self.pre360_last_yaw,
+                    pre360_sweep_start_s=self.pre360_sweep_start,
+                    pre360_camera_tilt_deg=PRE360_TILT_DEG,
+                    pre360_reference_height_m=10.0,
+                    pre360_rule='normal_search_evidence',
+                    pre360_search_handover=self.pre360_search_handover,
+                    search_height_m=self.height,
+                    search_identity_confirmed=bool(self.search.confirmed),
+                    search_selected=self.selected, radio_handoff_frames=0, **extra)
+
+    def _pre360_handover(self, observation, position, pan, tilt, skipped):
+        """End pre360 because the normal search found something to act on.
+
+        This frame only stops the turn and holds the camera; the normal search
+        (which already holds the selection) steers from the next frame.
+        """
+        self.pre360_done = True
+        self.pre360_skipped = skipped
+        self.pre360_phase = 'done'
+        self.pre360_search_handover = True
+        action, extra = self._pre360_action(observation, position, pan, tilt,
+                                            yaw_rate=0.0,
+                                            tilt_target=math.degrees(tilt))
+        return action, self._pre360_diag('pre360_handover', extra)
+
+    def _pre360(self, rgb, observation, t, position, yaw, pan, tilt, dt):
+        """One-time initialization check: look down, tilt up, yaw 360 degrees.
+
+        This is intentionally independent of radio availability and is not part
+        of scan 1.  It runs once per policy reset.  Every frame is judged with
+        the same evidence rules as the normal search; as soon as the normal
+        search would inspect or confirm a boat, the turn stops and the normal
+        search continues from this view.
+        """
+        if self.pre360_phase == 'check':
+            if self._pre360_search(observation, position, yaw, t):
+                return self._pre360_handover(observation, position, pan, tilt, True)
+            self.pre360_phase = 'nadir'
+            self.pre360_nadir_start = t
+            self.pre360_last_yaw = yaw
+            self.pre360_yaw_accum = 0.0
+            self.pre360_candidate_frames = 0
+
+        if self.pre360_phase == 'nadir':
+            if self._pre360_search(observation, position, yaw, t):
+                return self._pre360_handover(observation, position, pan, tilt, False)
+            if t - self.pre360_nadir_start < PRE360_NADIR_S:
+                action, extra = self._pre360_action(observation, position, pan, tilt,
+                                                    yaw_rate=0.0, tilt_target=90.0)
+                return action, self._pre360_diag('pre360_nadir', extra)
+            self.pre360_phase = 'sweep'
+            self.pre360_sweep_start = t
+            self.pre360_last_yaw = yaw
+
+        if self.pre360_phase == 'sweep':
+            if self._pre360_search(observation, position, yaw, t):
+                return self._pre360_handover(observation, position, pan, tilt, False)
+            delta_yaw = float(self.wrap(yaw - self.pre360_last_yaw))
+            self.pre360_last_yaw = yaw
+            # Game yaw-rate commands can turn either way; count the absolute
+            # swept angle so a full look-around completes in either direction.
+            self.pre360_yaw_accum += abs(delta_yaw)
+            if (self.pre360_yaw_accum >= 2.0 * math.pi
+                    or t - self.pre360_sweep_start >= PRE360_SWEEP_TIMEOUT_S):
+                self.pre360_done = True
+                self.pre360_phase = 'done'
+                return None
+            action, extra = self._pre360_action(observation, position, pan, tilt,
+                                                yaw_rate=PRE360_YAW_RATE)
+            return action, self._pre360_diag('pre360_sweep', extra)
+
+        return None
+
+    @staticmethod
+    def _rotation(yaw):
+        c, s = math.cos(yaw), math.sin(yaw)
+        return np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+
+    def act(self, rgb, observation):
+        beacon = self.usable_beacon(observation)
+        radio_free = self.radio_free(observation)
+        own = observation['px4']
+        t = float(observation['mission']['elapsed_s'])
+
+        # Landing, contact, estimation holds and image holds stay the frozen
+        # student/R15 behaviour and never see radio after handoff.
+        if self.landing_latched or self.base.controller.controller.contact_started is not None:
+            if not self.pre360_done:
+                self.pre360_done = True
+                self.pre360_phase = 'done'
+            return super().act(rgb, radio_free)
+        if (not own.get('valid')
+                or max(own.get('position_age_s', 100), own.get('attitude_age_s', 100)) > .25
+                or not observation.get('image_valid')
+                or observation.get('image_age_s', 100) > .25):
+            return super().act(rgb, radio_free)
+
+        position = np.asarray(own['position_enu_m'], dtype=float)
+        if self.height is None:
+            self.height = max(float(position[2]), MIN_SEARCH_HEIGHT_M)
+        yaw = math.pi / 2 - own['attitude_ned_rad'][2]
+        pan, tilt = (float(observation['gimbal_rad'][0]),
+                     float(observation['gimbal_rad'][1]))
+        dt = float(observation.get('decision_dt_s', .04))
+
+        # One-time initialization stage, before radio or visual search.  It is
+        # conditional on the target not already being visible and never repeats
+        # when the inherited scan 1 starts or restarts.
+        if not self.pre360_done:
+            pre360 = self._pre360(rgb, radio_free, t, position, yaw, pan, tilt, dt)
+            if pre360 is not None:
+                return pre360
+
+        if self.pre360_search_handover:
+            if self.selected is not None or self.search.confirmed:
+                # The camera already found the boat during pre360: the normal
+                # visual search keeps authority, exactly as without radio.
+                self.radio_active = False
+                return super().act(rgb, radio_free)
+            # The search lost that boat again; radio-first guidance resumes.
+            self.pre360_search_handover = False
+
+        if beacon is None:
+            self.radio_active = False
+            self.radio_handoff_frames = 0
+            self.radio_target = None
+            self.radio_velocity = np.zeros(2)
+            return super().act(rgb, radio_free)
+
+        rotation = self._rotation(yaw)
+        flip = np.diag([1., -1., -1.])
+        predicted_relative = beacon['relative'] + beacon['velocity'] * beacon['age']
+        self.radio_target = position + rotation @ flip @ predicted_relative
+        self.radio_velocity = (rotation @ flip @ beacon['velocity'])[:2]
+        self.radio_age = beacon['age']
+        self.radio_dock_ready = beacon['dock_ready']
+        self.radio_active = True
+
+        proposals = self._proposals(rgb, observation)
+        if self._target_boat_visible(proposals):
+            self.radio_handoff_frames += 1
+        else:
+            self.radio_handoff_frames = 0
+        if self.radio_handoff_frames >= HANDOFF_FRAMES:
+            return self._handoff(rgb, observation, self.radio_target,
+                                 self.radio_velocity, t, 'radio_target')
+
+        delta = self.radio_target - position
+        range_xy = float(np.linalg.norm(delta[:2]))
+        body = flip @ rotation.T @ delta
+        prev = np.asarray(observation['previous_executed_action'], dtype=float)
+        action = np.zeros(6)
+        action[2] = -float(np.clip(.8 * (self.height - position[2]), -.5, .5))
+
+        if range_xy > STOP_RANGE_M:
+            speed = FAST_MPS if range_xy > FAST_RANGE_M else CLOSE_MPS
+            # A 1 m/s closing command cannot catch a faster boat.  Preserve the
+            # requested 1 m/s close schedule for normal boats, but keep a real
+            # closing margin when the packet says the boat is faster.
+            boat_speed = float(np.linalg.norm(self.radio_velocity))
+            if range_xy <= FAST_RANGE_M and boat_speed > 0.8:
+                speed = min(FAST_MPS, max(speed, boat_speed + 0.5))
+            unit = delta[:2] / max(range_xy, 1e-6)
+            desired_world = unit * speed
+            body_velocity = (flip @ rotation.T @ np.r_[desired_world, 0.0])[:2]
+            limit = self.slew_limits * dt
+            action[0] = float(np.clip(body_velocity[0],
+                                      prev[0] - limit[0], prev[0] + limit[0]))
+            action[1] = float(np.clip(body_velocity[1],
+                                      prev[1] - limit[1], prev[1] + limit[1]))
+            norm = float(np.linalg.norm(action[:2]))
+            if norm > FAST_MPS:
+                action[:2] *= FAST_MPS / norm
+
+        heading = math.atan2(delta[1], delta[0])
+        action[3] = float(np.clip(-self.wrap(heading - yaw), -.5, .5))
+        action[4] = float(np.clip(3.0 * (math.atan2(-body[1], body[0]) - pan),
+                                  -math.radians(50), math.radians(50)))
+        action[5] = float(np.clip(
+            3.0 * (math.atan2(body[2], np.linalg.norm(body[:2])) - tilt),
+            -math.radians(40), math.radians(40)))
+        action, extra = self.guard.apply(action, observation,
+                                         dict(pad_visibility_probability=0.))
+        phase = 'radio_hold' if range_xy <= STOP_RANGE_M else 'radio_approach'
+        return action, dict(control_phase=phase, boat_radio=True, radio_mode=True,
+                            radio_range_m=range_xy, radio_age_s=self.radio_age,
+                            radio_dock_ready=self.radio_dock_ready,
+                            radio_handoff_frames=self.radio_handoff_frames,
+                            pre360_done=True, pre360_skipped=self.pre360_skipped,
+                            search_identity_confirmed=False,
+                            **extra)
+

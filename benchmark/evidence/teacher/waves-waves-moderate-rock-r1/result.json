@@ -1,0 +1,114 @@
+{
+  "schema": "aerodock.benchmark.trial.v1",
+  "policy_id": "privileged-teacher-wave-gate-74cfb67e",
+  "case_id": "waves-waves-moderate-rock-r1",
+  "policy_identity_sha256": "74cfb67e5838c3ca0677e7a8b4bc4bb69b9268a70b6a087e9df48823b2200278",
+  "started_utc": "2026-11-09T20:40:22.492335+00:00",
+  "context": {
+    "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+    "runtime_sha256": "ad76eab0aa441e7a52932c82572decc62a45259f796a5727ae7cc126a603d3cd",
+    "revision_receipts_sha256": "b73ae65789dbc80c6e5243f5b57ec2011d2ace7ec7294e2cbe7bdf896d278c78",
+    "inference_device": "cpu",
+    "control_hz": 25,
+    "backend": "windows_mujoco_px4",
+    "scenario_revision": "teacher_four_20261104",
+    "workers": 3,
+    "machine": "KUZYURT",
+    "platform": "win32",
+    "python": "3.12.9 (tags/v3.12.9:fdb8142, Feb  4 2025, 15:27:58) [MSC v.1942 64 bit (AMD64)]",
+    "operations_sources": [
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/__init__.py",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/__main__.py",
+        "sha256": "5dfedbdc1dc8cf2d3b4ce725bee65df0eebe80d1651d0c17e8b01a9be74b1a8c"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/parallel.py",
+        "sha256": "deb465f4be80b62b7e3bd1468957b9707bdd878d912ef7dcb43cd9c3c3fae4a8"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/register.py",
+        "sha256": "28b50fdffca4060c4b7006dbb7a2bedd4ad46d01546ded921191bf51ad64fc6a"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/routes.py",
+        "sha256": "bf9d50c470db2474d3f0a0a94704a20af565b67044f6b558d834df480f1f114c"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/run.py",
+        "sha256": "3f0acef76e4738bf2751338b1f4135e3dff7145ba31672fccde1fdc72265684a"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/spec.py",
+        "sha256": "e4e8cf997d95740d3de5b1f24be555d9c9c2e1af8da96bbc9725d859a148fc59"
+      },
+      {
+        "path": "benchmark/revisions/teacher_four_20261104/validate.py",
+        "sha256": "89f7cec3492352d5d708316d15cedcccec5b8931a584a257ed232ead08e9cd9b"
+      }
+    ],
+    "reused_cases": [
+      "acquisition-far-visual-traffic-city-r0-bounded-v1",
+      "acquisition-far-visual-traffic-rock-r1-bounded-v1",
+      "combined-stress-visual-traffic-rock-r0-bounded-v1",
+      "waves-waves-moderate-gravel-r0"
+    ]
+  },
+  "training_eligible": false,
+  "status": "completed",
+  "condition_valid": true,
+  "actor_role": "privileged teacher",
+  "privileged_reference": true,
+  "outcome": "landed",
+  "disarmed": true,
+  "px4_landed": true,
+  "stable_disarmed_contact_s": 2.0009999999998906,
+  "collision": false,
+  "water_strike": false,
+  "assistance_frames": 0,
+  "wrong_target_contacts": 0,
+  "verified_acquisition_s": 14.520000000008945,
+  "false_acquisition_events": 0,
+  "mission_time_s": 59.4400000000128,
+  "path_length_m": 67.01520868242831,
+  "actual_start_distance_m": 30.005931283447296,
+  "final_lateral_error_m": 0.026019421418088197,
+  "touchdown_relative_velocity_m_s": [
+    0.004984652010813601,
+    -0.013102094568675527,
+    -0.11012545886304283
+  ],
+  "final_deck_tilt_deg": 1.8776894131328745,
+  "requested_boat_speed_m_s": 0.6,
+  "measured_boat_speed_mean_m_s": 0.6125802344380631,
+  "speed_outside_tolerance_fraction": 0.0,
+  "route_completed": false,
+  "inference_p50_ms": 24.285400000735535,
+  "inference_p95_ms": 37.306400000034046,
+  "control_deadline_miss_fraction": 0.03566621803499327,
+  "events": [
+    {
+      "time_s": 73.78399999998825,
+      "kind": "touchdown",
+      "relative_velocity": [
+        0.004984652010813601,
+        -0.013102094568675527,
+        -0.11012545886304283
+      ]
+    },
+    {
+      "time_s": 75.05599999999433,
+      "kind": "stable_contact"
+    },
+    {
+      "time_s": 79.1330000000138,
+      "kind": "landed"
+    }
+  ],
+  "trace_sha256": "dea2999eaec0b8f09cbb864f9fbaf800ac4d64a8487f0f861cce4aee50485302",
+  "wall_seconds": 415.50564829999894,
+  "completed_utc": "2026-11-09T20:47:21.842776+00:00"
+}

@@ -3279,10 +3279,10 @@ export class UI {
 		const q = ( sel ) => L && L.querySelector( sel );
 		const ld = this._ld = {
 			from: 0, until: 0.05, shown: 0, stageT: performance.now(), tau: 6000, detail: - 1, status: '',
-			t0: performance.now(), stopped: false,
-			fill: q( '.loader-fill' ), pct: q( '.loader-pct' ), time: q( '.loader-time' ), statusEl: q( '.loader-status' ),
+			stopped: false,
+			fill: q( '.loader-fill' ), pct: q( '.loader-pct' ), statusEl: q( '.loader-status' ),
 		};
-		// eased bar + elapsed clock while scripts run (the CSS glint and tips keep moving when they don't)
+		// eased bar while scripts run (the CSS glint keeps moving when they don't)
 		const tick = () => {
 
 			if ( ld.stopped ) return;
@@ -3310,12 +3310,6 @@ export class UI {
 		ld.shown += ( Math.max( goal, ld.shown ) - ld.shown ) * ( dt > 0 ? 1 - Math.exp( - dt * 9 ) : 0 );
 		if ( ld.fill ) ld.fill.style.transform = `scaleX(${ Math.max( 0.02, ld.shown ).toFixed( 4 ) })`;
 		if ( ld.pct ) ld.pct.textContent = Math.floor( ld.shown * 100 ) + '%';
-		if ( ld.time ) {
-
-			const s = Math.floor( ( now - ld.t0 ) / 1000 );
-			ld.time.textContent = Math.floor( s / 60 ) + ':' + String( s % 60 ).padStart( 2, '0' );
-
-		}
 
 	}
 

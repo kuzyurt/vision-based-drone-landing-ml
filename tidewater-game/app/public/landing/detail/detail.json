@@ -1,0 +1,3949 @@
+{
+ "schema": "tidewater.render_detail.v1",
+ "purpose": "Operator view only. The drone camera keeps the trained meshes.",
+ "crease_deg": 32.0,
+ "geoms": [
+  {
+   "id": 1089,
+   "name": "HullShell_plain",
+   "url": "/landing/detail/geom_1089.bin",
+   "vertex_count": 1619,
+   "index_count": 6309,
+   "sha256": "5a6b4a03ca4ac529aca65628f276953cb4c46ba11c8e5d1b4811be085437833e",
+   "note": "smoothed shading normals (21% of corners)"
+  },
+  {
+   "id": 1091,
+   "name": "MainDeck_plain",
+   "url": "/landing/detail/geom_1091.bin",
+   "vertex_count": 3781,
+   "index_count": 10965,
+   "sha256": "ecc1a3ba3a19ff5f0dcd4dfb4f6209ff394876b9ee382b7f0cc99733cf616a4c",
+   "note": "smoothed shading normals (33% of corners)"
+  },
+  {
+   "id": 1093,
+   "name": "FrameLoadPaths_plain",
+   "url": "/landing/detail/geom_1093.bin",
+   "vertex_count": 37229,
+   "index_count": 163209,
+   "sha256": "715d3e9731199330e46d2ccc68707f2f58bb20970c394f01161f42e178124e93",
+   "note": "smoothed shading normals (16% of corners)"
+  },
+  {
+   "id": 1094,
+   "name": "DockTrunk_plain",
+   "url": "/landing/detail/geom_1094.bin",
+   "vertex_count": 8029,
+   "index_count": 27282,
+   "sha256": "ed1e2f847ea79a438c6f67fd84532f7a399509559ad7bd0d86e9f6ab7352bdb6",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1095,
+   "name": "BayCoaming_plain",
+   "url": "/landing/detail/geom_1095.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "e36a5a243f1c541e8b4705b3e2dbf173390ec002952d99074fcfccafe2fb0b52",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1096,
+   "name": "PerimeterSeal_plain",
+   "url": "/landing/detail/geom_1096.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "6ed3e78a127d9f988bda42d9ead960d35b4f6a34bf1b6348c21274987145c8a4",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1097,
+   "name": "AftHatchFrame_plain",
+   "url": "/landing/detail/geom_1097.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "e367f5a7880f5cbea49bb612ccf20b30e32640e3d51517ab19508aedcddff122",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1098,
+   "name": "AftHatchSeal_plain",
+   "url": "/landing/detail/geom_1098.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "e1f9c2ca5421c804911cbd5b5833ab2b0b5384af65684a6c5cbf7a93b5458269",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1099,
+   "name": "AftServiceHatch_textured",
+   "url": "/landing/detail/geom_1099.bin",
+   "vertex_count": 280,
+   "index_count": 804,
+   "sha256": "be1ca59e01d55a28a50b08f9fade518c25575ccd77e64cb6c5b51d29bd889272",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1100,
+   "name": "ForeHatchFrame_plain",
+   "url": "/landing/detail/geom_1100.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "b733ee0746073dacb4a183ad149a8fe38a1f79ddd0fd37555e796cbfeb6138f3",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1101,
+   "name": "ForeHatchSeal_plain",
+   "url": "/landing/detail/geom_1101.bin",
+   "vertex_count": 48,
+   "index_count": 96,
+   "sha256": "acca8f595f31499444850e01f09b76a7ee9851c09e512ec04dfb79ec731b7b96",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1102,
+   "name": "ForeServiceHatch_textured",
+   "url": "/landing/detail/geom_1102.bin",
+   "vertex_count": 280,
+   "index_count": 804,
+   "sha256": "a1828f66f687015d1d80472623abf9d16090c3262c8777380c6d4d7a7882f1a7",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1103,
+   "name": "LiftMotor1_plain",
+   "url": "/landing/detail/geom_1103.bin",
+   "vertex_count": 284,
+   "index_count": 792,
+   "sha256": "56030f6ba26d2cde1d6a1412b0825626c52b41b578e1bfbf3ff79e1dd34d0029",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1104,
+   "name": "LiftTopSupport1_plain",
+   "url": "/landing/detail/geom_1104.bin",
+   "vertex_count": 582,
+   "index_count": 1626,
+   "sha256": "292029d79b48455c49954c5153e18d10bb16c11b35aea824a1752ce4bbb6f8b9",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1105,
+   "name": "LiftMotor2_plain",
+   "url": "/landing/detail/geom_1105.bin",
+   "vertex_count": 284,
+   "index_count": 792,
+   "sha256": "21c46dffef4fb854d27d936b1f9e34c1f0b24eabb1bf23b364a4beca7abb9306",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1106,
+   "name": "LiftTopSupport2_plain",
+   "url": "/landing/detail/geom_1106.bin",
+   "vertex_count": 582,
+   "index_count": 1626,
+   "sha256": "5dad68983fef1496c606dcbae8bd67bf3516df878264515b29f475c6c864dfd4",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1107,
+   "name": "LiftMotor3_plain",
+   "url": "/landing/detail/geom_1107.bin",
+   "vertex_count": 284,
+   "index_count": 792,
+   "sha256": "51e2c741347b44341ff6fb31ce2fb2c996e1dc10a6ade9bac181983134036de0",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1108,
+   "name": "LiftTopSupport3_plain",
+   "url": "/landing/detail/geom_1108.bin",
+   "vertex_count": 582,
+   "index_count": 1626,
+   "sha256": "f756e12792f57d50c690641bf7e90968a76bd0f6eb94e928042a3c3a36074aa7",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1109,
+   "name": "LiftMotor4_plain",
+   "url": "/landing/detail/geom_1109.bin",
+   "vertex_count": 284,
+   "index_count": 792,
+   "sha256": "4275a5cf4279773d9c9a503492ed5a10fa4aba53747b355b588b9e5235ca12ee",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1110,
+   "name": "LiftTopSupport4_plain",
+   "url": "/landing/detail/geom_1110.bin",
+   "vertex_count": 582,
+   "index_count": 1626,
+   "sha256": "203e9fa1729acc364c58c1c711326706be278b6e373d15dbe3d8f670ac292663",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1111,
+   "name": "Guide1FixedSupports_plain",
+   "url": "/landing/detail/geom_1111.bin",
+   "vertex_count": 606,
+   "index_count": 1662,
+   "sha256": "314c99000dc9743cbc07c06280212c6b1b0b8eae962186a9911066996ceb3d9e",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1112,
+   "name": "Guide1Rod_plain",
+   "url": "/landing/detail/geom_1112.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "0f3e2d6f3546b0c89412e3939ec951ecc5b1ae3f59367aecd814ee0a62458650",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1113,
+   "name": "Guide2FixedSupports_plain",
+   "url": "/landing/detail/geom_1113.bin",
+   "vertex_count": 606,
+   "index_count": 1662,
+   "sha256": "88bbe4f8065dcbc36c7148574268b933871cacd2cc4e3da60b730f76a42ce7a5",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1114,
+   "name": "Guide2Rod_plain",
+   "url": "/landing/detail/geom_1114.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "bd79074e565173b6d9129fce360caebc8a789b60d2d8dfc0dd5e9b082ea75764",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1115,
+   "name": "Guide3FixedSupports_plain",
+   "url": "/landing/detail/geom_1115.bin",
+   "vertex_count": 608,
+   "index_count": 1668,
+   "sha256": "18b2e99de7595a4a1dffcb474a18e4556db4fed19d7d96b2a1ac056131db7699",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1116,
+   "name": "Guide3Rod_plain",
+   "url": "/landing/detail/geom_1116.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "dbec40d2bacb3256717555f0ca338be4cceb01c422091dd90dff04907c0db90e",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1117,
+   "name": "Guide4FixedSupports_plain",
+   "url": "/landing/detail/geom_1117.bin",
+   "vertex_count": 606,
+   "index_count": 1662,
+   "sha256": "2a4121df610ce55cf3b8bfc798d69f66cca3adbe2615c848c77ba6300519217e",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1118,
+   "name": "Guide4Rod_plain",
+   "url": "/landing/detail/geom_1118.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "d8af27cf54758a47115154335c819085387454b0ff0ac7cc718367e27fbe3c04",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1119,
+   "name": "LidRails_textured",
+   "url": "/landing/detail/geom_1119.bin",
+   "vertex_count": 96,
+   "index_count": 168,
+   "sha256": "44f5d34eafa0542f63f27ed427e40150ea9b51dd62d83ee2841104fc60b27a4c",
+   "note": "smoothed shading normals (68% of corners)"
+  },
+  {
+   "id": 1120,
+   "name": "AftLidMotorMount_plain",
+   "url": "/landing/detail/geom_1120.bin",
+   "vertex_count": 310,
+   "index_count": 852,
+   "sha256": "68f45451306da0607cba0ac243ce832bd90a2c3ecbe1711c9d4f53b38a2685b1",
+   "note": "smoothed shading normals (77% of corners)"
+  },
+  {
+   "id": 1121,
+   "name": "AftLidDrive_plain",
+   "url": "/landing/detail/geom_1121.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "90ef9aa641f5b73064c971f7942194b4e9e721059679f27811bdb229ac2b0ca7",
+   "note": "smoothed shading normals (45% of corners)"
+  },
+  {
+   "id": 1122,
+   "name": "AftLidEndBearing_plain",
+   "url": "/landing/detail/geom_1122.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "7cc2db1474f730db6c319db9beb8d1151bcc5f98355ef0d051a52fe440534930",
+   "note": "smoothed shading normals (65% of corners)"
+  },
+  {
+   "id": 1123,
+   "name": "ForeLidMotorMount_plain",
+   "url": "/landing/detail/geom_1123.bin",
+   "vertex_count": 310,
+   "index_count": 852,
+   "sha256": "a35cab98575358856e8bfebc1b98adc4cbd4959dd08816b9f0f0cccb8770bf88",
+   "note": "smoothed shading normals (77% of corners)"
+  },
+  {
+   "id": 1124,
+   "name": "ForeLidDrive_plain",
+   "url": "/landing/detail/geom_1124.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "9356d06915b39b5a2a0557da20ad1957a2cb306d2c82baec29ac98ee0c5ceaf8",
+   "note": "smoothed shading normals (45% of corners)"
+  },
+  {
+   "id": 1125,
+   "name": "ForeLidEndBearing_plain",
+   "url": "/landing/detail/geom_1125.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "f1456b80db702082e81455d75f73701866f316ef79a0733588e62a9056ce4494",
+   "note": "smoothed shading normals (65% of corners)"
+  },
+  {
+   "id": 1126,
+   "name": "PortPropulsionMotor_plain",
+   "url": "/landing/detail/geom_1126.bin",
+   "vertex_count": 476,
+   "index_count": 1296,
+   "sha256": "f9d82733d5ec59332b728d4a02e5ed8e8ae572c70c3fc733db483821ce07a53e",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1127,
+   "name": "PortSternTube_plain",
+   "url": "/landing/detail/geom_1127.bin",
+   "vertex_count": 1040,
+   "index_count": 3024,
+   "sha256": "02f4f900d28ad984cf722d2bc5de64bf2a2cfd0ccd4efce420d38e17aa42114a",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1128,
+   "name": "PortDropGearbox_plain",
+   "url": "/landing/detail/geom_1128.bin",
+   "vertex_count": 2448,
+   "index_count": 7056,
+   "sha256": "00dc9ae24230cb3c4c0f52d12432a6017f7fcc804f853a4d4305e5745eadf99c",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1129,
+   "name": "PortShaftStrut_plain",
+   "url": "/landing/detail/geom_1129.bin",
+   "vertex_count": 736,
+   "index_count": 2088,
+   "sha256": "3b2ed9873f0a5dca9427309fdef2eb32a1971fa2078f03bb40230ec946aa275d",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1130,
+   "name": "PortPropGuard_plain",
+   "url": "/landing/detail/geom_1130.bin",
+   "vertex_count": 1078,
+   "index_count": 3126,
+   "sha256": "421a801d3c2cf852f03a0536abf2793d2846d3dc9056b9b94f54bd842e103079",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1131,
+   "name": "StarboardPropulsionMotor_plain",
+   "url": "/landing/detail/geom_1131.bin",
+   "vertex_count": 476,
+   "index_count": 1296,
+   "sha256": "eb779811bda53151ec965b9f6c0430785ad786eced605572b29e8bdbe1898798",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1132,
+   "name": "StarboardSternTube_plain",
+   "url": "/landing/detail/geom_1132.bin",
+   "vertex_count": 1040,
+   "index_count": 3024,
+   "sha256": "08505e6449c143336581620d4301bf5c3faa717dbe55a72c1d5f1a008cc99602",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1133,
+   "name": "StarboardDropGearbox_plain",
+   "url": "/landing/detail/geom_1133.bin",
+   "vertex_count": 2448,
+   "index_count": 7056,
+   "sha256": "e859f11f9f71d7fd7187b7011886570af0b328b5c79382db76526e39742693f1",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1134,
+   "name": "StarboardShaftStrut_plain",
+   "url": "/landing/detail/geom_1134.bin",
+   "vertex_count": 736,
+   "index_count": 2088,
+   "sha256": "b7942ae68f9198a984349339a96b922af989cd17de955600df4477290cb39261",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1135,
+   "name": "StarboardPropGuard_plain",
+   "url": "/landing/detail/geom_1135.bin",
+   "vertex_count": 1078,
+   "index_count": 3126,
+   "sha256": "3d5468e380d1499065f8e578ab23789742b410ed9a7b9b6724feeb3c97ea99b3",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1136,
+   "name": "AftBattery_plain",
+   "url": "/landing/detail/geom_1136.bin",
+   "vertex_count": 280,
+   "index_count": 804,
+   "sha256": "14b392aa2777c07bef4627ec5d68565ed951899d6d90e4db7fb8cabeec87c4bb",
+   "note": "smoothed shading normals (45% of corners)"
+  },
+  {
+   "id": 1137,
+   "name": "AftBatteryStraps_plain",
+   "url": "/landing/detail/geom_1137.bin",
+   "vertex_count": 96,
+   "index_count": 168,
+   "sha256": "02769231918506387ce1eda473dd2b3479f3e57cc558a0ef33c495791c47c0f5",
+   "note": "smoothed shading normals (73% of corners)"
+  },
+  {
+   "id": 1138,
+   "name": "AftBatteryTerminals_plain",
+   "url": "/landing/detail/geom_1138.bin",
+   "vertex_count": 520,
+   "index_count": 1488,
+   "sha256": "c5bb16c22884ead5165c6f2c7aac3917780707d33e8ec152a9c675d5157751af",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1139,
+   "name": "ForeBattery_plain",
+   "url": "/landing/detail/geom_1139.bin",
+   "vertex_count": 280,
+   "index_count": 804,
+   "sha256": "603a41a01fc4178adaf7542023aacc7a63fe952d635dadf70d1aa647122d5414",
+   "note": "smoothed shading normals (47% of corners)"
+  },
+  {
+   "id": 1140,
+   "name": "ForeBatteryStraps_plain",
+   "url": "/landing/detail/geom_1140.bin",
+   "vertex_count": 96,
+   "index_count": 168,
+   "sha256": "27165364c13cd0d3b45cfd74691ef831d9ce568a9bb90538f1bf9035aa89f418",
+   "note": "smoothed shading normals (73% of corners)"
+  },
+  {
+   "id": 1141,
+   "name": "ForeBatteryTerminals_plain",
+   "url": "/landing/detail/geom_1141.bin",
+   "vertex_count": 520,
+   "index_count": 1488,
+   "sha256": "aa8a51472a9d592891b5179716d55388f4c6d0adf67db5b8d314cdfd7708b0fa",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1142,
+   "name": "PortESC_plain",
+   "url": "/landing/detail/geom_1142.bin",
+   "vertex_count": 424,
+   "index_count": 1092,
+   "sha256": "10877f59a6707ae57dc0aa5b64f8cdf962ab0fbf21d307598477fdc5544781dc",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1143,
+   "name": "StarboardESC_plain",
+   "url": "/landing/detail/geom_1143.bin",
+   "vertex_count": 424,
+   "index_count": 1092,
+   "sha256": "10e6f9e34d1a402a186ca3f25326a5bd7fefc2182dea79fbd06c8b5fb3bc3481",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1144,
+   "name": "FusedPowerBus_plain",
+   "url": "/landing/detail/geom_1144.bin",
+   "vertex_count": 688,
+   "index_count": 1620,
+   "sha256": "d0f5d90505107746941b611f40fc8319758d3e6f085acf2570dd3133aa8bf244",
+   "note": "smoothed shading normals (48% of corners)"
+  },
+  {
+   "id": 1145,
+   "name": "IsolatedDCConverters_plain",
+   "url": "/landing/detail/geom_1145.bin",
+   "vertex_count": 616,
+   "index_count": 1476,
+   "sha256": "dc0346965a634ad728f26629e32c17b0f425e6a95f59115d3ce538f0aeab2e39",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1146,
+   "name": "PowerShelf_plain",
+   "url": "/landing/detail/geom_1146.bin",
+   "vertex_count": 328,
+   "index_count": 900,
+   "sha256": "ce8aaeac82dce1083c22f9796bb47220a154cb47495e19490941007b43c3c7f9",
+   "note": "smoothed shading normals (59% of corners)"
+  },
+  {
+   "id": 1147,
+   "name": "DryElectronicsBox_plain",
+   "url": "/landing/detail/geom_1147.bin",
+   "vertex_count": 4806,
+   "index_count": 17820,
+   "sha256": "6732c897222eaf27a462b0023782733a58cc51dd5b916c83b414e52732428d0c",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1148,
+   "name": "ElectronicsBoxLid_plain",
+   "url": "/landing/detail/geom_1148.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "e22a53ca9f35f18782726a312806b9c2dcedbe36425432e7927c50a667a65667",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1149,
+   "name": "KhadasEdge2BasicStandoffs_plain",
+   "url": "/landing/detail/geom_1149.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "78754db4492edad11133f153c793d438a35f583f2ddcfd58d5079e52ea5f34b9",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1150,
+   "name": "KhadasEdge2Basic_plain",
+   "url": "/landing/detail/geom_1150.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "b63536e7a4570012d9989b198e207c140cc37c32ff03c8f924e32fae0bdd2bae",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1151,
+   "name": "KhadasEdge2BasicComponents_plain",
+   "url": "/landing/detail/geom_1151.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "80f1ac32aa92e2bcb4a0681dead24e8413ca5f840aa2ed004d036287a3e71c11",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1152,
+   "name": "SX1262RadioStandoffs_plain",
+   "url": "/landing/detail/geom_1152.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "2ec2eafe407f58a26e721179a08fd9be8f4be26a6a3e2441715ce17104012f8f",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1153,
+   "name": "SX1262Radio_plain",
+   "url": "/landing/detail/geom_1153.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "6d09882b80eb2c30529149f8ed4ff364065a091cc4a76f838186904d088b0fc4",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1154,
+   "name": "SX1262RadioComponents_plain",
+   "url": "/landing/detail/geom_1154.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "a8524fb83ecccf01fb69285ca54753e9ee439daafbebeef7446b572a9323a70b",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1155,
+   "name": "PoweredUSBHubStandoffs_plain",
+   "url": "/landing/detail/geom_1155.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "2fccd1185fc6c4ae503fbf6927beb23e980e6f7b9f8f7dfba5d5dc73a0e367af",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1156,
+   "name": "PoweredUSBHub_plain",
+   "url": "/landing/detail/geom_1156.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "2b455fe5099569380e084aa6fdc74decaf99c08c7801b91354f008aa0e6a051d",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1157,
+   "name": "PoweredUSBHubComponents_plain",
+   "url": "/landing/detail/geom_1157.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "c396780e5c4495a6ef548bdae99a9af916fc81175441520141bd0d707ef65c7b",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1158,
+   "name": "MotionMCUStandoffs_plain",
+   "url": "/landing/detail/geom_1158.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "f4ed82faff06014bd3372c09ae77b7af560a1391eb0c29f44b4029c078828ba0",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1159,
+   "name": "MotionMCU_plain",
+   "url": "/landing/detail/geom_1159.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "155da3bc5bed345b1c43e8661de469a34f9f28a614d0aa091a0fc406dace738c",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1160,
+   "name": "MotionMCUComponents_plain",
+   "url": "/landing/detail/geom_1160.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "5d7d333d01237e3c2c8cc1da60001749e7e243b1a9b01ea0bd520a34334b24c1",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1161,
+   "name": "MAXM10SCarrierStandoffs_plain",
+   "url": "/landing/detail/geom_1161.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "bdc290f5ffb9a3327d1f9e86db2a855b4319b4ce37739706fadf32cc20916948",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1162,
+   "name": "MAXM10SCarrier_plain",
+   "url": "/landing/detail/geom_1162.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "3c329388d1991d0984b146591811cbb6c3c664ce7e08f2e88070d3073ac9e790",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1163,
+   "name": "MAXM10SCarrierComponents_plain",
+   "url": "/landing/detail/geom_1163.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "7901c87fa6f661c9f5a076c079161965505373ad989ca446ee0ce0518c34c337",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1164,
+   "name": "USBSerialBridgeStandoffs_plain",
+   "url": "/landing/detail/geom_1164.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "a5de306725c5fb2fde272527eb33ead572f5077322788d101f2b74b4ea5a08b3",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1165,
+   "name": "USBSerialBridge_plain",
+   "url": "/landing/detail/geom_1165.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "dc4b22a53e02e02d7cfb372565aac2bbbb15a6d8c8f5f1089d4bdb9a63cf0657",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1166,
+   "name": "USBSerialBridgeComponents_plain",
+   "url": "/landing/detail/geom_1166.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "fb927f38ed385a3ae4389992e39f6659843f5e0b0f3df4a26d1c15db3f142955",
+   "note": "smoothed shading normals (69% of corners)"
+  },
+  {
+   "id": 1167,
+   "name": "Edge2Cooling_plain",
+   "url": "/landing/detail/geom_1167.bin",
+   "vertex_count": 180,
+   "index_count": 348,
+   "sha256": "b0455a9e81572c352c7ec2eb738811d5338b8f0785a17ee5ceee04d5cfcfd6da",
+   "note": "smoothed shading normals (74% of corners)"
+  },
+  {
+   "id": 1168,
+   "name": "Edge2Fan_plain",
+   "url": "/landing/detail/geom_1168.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "7c8b839f3dda43c74d5494e14036e7530e5336c0291bde19ee2999ae24dde488",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1169,
+   "name": "Edge2ThermalStrap_plain",
+   "url": "/landing/detail/geom_1169.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "b9dad936a051e716cf985675fedc1265a808c669855470be6b0152f61143e51d",
+   "note": "smoothed shading normals (69% of corners)"
+  },
+  {
+   "id": 1170,
+   "name": "LiftAndLidDrivers_plain",
+   "url": "/landing/detail/geom_1170.bin",
+   "vertex_count": 472,
+   "index_count": 1188,
+   "sha256": "7f963390f104505dc612bbd8d3b3b9aeb8c0b57ab717d3a10b2a12ed4bc0fc58",
+   "note": "smoothed shading normals (48% of corners)"
+  },
+  {
+   "id": 1171,
+   "name": "ActuatorDriverMount_plain",
+   "url": "/landing/detail/geom_1171.bin",
+   "vertex_count": 308,
+   "index_count": 852,
+   "sha256": "d71205d49e23ccda80866e39fea849b52f0335afd6879ca8bfdee11a28ef9847",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1172,
+   "name": "CameraMast_textured",
+   "url": "/landing/detail/geom_1172.bin",
+   "vertex_count": 1124,
+   "index_count": 4140,
+   "sha256": "7d111fa269c5e3b8d216afeb967eaa819a25190d929549b653051749408cf66a",
+   "note": "smoothed shading normals (27% of corners)"
+  },
+  {
+   "id": 1173,
+   "name": "CameraMastBacking_plain",
+   "url": "/landing/detail/geom_1173.bin",
+   "vertex_count": 356,
+   "index_count": 1008,
+   "sha256": "fc224cb20aa29e738dfd06bbc3cb0e7d5fefa9e6bd79ef10a0e282335cb45f43",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1174,
+   "name": "DockCameraHousing_plain",
+   "url": "/landing/detail/geom_1174.bin",
+   "vertex_count": 424,
+   "index_count": 1200,
+   "sha256": "7a6714fdd78f19ae174082b954388a4d21ddc583e355a256f70884daa402bec2",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1175,
+   "name": "DockCameraHousing_textured",
+   "url": "/landing/detail/geom_1175.bin",
+   "vertex_count": 383,
+   "index_count": 1428,
+   "sha256": "4e841f228181013196a060d0eaa9c2a46627ab228eb5ae0294a9a947969b6549",
+   "note": "smoothed shading normals (57% of corners)"
+  },
+  {
+   "id": 1176,
+   "name": "DockCameraPosts_plain",
+   "url": "/landing/detail/geom_1176.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "4c6ff65aee339663d219416f665d741a6af6dfc27a264cbca558fd41a9ea9866",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1177,
+   "name": "DockCameraB0506_plain",
+   "url": "/landing/detail/geom_1177.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "8a532ca9bc7fcbb299144bb9236d8a479151f8de54714a41c8a80b8321909e27",
+   "note": "smoothed shading normals (56% of corners)"
+  },
+  {
+   "id": 1179,
+   "name": "DockCameraWindowGasket_plain",
+   "url": "/landing/detail/geom_1179.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "1c5c98ce4739eb52797df9426d7b9d24a99bb93bb4399b6117ebd775185ce8d2",
+   "note": "smoothed shading normals (63% of corners)"
+  },
+  {
+   "id": 1181,
+   "name": "NavigationCameraMount_textured",
+   "url": "/landing/detail/geom_1181.bin",
+   "vertex_count": 941,
+   "index_count": 3438,
+   "sha256": "95a80bbd90c992a966e08994c98d88398ba8750d1eae9aedc363beea06635084",
+   "note": "smoothed shading normals (30% of corners)"
+  },
+  {
+   "id": 1182,
+   "name": "NavigationCameraHousing_plain",
+   "url": "/landing/detail/geom_1182.bin",
+   "vertex_count": 313,
+   "index_count": 909,
+   "sha256": "9ce44454b8cb6a9907c8591791bfbdd2647b0a22b47bf3eac0d0551b01b95ba9",
+   "note": "smoothed shading normals (39% of corners)"
+  },
+  {
+   "id": 1183,
+   "name": "NavigationCameraHousing_textured",
+   "url": "/landing/detail/geom_1183.bin",
+   "vertex_count": 798,
+   "index_count": 3501,
+   "sha256": "c01a631f36d06362b4d6211ab08b8306954c22b4a5c4783044648fae6e01997f",
+   "note": "smoothed shading normals (16% of corners)"
+  },
+  {
+   "id": 1184,
+   "name": "NavigationCameraPosts_plain",
+   "url": "/landing/detail/geom_1184.bin",
+   "vertex_count": 1040,
+   "index_count": 2976,
+   "sha256": "c1665849da3d19c7ea9ec12abd3682f397d9bd9634d57e991a920a02556ad7b6",
+   "note": "smoothed shading normals (48% of corners)"
+  },
+  {
+   "id": 1185,
+   "name": "NavigationCameraB0506_plain",
+   "url": "/landing/detail/geom_1185.bin",
+   "vertex_count": 1064,
+   "index_count": 3108,
+   "sha256": "56030b71825610f5c52431ffa3a1b72181bd64c4dc86c8691f2c30d9cbc727ec",
+   "note": "smoothed shading normals (58% of corners)"
+  },
+  {
+   "id": 1187,
+   "name": "NavigationCameraWindowGasket_plain",
+   "url": "/landing/detail/geom_1187.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "2206685bd46be423c11fe445d3df0046e48075ad353fe120402f8d1146872c02",
+   "note": "smoothed shading normals (62% of corners)"
+  },
+  {
+   "id": 1189,
+   "name": "LoRa868Antenna_plain",
+   "url": "/landing/detail/geom_1189.bin",
+   "vertex_count": 1300,
+   "index_count": 3756,
+   "sha256": "d6e1fbc59d069b11cbb540b1076384633db7e2bc52b664dac506b1c4d50697fc",
+   "note": "smoothed shading normals (48% of corners)"
+  },
+  {
+   "id": 1190,
+   "name": "GNSSAntenna_plain",
+   "url": "/landing/detail/geom_1190.bin",
+   "vertex_count": 780,
+   "index_count": 2256,
+   "sha256": "45aea8677c11eb3b55c0b3a57920d0c9cc30a125823495ae4c1d24e073bad888",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1191,
+   "name": "EmergencyStop_plain",
+   "url": "/landing/detail/geom_1191.bin",
+   "vertex_count": 520,
+   "index_count": 1500,
+   "sha256": "2d6f4af28a1acdb656e634350e55f498cfad18d8aad7d9136836dac72b781802",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1192,
+   "name": "BilgeMount_plain",
+   "url": "/landing/detail/geom_1192.bin",
+   "vertex_count": 48,
+   "index_count": 84,
+   "sha256": "e3fa367e81ead5160da0084ba181feffef16de0dbc20e3092ff91c8c781388a1",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1193,
+   "name": "BilgePump_plain",
+   "url": "/landing/detail/geom_1193.bin",
+   "vertex_count": 862,
+   "index_count": 2406,
+   "sha256": "ea6a5dc9e184d1b7979fc3cf8dd481515f42f712dd066b57627b5f318b0c9a59",
+   "note": "smoothed shading normals (45% of corners)"
+  },
+  {
+   "id": 1194,
+   "name": "SeparatedCableTrays_plain",
+   "url": "/landing/detail/geom_1194.bin",
+   "vertex_count": 5900,
+   "index_count": 21192,
+   "sha256": "77f399dcfdd31b5eba717daa59056a6948c1389a2c7caada081fb3dce8779a2e",
+   "note": "smoothed shading normals (31% of corners)"
+  },
+  {
+   "id": 1203,
+   "name": "PortPhaseW_plain",
+   "url": "/landing/detail/geom_1203.bin",
+   "vertex_count": 3796,
+   "index_count": 20022,
+   "sha256": "535f0d34253c203e98b099f0db2126262d8b451102d7683415f48651c1adb1ce",
+   "note": "smoothed shading normals (13% of corners)"
+  },
+  {
+   "id": 1208,
+   "name": "StarboardPhaseW_plain",
+   "url": "/landing/detail/geom_1208.bin",
+   "vertex_count": 3796,
+   "index_count": 20022,
+   "sha256": "a372e74a89bfecd72354be1fa1853619e905273312b36040d58acd8858ec6357",
+   "note": "smoothed shading normals (12% of corners)"
+  },
+  {
+   "id": 1209,
+   "name": "USB_HostHub_plain",
+   "url": "/landing/detail/geom_1209.bin",
+   "vertex_count": 2076,
+   "index_count": 10572,
+   "sha256": "9043075c5b9d98ecb403457ba46c39ab2ce79c2decc3a37ab21fd722ec296021",
+   "note": "smoothed shading normals (24% of corners)"
+  },
+  {
+   "id": 1210,
+   "name": "Edge2FanCable_plain",
+   "url": "/landing/detail/geom_1210.bin",
+   "vertex_count": 3427,
+   "index_count": 17754,
+   "sha256": "97e798761d42085c4c01d346666dbc8d6e261d6b9a7831e8acae8672265aecd2",
+   "note": "smoothed shading normals (85% of corners)"
+  },
+  {
+   "id": 1211,
+   "name": "USB_SX1262Radio_plain",
+   "url": "/landing/detail/geom_1211.bin",
+   "vertex_count": 3824,
+   "index_count": 20022,
+   "sha256": "fe2e753952efbe4e613890d3253c56afcc924357fcb1ba0fca81003fb219fe71",
+   "note": "smoothed shading normals (30% of corners)"
+  },
+  {
+   "id": 1212,
+   "name": "USB_MotionMCU_plain",
+   "url": "/landing/detail/geom_1212.bin",
+   "vertex_count": 3835,
+   "index_count": 20022,
+   "sha256": "456ab12252cb0d2ce12a33dcddd74176ce26455301d86b0592fbfbebf89a511c",
+   "note": "smoothed shading normals (6% of corners)"
+  },
+  {
+   "id": 1214,
+   "name": "GNSS_UART_plain",
+   "url": "/landing/detail/geom_1214.bin",
+   "vertex_count": 2633,
+   "index_count": 13596,
+   "sha256": "07aea1771383db6814d64e4d5bd06c2e58f602de268797e6963d73da4a265f5e",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1218,
+   "name": "Power_KhadasEdge2Basic_plain",
+   "url": "/landing/detail/geom_1218.bin",
+   "vertex_count": 2657,
+   "index_count": 13596,
+   "sha256": "c4829678c807428cbeac9e1beb539a539b7125e2683e7552d39fe819f2515947",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1220,
+   "name": "MotionIO12V_plain",
+   "url": "/landing/detail/geom_1220.bin",
+   "vertex_count": 4913,
+   "index_count": 26070,
+   "sha256": "1e1c9fa9156b400bd9888d34dfc08e567683ed5d79f9fe73886da1ceb59d0384",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1222,
+   "name": "AftLidGland_plain",
+   "url": "/landing/detail/geom_1222.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "1d5809b9a6b0c66da1436d83f17419431d93e3cf8cbb7fbf209bcc6423b6c6b8",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1224,
+   "name": "ForeLidGland_plain",
+   "url": "/landing/detail/geom_1224.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "d06ab78f1ae522b3635ebf6c90add03c6a836ffdb617485a58315095ee56a590",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1226,
+   "name": "LiftGland1_plain",
+   "url": "/landing/detail/geom_1226.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "7087ca7cf34260d995aaa96548aaa56b72433feed336f06917fd883842cf25fd",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1228,
+   "name": "LiftGland2_plain",
+   "url": "/landing/detail/geom_1228.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "44e3ad408c437c5fcc140c572f56b4383ed6c9bb15076b6a933b1d5ca496bc9f",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1230,
+   "name": "LiftGland3_plain",
+   "url": "/landing/detail/geom_1230.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "64a4d8c247abef98f7ce093057bc74f3fd953f255aa5a66d35dc82c1137a7663",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1232,
+   "name": "LiftGland4_plain",
+   "url": "/landing/detail/geom_1232.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "b10a4b1e41ee7bd60d5180042b71637e646765d16f2e48f09039866a1751a128",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1236,
+   "name": "DockCameraUSB_plain",
+   "url": "/landing/detail/geom_1236.bin",
+   "vertex_count": 7817,
+   "index_count": 41946,
+   "sha256": "d5dd4a76f7b64027e42bb42571fdd1ca789c6948f09531b54d6a827bd152e0b9",
+   "note": "smoothed shading normals (7% of corners)"
+  },
+  {
+   "id": 1237,
+   "name": "DockCameraDeckGland_plain",
+   "url": "/landing/detail/geom_1237.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "aa8763bf05a6aa9587add77dd949cc579071d9b038e11936eb07ebdb9fc7f1e3",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1239,
+   "name": "NavigationCameraDeckGland_plain",
+   "url": "/landing/detail/geom_1239.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "c9187c019c54f7c7139173cdcc2692bf1ce05ba62e50b76964166823104db4c1",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1247,
+   "name": "BilgeAntiSiphonVent_plain",
+   "url": "/landing/detail/geom_1247.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "fa2b6ab461a3dbeae2c52b3410c6d8871ab4e45af1d3dd58cfd9c8f7c76c6194",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1248,
+   "name": "CabinDrainPan_plain",
+   "url": "/landing/detail/geom_1248.bin",
+   "vertex_count": 387,
+   "index_count": 1182,
+   "sha256": "07dbdbcd703cbf7d113b8b6444d8886f8de63f66a162db23731a48d1741e1295",
+   "note": "smoothed shading normals (29% of corners)"
+  },
+  {
+   "id": 1249,
+   "name": "CabinAftPortPickup_plain",
+   "url": "/landing/detail/geom_1249.bin",
+   "vertex_count": 876,
+   "index_count": 2448,
+   "sha256": "c67c420a2e82a03e008473a796f83e00d114169fe4e66d2bd5975db436fc2e8a",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1250,
+   "name": "CabinPickupValve1_plain",
+   "url": "/landing/detail/geom_1250.bin",
+   "vertex_count": 618,
+   "index_count": 1740,
+   "sha256": "0fc770714e1a543bdbee157a6d72475717261fdf2ff41a6eb0cbec0cc6839e6e",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1252,
+   "name": "CabinAftPortSensor_plain",
+   "url": "/landing/detail/geom_1252.bin",
+   "vertex_count": 7339,
+   "index_count": 39300,
+   "sha256": "e8ceabca2cbdb8556e93e42f1306c4c1b97ab345f61063c51aa12194fb13c712",
+   "note": "smoothed shading normals (73% of corners)"
+  },
+  {
+   "id": 1253,
+   "name": "CabinForePortPickup_plain",
+   "url": "/landing/detail/geom_1253.bin",
+   "vertex_count": 1508,
+   "index_count": 4278,
+   "sha256": "25bdef88fc86f2a3e8562e285c990b09c76b82d96ba638e5b0ab9a1eb69893e0",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1254,
+   "name": "CabinPickupValve2_plain",
+   "url": "/landing/detail/geom_1254.bin",
+   "vertex_count": 618,
+   "index_count": 1740,
+   "sha256": "662c46b669f8cc56e94ec519b234a36edad6e0ecab2bc74d2b6013edd239e61b",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1256,
+   "name": "CabinForePortSensor_plain",
+   "url": "/landing/detail/geom_1256.bin",
+   "vertex_count": 7345,
+   "index_count": 39300,
+   "sha256": "06c74f3c8e0fdac6f0ab42b5114b149665b74dcd5f01dd6f9412b5d309e3147e",
+   "note": "smoothed shading normals (73% of corners)"
+  },
+  {
+   "id": 1257,
+   "name": "CabinAftStarboardPickup_plain",
+   "url": "/landing/detail/geom_1257.bin",
+   "vertex_count": 876,
+   "index_count": 2448,
+   "sha256": "655c721bf03f534d7a8971c6eb27db68feb04145fe73133cc2535fdd9faa4687",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1258,
+   "name": "CabinPickupValve3_plain",
+   "url": "/landing/detail/geom_1258.bin",
+   "vertex_count": 618,
+   "index_count": 1740,
+   "sha256": "bf2f0f477b3ee553141f7e07963cb021d52806428412dd759a94584df7ebec36",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1260,
+   "name": "CabinAftStarboardSensor_plain",
+   "url": "/landing/detail/geom_1260.bin",
+   "vertex_count": 7349,
+   "index_count": 39300,
+   "sha256": "a34be2e2aed2304c45499f752af4e4bba500996097c8cf37931be431d429bdbb",
+   "note": "smoothed shading normals (73% of corners)"
+  },
+  {
+   "id": 1261,
+   "name": "CabinForeStarboardPickup_plain",
+   "url": "/landing/detail/geom_1261.bin",
+   "vertex_count": 1508,
+   "index_count": 4278,
+   "sha256": "e1c36430a713b96e1bf0e0c8a54f833a19218a19fa55e4e234adbf58cf57b3eb",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1262,
+   "name": "CabinPickupValve4_plain",
+   "url": "/landing/detail/geom_1262.bin",
+   "vertex_count": 618,
+   "index_count": 1740,
+   "sha256": "cb946845f7de7d7ed2785ade56a929946133ad528a7a74c2b6ac7177e6ff58dd",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1264,
+   "name": "CabinForeStarboardSensor_plain",
+   "url": "/landing/detail/geom_1264.bin",
+   "vertex_count": 7354,
+   "index_count": 39300,
+   "sha256": "6f46bd9f9e2b9f7a9837dd8f88f8d6b98c7000a6a7c614c90626bbbf9e94135d",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1265,
+   "name": "CabinDrainRack_plain",
+   "url": "/landing/detail/geom_1265.bin",
+   "vertex_count": 96,
+   "index_count": 180,
+   "sha256": "3d6ec4ffb5111d31dcba0d7f6bcad5b5ffe42cb4e829cf8c115da67075815014",
+   "note": "smoothed shading normals (56% of corners)"
+  },
+  {
+   "id": 1266,
+   "name": "CabinWetSelectorManifold_plain",
+   "url": "/landing/detail/geom_1266.bin",
+   "vertex_count": 5404,
+   "index_count": 16044,
+   "sha256": "4e1ff702ede2a87a184fed5377ee3be81f46970be4d3ab40c4386f631f452a5e",
+   "note": "smoothed shading normals (47% of corners)"
+  },
+  {
+   "id": 1267,
+   "name": "CabinPrimaryPump_plain",
+   "url": "/landing/detail/geom_1267.bin",
+   "vertex_count": 3475,
+   "index_count": 11514,
+   "sha256": "427ce9b68a2d7174639b223df9970b40227657a15e4984476c7e1439f6168a8d",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1269,
+   "name": "CabinPrimaryOutlet_plain",
+   "url": "/landing/detail/geom_1269.bin",
+   "vertex_count": 1174,
+   "index_count": 3780,
+   "sha256": "50b3f2c7e5d1372ac28ed4067205bd4716af7d6289eef11670b66f68d94a667a",
+   "note": "smoothed shading normals (42% of corners)"
+  },
+  {
+   "id": 1270,
+   "name": "CabinPrimarySiphonVent_plain",
+   "url": "/landing/detail/geom_1270.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "713be800a801d0c5f07bc8a61d903fde74a16fff68723c4ad9b8fc98694dd8d5",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1271,
+   "name": "CabinPrimaryVentGuard_plain",
+   "url": "/landing/detail/geom_1271.bin",
+   "vertex_count": 1059,
+   "index_count": 3648,
+   "sha256": "09968dea407929ed2b39cbbd435aea5b562a76592b808d03605737ad5313e0ac",
+   "note": "smoothed shading normals (36% of corners)"
+  },
+  {
+   "id": 1272,
+   "name": "CabinBackupPump_plain",
+   "url": "/landing/detail/geom_1272.bin",
+   "vertex_count": 3584,
+   "index_count": 12132,
+   "sha256": "365b1889d4d9d200acc47948920db1d7e10af75044893da6aa9e2610ff910d25",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1274,
+   "name": "CabinBackupOutlet_plain",
+   "url": "/landing/detail/geom_1274.bin",
+   "vertex_count": 1174,
+   "index_count": 3780,
+   "sha256": "c167429a7cda3b7993fe20df1111d1b11081f8825c2748b95d86caa88f283279",
+   "note": "smoothed shading normals (42% of corners)"
+  },
+  {
+   "id": 1275,
+   "name": "CabinBackupSiphonVent_plain",
+   "url": "/landing/detail/geom_1275.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "6b7545e311f07c42e41d95d50781f2007acf2448a92fa0741c4dfc30a23405a1",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1276,
+   "name": "CabinBackupVentGuard_plain",
+   "url": "/landing/detail/geom_1276.bin",
+   "vertex_count": 1059,
+   "index_count": 3648,
+   "sha256": "310ed475df8c3b91c5b1463c231dc16022cea6cfdf1baaaa767e0605e7fde333",
+   "note": "smoothed shading normals (36% of corners)"
+  },
+  {
+   "id": 1277,
+   "name": "CabinDrainConverter_plain",
+   "url": "/landing/detail/geom_1277.bin",
+   "vertex_count": 72,
+   "index_count": 132,
+   "sha256": "645c85169efb172f22ab53c7ee40eaf0dbf1a35a17ad6c40e20a676fb3a19d9d",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1278,
+   "name": "CabinDrainController_plain",
+   "url": "/landing/detail/geom_1278.bin",
+   "vertex_count": 48,
+   "index_count": 84,
+   "sha256": "6dfb004b387e4a03432ea08cd1795cdf7743da33d74f77cafe702ad402b5ebc7",
+   "note": "smoothed shading normals (57% of corners)"
+  },
+  {
+   "id": 1282,
+   "name": "CabinDrainCAN_plain",
+   "url": "/landing/detail/geom_1282.bin",
+   "vertex_count": 4775,
+   "index_count": 25314,
+   "sha256": "d1938342684c87ce9c8dc376dd885952830cbe96e3e8500b63a4c154eb16e2cb",
+   "note": "smoothed shading normals (24% of corners)"
+  },
+  {
+   "id": 1283,
+   "name": "CabinValve1Control_plain",
+   "url": "/landing/detail/geom_1283.bin",
+   "vertex_count": 5015,
+   "index_count": 26448,
+   "sha256": "74020c840165a12d8c9798922343887d4a7b354a76a24b0a981d54ba8606d8bd",
+   "note": "smoothed shading normals (65% of corners)"
+  },
+  {
+   "id": 1284,
+   "name": "CabinValve2Control_plain",
+   "url": "/landing/detail/geom_1284.bin",
+   "vertex_count": 5008,
+   "index_count": 26448,
+   "sha256": "3551a19e4937e7c57ba48b96867a9769f9e983d42aa225674007f2e9d737ff81",
+   "note": "smoothed shading normals (23% of corners)"
+  },
+  {
+   "id": 1285,
+   "name": "CabinValve3Control_plain",
+   "url": "/landing/detail/geom_1285.bin",
+   "vertex_count": 5007,
+   "index_count": 26448,
+   "sha256": "339117d9a477620c1dc609dab444e818969d1c3404481c99b9586dca21410ff7",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1286,
+   "name": "CabinValve4Control_plain",
+   "url": "/landing/detail/geom_1286.bin",
+   "vertex_count": 5005,
+   "index_count": 26448,
+   "sha256": "c6aee71ee0a3f235c7787d8c834ad8090a3a817705e4798d35a49ebe2264515d",
+   "note": "smoothed shading normals (23% of corners)"
+  },
+  {
+   "id": 1287,
+   "name": "ForePositiveClamps_plain",
+   "url": "/landing/detail/geom_1287.bin",
+   "vertex_count": 2690,
+   "index_count": 7560,
+   "sha256": "696676083b8d647974fafc64999322f1f2b3f24e1ed04346062b5b05b2efc3df",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1288,
+   "name": "ForeNegativeClamps_plain",
+   "url": "/landing/detail/geom_1288.bin",
+   "vertex_count": 2690,
+   "index_count": 7560,
+   "sha256": "ffbdaa44b31c889854585b4ce17c842b1d08e2edf86e6827fb1e13e53a95dd23",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1289,
+   "name": "AuxiliaryPowerClamps_plain",
+   "url": "/landing/detail/geom_1289.bin",
+   "vertex_count": 2650,
+   "index_count": 7440,
+   "sha256": "4836faf82c5b47436d63642d7375e5f37185433e4a784de20aaa85ab01ed7ce2",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1290,
+   "name": "AftLidHarnessClamps_plain",
+   "url": "/landing/detail/geom_1290.bin",
+   "vertex_count": 522,
+   "index_count": 1464,
+   "sha256": "da64c0c2f6b5379a99706d460de8905a96e5f2cbac43390bae5e8cec47aa87e2",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1291,
+   "name": "ForeLidHarnessClamps_plain",
+   "url": "/landing/detail/geom_1291.bin",
+   "vertex_count": 3738,
+   "index_count": 10584,
+   "sha256": "088e7f7a773f79b3868a8f8ff8e28f7cf7255f413f8198e5bebd1b93141fe6c2",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1292,
+   "name": "MCU_ActuatorBackboneClamps_plain",
+   "url": "/landing/detail/geom_1292.bin",
+   "vertex_count": 2670,
+   "index_count": 7560,
+   "sha256": "100ddf65f5e45ba9f70869585553801051017880d96bdfb26e8dee43da9bba62",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1293,
+   "name": "DockCameraUSBClamps_plain",
+   "url": "/landing/detail/geom_1293.bin",
+   "vertex_count": 1068,
+   "index_count": 3024,
+   "sha256": "4518cca90703f5f8c5ceb5c4cae4dee05c32381ed85c6fa68bd8ce4c98706aa8",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1294,
+   "name": "GNSSCoaxClamps_plain",
+   "url": "/landing/detail/geom_1294.bin",
+   "vertex_count": 2650,
+   "index_count": 7500,
+   "sha256": "15296ab84dc018a343ed60f92f5484cf707da741847c9480ea34065cf774c421",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1295,
+   "name": "SafetyLoopContactorClamps_plain",
+   "url": "/landing/detail/geom_1295.bin",
+   "vertex_count": 2650,
+   "index_count": 7500,
+   "sha256": "766b63c6801ebb35cc4633c95b1f5ab83f363fa5f0c064798aab18e646a8e6d0",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1296,
+   "name": "HullAccentStripe_plain",
+   "url": "/landing/detail/geom_1296.bin",
+   "vertex_count": 538,
+   "index_count": 1530,
+   "sha256": "88e1a442758ac12437778f69ae71e1d26a58352683639ffe5c0215e2a2df8049",
+   "note": "smoothed shading normals (38% of corners)"
+  },
+  {
+   "id": 1297,
+   "name": "PortRubRail_textured",
+   "url": "/landing/detail/geom_1297.bin",
+   "vertex_count": 627,
+   "index_count": 1914,
+   "sha256": "ae0c7e4f25d325bf6b1eca2a040c16241ad1843792f2eeee7f1a87721fde42ec",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1298,
+   "name": "PortDeckGrip_plain",
+   "url": "/landing/detail/geom_1298.bin",
+   "vertex_count": 20,
+   "index_count": 30,
+   "sha256": "79cab6cdbd37c4b99a2e2763648c6c862b9076262aff2d70598c1c16faef87da",
+   "note": "smoothed shading normals (60% of corners)"
+  },
+  {
+   "id": 1300,
+   "name": "PortAccentStripe_plain",
+   "url": "/landing/detail/geom_1300.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "ef1c272f720ce5849c5573aa96c86cf9325a908853473084e757c99b931a59b6",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1301,
+   "name": "PortNavigationLight_plain",
+   "url": "/landing/detail/geom_1301.bin",
+   "vertex_count": 520,
+   "index_count": 1500,
+   "sha256": "2d74b6737ab595fc0f8df5d14f42ebb3a6578f33f1f287148d4e7311d3b7a5b7",
+   "note": "smoothed shading normals (42% of corners)"
+  },
+  {
+   "id": 1303,
+   "name": "StarboardRubRail_textured",
+   "url": "/landing/detail/geom_1303.bin",
+   "vertex_count": 632,
+   "index_count": 1920,
+   "sha256": "e6a114da857639747717782e4bbdb03073eb8e3e32fbe75b7b161d72acd13c95",
+   "note": "smoothed shading normals (43% of corners)"
+  },
+  {
+   "id": 1304,
+   "name": "StarboardDeckGrip_plain",
+   "url": "/landing/detail/geom_1304.bin",
+   "vertex_count": 20,
+   "index_count": 30,
+   "sha256": "e38e458dccdac8db40a29f17a91c7d09055f7a13408213f9058c08852bd1bfe1",
+   "note": "smoothed shading normals (60% of corners)"
+  },
+  {
+   "id": 1306,
+   "name": "StarboardAccentStripe_plain",
+   "url": "/landing/detail/geom_1306.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "b56bc92c548a15e3e9a192cb3e974af9e75c603071f132c7cf327becab9cb0b9",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1307,
+   "name": "StarboardNavigationLight_plain",
+   "url": "/landing/detail/geom_1307.bin",
+   "vertex_count": 520,
+   "index_count": 1500,
+   "sha256": "6729c4c088ba1fc92afa0234858ad046f621ab9b5730f11e9f136317f58f911f",
+   "note": "smoothed shading normals (42% of corners)"
+  },
+  {
+   "id": 1308,
+   "name": "StarboardLightFeed_plain",
+   "url": "/landing/detail/geom_1308.bin",
+   "vertex_count": 3825,
+   "index_count": 20022,
+   "sha256": "48c43a16fb25a32ef1ae1516ff55464d4a27474e1a1234c42285555fbac94fed",
+   "note": "smoothed shading normals (22% of corners)"
+  },
+  {
+   "id": 1309,
+   "name": "Speedometer_plain",
+   "url": "/landing/detail/geom_1309.bin",
+   "vertex_count": 520,
+   "index_count": 1500,
+   "sha256": "d701a9f93313c5d6b1aa79d55e658d251591478ddeaa74f86ce3adc4e86ad6ae",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1310,
+   "name": "SpeedometerTicks_plain",
+   "url": "/landing/detail/geom_1310.bin",
+   "vertex_count": 4481,
+   "index_count": 11904,
+   "sha256": "eccb0c0383ae3a6495ca5162e1d3995a0791130277291d0314a833cfcf45ccce",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1311,
+   "name": "SpeedDisplayFeed_plain",
+   "url": "/landing/detail/geom_1311.bin",
+   "vertex_count": 3813,
+   "index_count": 20022,
+   "sha256": "b9187f82c7807e9bc6387a01e745251365d56fa3586a0ded6229aaa91c9e1e66",
+   "note": "smoothed shading normals (22% of corners)"
+  },
+  {
+   "id": 1312,
+   "name": "LidAftClosed_plain",
+   "url": "/landing/detail/geom_1312.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "e6676c243f2daf5e851ebd889d7d4ec06cde26c281bfa4ed3f4031d91d350bb3",
+   "note": "smoothed shading normals (83% of corners)"
+  },
+  {
+   "id": 1313,
+   "name": "LidAftClosedWire_plain",
+   "url": "/landing/detail/geom_1313.bin",
+   "vertex_count": 4973,
+   "index_count": 26448,
+   "sha256": "c6c878cdd4bc5b123ca89cf6694758db16d4050cedfe47645d007269d85cb5e2",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1314,
+   "name": "LidAftOpen_plain",
+   "url": "/landing/detail/geom_1314.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "54c7583fd2db8166efd4153634d9d3481f7443012fe3a6647868fa2f35fa6604",
+   "note": "smoothed shading normals (83% of corners)"
+  },
+  {
+   "id": 1315,
+   "name": "LidAftOpenWire_plain",
+   "url": "/landing/detail/geom_1315.bin",
+   "vertex_count": 4973,
+   "index_count": 26448,
+   "sha256": "7faef478b9ef05f9b8e4c8329995402347573ac23f7272ba7b0cebf2211cd738",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1316,
+   "name": "LidForeClosed_plain",
+   "url": "/landing/detail/geom_1316.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "6691e2814752fc4242beef3293cc23a73e0e94d0014f8c64fecb62eb48b22bba",
+   "note": "smoothed shading normals (83% of corners)"
+  },
+  {
+   "id": 1317,
+   "name": "LidForeClosedWire_plain",
+   "url": "/landing/detail/geom_1317.bin",
+   "vertex_count": 4973,
+   "index_count": 26448,
+   "sha256": "8a2c17db5e99cd2b5da708afa973e52a8d6285a52dd2f5f636945076c25e5771",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1318,
+   "name": "LidForeOpen_plain",
+   "url": "/landing/detail/geom_1318.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "11cedbf5c841484f11bbfb4373754fb871aff2c17eabe8f2db062460198e5658",
+   "note": "smoothed shading normals (83% of corners)"
+  },
+  {
+   "id": 1319,
+   "name": "LidForeOpenWire_plain",
+   "url": "/landing/detail/geom_1319.bin",
+   "vertex_count": 4973,
+   "index_count": 26448,
+   "sha256": "d44c7abdef52a814079d987139272bf0ca3234a1a186ee3faf6b8d911e0d5a5e",
+   "note": "smoothed shading normals (44% of corners)"
+  },
+  {
+   "id": 1320,
+   "name": "LiftLowerLimit_plain",
+   "url": "/landing/detail/geom_1320.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "401c0043b0439c775ce5c7bf910700be88d1f9c1a4c54965dd5886e11c06ab5a",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1321,
+   "name": "LiftLowerLimitWire_plain",
+   "url": "/landing/detail/geom_1321.bin",
+   "vertex_count": 3795,
+   "index_count": 20022,
+   "sha256": "b061ce044640bc00a67abd49ded0b229a414f590754a83c27d2041a57dac5b9a",
+   "note": "smoothed shading normals (58% of corners)"
+  },
+  {
+   "id": 1322,
+   "name": "LiftUpperLimit_plain",
+   "url": "/landing/detail/geom_1322.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "186b46b360d7ea00f3e2ed19f1705322991ad7d2402a1c6c90f3051f5fe9fd7b",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1323,
+   "name": "LiftUpperLimitWire_plain",
+   "url": "/landing/detail/geom_1323.bin",
+   "vertex_count": 3795,
+   "index_count": 20022,
+   "sha256": "f9c50f7e33e238486d5d4788587a5ca42d590fff792871cdea01fefe088ec8d6",
+   "note": "smoothed shading normals (58% of corners)"
+  },
+  {
+   "id": 1324,
+   "name": "FrameLoadPathsCableLiners_plain",
+   "url": "/landing/detail/geom_1324.bin",
+   "vertex_count": 67651,
+   "index_count": 306753,
+   "sha256": "7e1da8096661dfd0cce6e07d545e38d95163fa6e489c778be099a252f186031b",
+   "note": "smoothed shading normals (14% of corners)"
+  },
+  {
+   "id": 1325,
+   "name": "DockTrunkCableLiners_plain",
+   "url": "/landing/detail/geom_1325.bin",
+   "vertex_count": 2282,
+   "index_count": 9870,
+   "sha256": "8010db18bbdb38eb88c668082dfcbbc4467409690851b7fefd7b9cccb4f21bdd",
+   "note": "smoothed shading normals (21% of corners)"
+  },
+  {
+   "id": 1326,
+   "name": "SeparatedCableTraysCableLiners_plain",
+   "url": "/landing/detail/geom_1326.bin",
+   "vertex_count": 8535,
+   "index_count": 31824,
+   "sha256": "574bc8bbe77ce9d35cb721b92264d5c62bc6bf0fedc363d24de02d93e8170473",
+   "note": "smoothed shading normals (29% of corners)"
+  },
+  {
+   "id": 1327,
+   "name": "PowerShelfCableLiners_plain",
+   "url": "/landing/detail/geom_1327.bin",
+   "vertex_count": 536,
+   "index_count": 1560,
+   "sha256": "3cad4e50f92e42e4140b6d813d09e3f4c8f8cd3ada15c823cbbe773e7103ae17",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1328,
+   "name": "ActuatorDriverMountCableLiners_plain",
+   "url": "/landing/detail/geom_1328.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "309e44d00801b4a0eaac69b5f7c1745e4a5803e203d3f0e786229cccae861f13",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1329,
+   "name": "CameraMastBackingCableLiners_plain",
+   "url": "/landing/detail/geom_1329.bin",
+   "vertex_count": 156,
+   "index_count": 420,
+   "sha256": "9d6dcec6549a302f2009a6714c733acc985455a2a3d1323e722b8e06f60a00e2",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1330,
+   "name": "CameraMastCableLiners_plain",
+   "url": "/landing/detail/geom_1330.bin",
+   "vertex_count": 1570,
+   "index_count": 6444,
+   "sha256": "d62d43bfe4b9103c10405bb8b52a3ede8ae2fa9bfafc01ce37e9a214afbbdc81",
+   "note": "smoothed shading normals (20% of corners)"
+  },
+  {
+   "id": 1331,
+   "name": "NavigationCameraMountCableLiners_plain",
+   "url": "/landing/detail/geom_1331.bin",
+   "vertex_count": 1176,
+   "index_count": 4986,
+   "sha256": "ed7d460a1686d3ef19334adc95f3cfc3ab7822cc43ec51b02f7e5da29abe8a97",
+   "note": "smoothed shading normals (21% of corners)"
+  },
+  {
+   "id": 1332,
+   "name": "DockCameraHousingCableLiners_plain",
+   "url": "/landing/detail/geom_1332.bin",
+   "vertex_count": 552,
+   "index_count": 1608,
+   "sha256": "28d3e8b192b7f1d3dee8f8301c344bbc399335df6b2ed9a94388c56080fe310f",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1333,
+   "name": "NavigationCameraHousingCableLiners_plain",
+   "url": "/landing/detail/geom_1333.bin",
+   "vertex_count": 1562,
+   "index_count": 7074,
+   "sha256": "44c27f34fda63e1095d766c7d7e8bbe26c11bcea0be98d1e35773f1429727179",
+   "note": "smoothed shading normals (23% of corners)"
+  },
+  {
+   "id": 1354,
+   "name": "LandingPlatform_plain",
+   "url": "/landing/detail/geom_1354.bin",
+   "vertex_count": 208,
+   "index_count": 606,
+   "sha256": "0f8748f865faab83aacc0d6ee8802f1f5987ea32fc2e012b339eb8340cdb49bd",
+   "note": "smoothed shading normals (29% of corners)"
+  },
+  {
+   "id": 1356,
+   "name": "PlatformCarriage_plain",
+   "url": "/landing/detail/geom_1356.bin",
+   "vertex_count": 1304,
+   "index_count": 3540,
+   "sha256": "78bf39eb41b9257cf59d0bd2f5d0bd6f562e304bbf09c9e6366d1b623217037d",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1357,
+   "name": "LiftGuideNuts_plain",
+   "url": "/landing/detail/geom_1357.bin",
+   "vertex_count": 2080,
+   "index_count": 6048,
+   "sha256": "531478416e423c31eb0db00d0f70eb887fc988d0f2d625aeb9ff9e30d29eb67b",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1358,
+   "name": "Guide1Arm_plain",
+   "url": "/landing/detail/geom_1358.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "e1b7a7607a072719192c6ddcfbc72e0260dd14725075cf778d03911e3cf71c75",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1359,
+   "name": "Guide1Bushing_plain",
+   "url": "/landing/detail/geom_1359.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "b2c40da5ed74f213d9b76aa35c44e1bfb716fa9c659ada712ef69a6bd6041405",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1360,
+   "name": "Guide2Arm_plain",
+   "url": "/landing/detail/geom_1360.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "8b747dcb268c47986519b83499d55743f99004284cbddd2094266b240e4fa33d",
+   "note": "smoothed shading normals (55% of corners)"
+  },
+  {
+   "id": 1361,
+   "name": "Guide2Bushing_plain",
+   "url": "/landing/detail/geom_1361.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "cb9f4f4b298330372f4dcbf3d24463519a672def981997efe728d37e6dcdc401",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1362,
+   "name": "Guide3Arm_plain",
+   "url": "/landing/detail/geom_1362.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "57e37056fb2a673f881ada4ccdbc1118a0a8d16ff1254676c6b8bbe73728b307",
+   "note": "smoothed shading normals (54% of corners)"
+  },
+  {
+   "id": 1363,
+   "name": "Guide3Bushing_plain",
+   "url": "/landing/detail/geom_1363.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "957973203c5c219899da92a8310bccba5026740effb170bedb5638ebcbf2c431",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1364,
+   "name": "Guide4Arm_plain",
+   "url": "/landing/detail/geom_1364.bin",
+   "vertex_count": 284,
+   "index_count": 804,
+   "sha256": "aa269c38c9d3e505681c547ff6adedb4047bbce721e67299b7e5df6c0e1ac970",
+   "note": "smoothed shading normals (50% of corners)"
+  },
+  {
+   "id": 1365,
+   "name": "Guide4Bushing_plain",
+   "url": "/landing/detail/geom_1365.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "abc01a527010f8861772debaf22a60b06c9c1890f132ecd2c7b538464f6e1226",
+   "note": "smoothed shading normals (52% of corners)"
+  },
+  {
+   "id": 1366,
+   "name": "LandingGrip_plain",
+   "url": "/landing/detail/geom_1366.bin",
+   "vertex_count": 40,
+   "index_count": 72,
+   "sha256": "495ff4a3b68e57cb884df426d9408c2c6b9910e8e395ed7a3e5df2848a7c3757",
+   "note": "smoothed shading normals (56% of corners)"
+  },
+  {
+   "id": 1368,
+   "name": "LandingTarget_plain",
+   "url": "/landing/detail/geom_1368.bin",
+   "vertex_count": 120,
+   "index_count": 228,
+   "sha256": "24de023ff7ffe7baf9aa2c7323d94ec3c37c20d56bd1a1821cf30d4ce957e9bd",
+   "note": "smoothed shading normals (53% of corners)"
+  },
+  {
+   "id": 1370,
+   "name": "LiftLimitMagnet_plain",
+   "url": "/landing/detail/geom_1370.bin",
+   "vertex_count": 286,
+   "index_count": 798,
+   "sha256": "bce0d6ac05c022f1dd695e6811a4d502d0ecc19ad5e7e27093c2f08741cf9797",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1384,
+   "name": "AftSlidingLid_textured",
+   "url": "/landing/detail/geom_1384.bin",
+   "vertex_count": 744,
+   "index_count": 1980,
+   "sha256": "b4aa1901460e93eddf6a994d2854de986ba0cef45993404721ebc35aa748d130",
+   "note": "smoothed shading normals (55% of corners)"
+  },
+  {
+   "id": 1385,
+   "name": "AftLidGraphics_plain",
+   "url": "/landing/detail/geom_1385.bin",
+   "vertex_count": 72,
+   "index_count": 108,
+   "sha256": "403644ff15bd45af003f1dfbb2468e3a5475a2fecdf7b15934e582654402f993",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1386,
+   "name": "AftLidLimitMagnet_plain",
+   "url": "/landing/detail/geom_1386.bin",
+   "vertex_count": 286,
+   "index_count": 798,
+   "sha256": "c5c95ff42b270433fca9b4bfa13ead67ae5e148df49ddc6912dcff6db1632531",
+   "note": "smoothed shading normals (46% of corners)"
+  },
+  {
+   "id": 1388,
+   "name": "ForeSlidingLid_textured",
+   "url": "/landing/detail/geom_1388.bin",
+   "vertex_count": 744,
+   "index_count": 1980,
+   "sha256": "7b6e75034a809b509e3c57d2046816d4a1d634eb65ac2a2d1909294f4667f3d3",
+   "note": "smoothed shading normals (55% of corners)"
+  },
+  {
+   "id": 1389,
+   "name": "ForeLidGraphics_plain",
+   "url": "/landing/detail/geom_1389.bin",
+   "vertex_count": 72,
+   "index_count": 108,
+   "sha256": "db84dd463a616c87a399afe762605e56b285d6a53f28a3f5f4fddfaf116f0738",
+   "note": "smoothed shading normals (67% of corners)"
+  },
+  {
+   "id": 1390,
+   "name": "ForeLidLimitMagnet_plain",
+   "url": "/landing/detail/geom_1390.bin",
+   "vertex_count": 286,
+   "index_count": 798,
+   "sha256": "7e92daf31394b55ea211ab243a9ca301a41d4cfbd7c7fa429356ab45dbb6eed4",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1392,
+   "name": "PortPropShaft_plain",
+   "url": "/landing/detail/geom_1392.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "443994e1d1a6f92127f156223e8ad09c382b9b728dc09010ae9e0d1a9ded4db7",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1393,
+   "name": "PortPropeller_plain",
+   "url": "/landing/detail/geom_1393.bin",
+   "vertex_count": 818,
+   "index_count": 2310,
+   "sha256": "df51612ed983849af3e3ac6ae4eed777f9c6f2674cbc7b9329fbb69e32a2cf61",
+   "note": "smoothed shading normals (58% of corners)"
+  },
+  {
+   "id": 1394,
+   "name": "StarboardPropShaft_plain",
+   "url": "/landing/detail/geom_1394.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "443994e1d1a6f92127f156223e8ad09c382b9b728dc09010ae9e0d1a9ded4db7",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1395,
+   "name": "StarboardPropeller_plain",
+   "url": "/landing/detail/geom_1395.bin",
+   "vertex_count": 818,
+   "index_count": 2310,
+   "sha256": "936acadc3211ad017ddb6cced7ec3f9b6a864a2e03ca0343f1d521a8e81b6804",
+   "note": "smoothed shading normals (59% of corners)"
+  },
+  {
+   "id": 1396,
+   "name": "PortCoupling_plain",
+   "url": "/landing/detail/geom_1396.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "cae9e8bc34cbb339c5f2bec1d2869b5520a43b1d2b5d0b85614610d416f03a52",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1397,
+   "name": "PortUpperDriveShaft_plain",
+   "url": "/landing/detail/geom_1397.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "6896313f8493eb57d2f3b828477b6b99a3ab1302c8a8e25f25793d895b052fe8",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1398,
+   "name": "StarboardCoupling_plain",
+   "url": "/landing/detail/geom_1398.bin",
+   "vertex_count": 520,
+   "index_count": 1512,
+   "sha256": "cae9e8bc34cbb339c5f2bec1d2869b5520a43b1d2b5d0b85614610d416f03a52",
+   "note": "smoothed shading normals (51% of corners)"
+  },
+  {
+   "id": 1399,
+   "name": "StarboardUpperDriveShaft_plain",
+   "url": "/landing/detail/geom_1399.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "6896313f8493eb57d2f3b828477b6b99a3ab1302c8a8e25f25793d895b052fe8",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1400,
+   "name": "PortDropShaft_plain",
+   "url": "/landing/detail/geom_1400.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "2d9944f1e7fff54c3df1a3b5ad60d9ec852db7e95c3338afa04f848291f07ae0",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1401,
+   "name": "PortUpperBevelGear_plain",
+   "url": "/landing/detail/geom_1401.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "3fc3da1c8fca677104d067236bac0f1799858bbe3cd1fe9575ec3c19ed4c1428",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1402,
+   "name": "PortLowerBevelGear_plain",
+   "url": "/landing/detail/geom_1402.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "76c953ae1ddcd9b5b90384653eda40db6019260e705bbd02ef5a02c51a011914",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1403,
+   "name": "StarboardDropShaft_plain",
+   "url": "/landing/detail/geom_1403.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "2d9944f1e7fff54c3df1a3b5ad60d9ec852db7e95c3338afa04f848291f07ae0",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1404,
+   "name": "StarboardUpperBevelGear_plain",
+   "url": "/landing/detail/geom_1404.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "3fc3da1c8fca677104d067236bac0f1799858bbe3cd1fe9575ec3c19ed4c1428",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1405,
+   "name": "StarboardLowerBevelGear_plain",
+   "url": "/landing/detail/geom_1405.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "76c953ae1ddcd9b5b90384653eda40db6019260e705bbd02ef5a02c51a011914",
+   "note": "smoothed shading normals (40% of corners)"
+  },
+  {
+   "id": 1406,
+   "name": "SpeedNeedle_plain",
+   "url": "/landing/detail/geom_1406.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "f37aae72feb2752c431028f3486d1809c0d4e34b26ab6760a3c19d3788c2282e",
+   "note": "smoothed shading normals (69% of corners)"
+  },
+  {
+   "id": 1407,
+   "name": "LiftScrew1_plain",
+   "url": "/landing/detail/geom_1407.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "e5c76e96852809524d60013eff4b5fe7d73be7e286e63ef1006cf2c216162bf4",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1408,
+   "name": "LiftScrew2_plain",
+   "url": "/landing/detail/geom_1408.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "e5c76e96852809524d60013eff4b5fe7d73be7e286e63ef1006cf2c216162bf4",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1409,
+   "name": "LiftScrew3_plain",
+   "url": "/landing/detail/geom_1409.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "c9f7647c7507bdac7ee34b9db6afdbf99e69167648caacb951148ccad541020e",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1410,
+   "name": "LiftScrew4_plain",
+   "url": "/landing/detail/geom_1410.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "c9f7647c7507bdac7ee34b9db6afdbf99e69167648caacb951148ccad541020e",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1411,
+   "name": "AftLidScrew_plain",
+   "url": "/landing/detail/geom_1411.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "688f0038a93faff1bb2898936dbebb3c6973c80632b51adabf636827606f3d93",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1412,
+   "name": "ForeLidScrew_plain",
+   "url": "/landing/detail/geom_1412.bin",
+   "vertex_count": 260,
+   "index_count": 744,
+   "sha256": "688f0038a93faff1bb2898936dbebb3c6973c80632b51adabf636827606f3d93",
+   "note": "smoothed shading normals (49% of corners)"
+  },
+  {
+   "id": 1435,
+   "name": "drone_LinkGroup005__Solid006",
+   "url": "/landing/detail/geom_1435.bin",
+   "vertex_count": 4932,
+   "index_count": 16572,
+   "sha256": "32f703ad57348a894d87832b343f0b8920234944b67bb111dde0745608119ebb",
+   "note": "CAD 25098 -> 5524 tris (trained 2636), frame from cut-down mesh bba0035be5d7628c.obj"
+  },
+  {
+   "id": 1436,
+   "name": "drone_LinkGroup005__Link",
+   "url": "/landing/detail/geom_1436.bin",
+   "vertex_count": 4932,
+   "index_count": 16572,
+   "sha256": "65073070c4200af3a98bf499954abd0f7aa9b99a1c08098907cd90df25175879",
+   "note": "CAD 25098 -> 5524 tris (trained 2636), frame from cut-down mesh 24b5ab9699d7b5ab.obj"
+  },
+  {
+   "id": 1437,
+   "name": "drone_LinkGroup005__Solid007",
+   "url": "/landing/detail/geom_1437.bin",
+   "vertex_count": 1440,
+   "index_count": 5994,
+   "sha256": "dd333b4f71e6c17f0a30a4af41bdc095d42b1e5dedf2789f179ff3faf8f4d9b5",
+   "note": "CAD 2270 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1438,
+   "name": "drone_LinkGroup005__Link001",
+   "url": "/landing/detail/geom_1438.bin",
+   "vertex_count": 1440,
+   "index_count": 5994,
+   "sha256": "0f74120c9a31d49f5a66c3f98198c4d55e08a8bbb5b0c4ca8ede752746613f0f",
+   "note": "CAD 2270 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1439,
+   "name": "drone_LinkGroup005__Solid008",
+   "url": "/landing/detail/geom_1439.bin",
+   "vertex_count": 2662,
+   "index_count": 6000,
+   "sha256": "f05b8ac4bb893827a6bc21b189aefd44521167b2da4a213c66cbdaab71a19a7f",
+   "note": "CAD 34550 -> 2000 tris (trained 400), frame from cut-down mesh 794559805dfc736b.obj"
+  },
+  {
+   "id": 1440,
+   "name": "drone_LinkGroup005__Solid009",
+   "url": "/landing/detail/geom_1440.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "687f4a2283206a26c8d145fdd5041c6bbacbc15e8a6dc8f3019f6ceceafc48dd",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1441,
+   "name": "drone_LinkGroup005__Solid010",
+   "url": "/landing/detail/geom_1441.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "218312b1561ebf48213a1e85f44e0061202ac03a138c886a03e4e7313a4d63a3",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 449584f1275c3900.obj"
+  },
+  {
+   "id": 1442,
+   "name": "drone_LinkGroup005__Link002",
+   "url": "/landing/detail/geom_1442.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "58b7fff20a4a62490bbaefe6f043bcd092a71a7cb7585fbabbd3ab1b03e1ece6",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 1679f1d95bc6422f.obj"
+  },
+  {
+   "id": 1443,
+   "name": "drone_LinkGroup005__Link003",
+   "url": "/landing/detail/geom_1443.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "6cc4a56c6a5be8b181a0da1b528a5262ef7f847a98eed04f1bf01fce59c12110",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1444,
+   "name": "drone_LinkGroup005__Link004",
+   "url": "/landing/detail/geom_1444.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "667ea1d0d520534982f0868463d68c2c229c9a4ab5e08fdfd9b058a6455aed35",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1445,
+   "name": "drone_LinkGroup005__Link005",
+   "url": "/landing/detail/geom_1445.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "272b5903f35852a6ce9612387bec41d4826e8bee88fad8e92c8137f97826eb69",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1446,
+   "name": "drone_LinkGroup005__Solid011",
+   "url": "/landing/detail/geom_1446.bin",
+   "vertex_count": 2547,
+   "index_count": 6000,
+   "sha256": "83e02313761d765232f6e92e4e07713f757a26c0f0dc3154683ecd6663681bd0",
+   "note": "CAD 29324 -> 2000 tris (trained 400), frame from cut-down mesh 5bed476c89f4d356.obj"
+  },
+  {
+   "id": 1451,
+   "name": "drone_LinkGroup005__Link010",
+   "url": "/landing/detail/geom_1451.bin",
+   "vertex_count": 4932,
+   "index_count": 16572,
+   "sha256": "641f0e9e34c579d98e9f6fd8510ea4094081dfc25f67f9b5eeeb61d56e6c61b2",
+   "note": "CAD 25098 -> 5524 tris (trained 2636), frame from cut-down mesh 998088bf2061456d.obj"
+  },
+  {
+   "id": 1452,
+   "name": "drone_LinkGroup005__Link011",
+   "url": "/landing/detail/geom_1452.bin",
+   "vertex_count": 4932,
+   "index_count": 16572,
+   "sha256": "16c9ea323f5ad27a3ded1d4ccb09881902ac1fc7ad230d535b43e4b147045624",
+   "note": "CAD 25098 -> 5524 tris (trained 2636), frame from cut-down mesh 1883a039a60d5c11.obj"
+  },
+  {
+   "id": 1453,
+   "name": "drone_LinkGroup005__Link012",
+   "url": "/landing/detail/geom_1453.bin",
+   "vertex_count": 1441,
+   "index_count": 5994,
+   "sha256": "a3132ffacb4a6d274293cb2535447f67890c22a541fb339f8a2d1ca4d504c8c1",
+   "note": "CAD 2270 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1454,
+   "name": "drone_LinkGroup005__Link013",
+   "url": "/landing/detail/geom_1454.bin",
+   "vertex_count": 1440,
+   "index_count": 5994,
+   "sha256": "9f3de04b82228f829d37ff9853dc5f760b28eed6f18aeb4681ace969359ba29a",
+   "note": "CAD 2270 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1455,
+   "name": "drone_LinkGroup005__Link014",
+   "url": "/landing/detail/geom_1455.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "3dacca9c7bfcfb035d8ab38b05aaab9a5eaa8ed54e6efad3a8b78a0c1c9221f0",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1456,
+   "name": "drone_LinkGroup005__Link015",
+   "url": "/landing/detail/geom_1456.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "9c6e843aa6d022546a71c04920a235d473e9f72078f0d2567cdfc43dc3be266a",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1457,
+   "name": "drone_LinkGroup005__Link016",
+   "url": "/landing/detail/geom_1457.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "340ce92f5e2e10ed48f7409ae3aee26a67c2eae85e03d75343f3eaf66502ef07",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1458,
+   "name": "drone_LinkGroup005__Link017",
+   "url": "/landing/detail/geom_1458.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "14ca82f83833cb2252af4350b73369bd5661d12daf72e7f04281d2b6d1562930",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 0bc730adc40f91c9.obj"
+  },
+  {
+   "id": 1459,
+   "name": "drone_LinkGroup005__Link018",
+   "url": "/landing/detail/geom_1459.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "aea18b9f0c62e065f236fc83531c5ebae94cc3574e99392114a5662862d8e87e",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh a58739545b446409.obj"
+  },
+  {
+   "id": 1460,
+   "name": "drone_LinkGroup005__Link019",
+   "url": "/landing/detail/geom_1460.bin",
+   "vertex_count": 2547,
+   "index_count": 6000,
+   "sha256": "593ae44b128e63b7c5aca2af6cd9a432d355d4011e38bcc7fbf28457d5d92311",
+   "note": "CAD 29324 -> 2000 tris (trained 400), frame from cut-down mesh 4252ef2b9e537006.obj"
+  },
+  {
+   "id": 1461,
+   "name": "drone_LinkGroup005__Link020",
+   "url": "/landing/detail/geom_1461.bin",
+   "vertex_count": 2662,
+   "index_count": 6000,
+   "sha256": "3181693734293668cc95cca8331ada7d798f76279b4a6c5d3425e6b8a6be026f",
+   "note": "CAD 34550 -> 2000 tris (trained 400), frame from cut-down mesh cfeb4ec1625d1053.obj"
+  },
+  {
+   "id": 1462,
+   "name": "drone_LinkGroup005__Link021",
+   "url": "/landing/detail/geom_1462.bin",
+   "vertex_count": 2011,
+   "index_count": 6000,
+   "sha256": "1b14feb9f1432980d64d28b34babe20e99aa75d23f78e6fa1745f0fdb0bf4d9e",
+   "note": "CAD 5276 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1469,
+   "name": "drone_LinkGroup005__LinkGroup__Solid017",
+   "url": "/landing/detail/geom_1469.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "10011aee460855a0942a5bf742ab17627606534192a1620f982c16e6e7064d25",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh e588cfedfcd7c2f3.obj"
+  },
+  {
+   "id": 1470,
+   "name": "drone_LinkGroup005__LinkGroup__Link023",
+   "url": "/landing/detail/geom_1470.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "ee6fae8473ec881fb9b9f556e971690ff506d104bcd3ff2b107dd4cd25858386",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 449018ae445b159b.obj"
+  },
+  {
+   "id": 1471,
+   "name": "drone_LinkGroup005__LinkGroup__Link024",
+   "url": "/landing/detail/geom_1471.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "06247767fd00f8d9f809ef06f72a06dd02c414542131ae0ed2da8eaae835ed54",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 61b95d881af55532.obj"
+  },
+  {
+   "id": 1472,
+   "name": "drone_LinkGroup005__LinkGroup__Link025",
+   "url": "/landing/detail/geom_1472.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "0733c94f4695e01821a250209bae2ab8333a590cd421cdc5dd03ca72329dfef8",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 1e587d7a76c4ae23.obj"
+  },
+  {
+   "id": 1473,
+   "name": "drone_LinkGroup005__LinkGroup__Solid018",
+   "url": "/landing/detail/geom_1473.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "26d863d547b2fd0e4d95db9595f1a130bff04ac7523616476d5618898dc571cb",
+   "note": "CAD 56616 -> 1998 tris (trained 416), frame from cut-down mesh 395308decb772c73.obj"
+  },
+  {
+   "id": 1474,
+   "name": "drone_LinkGroup005__LinkGroup__Link026",
+   "url": "/landing/detail/geom_1474.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "88bc6fe6501eff46cbcee7244e70fcebd0d23b0cf46ecb223c67f3a26ac69c29",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 14d00923446581ec.obj"
+  },
+  {
+   "id": 1475,
+   "name": "drone_LinkGroup005__LinkGroup__Link027",
+   "url": "/landing/detail/geom_1475.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "92015cebc431048394dd561473cd3945afd914b78d390b9f5b9728e5f52858f6",
+   "note": "CAD 56616 -> 1998 tris (trained 430), frame from cut-down mesh 1707c9fda876edae.obj"
+  },
+  {
+   "id": 1476,
+   "name": "drone_LinkGroup005__LinkGroup__Link028",
+   "url": "/landing/detail/geom_1476.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "bac473d6137ad19563c09de0a691d37910bf20e44614f7eb6c2a3a415707326a",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 269e17ac867ecd43.obj"
+  },
+  {
+   "id": 1477,
+   "name": "drone_LinkGroup005__LinkGroup__Solid019",
+   "url": "/landing/detail/geom_1477.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "84f5d1e1a14f8e80b89809b458ef815f820fa9b2d518a49833d747457b64361e",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 1bcdc4f61b55e7c6.obj"
+  },
+  {
+   "id": 1478,
+   "name": "drone_LinkGroup005__LinkGroup__Link029",
+   "url": "/landing/detail/geom_1478.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "ca10f0964b8da1600c0c48ab1452bf3273ab5346183cb70013ac0428d27bd254",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 157cacbd1a35ff09.obj"
+  },
+  {
+   "id": 1479,
+   "name": "drone_LinkGroup005__LinkGroup__Solid020",
+   "url": "/landing/detail/geom_1479.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "130c3c83611d73ae28d9c0f2f09eecdc5a2f89c60d4e035ce5f2b3fdcbec6686",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh a1e66e0cdb996c5c.obj"
+  },
+  {
+   "id": 1480,
+   "name": "drone_LinkGroup005__LinkGroup__Link030",
+   "url": "/landing/detail/geom_1480.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "dfc692ebd12f796c162279d6d7a6ac0580c94abe6f7f0a27d8cbe6dfb0b9e07c",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 158ffb4e5e75d63a.obj"
+  },
+  {
+   "id": 1481,
+   "name": "drone_LinkGroup005__LinkGroup__Solid021",
+   "url": "/landing/detail/geom_1481.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "5ec2641046fdd3aa0610d5405333a1d2719a64d721a23a23489cebaa3917b59a",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1482,
+   "name": "drone_LinkGroup005__LinkGroup__Link031",
+   "url": "/landing/detail/geom_1482.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "4167d46e5af09949512c1577a73867bb628b50d396fb4a82b0d818f5b8cb0ade",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1483,
+   "name": "drone_LinkGroup005__LinkGroup__Link032",
+   "url": "/landing/detail/geom_1483.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "b7732e52b8cf5105d1748081e25db13a9035a49ca4978a070f5a5b46a120c89e",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1484,
+   "name": "drone_LinkGroup005__LinkGroup__Link033",
+   "url": "/landing/detail/geom_1484.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "4f9a159a0129c6ca6908417b7539d1eca8f0052fe773003bbd7feb3e205e8d35",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1486,
+   "name": "drone_LinkGroup005__LinkGroup__Solid023",
+   "url": "/landing/detail/geom_1486.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "3b10b732bfa5b59c9f79dfe6fa8c58127872e9b48c463b842d83f991c3b34350",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 15af6a796b6c318b.obj"
+  },
+  {
+   "id": 1487,
+   "name": "drone_LinkGroup005__LinkGroup__Link034",
+   "url": "/landing/detail/geom_1487.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "88d99519df489f8fb8f4082573d1fa14332989e8bd62e8ac40b3c3083c54c2b5",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh b06b266ac7b51b65.obj"
+  },
+  {
+   "id": 1488,
+   "name": "drone_LinkGroup005__LinkGroup__Link035",
+   "url": "/landing/detail/geom_1488.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "c5687b0344f8737507641c08436b5bedb15b79f54330cb59b413c0f7511da20d",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 38a43a24f85bfae9.obj"
+  },
+  {
+   "id": 1489,
+   "name": "drone_LinkGroup005__LinkGroup__Link036",
+   "url": "/landing/detail/geom_1489.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "631bd389cb0f209c4cfceba9c9957dcf9633850a57f29d643d051491f7613763",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 468df127b86b6509.obj"
+  },
+  {
+   "id": 1496,
+   "name": "drone_LinkGroup005__Link037__Solid017",
+   "url": "/landing/detail/geom_1496.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "b29bf779fe5882b48e7369c29b37294ad0c5ac3cb855f14401a76a0295ff7ce4",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 194e4bc0dcfa93b5.obj"
+  },
+  {
+   "id": 1497,
+   "name": "drone_LinkGroup005__Link037__Link023",
+   "url": "/landing/detail/geom_1497.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "c8401cc4655e611f7a001a05218378fe96d9cc4af0bd55428104875cf131d96d",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 0839f5ca0b80af07.obj"
+  },
+  {
+   "id": 1498,
+   "name": "drone_LinkGroup005__Link037__Link024",
+   "url": "/landing/detail/geom_1498.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "2fc82c25ec2080a2ea5d12eba886484a6924784a1189d5873e79e315f4493569",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 4a8a6ec447fd26cf.obj"
+  },
+  {
+   "id": 1499,
+   "name": "drone_LinkGroup005__Link037__Link025",
+   "url": "/landing/detail/geom_1499.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "9db49c35a7723f3ba41d0977f9ac02d8cdcd6df7271b95b739b473bf24fc5de5",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 81652739a9c9996b.obj"
+  },
+  {
+   "id": 1500,
+   "name": "drone_LinkGroup005__Link037__Solid018",
+   "url": "/landing/detail/geom_1500.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "ce44e368a42b648d497efdcf07dd3bfd4ab79d95addad4e40a8a75ee019fa737",
+   "note": "CAD 56616 -> 1998 tris (trained 416), frame from cut-down mesh 3aa52e0f86f2c796.obj"
+  },
+  {
+   "id": 1501,
+   "name": "drone_LinkGroup005__Link037__Link026",
+   "url": "/landing/detail/geom_1501.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "8f142b223ba71c7d4352227415cf3b5cb66c21ae692587f8112b8bb853ea7d3b",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 9863c08b092b241e.obj"
+  },
+  {
+   "id": 1502,
+   "name": "drone_LinkGroup005__Link037__Link027",
+   "url": "/landing/detail/geom_1502.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "b4a20d4f44a8a8695e8f684f0499428da6184fde9a3bd52c70b2f07987add406",
+   "note": "CAD 56616 -> 1998 tris (trained 430), frame from cut-down mesh 4c29ce405e4356c0.obj"
+  },
+  {
+   "id": 1503,
+   "name": "drone_LinkGroup005__Link037__Link028",
+   "url": "/landing/detail/geom_1503.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "897ea21927e6cdd7c4504d23bcc2bdd6b8c812a9fa106a971a5bcb47a036a9dc",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 401cdde69041c8ec.obj"
+  },
+  {
+   "id": 1504,
+   "name": "drone_LinkGroup005__Link037__Solid019",
+   "url": "/landing/detail/geom_1504.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "90798764d0c2bd1acff3d5fd449853e0a9672ead2b5df1a04f4d2feb41f0767e",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 57cad23590b5c23e.obj"
+  },
+  {
+   "id": 1505,
+   "name": "drone_LinkGroup005__Link037__Link029",
+   "url": "/landing/detail/geom_1505.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "3c9127717b070dc1b74126d095f2d7d14e7b45cac74488f17a10c45f03372a70",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 0f6a89a592c9726f.obj"
+  },
+  {
+   "id": 1506,
+   "name": "drone_LinkGroup005__Link037__Solid020",
+   "url": "/landing/detail/geom_1506.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "2a23c8828d91964e0b195232bcf3b86c301d47f3d44049fc4055d9df92843a5a",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 2b0fb15fb32f7998.obj"
+  },
+  {
+   "id": 1507,
+   "name": "drone_LinkGroup005__Link037__Link030",
+   "url": "/landing/detail/geom_1507.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "cde3f1b6b896ba063ad4ab3b5d83a49e7bc072675d3ce368f8e29976af33cd22",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 2608f605e76a0aa7.obj"
+  },
+  {
+   "id": 1508,
+   "name": "drone_LinkGroup005__Link037__Solid021",
+   "url": "/landing/detail/geom_1508.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "d45fa7ac62c717d14af6ef44050a4ca1d13650b1223fcec1ff685a431627b833",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1509,
+   "name": "drone_LinkGroup005__Link037__Link031",
+   "url": "/landing/detail/geom_1509.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "1d7710e70292626d086414bbac2fe5b1301bf9e180bc891d61c285ef88843710",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1510,
+   "name": "drone_LinkGroup005__Link037__Link032",
+   "url": "/landing/detail/geom_1510.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "c7b22af4ce0d4d0fe0f31daf8a8554725d33f68101dccc0a09637c26573ae96d",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1511,
+   "name": "drone_LinkGroup005__Link037__Link033",
+   "url": "/landing/detail/geom_1511.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "61167239b80e0b6b4eefd54292fa808298ae10bb8d48a3c7215374fcc71c657f",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1513,
+   "name": "drone_LinkGroup005__Link037__Solid023",
+   "url": "/landing/detail/geom_1513.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "e934c1ce156b8ad1c7011aeada334d9c8c326f37eba40dadcc404b5dd6475c0c",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 87aadd3112bedff3.obj"
+  },
+  {
+   "id": 1514,
+   "name": "drone_LinkGroup005__Link037__Link034",
+   "url": "/landing/detail/geom_1514.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "3840eafa19dba92ea4424eb7ce5829f6c59759b6101a5c597d2861c463d6a81d",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh bddfb55e03cb0d8c.obj"
+  },
+  {
+   "id": 1515,
+   "name": "drone_LinkGroup005__Link037__Link035",
+   "url": "/landing/detail/geom_1515.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "d347a4f68da56236d281255e3a2eedd8a514b283fea839cd635896d506d58500",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 4aa864bb40fc67a1.obj"
+  },
+  {
+   "id": 1516,
+   "name": "drone_LinkGroup005__Link037__Link036",
+   "url": "/landing/detail/geom_1516.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "82975287d4c02d126316bdc8cda09e179f5d18eb75ad5076f9d8c2f496561202",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 0290ecfef6bfa829.obj"
+  },
+  {
+   "id": 1523,
+   "name": "drone_LinkGroup005__Link038__Solid017",
+   "url": "/landing/detail/geom_1523.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "0278c49f9696ecf8a7335c477ddc2040009c4580ad94143748f6b389b2d23937",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh b9f45f674de1b8b0.obj"
+  },
+  {
+   "id": 1524,
+   "name": "drone_LinkGroup005__Link038__Link023",
+   "url": "/landing/detail/geom_1524.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "a1e7fe1ab9182744223e2e09c32133b817bf0af7306bd541cd7abc574cf279b2",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 543aa1e3a2708020.obj"
+  },
+  {
+   "id": 1525,
+   "name": "drone_LinkGroup005__Link038__Link024",
+   "url": "/landing/detail/geom_1525.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "35cb7246ee3af90a060c51779e28018d1fb9de206c041b8eaa4e89e23bd248b7",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 918e19987eb35c64.obj"
+  },
+  {
+   "id": 1526,
+   "name": "drone_LinkGroup005__Link038__Link025",
+   "url": "/landing/detail/geom_1526.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "78c7fde725358e708e7a1bf5cec9a532a4a228d205b94103cdc107af27865329",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 0eeba82d6e1cd68a.obj"
+  },
+  {
+   "id": 1527,
+   "name": "drone_LinkGroup005__Link038__Solid018",
+   "url": "/landing/detail/geom_1527.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "78a516e4f18f36b986659107a14cdf96625848b7b472acd5806aa80ac7c3c197",
+   "note": "CAD 56616 -> 1998 tris (trained 416), frame from cut-down mesh 0f44ee76a001ae30.obj"
+  },
+  {
+   "id": 1528,
+   "name": "drone_LinkGroup005__Link038__Link026",
+   "url": "/landing/detail/geom_1528.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "18c62017b339fa5001616c993b17510b88c22353feb24069cb303f280867fbe3",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh a980b8a78c44a7de.obj"
+  },
+  {
+   "id": 1529,
+   "name": "drone_LinkGroup005__Link038__Link027",
+   "url": "/landing/detail/geom_1529.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "183fc19b11c15621d8461a1c80b98e2e45fd408a9cc64d7b73fe1339da910e85",
+   "note": "CAD 56616 -> 1998 tris (trained 430), frame from cut-down mesh 3890f59f8b765f80.obj"
+  },
+  {
+   "id": 1530,
+   "name": "drone_LinkGroup005__Link038__Link028",
+   "url": "/landing/detail/geom_1530.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "05a0e0ad96595b6cc203a0b267512d8618a2b90cb15b7ea9ca7c0d047d6c6691",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 72027cf506df598c.obj"
+  },
+  {
+   "id": 1531,
+   "name": "drone_LinkGroup005__Link038__Solid019",
+   "url": "/landing/detail/geom_1531.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "bbeab96684ff333ffd603805b3efa155f7875366505b6cad176a197889084551",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh c9ab3a84b694510a.obj"
+  },
+  {
+   "id": 1532,
+   "name": "drone_LinkGroup005__Link038__Link029",
+   "url": "/landing/detail/geom_1532.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "f185a0e5423f45854eb823d416cd167fa8759e2f6142f323600da7d75e3ce13c",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 495ad75e4c730402.obj"
+  },
+  {
+   "id": 1533,
+   "name": "drone_LinkGroup005__Link038__Solid020",
+   "url": "/landing/detail/geom_1533.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "0dc50b50558ae355b75454ad397c5b09975e7d131f8f8b8215244d78c581b194",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 11c757f5529c9a80.obj"
+  },
+  {
+   "id": 1534,
+   "name": "drone_LinkGroup005__Link038__Link030",
+   "url": "/landing/detail/geom_1534.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "f20048b1f9c2b2f3ad0069e43d9bb4ba9e92964b1bb7d8ccf25abc9b62e89b32",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 0a43ac1fc73de99f.obj"
+  },
+  {
+   "id": 1535,
+   "name": "drone_LinkGroup005__Link038__Solid021",
+   "url": "/landing/detail/geom_1535.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "9c00ca2ce6b8624c8ba7ba9cae35c373f4ef38fc12bc665211737ba20c114b37",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1536,
+   "name": "drone_LinkGroup005__Link038__Link031",
+   "url": "/landing/detail/geom_1536.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "6152df15e3210525e3935f4b531a98df7288a46dd4911646235a3bf2807e3005",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1537,
+   "name": "drone_LinkGroup005__Link038__Link032",
+   "url": "/landing/detail/geom_1537.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "8741c63f4013c958ff32f175ebde67fc2f2174921da349f899fc62128761605b",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1538,
+   "name": "drone_LinkGroup005__Link038__Link033",
+   "url": "/landing/detail/geom_1538.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "cc960bf2c210bf420b24a50ac0e3307f3ab1a4bdae070ef0a234fe8bd4b32bef",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1540,
+   "name": "drone_LinkGroup005__Link038__Solid023",
+   "url": "/landing/detail/geom_1540.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "98067c9c6dd440650f42ee19ad8ed8eeba12a8a8fa117354c0967208a8986158",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 3dbd22443e766a78.obj"
+  },
+  {
+   "id": 1541,
+   "name": "drone_LinkGroup005__Link038__Link034",
+   "url": "/landing/detail/geom_1541.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "9b49eb7f254eadae015af8b9d8fb65da0530b460c7b3f69e2969a4c11bbe4754",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 41dadf17757bc7b3.obj"
+  },
+  {
+   "id": 1542,
+   "name": "drone_LinkGroup005__Link038__Link035",
+   "url": "/landing/detail/geom_1542.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "cc28954291a29674f75c68ccf25343d437503692361152b3a7138d9a8b4338ba",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 1aea9f0a7367df93.obj"
+  },
+  {
+   "id": 1543,
+   "name": "drone_LinkGroup005__Link038__Link036",
+   "url": "/landing/detail/geom_1543.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "ffad5c19789cd44f56697b1d5fcb4b1f345b79b3ed5abd2d31bc0ffc5acd34ae",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 2be71e598cde60c9.obj"
+  },
+  {
+   "id": 1550,
+   "name": "drone_LinkGroup005__Link039__Solid017",
+   "url": "/landing/detail/geom_1550.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "2929ecb998c1b70abc414c178d1c878ed2a7ec9c349691a14d1072b47c77837a",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 0c6272475a7ad0b3.obj"
+  },
+  {
+   "id": 1551,
+   "name": "drone_LinkGroup005__Link039__Link023",
+   "url": "/landing/detail/geom_1551.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "2d208f9cd0213ddefc7333c5fa3ff171d918ed028f735506e7a7b2ea04858f92",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh b59ba9029cd8f803.obj"
+  },
+  {
+   "id": 1552,
+   "name": "drone_LinkGroup005__Link039__Link024",
+   "url": "/landing/detail/geom_1552.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "9aaca946bd9e7e059fe6e1c6cc342c8b0b05706652db0c6be2bc50d252d834f1",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 71e687628514cf6b.obj"
+  },
+  {
+   "id": 1553,
+   "name": "drone_LinkGroup005__Link039__Link025",
+   "url": "/landing/detail/geom_1553.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "92f9172a0e70ad820d8f90f236fff02ec7b7a1e9d36e2a1491a2d6f62f11eebd",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 25890135f1029556.obj"
+  },
+  {
+   "id": 1554,
+   "name": "drone_LinkGroup005__Link039__Solid018",
+   "url": "/landing/detail/geom_1554.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "047aa186c68b4ca82fadec9a76ee299caa49dbf8eb349e34765f7e827188524e",
+   "note": "CAD 56616 -> 1998 tris (trained 416), frame from cut-down mesh 128f4baa993b7361.obj"
+  },
+  {
+   "id": 1555,
+   "name": "drone_LinkGroup005__Link039__Link026",
+   "url": "/landing/detail/geom_1555.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "fb6a31af785308ddfd7455f041b0142f5eb75ff6e971bdc218afe7b6eb87871d",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 53b913185bb24e4c.obj"
+  },
+  {
+   "id": 1556,
+   "name": "drone_LinkGroup005__Link039__Link027",
+   "url": "/landing/detail/geom_1556.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "23e76cc72490ec018d967e3f8e06912c53a9de93e532d342b1daf4a93943ebba",
+   "note": "CAD 56616 -> 1998 tris (trained 430), frame from cut-down mesh 81122e12ee5cf537.obj"
+  },
+  {
+   "id": 1557,
+   "name": "drone_LinkGroup005__Link039__Link028",
+   "url": "/landing/detail/geom_1557.bin",
+   "vertex_count": 3890,
+   "index_count": 5994,
+   "sha256": "877a28c82ff7cf9d71828147923d9e42825da9cb3b6283b348cdaf7f6ee0c044",
+   "note": "CAD 56616 -> 1998 tris (trained 412), frame from cut-down mesh 642f6686de570cd9.obj"
+  },
+  {
+   "id": 1558,
+   "name": "drone_LinkGroup005__Link039__Solid019",
+   "url": "/landing/detail/geom_1558.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "caa624195ebac24df893ce6c2e86fd25905d24215ce8708b854e727f2a2eb7b1",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 43c235e3c1946df4.obj"
+  },
+  {
+   "id": 1559,
+   "name": "drone_LinkGroup005__Link039__Link029",
+   "url": "/landing/detail/geom_1559.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "557e9af4573a12c103f0dcf78e66d67a02bfec5e1f4543d0fea00b01ac9036c4",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 5564c1c3c5aa8f94.obj"
+  },
+  {
+   "id": 1560,
+   "name": "drone_LinkGroup005__Link039__Solid020",
+   "url": "/landing/detail/geom_1560.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "30d88af673516718f832139b3fcdcb4ef49415974a895653c297ba47d9f39a21",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 2faacac34b322138.obj"
+  },
+  {
+   "id": 1561,
+   "name": "drone_LinkGroup005__Link039__Link030",
+   "url": "/landing/detail/geom_1561.bin",
+   "vertex_count": 2304,
+   "index_count": 5994,
+   "sha256": "1ef8ec5cfb58493cb0f71ff884c78be870fb4c845d60b16baad5fad9782c3d9b",
+   "note": "CAD 19700 -> 1998 tris (trained 400), frame from cut-down mesh 5ee75fd7a150c9d5.obj"
+  },
+  {
+   "id": 1562,
+   "name": "drone_LinkGroup005__Link039__Solid021",
+   "url": "/landing/detail/geom_1562.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "32e05231665dcc16a91dab0444129090c4339dec276f4b7c45c1a6b0708edcbe",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1563,
+   "name": "drone_LinkGroup005__Link039__Link031",
+   "url": "/landing/detail/geom_1563.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "1fe41a79c8cb856a88f312d5ec6ac427b81fe949c0cab5ff2513f4e5b4fb0131",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1564,
+   "name": "drone_LinkGroup005__Link039__Link032",
+   "url": "/landing/detail/geom_1564.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "edd3199c48dd7208726bc5e92096473fe5e043cc1eefa0c60a2bc9a7a18e4713",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1565,
+   "name": "drone_LinkGroup005__Link039__Link033",
+   "url": "/landing/detail/geom_1565.bin",
+   "vertex_count": 2306,
+   "index_count": 6000,
+   "sha256": "beaa945e75774cb8c36caf1ca9a626467a39e5d058921a81ba030b5687dca65e",
+   "note": "CAD 11426 -> 2000 tris (trained 1142), frame from flight mesh"
+  },
+  {
+   "id": 1567,
+   "name": "drone_LinkGroup005__Link039__Solid023",
+   "url": "/landing/detail/geom_1567.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "5ec9aff6da47df09ce27c3797a0305c691e8a6b899640c9cd0842bdc14040226",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh a0657d0ebfa65cde.obj"
+  },
+  {
+   "id": 1568,
+   "name": "drone_LinkGroup005__Link039__Link034",
+   "url": "/landing/detail/geom_1568.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "0d156edea647d604fd2da3bf7b9329c8e17e523859f70ca071ec46e2d24e44f0",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 06af4f6fe29fe11a.obj"
+  },
+  {
+   "id": 1569,
+   "name": "drone_LinkGroup005__Link039__Link035",
+   "url": "/landing/detail/geom_1569.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "2e8135a388f285eacb03a7f303b92e31cb3fdb0c837ae7a456a2c6851321dd10",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 36d92749801841ce.obj"
+  },
+  {
+   "id": 1570,
+   "name": "drone_LinkGroup005__Link039__Link036",
+   "url": "/landing/detail/geom_1570.bin",
+   "vertex_count": 2006,
+   "index_count": 6000,
+   "sha256": "a1e7d615c440e0b1e1bd47383332c6ece09c39e083cfb486ae7e7ef0b2c900ce",
+   "note": "CAD 13692 -> 2000 tris (trained 400), frame from cut-down mesh 083dfdfd1f1e94dc.obj"
+  },
+  {
+   "id": 1572,
+   "name": "drone_LinkGroup005__LinkGroup001__Solid025",
+   "url": "/landing/detail/geom_1572.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "3f7235b9e6577e050841971be619e267ec6496a03502aff2f0dd6056514a0211",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 3d90e83f256b29c1.obj"
+  },
+  {
+   "id": 1573,
+   "name": "drone_LinkGroup005__LinkGroup001__Link040",
+   "url": "/landing/detail/geom_1573.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "c560f40278017cdb3a3c994d6979d8b682247f907e6669eb7db56ea81f1edf19",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh e2388a9f3653661f.obj"
+  },
+  {
+   "id": 1574,
+   "name": "drone_LinkGroup005__LinkGroup001__Link041",
+   "url": "/landing/detail/geom_1574.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "ff68c31614b2046ce37c6cbf8a9391e83a6f577fa88282021dc0eecedd788ec6",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh ad465ddf1f76ae76.obj"
+  },
+  {
+   "id": 1576,
+   "name": "drone_LinkGroup005__Link042__Solid025",
+   "url": "/landing/detail/geom_1576.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "dc71d5bc53923239da08a2e604fc37c5397b14e0b456a44fc952a3377bfe6bb4",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 9e4c8950db35c95e.obj"
+  },
+  {
+   "id": 1577,
+   "name": "drone_LinkGroup005__Link042__Link040",
+   "url": "/landing/detail/geom_1577.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "f1822d2ca64cc48dc911f973c5ba3df565717ccdbdbb5ce7f0d60452845bade4",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 26230fc812d0f9fd.obj"
+  },
+  {
+   "id": 1578,
+   "name": "drone_LinkGroup005__Link042__Link041",
+   "url": "/landing/detail/geom_1578.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "da936d314acac2806fa31cbecf7bab6c478fc2a4d7866d12ad4318d8935bb781",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 6f701e428789ead1.obj"
+  },
+  {
+   "id": 1580,
+   "name": "drone_LinkGroup005__Link043__Solid025",
+   "url": "/landing/detail/geom_1580.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "e7b2a90f03bbdb2655af30a092a656bfcb749808b975ffc670ef5e5e8b1ccbe8",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh c272856db09eaa7c.obj"
+  },
+  {
+   "id": 1581,
+   "name": "drone_LinkGroup005__Link043__Link040",
+   "url": "/landing/detail/geom_1581.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "c24303fbdbc9aa18e7d637a83f8f62f1aa0c18a31120471bc598c8c690619bd5",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 2187a26c57ff5339.obj"
+  },
+  {
+   "id": 1582,
+   "name": "drone_LinkGroup005__Link043__Link041",
+   "url": "/landing/detail/geom_1582.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "a42a8658eccb2320feb3cb17635bf7d1e1e4b0dd1e85ba5a96224689c7a0f428",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 327843b2a803e7d0.obj"
+  },
+  {
+   "id": 1584,
+   "name": "drone_LinkGroup005__Link044__Solid025",
+   "url": "/landing/detail/geom_1584.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "d99c04391746e51093c5ef2e366b59ac8da36a2cf6c2c5056705c3460da29c98",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 61f8e031edfc9ae3.obj"
+  },
+  {
+   "id": 1585,
+   "name": "drone_LinkGroup005__Link044__Link040",
+   "url": "/landing/detail/geom_1585.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "864758c0972b35750f888352441e8cba5292520907ff1dfc5eed1a1fafff8dd7",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 49f8f650b5d68361.obj"
+  },
+  {
+   "id": 1586,
+   "name": "drone_LinkGroup005__Link044__Link041",
+   "url": "/landing/detail/geom_1586.bin",
+   "vertex_count": 2190,
+   "index_count": 6000,
+   "sha256": "b1597d497a688a9802bc9b4700a1a653c909040a71c5dbe3fb725b5e1d837ee8",
+   "note": "CAD 13954 -> 2000 tris (trained 400), frame from cut-down mesh 302a9588988f566e.obj"
+  },
+  {
+   "id": 1590,
+   "name": "drone_LinkGroup005__LinkGroup002__Link047",
+   "url": "/landing/detail/geom_1590.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "efb3b98c32dc0aa65af0a60d2215549eec0b910493f2c7f5f9c17fccf6b7dd3d",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 91e08d8338cb3efc.obj"
+  },
+  {
+   "id": 1591,
+   "name": "drone_LinkGroup005__LinkGroup002__Solid027",
+   "url": "/landing/detail/geom_1591.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "10f78896202e4350c5a36f0ccd2b4265fe0ac390325d9946713a883a5d96047c",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 738b3d079d5bf908.obj"
+  },
+  {
+   "id": 1592,
+   "name": "drone_LinkGroup005__LinkGroup002__Link048",
+   "url": "/landing/detail/geom_1592.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "e8987b1e0517e9de4156d32de66a156c8c935260efc3551864b018065109c6b2",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 12309125b746e572.obj"
+  },
+  {
+   "id": 1594,
+   "name": "drone_LinkGroup005__Link049__Link047",
+   "url": "/landing/detail/geom_1594.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "818624984210ef9bf51699c45dd22c3b2d26831dc0a06e32e933e23267d526bd",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 1cefe7e4ce7d5abc.obj"
+  },
+  {
+   "id": 1595,
+   "name": "drone_LinkGroup005__Link049__Solid027",
+   "url": "/landing/detail/geom_1595.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "55845303331bb80fe231e0ef3d156c90e1ab8fd138de8a0c410f8deb99fd2d07",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh bdfc33e6d589dc54.obj"
+  },
+  {
+   "id": 1596,
+   "name": "drone_LinkGroup005__Link049__Link048",
+   "url": "/landing/detail/geom_1596.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "49b2cf7507c2d9eeb8b206f5e9cca34222b89686cfc3c6eefae9d10a0f822961",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 240eb83a7e1bbf6c.obj"
+  },
+  {
+   "id": 1598,
+   "name": "drone_LinkGroup005__Link050__Link047",
+   "url": "/landing/detail/geom_1598.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "02d5def90eeea0245a00eeff23bb6457f4364dcb3c418c377febc2fdec5703c0",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 2bbf40135ba71cb2.obj"
+  },
+  {
+   "id": 1599,
+   "name": "drone_LinkGroup005__Link050__Solid027",
+   "url": "/landing/detail/geom_1599.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "9ef42ab23517191a093c5ae44f5646384b6c8415186bf638db18a230ba9a3fe5",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 22f30cc52bfdbd95.obj"
+  },
+  {
+   "id": 1600,
+   "name": "drone_LinkGroup005__Link050__Link048",
+   "url": "/landing/detail/geom_1600.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "4e765db8128c205f11a96cae5bf024f62cf3f82ce138756b0a09a3e41440c3e1",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 76be513e0c3301f6.obj"
+  },
+  {
+   "id": 1602,
+   "name": "drone_LinkGroup005__Link051__Link047",
+   "url": "/landing/detail/geom_1602.bin",
+   "vertex_count": 1546,
+   "index_count": 5994,
+   "sha256": "91c3641d6a6e9dbb01b6ee6a0c371c2796997c9ac64060646a424782608a3041",
+   "note": "CAD 18144 -> 1998 tris (trained 650), frame from cut-down mesh 250f00c14f30cc6a.obj"
+  },
+  {
+   "id": 1603,
+   "name": "drone_LinkGroup005__Link051__Solid027",
+   "url": "/landing/detail/geom_1603.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "9a02c9bf904854a30986ac81786fb947251c9925d99c537c5042980b21a2ef96",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 05f76f2dfeb1720a.obj"
+  },
+  {
+   "id": 1604,
+   "name": "drone_LinkGroup005__Link051__Link048",
+   "url": "/landing/detail/geom_1604.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "fded98556c54b6172090155274e61c723a0f18c7fb7083c2d52dcd55df21d058",
+   "note": "CAD 13516 -> 1998 tris (trained 628), frame from cut-down mesh 03673758e860ebba.obj"
+  },
+  {
+   "id": 1607,
+   "name": "drone_LinkGroup005__Link053",
+   "url": "/landing/detail/geom_1607.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "7753b5949e675887f0a0949919c4f22337b748e03b31092dbe6de6f14efdc2df",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 84d5050da8866d2c.obj"
+  },
+  {
+   "id": 1608,
+   "name": "drone_LinkGroup005__Link054",
+   "url": "/landing/detail/geom_1608.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "2b436b2b566e133b1658d35142c0a3038bdbac29c56714b99845d3dd16ea23e6",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 9bd89b71ca815028.obj"
+  },
+  {
+   "id": 1609,
+   "name": "drone_LinkGroup005__Link055",
+   "url": "/landing/detail/geom_1609.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "9c08f08d42c1ec79544e28db46f66a743107f456ce04c4ba629ece0937fa6e09",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh b3b0c92c0f982914.obj"
+  },
+  {
+   "id": 1610,
+   "name": "drone_LinkGroup005__Link056",
+   "url": "/landing/detail/geom_1610.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "7e31d842952fa2d8f8cd3084b7182a8402ea36868494dd111397c34db20e51a6",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 1bb28c41c962dded.obj"
+  },
+  {
+   "id": 1611,
+   "name": "drone_LinkGroup005__Link057",
+   "url": "/landing/detail/geom_1611.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "95ad1a3c4acb018b27fcb58c9e28e5fbaa5e6dd60c21f7b7df1069656dec95d5",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 0884a173308a73f0.obj"
+  },
+  {
+   "id": 1612,
+   "name": "drone_LinkGroup005__Link058",
+   "url": "/landing/detail/geom_1612.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "e034b5b3401e4017126402bc620e621782bb1475b3cc1e8e81bbc8f022700a5a",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 050b76007479d3c2.obj"
+  },
+  {
+   "id": 1613,
+   "name": "drone_LinkGroup005__Link059",
+   "url": "/landing/detail/geom_1613.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "be82990153a4c89f754409d4f8f2ba23333a18af425ff2e66c886226d3dced42",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 438a5483504d9700.obj"
+  },
+  {
+   "id": 1614,
+   "name": "drone_LinkGroup005__Link060",
+   "url": "/landing/detail/geom_1614.bin",
+   "vertex_count": 2347,
+   "index_count": 5994,
+   "sha256": "4b145141f1096fcc0313d9b0a69a72fd096242baf863c7b25bc994cdd4f1ee89",
+   "note": "CAD 16538 -> 1998 tris (trained 400), frame from cut-down mesh 063537ad95c1154a.obj"
+  },
+  {
+   "id": 1615,
+   "name": "drone_LinkGroup005__Link065",
+   "url": "/landing/detail/geom_1615.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "02e2a76a3599739af191ee0e855e95fabf6b77ee6cd98a6e145c0af753f2d231",
+   "note": "CAD 13516 -> 1998 tris (trained 664), frame from cut-down mesh 87a1105d89f3d4e1.obj"
+  },
+  {
+   "id": 1616,
+   "name": "drone_LinkGroup005__Link066",
+   "url": "/landing/detail/geom_1616.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "20a98292530d612a1399a761c91a9c48eebae139fc9719b29819ecdeac4c91a7",
+   "note": "CAD 13516 -> 1998 tris (trained 664), frame from cut-down mesh 5d7f53cdc98e91c9.obj"
+  },
+  {
+   "id": 1617,
+   "name": "drone_LinkGroup005__Link067",
+   "url": "/landing/detail/geom_1617.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "b4295ebc776f6e97efec27cff288bac39ceab8707901cb15b1f8f36c38d21f50",
+   "note": "CAD 13516 -> 1998 tris (trained 664), frame from cut-down mesh aa9f6639a2d5856f.obj"
+  },
+  {
+   "id": 1618,
+   "name": "drone_LinkGroup005__Link068",
+   "url": "/landing/detail/geom_1618.bin",
+   "vertex_count": 2387,
+   "index_count": 5994,
+   "sha256": "d75850e199973cf19c595e13ab3fe4450de752c4790111a3e35db32b56ad59d9",
+   "note": "CAD 13516 -> 1998 tris (trained 664), frame from cut-down mesh 564af6b967a1d518.obj"
+  },
+  {
+   "id": 1623,
+   "name": "drone_LinkGroup005__LinkGroup003__Solid035",
+   "url": "/landing/detail/geom_1623.bin",
+   "vertex_count": 3280,
+   "index_count": 6000,
+   "sha256": "e7416cac9146fb4f0622c4600f11760e9de1c198c4883bde3154d95150e03d69",
+   "note": "CAD 66872 -> 2000 tris (trained 1204), frame from cut-down mesh a54fbb37048f8bd7.obj"
+  },
+  {
+   "id": 1624,
+   "name": "drone_LinkGroup005__LinkGroup003__Solid036",
+   "url": "/landing/detail/geom_1624.bin",
+   "vertex_count": 1821,
+   "index_count": 6000,
+   "sha256": "642f55eac79993aa512798b139287521e76f1d36c889f8ae3732a4a8f4f52d45",
+   "note": "CAD 2638 -> 2000 tris (trained 1200), frame from flight mesh"
+  },
+  {
+   "id": 1627,
+   "name": "drone_LinkGroup005__Solid039",
+   "url": "/landing/detail/geom_1627.bin",
+   "vertex_count": 2556,
+   "index_count": 6000,
+   "sha256": "ee2435c9d61a3388980a001f2194f21eed95026b8a26501ade59efe1a2e1bdba",
+   "note": "CAD 34464 -> 2000 tris (trained 752), frame from cut-down mesh a3d816671d517d76.obj"
+  },
+  {
+   "id": 1628,
+   "name": "drone_LinkGroup005__Link069",
+   "url": "/landing/detail/geom_1628.bin",
+   "vertex_count": 2556,
+   "index_count": 6000,
+   "sha256": "a451f46bf9a2b88322be33abba338ff15183196fe718337c0c4d3bb28ac1514d",
+   "note": "CAD 34464 -> 2000 tris (trained 752), frame from cut-down mesh 78a8f107e3feca13.obj"
+  },
+  {
+   "id": 1630,
+   "name": "drone_LinkGroup005__Solid041",
+   "url": "/landing/detail/geom_1630.bin",
+   "vertex_count": 1967,
+   "index_count": 5994,
+   "sha256": "aaeb86823ffaa116974e1779829855aaf4eb2ead2835ac133c1cb100a8771fff",
+   "note": "CAD 4784 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1631,
+   "name": "drone_LinkGroup005__Link070",
+   "url": "/landing/detail/geom_1631.bin",
+   "vertex_count": 1967,
+   "index_count": 5994,
+   "sha256": "a02921d1cd59213da612262e66ecaaff16c0dda846e4f3afff8883c75c48634b",
+   "note": "CAD 4784 -> 1998 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1635,
+   "name": "drone_LinkGroup005__Solid045",
+   "url": "/landing/detail/geom_1635.bin",
+   "vertex_count": 2465,
+   "index_count": 5994,
+   "sha256": "5a3e81ddb3987cb35f5475e25f72945d1b2e6c8c7e6e5ae6f04f5b5795b641e0",
+   "note": "CAD 7270 -> 1998 tris (trained 726), frame from flight mesh"
+  },
+  {
+   "id": 1636,
+   "name": "drone_LinkGroup005__Link071",
+   "url": "/landing/detail/geom_1636.bin",
+   "vertex_count": 2465,
+   "index_count": 5994,
+   "sha256": "7638d3f03f53306e4fd0ad7c4f19cac23a662b685b68330dd1ad0edb5a721dec",
+   "note": "CAD 7270 -> 1998 tris (trained 726), frame from flight mesh"
+  },
+  {
+   "id": 1637,
+   "name": "drone_LinkGroup005__Link072",
+   "url": "/landing/detail/geom_1637.bin",
+   "vertex_count": 2465,
+   "index_count": 5994,
+   "sha256": "bb29f2dcfc93dd2ad1368d05ad9ceec3cffb20c5a2acf465f6e055e10a0c6986",
+   "note": "CAD 7270 -> 1998 tris (trained 726), frame from flight mesh"
+  },
+  {
+   "id": 1638,
+   "name": "drone_LinkGroup005__Link073",
+   "url": "/landing/detail/geom_1638.bin",
+   "vertex_count": 2465,
+   "index_count": 5994,
+   "sha256": "12325a1c37cd3382e2d118862e08a234ea9386dd3cc2ee58aa382c7e2ec3b02b",
+   "note": "CAD 7270 -> 1998 tris (trained 726), frame from flight mesh"
+  },
+  {
+   "id": 1639,
+   "name": "drone_LinkGroup005__Solid046",
+   "url": "/landing/detail/geom_1639.bin",
+   "vertex_count": 2337,
+   "index_count": 6000,
+   "sha256": "1ee4379e145f142ea9555d0078b43b23ef42db9028d4dcfd2bf77667f8e9fecd",
+   "note": "CAD 23742 -> 2000 tris (trained 400), frame from cut-down mesh 149bda4072b7bdcf.obj"
+  },
+  {
+   "id": 1640,
+   "name": "drone_LinkGroup005__Link074",
+   "url": "/landing/detail/geom_1640.bin",
+   "vertex_count": 2337,
+   "index_count": 6000,
+   "sha256": "052078c1f0d426997247d5291711a45df1dba908a0c734f9e505313eb2fdafd0",
+   "note": "CAD 23742 -> 2000 tris (trained 400), frame from cut-down mesh 305fd5a198258d24.obj"
+  },
+  {
+   "id": 1641,
+   "name": "drone_LinkGroup005__Link075",
+   "url": "/landing/detail/geom_1641.bin",
+   "vertex_count": 2337,
+   "index_count": 6000,
+   "sha256": "aac7ab30d93012b93a78e3ae23dba55c563014c4996bab9aae3020b57eeb9fb3",
+   "note": "CAD 23742 -> 2000 tris (trained 400), frame from cut-down mesh c76060d64391f20e.obj"
+  },
+  {
+   "id": 1642,
+   "name": "drone_LinkGroup005__Link076",
+   "url": "/landing/detail/geom_1642.bin",
+   "vertex_count": 2337,
+   "index_count": 6000,
+   "sha256": "3720aa913cec8e8791d0800df07bcbe103fd150006626e286ca345f2f0f91902",
+   "note": "CAD 23742 -> 2000 tris (trained 400), frame from cut-down mesh c56109ef100b3f82.obj"
+  },
+  {
+   "id": 1643,
+   "name": "drone_LinkGroup005__Solid047",
+   "url": "/landing/detail/geom_1643.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "4a554c3ce803892b3d91ca2a91416394c925b04657bc6da7cc95b579e870f500",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1644,
+   "name": "drone_LinkGroup005__Link077",
+   "url": "/landing/detail/geom_1644.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "761ae2968675d42662788e96b23ecc1dfb9cbd79deed56d39b67545649ca40ba",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1645,
+   "name": "drone_LinkGroup005__Link078",
+   "url": "/landing/detail/geom_1645.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "18785b26e957a53b7b09ca93d310518fc3443684ebc37070020901f3d6b8ab80",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1646,
+   "name": "drone_LinkGroup005__Link079",
+   "url": "/landing/detail/geom_1646.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "1e13632b4a66e92d7a0b461b554d7e0cf09503c4a279d065dfbc78559242a9fa",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1647,
+   "name": "drone_LinkGroup005__Solid048",
+   "url": "/landing/detail/geom_1647.bin",
+   "vertex_count": 2344,
+   "index_count": 5994,
+   "sha256": "7894b6ac7c1ace55de332756337f9f0ea99d51dcc5305fc6456ff4c349959808",
+   "note": "CAD 16056 -> 1998 tris (trained 404), frame from cut-down mesh 767eb5f1844bd15f.obj"
+  },
+  {
+   "id": 1648,
+   "name": "drone_LinkGroup005__Link080",
+   "url": "/landing/detail/geom_1648.bin",
+   "vertex_count": 2344,
+   "index_count": 5994,
+   "sha256": "cb9a60b68063af3eac636e06f0fa6d29b7be1f12607b674d786addd9d2b589ad",
+   "note": "CAD 16056 -> 1998 tris (trained 442), frame from cut-down mesh 25582f43304aa747.obj"
+  },
+  {
+   "id": 1649,
+   "name": "drone_LinkGroup005__Link081",
+   "url": "/landing/detail/geom_1649.bin",
+   "vertex_count": 2344,
+   "index_count": 5994,
+   "sha256": "bc9f416c85a399d4d8fddbe3b85dd22f2307800683c37c9241d378414388e518",
+   "note": "CAD 16056 -> 1998 tris (trained 468), frame from cut-down mesh 62fe74b165966ec5.obj"
+  },
+  {
+   "id": 1650,
+   "name": "drone_LinkGroup005__Link082",
+   "url": "/landing/detail/geom_1650.bin",
+   "vertex_count": 2344,
+   "index_count": 5994,
+   "sha256": "312ae148023ddc6b49c5f27fa7f80b3a67ad9f00a60e6503e23830bf4ccb24a8",
+   "note": "CAD 16056 -> 1998 tris (trained 498), frame from cut-down mesh 2b75a47ab3c84e78.obj"
+  },
+  {
+   "id": 1651,
+   "name": "drone_LinkGroup005__Link083",
+   "url": "/landing/detail/geom_1651.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "858424b43272b66d730b605a892d081dda1ce53b0b167d94fb10ece54907772a",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1652,
+   "name": "drone_LinkGroup005__Link084",
+   "url": "/landing/detail/geom_1652.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "11a98a8889e5bb604421792711ab1c2195455490b01d4f3e8751b36efb57499f",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1653,
+   "name": "drone_LinkGroup005__Link085",
+   "url": "/landing/detail/geom_1653.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "65fd40d7d6dac25489aefa95c299526893b6768fe2d5cd0850d2945f50d767b5",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1654,
+   "name": "drone_LinkGroup005__Link086",
+   "url": "/landing/detail/geom_1654.bin",
+   "vertex_count": 2291,
+   "index_count": 6000,
+   "sha256": "c04c8ae7a08e0d0325315cd6262bee4e311ce38bd73d7398e11d289767668854",
+   "note": "CAD 9498 -> 2000 tris (trained 948), frame from flight mesh"
+  },
+  {
+   "id": 1655,
+   "name": "drone_LinkGroup005__Link087",
+   "url": "/landing/detail/geom_1655.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "a5b8a4409c3a9ef7cc6431067397f23add9397922f179e38275b06e7feffabfc",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 4b2c61266559c306.obj"
+  },
+  {
+   "id": 1656,
+   "name": "drone_LinkGroup005__Link088",
+   "url": "/landing/detail/geom_1656.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "2ec6ab7e1acea91a99f5c1cbabc40823a7083367b45eab8c5a0698c5f840df50",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 7e725d38c0024263.obj"
+  },
+  {
+   "id": 1657,
+   "name": "drone_LinkGroup005__Link089",
+   "url": "/landing/detail/geom_1657.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "966f6157e1d5a5b53b2290223cd6f38831b8a88391d3f64e20be20a7c755e3a4",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh 414266696c82256e.obj"
+  },
+  {
+   "id": 1658,
+   "name": "drone_LinkGroup005__Link090",
+   "url": "/landing/detail/geom_1658.bin",
+   "vertex_count": 2457,
+   "index_count": 5994,
+   "sha256": "9b04c4773ab93f2964c8a93131557820babe0ed8dfd5701982346ca39ad71d60",
+   "note": "CAD 22734 -> 1998 tris (trained 400), frame from cut-down mesh d44c7fb404e0c6b0.obj"
+  },
+  {
+   "id": 1659,
+   "name": "drone_LinkGroup005__Solid049",
+   "url": "/landing/detail/geom_1659.bin",
+   "vertex_count": 2358,
+   "index_count": 6000,
+   "sha256": "0da5d1099a9683951adb2ee7e25a77a9714a970b125823c51a34eac37ff9f9ee",
+   "note": "CAD 6948 -> 2000 tris (trained 694), frame from flight mesh"
+  },
+  {
+   "id": 1660,
+   "name": "drone_LinkGroup005__Link091",
+   "url": "/landing/detail/geom_1660.bin",
+   "vertex_count": 2358,
+   "index_count": 6000,
+   "sha256": "c914c1624fd3f255ac00f8a2daede487afa565bcc56f7d89656ab1bd2b1d1994",
+   "note": "CAD 6948 -> 2000 tris (trained 694), frame from flight mesh"
+  },
+  {
+   "id": 1661,
+   "name": "drone_LinkGroup005__Link092",
+   "url": "/landing/detail/geom_1661.bin",
+   "vertex_count": 2358,
+   "index_count": 6000,
+   "sha256": "c7675f63927b750c2811929aff8d659c8990604d4b6c4528c00b392c488f715f",
+   "note": "CAD 6948 -> 2000 tris (trained 694), frame from flight mesh"
+  },
+  {
+   "id": 1662,
+   "name": "drone_LinkGroup005__Link093",
+   "url": "/landing/detail/geom_1662.bin",
+   "vertex_count": 2358,
+   "index_count": 6000,
+   "sha256": "c40e860864f36ea0d8a8295f4b31a4d5ceccab5048eb633cc89245df905d36de",
+   "note": "CAD 6948 -> 2000 tris (trained 694), frame from flight mesh"
+  },
+  {
+   "id": 1663,
+   "name": "drone_LinkGroup005__Solid050",
+   "url": "/landing/detail/geom_1663.bin",
+   "vertex_count": 2318,
+   "index_count": 6000,
+   "sha256": "6af8e12d4f1de32c42402c61f42661c48a2cd8cd7fb3c0788f6aa7fc41fdaee6",
+   "note": "CAD 9040 -> 2000 tris (trained 904), frame from flight mesh"
+  },
+  {
+   "id": 1664,
+   "name": "drone_LinkGroup005__Link094",
+   "url": "/landing/detail/geom_1664.bin",
+   "vertex_count": 2318,
+   "index_count": 6000,
+   "sha256": "900b0d7ee925fd67565ff15c327e7fe2b9c700b2a86443a760de157d078b6d6c",
+   "note": "CAD 9040 -> 2000 tris (trained 904), frame from flight mesh"
+  },
+  {
+   "id": 1665,
+   "name": "drone_LinkGroup005__Link095",
+   "url": "/landing/detail/geom_1665.bin",
+   "vertex_count": 2318,
+   "index_count": 6000,
+   "sha256": "0d249cdfae665f1efb11518c4f8a1e3d32e7f59a94a913215a9e3790b721dc70",
+   "note": "CAD 9040 -> 2000 tris (trained 904), frame from flight mesh"
+  },
+  {
+   "id": 1666,
+   "name": "drone_LinkGroup005__Link096",
+   "url": "/landing/detail/geom_1666.bin",
+   "vertex_count": 2318,
+   "index_count": 6000,
+   "sha256": "582d35d52ba04fc7c5709e389946e7e803088afcd5c455e23b29dca8a19736c9",
+   "note": "CAD 9040 -> 2000 tris (trained 904), frame from flight mesh"
+  },
+  {
+   "id": 1676,
+   "name": "drone_LinkGroup015__LinkGroup011__LinkGroup008__Solid057",
+   "url": "/landing/detail/geom_1676.bin",
+   "vertex_count": 1789,
+   "index_count": 6000,
+   "sha256": "bfbc7cbf0404b6b0dcbcd42a785f4fe0a53cbcfd3383c1a79c359f7c0982b3c6",
+   "note": "CAD 18174 -> 2000 tris (trained 634), frame from cut-down mesh 1bf8469ba775fdc1.obj"
+  },
+  {
+   "id": 1677,
+   "name": "drone_LinkGroup015__LinkGroup011__Solid058",
+   "url": "/landing/detail/geom_1677.bin",
+   "vertex_count": 2445,
+   "index_count": 6000,
+   "sha256": "d8e48dd5e09dec0ed167518b0b0d7dd5d8a7a4e92664e484ad951d4dec606115",
+   "note": "CAD 3088 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1683,
+   "name": "drone_LinkGroup015__LinkGroup011__LinkGroup010__Solid062",
+   "url": "/landing/detail/geom_1683.bin",
+   "vertex_count": 1460,
+   "index_count": 4302,
+   "sha256": "a19a4e0ae536f8fda5a47f1de924952bc76d7bacd7fe137b58a338d1928458cf",
+   "note": "CAD 1434 -> 1434 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1684,
+   "name": "drone_LinkGroup015__LinkGroup011__LinkGroup010__Solid063",
+   "url": "/landing/detail/geom_1684.bin",
+   "vertex_count": 1766,
+   "index_count": 5226,
+   "sha256": "7a36ea76acf31487fd78fb168226a072b1984b18338671370f7426636469e3b7",
+   "note": "CAD 1742 -> 1742 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1686,
+   "name": "drone_LinkGroup015__LinkGroup011__LinkGroup010__Solid065",
+   "url": "/landing/detail/geom_1686.bin",
+   "vertex_count": 1518,
+   "index_count": 4338,
+   "sha256": "f07d0265ed127625776b27d85c985fd813b65adf4783608a3749dead17289178",
+   "note": "CAD 1446 -> 1446 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1688,
+   "name": "drone_LinkGroup015__LinkGroup011__LinkGroup010__Solid067",
+   "url": "/landing/detail/geom_1688.bin",
+   "vertex_count": 1412,
+   "index_count": 6000,
+   "sha256": "abc2be2af35f97e4510f986641e24df55a8b7262d29f6ad65bd020ade48eab3f",
+   "note": "CAD 2508 -> 2000 tris (trained 652), frame from flight mesh"
+  },
+  {
+   "id": 1689,
+   "name": "drone_LinkGroup015__LinkGroup011__Link105__Solid062",
+   "url": "/landing/detail/geom_1689.bin",
+   "vertex_count": 1460,
+   "index_count": 4302,
+   "sha256": "c06229cbd0227099c9e8e395e0db78043bd5c9d50b1e326a86ae42840487644e",
+   "note": "CAD 1434 -> 1434 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1690,
+   "name": "drone_LinkGroup015__LinkGroup011__Link105__Solid063",
+   "url": "/landing/detail/geom_1690.bin",
+   "vertex_count": 1766,
+   "index_count": 5226,
+   "sha256": "51cf901eda26739eacf7e340d69d2e077d87030ae2ae386a2ee20db1ba7800cb",
+   "note": "CAD 1742 -> 1742 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1692,
+   "name": "drone_LinkGroup015__LinkGroup011__Link105__Solid065",
+   "url": "/landing/detail/geom_1692.bin",
+   "vertex_count": 1518,
+   "index_count": 4338,
+   "sha256": "9506e251205f55d5a64aa3f42209a03855dcf0450fa591c6419a00572edc8e62",
+   "note": "CAD 1446 -> 1446 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1694,
+   "name": "drone_LinkGroup015__LinkGroup011__Link105__Solid067",
+   "url": "/landing/detail/geom_1694.bin",
+   "vertex_count": 1412,
+   "index_count": 6000,
+   "sha256": "7cc5afaf04dd314600e0d076fb820293f0c278906b54be2ad29864b3c43442d8",
+   "note": "CAD 2508 -> 2000 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1695,
+   "name": "drone_LinkGroup015__LinkGroup011__Link106__Solid062",
+   "url": "/landing/detail/geom_1695.bin",
+   "vertex_count": 1460,
+   "index_count": 4302,
+   "sha256": "4555da4b47381843dd18ab8866dc700477e19ac1b6598fab95fe6580a572155f",
+   "note": "CAD 1434 -> 1434 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1696,
+   "name": "drone_LinkGroup015__LinkGroup011__Link106__Solid063",
+   "url": "/landing/detail/geom_1696.bin",
+   "vertex_count": 1766,
+   "index_count": 5226,
+   "sha256": "3b987fbb074a0fa3c4d7838f9a7bc214f800c7cd47bc595c6d770dda6f138ed5",
+   "note": "CAD 1742 -> 1742 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1698,
+   "name": "drone_LinkGroup015__LinkGroup011__Link106__Solid065",
+   "url": "/landing/detail/geom_1698.bin",
+   "vertex_count": 1518,
+   "index_count": 4338,
+   "sha256": "0206281ea88493ad1584fa5ca3a3765566d23079e8bda34e2716711ada980cc2",
+   "note": "CAD 1446 -> 1446 tris (trained 600), frame from flight mesh"
+  },
+  {
+   "id": 1700,
+   "name": "drone_LinkGroup015__LinkGroup011__Link106__Solid067",
+   "url": "/landing/detail/geom_1700.bin",
+   "vertex_count": 1412,
+   "index_count": 6000,
+   "sha256": "c3988da2d269594cfbe940ff7332d32f95fe1482185075a7eb1da4042c235bea",
+   "note": "CAD 2508 -> 2000 tris (trained 612), frame from flight mesh"
+  },
+  {
+   "id": 1706,
+   "name": "drone_LinkGroup015__Solid072",
+   "url": "/landing/detail/geom_1706.bin",
+   "vertex_count": 2542,
+   "index_count": 6000,
+   "sha256": "3dfd199167837fd635646efd9359d0513f5f0e625d62c8be2be563623d61b490",
+   "note": "CAD 9040 -> 2000 tris (trained 904), frame from flight mesh"
+  },
+  {
+   "id": 1710,
+   "name": "drone_LinkGroup015__Solid075",
+   "url": "/landing/detail/geom_1710.bin",
+   "vertex_count": 3253,
+   "index_count": 6000,
+   "sha256": "332d7994bc555007118da9fefc9147c52c50b5958a2efe5bc3f7f92e8005a5b4",
+   "note": "CAD 3312 -> 2000 tris (trained 1000), frame from flight mesh"
+  },
+  {
+   "id": 1711,
+   "name": "drone_LinkGroup015__Solid076",
+   "url": "/landing/detail/geom_1711.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "f390f7b9f94e14f7d4f8cb13caf3f7bf0960708cbd5f98cad555addfd621a5da",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1712,
+   "name": "drone_LinkGroup015__Link109",
+   "url": "/landing/detail/geom_1712.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "05502e09fddfc2bfbc32ab68bc6b2a27b3b7e6551c93ad406e93eb985f256446",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1713,
+   "name": "drone_LinkGroup015__Link110",
+   "url": "/landing/detail/geom_1713.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "287f88ba2dbe20b0dfdb9d877c04abbf37689ac0db623937d4eddda7e18d2bcc",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1714,
+   "name": "drone_LinkGroup015__Link111",
+   "url": "/landing/detail/geom_1714.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "21db2678ab207aba24341693d532b61ce215e4e27d57833db0637cf269667006",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1715,
+   "name": "drone_LinkGroup015__Link112",
+   "url": "/landing/detail/geom_1715.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "3b738646896e9cf392a1e2d2b441afec99a62b0c9373a372701d82efac4c208c",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1716,
+   "name": "drone_LinkGroup015__Link113",
+   "url": "/landing/detail/geom_1716.bin",
+   "vertex_count": 3034,
+   "index_count": 6000,
+   "sha256": "0f48f906c727d461a9b59f8014c94ed80c498f602aadf7b4c1438c3e9ba47ba9",
+   "note": "CAD 2592 -> 2000 tris (trained 758), frame from flight mesh"
+  },
+  {
+   "id": 1717,
+   "name": "drone_LinkGroup015__LinkGroup014__Solid077",
+   "url": "/landing/detail/geom_1717.bin",
+   "vertex_count": 2314,
+   "index_count": 5994,
+   "sha256": "ffb6d989d3d9ddec91bf3eb817b85f8d866d0ec08ad0e03f1e5771c8b14cfc7b",
+   "note": "CAD 4394 -> 1998 tris (trained 848), frame from flight mesh"
+  },
+  {
+   "id": 1718,
+   "name": "drone_LinkGroup015__Link114__Solid077",
+   "url": "/landing/detail/geom_1718.bin",
+   "vertex_count": 2309,
+   "index_count": 5994,
+   "sha256": "f82fb16e2a0b6a59ca889c36c28b262897de0c6a70549530e6697df768d3bdd6",
+   "note": "CAD 4394 -> 1998 tris (trained 808), frame from flight mesh"
+  },
+  {
+   "id": 2025,
+   "name": "drone_CombinedShell",
+   "url": "/landing/detail/geom_2025.bin",
+   "vertex_count": 8293,
+   "index_count": 42366,
+   "sha256": "ecac4b3d8262f9f1c4e9f4786554cc994b423721db3e5dafb4edef201c36a37a",
+   "note": "CAD 46100 -> 14122 tris (trained 4324), frame from cut-down mesh 0c8a2507767f8de5.obj"
+  },
+  {
+   "id": 2027,
+   "name": "drone_Shell003",
+   "url": "/landing/detail/geom_2027.bin",
+   "vertex_count": 6402,
+   "index_count": 34932,
+   "sha256": "8fd338d3da2e45e8ea466ce1108d98b47c774c18c5519945ea5ff7fd0409803a",
+   "note": "CAD 13298 -> 11644 tris (trained 400), frame from cut-down mesh 7bbdc6b77a75679b.obj"
+  }
+ ]
+}

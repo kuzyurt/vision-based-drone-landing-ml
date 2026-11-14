@@ -1,0 +1,79 @@
+{
+  "schema": "aerodock.benchmark.trial.v1",
+  "policy_id": "radio-robust-20261015-policy-bundle-44826e5a",
+  "case_id": "acquisition-near-radio-clear-island-r0",
+  "policy_identity_sha256": "44826e5a3df8aecafd8bbc85b3e88247b6c2dd9310f4e46b33574870e20ce0ed",
+  "started_utc": "2026-11-10T21:32:56.337812+00:00",
+  "context": {
+    "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+    "runtime_sha256": "49bbafc2b1af0d302da6de6895158ffe37cb8f9f257d054c1f4cc7ee8dbcd47f",
+    "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+    "inference_device": "cuda",
+    "control_hz": 25,
+    "backend": "windows_mujoco_px4_wasm",
+    "benchmark": "aerodock-20-wave-gate-3c2b501",
+    "workers": 4
+  },
+  "training_eligible": false,
+  "status": "completed",
+  "condition_valid": true,
+  "actor_role": "flight policy",
+  "privileged_reference": false,
+  "outcome": "landed",
+  "disarmed": true,
+  "px4_landed": true,
+  "stable_disarmed_contact_s": 2.0009999999998906,
+  "collision": false,
+  "water_strike": false,
+  "assistance_frames": 0,
+  "wrong_target_contacts": 0,
+  "verified_acquisition_s": 21.799999999990842,
+  "false_acquisition_events": 0,
+  "mission_time_s": 58.16000000000783,
+  "path_length_m": 66.21337482498669,
+  "actual_start_distance_m": 29.99610956587471,
+  "final_lateral_error_m": 0.03238903828462605,
+  "touchdown_relative_velocity_m_s": [
+    0.02493561196016892,
+    -0.014352992154872634,
+    -0.13878455330688347
+  ],
+  "final_deck_tilt_deg": 1.368867509050498,
+  "requested_boat_speed_m_s": 0.6,
+  "measured_boat_speed_mean_m_s": 0.6128639119611974,
+  "speed_outside_tolerance_fraction": 0.0,
+  "route_completed": false,
+  "inference_p50_ms": 201.73075000002427,
+  "inference_p95_ms": 402.2849849998238,
+  "control_deadline_miss_fraction": 0.9621733149931224,
+  "events": [
+    {
+      "time_s": 72.83999999998375,
+      "kind": "touchdown",
+      "relative_velocity": [
+        0.02493561196016892,
+        -0.014352992154872634,
+        -0.13878455330688347
+      ]
+    },
+    {
+      "time_s": 74.13799999998994,
+      "kind": "stable_contact"
+    },
+    {
+      "time_s": 75.08299999999446,
+      "kind": "unstable_contact"
+    },
+    {
+      "time_s": 76.4950000000012,
+      "kind": "stable_contact"
+    },
+    {
+      "time_s": 78.16900000000919,
+      "kind": "landed"
+    }
+  ],
+  "trace_sha256": "439101201a47c25c40f023c1c1da4bacac6530cb656fad9365a42b2f3881ec1b",
+  "wall_seconds": 782.9800813000002,
+  "completed_utc": "2026-11-10T21:46:07.875452+00:00"
+}

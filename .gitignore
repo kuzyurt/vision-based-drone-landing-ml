@@ -86,3 +86,13 @@ desktop.ini
 /latch_check_20261104_v1.log
 /student20_latched_20261104_v1.scheduler.log
 /handoff_investigation_20261108_v2.txt
+
+# Active benchmark rollout bulk: keep the readable digests and small scoring
+# metadata, not the raw per-frame logs.
+/benchmark/evidence/**/*.jsonl
+/benchmark/evidence/**/*.json
+!/benchmark/evidence/**/result.json
+!/benchmark/evidence/**/summary.json
+
+# Local symlink back to tidewater-game/; git would copy the whole game twice.
+/benchmark/tidewater-game

@@ -1,0 +1,54 @@
+{
+  "id": "privileged-teacher-wave-gate-74cfb67e",
+  "label": "Privileged teacher / wave-aware gate",
+  "identity_sha256": "74cfb67e5838c3ca0677e7a8b4bc4bb69b9268a70b6a087e9df48823b2200278",
+  "manifest": {
+    "path": "benchmark/policies/teacher_policy_wave.json",
+    "sha256": "a5418343a1981226fbec4e746b2e713892144f42b8071857d77c3d663585934b",
+    "bytes": 657,
+    "file_modified_utc": "2026-11-04T14:47:57.964792+00:00"
+  },
+  "aliases": [],
+  "source_root": "landing_training",
+  "source_files": [
+    {
+      "path": "landing_training/teacher/privileged_teacher.py",
+      "sha256": "912628d568a58181e950f1e189f574fbd9d022e90f33ee05cc4f99ea67d3282d",
+      "bytes": 13677,
+      "file_modified_utc": "2026-10-24T17:16:28.998819+00:00"
+    },
+    {
+      "path": "landing_training/teacher/smooth_landing.py",
+      "sha256": "7125c98c187cab399d379be9a2a0e91dfd96930cded102a0c9b8103c2b7b4c66",
+      "bytes": 8377,
+      "file_modified_utc": "2026-10-24T17:29:05.574142+00:00"
+    },
+    {
+      "path": "landing_training/teacher/expert.py",
+      "sha256": "45be6d58f929a013c39f0b4107b64f5b97a03bea5bc5927b00ee3dd857b55589",
+      "bytes": 10553,
+      "file_modified_utc": "2026-10-08T20:32:41.476472+00:00"
+    },
+    {
+      "path": "landing_training/teacher/wave_teacher.py",
+      "sha256": "99df57c5a118b425230e18eef79babd264d2bd718c714e074c29f9fd675e6353",
+      "bytes": 6511,
+      "file_modified_utc": "2026-11-04T16:11:16.080370+00:00"
+    }
+  ],
+  "actor": "privileged_teacher",
+  "actor_source_root": null,
+  "actor_source_files": [],
+  "weights": {},
+  "architecture": "privileged_teacher",
+  "architecture_base": "privileged_teacher",
+  "available": true,
+  "missing": [],
+  "role": "privileged teacher",
+  "benchmark_status": "full 20-case benchmark: 20/20 landed; 99.17/100",
+  "captured_utc": "2026-11-04T16:11:29.265981+00:00",
+  "file_modified_utc": "2026-11-04T14:47:57.964792+00:00",
+  "timestamp_basis": "Source snapshot time; no trained weights.",
+  "historical_qualification": "Wave-aware variant of privileged-teacher-platform-aligned-7ac0a6ff; search and visibility rules are inherited unchanged.",
+  "benchmark_status_note": "Full 20-case wave-gate result, 9 November 2026; see benchmark/reports/2026-11-04-teacher-four/FULL20_RESULTS.md"
+}

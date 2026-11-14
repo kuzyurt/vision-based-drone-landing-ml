@@ -1,0 +1,150 @@
+{
+  "id": "radio-robust-20261015-policy-bundle-44826e5a",
+  "label": "radio_robust_20261015 / policy_bundle",
+  "identity_sha256": "44826e5a3df8aecafd8bbc85b3e88247b6c2dd9310f4e46b33574870e20ce0ed",
+  "manifest": {
+    "path": "artifacts/radio_robust_20261015/policy_bundle/policy.json",
+    "sha256": "7b2b4ce5ac8aec4a260b632a9d84518b75b7591112a2fa06a52b4d5388a85d70",
+    "bytes": 8252,
+    "file_modified_utc": "2026-10-15T19:17:10.424468+00:00"
+  },
+  "aliases": [
+    "artifacts/radio_robust_20261015/policy_bundle/policy.json"
+  ],
+  "source_root": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training",
+  "source_files": [
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/__init__.py",
+      "sha256": "7bb76b4104abe3edb1938efb08c2351c42e3288926a7f93d93136b0ea432d55e",
+      "bytes": 80,
+      "file_modified_utc": "2026-10-15T19:01:20.844652+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/policy.py",
+      "sha256": "48c5c54b078169c3c16aa30726f6fd8fd95557abf1c11b92655d715a2ed7c992",
+      "bytes": 5280,
+      "file_modified_utc": "2026-10-15T19:01:20.857654+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/pose_model.py",
+      "sha256": "5a3500189f760d35a27e2ad31a9ad6d649ed5219df69d3cf034be09a6f6dcc2e",
+      "bytes": 3113,
+      "file_modified_utc": "2026-10-15T19:01:20.857654+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/__init__.py",
+      "sha256": "6caec4e63be72086debd1316652acc5d3ec710a1b099f74ffd76e7169db66c57",
+      "bytes": 77,
+      "file_modified_utc": "2026-10-15T19:01:48.639602+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "file_modified_utc": "2026-10-15T19:05:44.264611+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/action_guard.py",
+      "sha256": "0a8a84c67e914c8eb95473df7ce9740f42a0a866fea6bd41353163d4301437ab",
+      "bytes": 6118,
+      "file_modified_utc": "2026-10-15T19:05:32.534365+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/camera_geometry.py",
+      "sha256": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+      "bytes": 2864,
+      "file_modified_utc": "2026-10-15T19:05:33.619480+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/camera_geometry_fast.py",
+      "sha256": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+      "bytes": 2243,
+      "file_modified_utc": "2026-10-15T19:05:34.714597+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/hybrid_policy.py",
+      "sha256": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+      "bytes": 9187,
+      "file_modified_utc": "2026-10-15T19:05:35.801712+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/marker_geometry.py",
+      "sha256": "f6aa5c5d1bc0ec96532106b19753f16fa1902f4e5d507d7c6bb8ee645f59b5d1",
+      "bytes": 9327,
+      "file_modified_utc": "2026-10-15T19:05:36.895828+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/marker_geometry_fast.py",
+      "sha256": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+      "bytes": 3296,
+      "file_modified_utc": "2026-10-15T19:05:37.985944+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/marker_policy.py",
+      "sha256": "53c2587aa054fe2b43149f1a7a6bfdb2ee0f3ce51cdef934ddc007437ab582d0",
+      "bytes": 23114,
+      "file_modified_utc": "2026-10-15T19:10:25.071419+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/recording.py",
+      "sha256": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+      "bytes": 1093,
+      "file_modified_utc": "2026-10-15T19:05:40.195179+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/source.json",
+      "sha256": "5782cf045aeb2d7bd7ee25f23a8a38a176ae366e3b7baee1e3ab4b81764f65b1",
+      "bytes": 1148,
+      "file_modified_utc": "2026-10-15T19:05:41.289295+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/supervision.py",
+      "sha256": "b23c9a8b6ea2bb8e9459a3d863e7a423fa6bc10574091150146467377de60774",
+      "bytes": 1419,
+      "file_modified_utc": "2026-10-15T19:05:42.365409+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/controller/visual_acquisition.py",
+      "sha256": "c87c096722ac3c624f4abb65bb8a02f98dc19bf0de50bc077617bf8af606be24",
+      "bytes": 6894,
+      "file_modified_utc": "2026-10-15T19:10:26.386558+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/model.py",
+      "sha256": "34b1f707559184ff89ff2867c6c299fed09c76fc79119b1356b0e99232d9b7f5",
+      "bytes": 4541,
+      "file_modified_utc": "2026-10-15T19:01:49.984745+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/radio_robust_20261015/runtime.py",
+      "sha256": "129eb501584230dc69c79ed456a3fde25ddc5a301d154cacbe87aae3a1bb66bd",
+      "bytes": 4973,
+      "file_modified_utc": "2026-10-15T19:14:12.547588+00:00"
+    },
+    {
+      "path": "artifacts/radio_robust_20261015/policy_bundle/code/landing_training/recording.py",
+      "sha256": "774965312cc5c8af2bfee721f5add5f580835fafe4df53c8059a09670caf8d26",
+      "bytes": 3589,
+      "file_modified_utc": "2026-10-15T19:01:20.859654+00:00"
+    }
+  ],
+  "actor": "radio_robust",
+  "actor_source_root": null,
+  "actor_source_files": [],
+  "weights": {
+    "pose.pt": {
+      "sha256": "20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749",
+      "path": "policies/weights/20709cee9c6ac66e15614e1162a7180aa0efb5f126996473c227484406df2749.pt"
+    }
+  },
+  "architecture": "radio_conditioned",
+  "architecture_base": "radio_conditioned",
+  "available": true,
+  "missing": [],
+  "role": "flight policy",
+  "benchmark_status": "not_run",
+  "captured_utc": "2026-10-24T17:18:40.202212+00:00",
+  "file_modified_utc": "2026-10-15T19:17:10.424468+00:00",
+  "timestamp_basis": "Preserved manifest file modification time; capture timestamp is inventory time.",
+  "historical_qualification": "See original bundle. No historical success rate is imported into this suite."
+}

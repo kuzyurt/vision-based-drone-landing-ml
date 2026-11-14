@@ -30,7 +30,6 @@ import { BoatModel } from './world/BoatModel.js';
 import { Rocks } from './world/Rocks.js';
 import { Debris } from './world/Debris.js';
 import { Wildlife } from './world/wildlife/Wildlife.js';
-import { Whale } from './world/marine/Whale.js';
 
 import { OceanFFT } from './ocean/OceanFFT.js';
 import { WaterSurface } from './ocean/WaterSurface.js';
@@ -62,6 +61,7 @@ import { CHANDLERY } from './game/Chandlery.js';
 import { BoatController } from './player/BoatController.js';
 import { BoatSpray } from './player/BoatSpray.js';
 import { WakeSim } from './ocean/WakeSim.js';
+import { AerodockWake } from './ocean/AerodockWake.js';
 import { Vegetation } from './world/Vegetation.js';
 import { SoundScape } from './audio/SoundScape.js';
 import { updateCameraVelocity, useStaticVelocity } from './post/CameraVelocity.js';
@@ -292,23 +292,19 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		scene.add( this.airMotes.mesh );
 		this.boatCtl = new BoatController( { model: this.boat, query: this.query, terrain: this.terrainData, colliders: this.colliders } );
 		this.boatSpray = new BoatSpray( { boat: this.boatCtl, spray: this.spray } );
-		// humpback cruising the deep water around the island (model fetched from public/models/whale)
-		this.whale = new Whale( { scene, terrain: this.terrainData, query: this.query, spray: this.spray } );
-		try {
-
-			await this.whale.load();
-			if ( this.reef && this.reef.setWhale ) this.reef.setWhale( this.whale ); // escort fish, foam and slick
-
-		} catch ( e ) {
-
-			console.warn( 'whale model failed to load', e );
-			this.whale = null;
-
-		}
+		// No humpback in the water. It was the one animal that leapt out of the sea next to the beach, and
+		// that is what drew the eye away from everything else, so the game does not put one in. Everything
+		// that hung off it follows: its escort of fish, the churned water and slick it left, its song, blow
+		// and the breach and re-entry sounds - all of them read app.whale and go quiet when there is none.
+		// The animal itself stays in the codebase (world/marine/Whale.js, public/models/whale) for the LOD
+		// test that renders it, it is simply never spawned here.
 
 		// interactive wake around the boat (Kelvin pattern, bow/stern waves, prop wash foam)
 		this.wake = new WakeSim( renderer, { terrainGPU: this.terrainGPU, boat: this.boatCtl, colliders: this.colliders } );
 		this.surface.wake = this.wake;
+		// visual-only wake for the CAD AERODOCK while the flight simulation owns the water
+		this.aerodockWake = new AerodockWake( renderer );
+		this.surface.aerodockWake = this.aerodockWake;
 		this.player = new Player( { camera, input: this.input, terrain: this.terrainData, colliders: this.colliders, query: this.query, boat: this.boatCtl, reef: this.reef } );
 		// birds, beach crabs, sanderlings (after spray / query / boat, which they use)
 		this.wildlife = new Wildlife( {
@@ -653,6 +649,8 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 
 		}
 		if ( this.flightOps && this.flightOps.active ) this.flightOps.update( dt );
+		const flightBridge = this.flightOps && this.flightOps.bridge;
+		if ( this.aerodockWake ) this.aerodockWake.update( dt, flightBridge ? flightBridge.boatObject : null, Boolean( flightBridge && flightBridge.landingWater ), flightBridge ? flightBridge.state : null );
 		this.updateSun();
 
 		this.atmosphere.update( dt, this.camera.position.y );
@@ -705,7 +703,6 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 		this.reef.update( dt, this.camera.position );
 		this.village.update( dt );
 		if ( this.vegetation ) this.vegetation.update( dt, this.camera );
-		if ( this.whale ) this.whale.update( dt, this.camera );
 		this.boat.update( dt );
 		this.wildlife.update( dt, this.camera, this.freeCam ? null : this.player );
 		this.localLights.update( this.camera, dt );

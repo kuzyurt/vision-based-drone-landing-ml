@@ -1,0 +1,63 @@
+=== ROLLOUT DIAGNOSTIC DIGEST (NO RGB) ===
+CASE: acquisition-near-radio-clear-island-r0
+OUTCOME: landed | status=completed | valid=True | training_eligible=False
+SCENARIO: island | start=30.0m | requested boat=0.60m/s | measured=0.61m/s | wave=0.00m | decoys=False
+SUMMARY: frames=1591 duration=63.6s | range min/median/max=0.22/ 5.98/35.34m
+TARGET GEOMETRY: in_fov=49.3s (77.4%) | edge=0.5s | out=14.4s | unlocked_in_fov=25.5s
+POLICY/LOCK: verified_acq=33.52s | policy_lock=37.5s | support=55.5s | gimbal_limit=0.0s | return_slack_min=103.0s
+FINDINGS: TARGET_IN_FOV_WHILE_UNLOCKED_25.5s, VERIFIED_LANDING
+
+READ THIS AS: a text replay of the logged situation, not a pixel recording. Deck = target motion frame (fwd/right/alt), camera fov_r is geometric (0 center, 1 edge). Occlusion and decoy pixels are not available in these traces.
+TRUTH NOTE: pad position is post-flight scoring truth. It was never supplied to the policy.
+
+TIMELINE (event-driven; max 40 rows)
+t(s)  | phase            | event                    | deck fwd/right/alt | vel fwd/right/up | pitch | gimbal pan/tilt | target cam fov_r/edge | range | clr | lock | support
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0.0 | scan             | START(scan), PHASE(scan) |   -30.0/   -0.0/   +6.1 |    -0.0/   +0.0/   +0.1 |   0.0 |   -0.0/   6.1 |            -/OUT_BACK |  30.6 |   5.9 |    - | N
+  8.0 | scan             | TARGET_ENTER_FOV(EDGE_RI |   -34.2/   -0.3/   +6.1 |    -0.8/   +0.0/   +0.0 |  -0.0 |   -0.1/   6.1 |        1.00/EDGE_RISK |  34.7 |   5.8 |    - | N
+  8.2 | inspect          | PHASE(inspect), SUPPORTE |   -34.3/   -0.3/   +6.1 |    -0.8/   +0.0/   +0.0 |  -0.0 |   -0.0/   5.9 |        0.89/EDGE_RISK |  34.9 |   5.8 |    - | Y
+ 12.0 | inspect          | HB                       |   -31.7/   -0.1/   +6.1 |    +1.5/   +0.0/   +0.0 |  -0.3 |   -0.4/  10.7 |               0.04/IN |  32.2 |   5.8 |    - | Y
+ 17.2 | inspect          | HB                       |   -24.2/   -0.2/   +6.1 |    +1.4/   +0.0/   +0.0 |  -0.2 |    0.0/  14.1 |               0.02/IN |  25.0 |   5.8 |    - | Y
+ 20.2 | inspect          | HB                       |   -19.9/   -0.3/   +6.1 |    +1.4/   +0.0/   +0.0 |  -0.2 |   -0.0/  16.9 |               0.02/IN |  20.8 |   5.8 |    - | Y
+ 23.2 | inspect          | HB                       |   -15.6/   -0.3/   +6.1 |    +1.4/   +0.0/   +0.0 |  -0.2 |   -0.0/  21.0 |               0.03/IN |  16.7 |   5.9 |    - | Y
+ 26.1 | visual_acquire   | PHASE(visual_acquire), P |   -11.5/   -0.2/   +6.1 |    +1.4/   +0.1/   -0.0 |  -0.2 |   -0.1/  27.6 |               0.04/IN |  13.0 |   5.9 |    P | Y
+ 26.3 | visual_acquire   | HB                       |   -11.3/   -0.2/   +6.1 |    +1.4/   +0.1/   -0.0 |   0.0 |    0.3/  27.6 |               0.03/IN |  12.8 |   5.9 |    P | Y
+ 29.3 | visual_acquire   | HB                       |    -7.0/   -0.2/   +5.0 |    +1.4/   +0.1/   -0.2 |  -0.2 |    0.4/  33.8 |               0.09/IN |   8.6 |   4.8 |    P | Y
+ 32.3 | align            | PHASE(align)             |    -2.8/   -0.1/   +4.8 |    +1.4/   +0.0/   -0.0 |  -0.2 |    1.2/  54.9 |               0.25/IN |   5.6 |   4.6 |    P | Y
+ 32.4 | align            | HB                       |    -2.7/   -0.1/   +4.8 |    +1.4/   +0.0/   -0.0 |  -0.2 |    1.4/  55.8 |               0.26/IN |   5.5 |   4.6 |    P | Y
+ 33.5 | align            | VERIFIED_ACQUISITION(33. |    -1.4/   -0.0/   +4.8 |    +1.0/   -0.0/   -0.0 |   0.6 |    1.5/  71.0 |               0.14/IN |   5.0 |   4.6 |    Y | Y
+ 33.6 | align            | HB                       |    -1.3/   -0.0/   +4.8 |    +1.0/   -0.0/   +0.0 |   1.1 |    1.2/  71.3 |               0.12/IN |   5.0 |   4.6 |    Y | Y
+ 34.1 | align            | HB                       |    -0.9/   -0.0/   +4.8 |    +0.7/   +0.0/   +0.0 |   3.8 |   -2.1/  79.5 |               0.17/IN |   4.9 |   4.6 |    Y | Y
+ 34.6 | align            | HB                       |    -0.5/   -0.0/   +4.8 |    +0.5/   +0.0/   +0.0 |   2.2 |   -3.5/  84.1 |               0.14/IN |   4.9 |   4.6 |    Y | Y
+ 35.1 | align            | HB                       |    -0.4/   -0.0/   +4.9 |    +0.3/   +0.0/   +0.0 |   1.4 |   -6.4/  86.0 |               0.07/IN |   4.9 |   4.6 |    Y | Y
+ 35.3 | visual_approach  | PHASE(visual_approach)   |    -0.3/   -0.0/   +4.9 |    +0.2/   +0.0/   -0.0 |   1.4 |   -7.2/  86.7 |               0.07/IN |   4.9 |   4.6 |    Y | Y
+ 35.6 | visual_approach  | HB                       |    -0.2/   -0.0/   +4.8 |    +0.2/   +0.0/   -0.1 |   1.2 |   -8.9/  87.6 |               0.06/IN |   4.8 |   4.6 |    Y | Y
+ 36.2 | visual_approach  | HB                       |    -0.1/   -0.0/   +4.7 |    +0.1/   +0.0/   -0.3 |   0.8 |  -22.2/  88.3 |               0.04/IN |   4.7 |   4.5 |    Y | Y
+ 36.7 | visual_approach  | HB                       |    -0.1/   -0.0/   +4.6 |    +0.0/   +0.0/   -0.2 |   0.4 |  -28.7/  89.1 |               0.04/IN |   4.6 |   4.4 |    Y | Y
+ 37.2 | visual_approach  | HB                       |    -0.1/   -0.0/   +4.5 |    +0.0/   +0.0/   -0.2 |   0.0 |  -21.8/  88.9 |               0.04/IN |   4.5 |   4.3 |    Y | Y
+ 37.6 | descend          | PHASE(descend)           |    -0.1/   -0.0/   +4.4 |    +0.0/   +0.0/   -0.2 |   0.1 |  -20.3/  89.1 |               0.04/IN |   4.4 |   4.2 |    Y | Y
+ 37.7 | descend          | HB                       |    -0.1/   -0.0/   +4.4 |    +0.0/   +0.0/   -0.2 |   0.1 |  -20.9/  89.0 |               0.04/IN |   4.4 |   4.2 |    Y | Y
+ 38.2 | descend          | HB                       |    -0.0/   -0.0/   +4.3 |    +0.0/   +0.0/   -0.2 |   0.1 |  -24.1/  89.1 |               0.04/IN |   4.3 |   4.0 |    Y | Y
+ 38.8 | descend          | HB                       |    -0.0/   -0.0/   +4.1 |    -0.0/   +0.0/   -0.2 |   0.2 |  -43.3/  89.4 |               0.03/IN |   4.1 |   3.9 |    Y | Y
+ 39.3 | descend          | HB                       |    -0.0/   -0.0/   +4.0 |    -0.0/   +0.0/   -0.2 |  -0.1 |  -50.3/  89.0 |               0.05/IN |   4.0 |   3.8 |    Y | Y
+ 39.8 | descend          | HB                       |    -0.0/   -0.0/   +3.9 |    +0.0/   +0.0/   -0.2 |  -0.1 |  -42.7/  89.1 |               0.06/IN |   3.9 |   3.7 |    Y | Y
+ 40.3 | descend          | HB                       |    -0.0/   -0.0/   +3.8 |    -0.0/   +0.0/   -0.2 |   0.0 |  -43.0/  89.4 |               0.05/IN |   3.8 |   3.6 |    Y | Y
+ 40.8 | descend          | HB                       |    -0.0/   -0.0/   +3.7 |    +0.0/   +0.0/   -0.2 |  -0.1 |  -48.9/  89.5 |               0.04/IN |   3.7 |   3.5 |    Y | Y
+ 41.4 | descend          | HB                       |    -0.0/   -0.0/   +3.6 |    +0.0/   +0.0/   -0.2 |  -0.0 |  -56.4/  89.4 |               0.05/IN |   3.6 |   3.4 |    Y | Y
+ 41.9 | descend          | HB                       |    -0.0/   -0.0/   +3.5 |    +0.0/   +0.0/   -0.2 |  -0.0 |  -64.6/  89.6 |               0.04/IN |   3.5 |   3.3 |    Y | Y
+ 42.4 | descend          | HB                       |    +0.0/   -0.0/   +3.4 |    +0.0/   +0.0/   -0.2 |   0.0 |  -85.2/  89.6 |               0.04/IN |   3.4 |   3.1 |    Y | Y
+ 42.9 | descend          | HB                       |    +0.0/   -0.0/   +3.2 |    +0.0/   +0.0/   -0.2 |  -0.1 |  -95.9/  89.4 |               0.05/IN |   3.2 |   3.0 |    Y | Y
+ 53.8 | visibility_align | PHASE(visibility_align)  |    +0.0/   -0.0/   +0.9 |    -0.0/   +0.0/   -0.2 |   0.1 | -170.5/  87.4 |               0.20/IN |   0.9 |   0.6 |    Y | Y
+ 55.3 | visibility_align | PHASE(visibility_align)  |    +0.0/   -0.0/   +0.5 |    -0.0/   +0.0/   -0.2 |  -0.1 | -180.0/  88.1 |               0.36/IN |   0.5 |   0.3 |    Y | Y
+ 57.3 | descend          | TARGET_EXIT_FOV(OUT_LEFT |    +0.0/   -0.0/   +0.3 |    -0.0/   +0.0/   -0.1 |  -0.1 | -180.0/  88.5 |         1.02/OUT_LEFT |   0.3 |   0.0 |    Y | Y
+ 57.4 | touchdown        | PHASE(touchdown)         |    +0.0/   -0.0/   +0.2 |    -0.0/   +0.0/   -0.1 |  -0.1 | -180.0/  88.5 |         1.20/OUT_LEFT |   0.2 |   0.0 |    Y | Y
+ 61.6 | confirm          | PHASE(confirm)           |    +0.0/   -0.0/   +0.2 |    +0.0/   +0.0/   -0.0 |  -1.4 | -179.9/  86.7 |         1.35/OUT_LEFT |   0.2 |  -0.0 |    Y | Y
+ 63.6 | disarmed         | END(landed)              |    +0.0/   -0.0/   +0.2 |    -0.0/   +0.0/   -0.0 |  -1.4 | -179.9/  86.9 |         1.35/OUT_LEFT |   0.2 |  -0.0 |    Y | Y
+
+INTERPRETATION LIMITS:
+- fov_r is a geometric projection of the true pad center. A value inside the frame does not prove the target was visible; occlusion/decoy pixels are not in this trace.
+- deck fwd/right/alt uses the pad rotation when recorded, otherwise the pad's motion heading. Motion heading is a proxy for the hull heading and can differ while turning.
+- policy_lock is the policy's own reported lock; verified_acq is the independent scoring acquisition. They are intentionally reported separately.
+- verified acquisition is not a target identity proof beyond the benchmark's own 0.75 m / 10-frame test.
+
+=== END DIGEST ===

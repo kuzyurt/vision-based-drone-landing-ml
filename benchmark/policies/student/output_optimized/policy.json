@@ -1,0 +1,11 @@
+{
+  "schema": "drone.search.student.v1",
+  "runtime": "runtime.SearchRuntime",
+  "checkpoint": "search_best.pt",
+  "checkpoint_sha256": "f62c10a2ec57fc02362dfad2264a5c2c4ce8634aa3f782dee1b2cdf1a96fdfe9",
+  "base": "base/pose.pt",
+  "source_fingerprint": "7b4950efe5f600ae40bb6de2d22d27302e02bedbcb7729b1b5ed20bc07508a12",
+  "allow_visual_landing": true,
+  "boat_radio": false,
+  "qualified": false
+}

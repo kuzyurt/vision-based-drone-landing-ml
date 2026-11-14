@@ -1,0 +1,63 @@
+=== ROLLOUT DIAGNOSTIC DIGEST (NO RGB) ===
+CASE: acquisition-near-radio-clear-island-r0
+OUTCOME: landed | status=completed | valid=True | training_eligible=False
+SCENARIO: island | start=30.0m | requested boat=0.60m/s | measured=0.61m/s | wave=0.00m | decoys=False
+SUMMARY: frames=1454 duration=58.1s | range min/median/max=0.22/ 4.92/30.61m
+TARGET GEOMETRY: in_fov=50.5s (86.8%) | edge=1.1s | out=7.7s | unlocked_in_fov=19.6s
+POLICY/LOCK: verified_acq=21.80s | policy_lock=37.0s | support=40.2s | gimbal_limit=0.0s | return_slack_min=111.1s
+FINDINGS: TARGET_IN_FOV_WHILE_UNLOCKED_19.6s, VERIFIED_LANDING
+
+READ THIS AS: a text replay of the logged situation, not a pixel recording. Deck = target motion frame (fwd/right/alt), camera fov_r is geometric (0 center, 1 edge). Occlusion and decoy pixels are not available in these traces.
+TRUTH NOTE: pad position is post-flight scoring truth. It was never supplied to the policy.
+
+TIMELINE (event-driven; max 40 rows)
+t(s)  | phase            | event                    | deck fwd/right/alt | vel fwd/right/up | pitch | gimbal pan/tilt | target cam fov_r/edge | range | clr | lock | support
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  0.0 | acquire          | START(acquire), PHASE(ac |   -30.0/   -0.0/   +6.1 |    -0.0/   +0.0/   +0.1 |   0.0 |   -0.0/   6.1 |            -/OUT_BACK |  30.6 |   5.9 |    - | N
+  2.2 | acquire          | TARGET_ENTER_FOV(EDGE_RI |   -28.4/   -0.2/   +6.0 |    +1.6/   -0.0/   -0.0 |   2.4 | -107.6/   7.4 |        0.99/EDGE_RISK |  29.0 |   5.8 |    - | N
+  4.9 | acquire          | HB                       |   -24.2/   -0.2/   +6.0 |    +1.4/   +0.0/   -0.0 |  -0.2 |  -70.0/  13.1 |               0.27/IN |  25.0 |   5.8 |    - | N
+  7.9 | acquire          | HB                       |   -20.1/   -0.2/   +6.0 |    +1.3/   +0.0/   -0.0 |  -0.2 |   -5.2/  16.0 |               0.05/IN |  21.0 |   5.7 |    - | N
+ 10.9 | acquire          | HB                       |   -16.2/   -0.3/   +5.9 |    +1.3/   +0.0/   -0.0 |  -0.2 |   -0.3/  19.3 |               0.05/IN |  17.2 |   5.7 |    - | N
+ 13.9 | acquire          | HB                       |   -12.1/   -0.3/   +5.9 |    +1.4/   +0.1/   +0.0 |  -0.3 |   -0.7/  26.9 |               0.06/IN |  13.5 |   5.7 |    - | N
+ 17.0 | acquire          | HB                       |    -7.9/   -0.3/   +5.9 |    +1.4/   +0.0/   -0.0 |  -0.3 |    1.0/  36.2 |               0.03/IN |   9.9 |   5.7 |    - | N
+ 18.0 | align            | PHASE(align), SUPPORTED_ |    -6.5/   -0.3/   +5.9 |    +1.4/   +0.0/   -0.0 |  -0.3 |   -0.3/  40.4 |               0.09/IN |   8.8 |   5.7 |    P | Y
+ 18.0 | align            | POLICY_LOCK_LOST         |    -6.5/   -0.3/   +5.9 |    +1.4/   +0.0/   -0.0 |  -0.3 |   -0.5/  40.7 |               0.09/IN |   8.7 |   5.7 |    - | Y
+ 18.5 | align            | POLICY_LOCK              |    -5.8/   -0.3/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -1.7/  42.9 |               0.14/IN |   8.3 |   5.7 |    P | Y
+ 18.6 | align            | POLICY_LOCK_LOST         |    -5.7/   -0.3/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -1.5/  43.2 |               0.14/IN |   8.2 |   5.7 |    - | Y
+ 19.0 | align            | POLICY_LOCK              |    -5.1/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.1/  46.2 |               0.16/IN |   7.8 |   5.7 |    P | Y
+ 19.1 | align            | POLICY_LOCK_LOST         |    -5.0/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.0/  46.4 |               0.17/IN |   7.7 |   5.7 |    - | Y
+ 19.4 | align            | POLICY_LOCK              |    -4.5/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.4/  49.1 |               0.18/IN |   7.4 |   5.6 |    P | Y
+ 19.5 | align            | POLICY_LOCK_LOST         |    -4.4/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.4/  49.4 |               0.18/IN |   7.4 |   5.6 |    - | Y
+ 19.6 | align            | POLICY_LOCK              |    -4.3/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.4/  50.1 |               0.18/IN |   7.3 |   5.6 |    P | Y
+ 19.6 | align            | POLICY_LOCK_LOST         |    -4.3/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.3/  50.5 |               0.18/IN |   7.3 |   5.6 |    - | Y
+ 19.6 | align            | POLICY_LOCK              |    -4.2/   -0.2/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.2 |   -2.5/  50.7 |               0.19/IN |   7.2 |   5.6 |    P | Y
+ 19.9 | align            | POLICY_LOCK_LOST         |    -3.8/   -0.1/   +5.9 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -2.2/  53.2 |               0.20/IN |   7.0 |   5.6 |    - | Y
+ 20.0 | align            | HB                       |    -3.7/   -0.1/   +5.8 |    +1.4/   +0.2/   -0.0 |  -0.3 |   -2.3/  54.1 |               0.19/IN |   6.9 |   5.6 |    - | Y
+ 20.0 | align            | POLICY_LOCK              |    -3.7/   -0.1/   +5.8 |    +1.4/   +0.2/   -0.0 |  -0.3 |   -2.3/  54.7 |               0.18/IN |   6.9 |   5.6 |    P | Y
+ 20.1 | align            | POLICY_LOCK_LOST         |    -3.6/   -0.1/   +5.8 |    +1.4/   +0.2/   -0.0 |  -0.3 |   -2.1/  54.8 |               0.20/IN |   6.9 |   5.6 |    - | Y
+ 20.1 | align            | POLICY_LOCK              |    -3.6/   -0.1/   +5.8 |    +1.4/   +0.2/   -0.0 |  -0.3 |   -2.0/  55.2 |               0.20/IN |   6.8 |   5.6 |    P | Y
+ 20.2 | align            | POLICY_LOCK_LOST         |    -3.4/   -0.1/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -1.8/  56.3 |               0.20/IN |   6.8 |   5.6 |    - | Y
+ 20.4 | align            | POLICY_LOCK              |    -3.2/   -0.1/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -1.5/  57.6 |               0.20/IN |   6.7 |   5.6 |    P | Y
+ 20.4 | align            | POLICY_LOCK_LOST         |    -3.1/   -0.1/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -1.4/  58.2 |               0.22/IN |   6.6 |   5.6 |    - | Y
+ 20.6 | align            | POLICY_LOCK              |    -2.9/   -0.1/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -0.9/  59.5 |               0.21/IN |   6.5 |   5.6 |    P | Y
+ 20.6 | align            | POLICY_LOCK_LOST         |    -2.9/   -0.1/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -0.7/  59.9 |               0.22/IN |   6.5 |   5.6 |    - | Y
+ 20.7 | align            | POLICY_LOCK              |    -2.8/   -0.0/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -0.7/  60.8 |               0.21/IN |   6.5 |   5.6 |    P | Y
+ 20.8 | align            | POLICY_LOCK_LOST         |    -2.6/   -0.0/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |   -0.1/  62.1 |               0.22/IN |   6.4 |   5.6 |    - | Y
+ 20.9 | align            | POLICY_LOCK              |    -2.4/   -0.0/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |    0.1/  63.0 |               0.24/IN |   6.3 |   5.6 |    P | Y
+ 21.0 | align            | POLICY_LOCK_LOST         |    -2.3/   -0.0/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |    0.2/  64.0 |               0.24/IN |   6.3 |   5.6 |    - | Y
+ 21.1 | align            | POLICY_LOCK              |    -2.2/   -0.0/   +5.8 |    +1.4/   +0.1/   -0.0 |  -0.3 |    0.6/  65.4 |               0.24/IN |   6.2 |   5.6 |    P | Y
+ 21.2 | align            | POLICY_LOCK_LOST         |    -2.1/   -0.0/   +5.8 |    +1.4/   +0.0/   -0.0 |  -0.3 |    0.7/  65.8 |               0.25/IN |   6.2 |   5.6 |    - | Y
+ 21.2 | align            | POLICY_LOCK              |    -2.1/   -0.0/   +5.8 |    +1.4/   +0.0/   -0.0 |  -0.3 |    0.9/  66.2 |               0.25/IN |   6.2 |   5.6 |    P | Y
+ 21.2 | align            | POLICY_LOCK_LOST         |    -2.0/   -0.0/   +5.8 |    +1.4/   +0.0/   -0.0 |  -0.3 |    0.7/  66.6 |               0.26/IN |   6.2 |   5.6 |    - | Y
+ 21.3 | align            | POLICY_LOCK              |    -1.9/   -0.0/   +5.8 |    +1.4/   +0.0/   -0.0 |  -0.3 |    0.8/  67.3 |               0.24/IN |   6.1 |   5.6 |    P | Y
+ 21.3 | align            | POLICY_LOCK_LOST         |    -1.9/   -0.0/   +5.8 |    +1.4/   +0.0/   -0.0 |  -0.3 |    0.7/  67.9 |               0.24/IN |   6.1 |   5.6 |    - | Y
+ 21.8 | align            | POLICY_LOCK, VERIFIED_AC |    -1.2/   -0.0/   +5.8 |    +1.4/   +0.1/   +0.0 |   1.6 |   -0.8/  73.9 |               0.15/IN |   6.0 |   5.6 |    Y | Y
+ 58.1 | disarmed         | END(landed)              |    +0.0/   +0.0/   +0.2 |    -0.0/   -0.0/   -0.0 |  -1.4 |  179.8/  77.2 |         1.11/OUT_LEFT |   0.2 |  -0.0 |    Y | Y
+
+INTERPRETATION LIMITS:
+- fov_r is a geometric projection of the true pad center. A value inside the frame does not prove the target was visible; occlusion/decoy pixels are not in this trace.
+- deck fwd/right/alt uses the pad rotation when recorded, otherwise the pad's motion heading. Motion heading is a proxy for the hull heading and can differ while turning.
+- policy_lock is the policy's own reported lock; verified_acq is the independent scoring acquisition. They are intentionally reported separately.
+- verified acquisition is not a target identity proof beyond the benchmark's own 0.75 m / 10-frame test.
+
+=== END DIGEST ===

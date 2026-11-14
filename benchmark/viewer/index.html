@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2a30">
+<title>AeroDock landing benchmark</title>
+<style>
+  :root {
+    --harbor: #0d2a30;
+    --paper: #e9efea;
+    --panel: #f8fbf7;
+    --ink: #142b2f;
+    --muted: #5f716d;
+    --line: #c9d7d1;
+    --line-strong: #aebfb8;
+    --teal: #0f6768;
+    --orange: #c5562f;
+    --gold: #a97828;
+    --blue: #326c87;
+    --ok: #216e4b;
+    --warn: #8a5a12;
+    --danger: #a34533;
+    --radius: 2px;
+    --display: "Bahnschrift", "DIN Alternate", "Aptos", "Segoe UI", sans-serif;
+    --body: "Aptos", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --data: "Cascadia Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.28), transparent 24rem), var(--paper);
+    color: var(--ink);
+    font: 15px/1.55 var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: #c9ddd5; color: var(--harbor); }
+  a { color: var(--teal); text-underline-offset: 3px; }
+  a:hover { color: var(--orange); }
+  code, .mono { font-family: var(--data); }
+  button, input { font: inherit; }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 2px solid var(--orange); outline-offset: 3px; }
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px),
+      radial-gradient(circle at 82% 18%, rgba(197,86,47,.22), transparent 34rem),
+      var(--harbor);
+    background-size: 48px 48px, 48px 48px, auto, auto;
+    color: #f4faf5;
+    border-bottom: 3px solid var(--orange);
+  }
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 30px 32px 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: end;
+  }
+  .kicker {
+    margin: 0 0 12px;
+    color: #9ac6bd;
+    font: 600 13px/1.4 var(--display);
+    letter-spacing: .07em;
+  }
+  h1 {
+    max-width: none;
+    margin: 0;
+    color: #f7fbf6;
+    font: 600 clamp(2.9rem, 5.4vw, 5rem)/.94 var(--display);
+    letter-spacing: -.045em;
+    white-space: nowrap;
+  }
+  h1 span { display: inline; }
+  .hero-sub {
+    max-width: 64ch;
+    margin: 17px 0 0;
+    color: #bed1cc;
+    font-size: 14px;
+  }
+  .hero-side { padding-bottom: 3px; }
+  .button {
+    min-height: 40px;
+    border: 1px solid rgba(214, 232, 225, .45);
+    border-radius: var(--radius);
+    background: transparent;
+    color: #f4faf5;
+    padding: 8px 13px;
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+  }
+  .button:hover { background: var(--orange); border-color: var(--orange); color: white; }
+  .button:active { transform: translateY(1px); }
+
+  .shell { max-width: 1320px; margin: 0 auto; padding: 0 32px 52px; }
+  .notice {
+    margin: 20px 0 0;
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--orange);
+    border-radius: var(--radius);
+    background: var(--panel);
+    color: var(--muted);
+  }
+  .notice strong { color: var(--ink); }
+  .notice code {
+    display: inline-block;
+    margin: 7px 0;
+    padding: 4px 7px;
+    background: #e1ebe4;
+    color: var(--ink);
+  }
+
+  main { display: grid; gap: 48px; min-width: 0; padding-top: 30px; }
+  main > section { min-width: 0; }
+  .section-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 20px;
+    margin-bottom: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line-strong);
+  }
+  .section-head h2 {
+    margin: 0;
+    font: 600 clamp(1.25rem, 2vw, 1.52rem)/1.15 var(--display);
+    letter-spacing: -.025em;
+  }
+  .score-board {
+    min-width: 0;
+    padding: 16px 22px 18px;
+    border: 1px solid var(--line-strong);
+    border-top: 3px solid var(--teal);
+    border-radius: var(--radius);
+    background: var(--panel);
+  }
+  .bar-chart { --chart-height: 300px; --chart-clearance: 32px; }
+  .bar-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    height: calc(var(--chart-height) + var(--chart-clearance));
+  }
+  .bar-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    align-self: end;
+    height: var(--chart-height);
+    padding-right: 10px;
+    color: var(--muted);
+    font: 10.5px/1 var(--data);
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-plot {
+    position: relative;
+    align-self: end;
+    height: var(--chart-height);
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .bar-grid { position: absolute; inset: 0; pointer-events: none; }
+  .bar-gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--tick) * 1%);
+    border-top: 1px solid var(--line);
+  }
+  .bar-columns {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    height: 100%;
+  }
+  .bar-column {
+    --row-accent: var(--teal);
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    min-width: 0;
+    height: 100%;
+  }
+  .bar-column.teacher { --row-accent: var(--orange); }
+  .bar-column.search { --row-accent: var(--teal); }
+  .bar-column.vision { --row-accent: var(--gold); }
+  .bar-column.radio { --row-accent: var(--blue); }
+  .bar-fill {
+    width: min(64px, 62%);
+    height: calc(var(--score) * 1%);
+    border-radius: 1px 1px 0 0;
+    background: var(--row-accent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.24);
+    transform-origin: bottom center;
+    animation: bar-in 560ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  .bar-value {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--score) * 1% + 8px);
+    z-index: 2;
+    transform: translateX(-50%);
+    color: var(--ink);
+    font: 600 clamp(1.05rem, 2.2vw, 1.3rem)/1 var(--display);
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .bar-labels { margin: 10px 0 0 38px; }
+  .bar-label-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    text-align: center;
+  }
+  .bar-label { min-width: 0; }
+  .bar-name { display: block; font-size: 13px; line-height: 1.25; }
+  .bar-meta { display: block; margin-top: 3px; color: #3f5a54; font-size: 12px; font-variant-numeric: tabular-nums; }
+  .bar-sep { white-space: pre; }
+  .bar-created { display: inline; white-space: nowrap; }
+  .policy-dot { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: var(--teal); }
+  .dot-teacher { background: var(--orange); }
+  .dot-search { background: var(--teal); }
+  .dot-vision { background: var(--gold); }
+  .dot-radio { background: var(--blue); }
+
+  .scroll {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--panel);
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13px; }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #e1ebe4;
+    color: #36534e;
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: .015em;
+    white-space: nowrap;
+  }
+  tr:last-child td { border-bottom: 0; }
+  tbody tr { transition: background-color 100ms ease; }
+  tbody tr:hover { background: #f0f5ef; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr.pending td { color: var(--muted); opacity: .72; }
+  tr.invalid td { background: #fff8ef; }
+  .matrix td { font-variant-numeric: tabular-nums; }
+  .matrix td.cat { color: var(--ink); font-family: var(--data); font-size: 12px; }
+  .matrix .policy-name { display: flex; align-items: center; gap: 8px; }
+  .matrix .policy-name strong { font-weight: 700; }
+  .matrix .policy-subtitle { display: none; }
+  .pending-label { color: var(--muted); }
+  .ok-text { color: var(--ok); font-weight: 650; }
+  .bad-text { color: var(--danger); font-weight: 650; }
+  .warn-text { color: var(--warn); }
+
+  .tabs {
+    display: flex;
+    max-width: 100%;
+    gap: 2px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--line-strong);
+  }
+  .tab {
+    min-height: 38px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    background: transparent;
+    color: var(--muted);
+    padding: 7px 12px 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: color 120ms ease, border-color 120ms ease, background-color 120ms ease;
+  }
+  .tab:hover { color: var(--ink); background: #edf3ee; }
+  .tab.active { border-bottom-color: var(--orange); color: var(--ink); font-weight: 700; }
+
+  .reference { display: grid; gap: 9px; }
+  details {
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    background: var(--panel);
+    padding: 12px 14px;
+  }
+  summary {
+    cursor: pointer;
+    color: var(--ink);
+    font: 600 14px/1.35 var(--display);
+  }
+  summary:hover { color: var(--orange); }
+  .prose { color: var(--muted); font-size: 13px; }
+  .prose h3 { margin: 18px 0 5px; color: var(--ink); font: 600 1.02rem/1.3 var(--display); }
+  .prose h3:first-child { margin-top: 0; }
+  .prose ul { margin: 6px 0 14px; padding-left: 20px; }
+  .prose li { margin: 4px 0; }
+  .source-list { margin: 9px 0 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+  .source-list li { margin: 3px 0; overflow-wrap: anywhere; }
+  .design-note { max-width: 78ch; margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .weights { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+  .weight {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    background: var(--paper);
+    padding: 6px 9px;
+    font-size: 12px;
+  }
+  .weight b { color: var(--ink); font-family: var(--data); font-size: 11.5px; }
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 18px 0 0;
+    border-top: 1px solid var(--line-strong);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer a { color: var(--teal); }
+
+  main > section { animation: section-in 540ms cubic-bezier(.22, 1, .36, 1) both; }
+  main > section:nth-child(2) { animation-delay: 50ms; }
+  main > section:nth-child(3) { animation-delay: 100ms; }
+  main > section:nth-child(4) { animation-delay: 150ms; }
+  #case-table table { animation: table-in 200ms ease-out both; }
+  @keyframes section-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes table-in {
+    from { opacity: .45; }
+    to { opacity: 1; }
+  }
+  @keyframes bar-in {
+    from { transform: scaleY(0); opacity: .35; }
+    to { transform: scaleY(1); opacity: 1; }
+  }
+  @media (max-width: 820px) {
+    .bar-chart { --chart-height: 260px; --chart-clearance: 30px; }
+    .bar-stage { grid-template-columns: 32px minmax(0, 1fr); }
+    .bar-labels { margin-left: 32px; }
+  }
+
+  @media (max-width: 620px) {
+    .hero-inner { padding: 26px 18px 28px; }
+    h1 { font-size: clamp(2.8rem, 14vw, 4rem); white-space: normal; line-height: .95; }
+    h1 span { display: block; }
+    .hero-sub { margin-top: 14px; }
+    .shell { padding: 0 16px 40px; }
+    main { gap: 36px; padding-top: 24px; }
+    .section-head { grid-template-columns: 1fr; gap: 4px; }
+    .score-board { padding: 14px 12px 14px; }
+    .bar-chart { --chart-height: 218px; --chart-clearance: 30px; }
+    .bar-stage { grid-template-columns: 1fr; }
+    .bar-axis, .bar-grid { display: none; }
+    .bar-labels { margin-left: 0; margin-top: 8px; }
+    .bar-label-grid { gap: 4px; }
+    .bar-fill { width: min(48px, 68%); }
+    .bar-value { font-size: clamp(.92rem, 4.7vw, 1.15rem); }
+    .bar-name { font-size: 12px; line-height: 1.2; }
+    .bar-meta { font-size: 11.5px; }
+    .bar-sep { display: none; }
+    .bar-created { display: block; }
+    .tab { padding-left: 10px; padding-right: 10px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="kicker">AeroDock / flight test</p>
+      <h1><span>Landing</span> <span>benchmark</span></h1>
+      <p class="hero-sub" id="subtitle">Loading benchmark…</p>
+    </div>
+    <div class="hero-side">
+      <button class="button" id="reload" type="button">Reload data</button>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+  <div class="notice" id="status" role="status" aria-live="polite">Loading benchmark.json…</div>
+  <div class="notice" id="fallback" hidden>
+    <p><strong>benchmark.json could not be fetched.</strong> Browsers block <code>file://</code> fetches. Choose the JSON file below, or serve the viewer:</p>
+    <code>python -m http.server 8765 --directory benchmark</code>
+    <p><input id="file" type="file" accept="application/json,.json"></p>
+  </div>
+
+  <main id="content" hidden>
+    <section>
+      <div class="section-head">
+        <h2>Overall scores</h2>
+      </div>
+      <div id="scores"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Category results</h2>
+      </div>
+      <div class="scroll" id="categories"></div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Case results</h2>
+      </div>
+      <div class="tabs" id="case-tabs" aria-label="Choose a policy"></div>
+      <div class="scroll" id="case-table"></div>
+    </section>
+
+    <section class="reference">
+      <details id="design-details">
+        <summary>Test design and conditions</summary>
+        <div id="design"></div>
+      </details>
+      <details id="evidence-details">
+        <summary>Evidence and provenance</summary>
+        <div id="provenance"></div>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <a href="../benchmark.json">Source data</a>
+    <span aria-hidden="true">/</span>
+    <a href="../evidence/teacher/FULL20_verification.json">Teacher v2 verification</a>
+  </footer>
+</div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const node = (tag, text, cls) => {
+  const element = document.createElement(tag);
+  if (text !== undefined && text !== null) element.textContent = String(text);
+  if (cls) element.className = cls;
+  return element;
+};
+const pct = value => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : `${Number(value).toFixed(1)}%`;
+const num = (value, digits = 1) => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : Number(value).toFixed(digits);
+const secs = value => (value === null || value === undefined || Number.isNaN(Number(value)))
+  ? '—' : `${Number(value).toFixed(1)} s`;
+const stamp = value => value ? String(value).replace('T', ' ').replace(/\.\d+/, '').replace('+00:00', ' UTC') : '—';
+const short = value => value ? String(value).slice(0, 12) + '…' : '—';
+const clamp = value => Math.max(0, Math.min(100, Number(value) || 0));
+
+// These names are presentation-only. Canonical ids and evidence remain untouched.
+const POLICY_INFO = {
+  'privileged-teacher-wave-gate-74cfb67e': {
+    name: 'Teacher v2',
+    subtitle: 'Privileged wave-gate reference',
+    tone: 'teacher'
+  },
+  'fresh-search-f62c10a2': {
+    name: 'Visual Search v1',
+    subtitle: 'Unprivileged visual search / frozen R15 base',
+    tone: 'search'
+  },
+  'r15-archived-export-67a80a63': {
+    name: 'Vision Baseline v1',
+    subtitle: 'Archived R15 vision baseline',
+    tone: 'vision'
+  },
+  'radio-robust-20261015-policy-bundle-44826e5a': {
+    name: 'Radio Baseline v1',
+    subtitle: 'Radio-conditioned baseline / 15 October',
+    tone: 'radio'
+  }
+};
+const policyInfo = model => POLICY_INFO[model.id] || {
+  name: model.label || model.id,
+  subtitle: model.role || 'Flight policy',
+  tone: 'other'
+};
+const CATEGORY_NOTES = {
+  landing: 'Strict landing rate in four cases at 0.6 and 1.5 m/s boat speed.',
+  wind: 'Strict landing rate in two cases with 4.0 m/s crosswind.',
+  waves: 'Strict landing rate in two cases with 0.15 m wave height.',
+  acquisition: 'Verified true-pad acquisition within 120 s; false acquisition, collision or water strike fails.',
+  combined: 'Strict landing rate in two cases combining distance, fast boat, wind, waves and decoys.',
+  speed: 'Only strict landings receive a time score; normalized against the case reference and 240 s deadline, then averaged across mission categories.'
+};
+// Project day 0 is the first AeroDock workspace commit. The search version
+// date is its completion date (8 November), not the earlier checkpoint file
+// timestamp.
+const PROJECT_START = '2026-10-08';
+const MODEL_CREATED = {
+  'privileged-teacher-wave-gate-74cfb67e': '2026-11-04',
+  'fresh-search-f62c10a2': '2026-11-08',
+  'r15-archived-export-67a80a63': '2026-10-20',
+  'radio-robust-20261015-policy-bundle-44826e5a': '2026-10-15'
+};
+const daysFromStart = value => {
+  if (!value) return null;
+  const day = Math.round((Date.parse(`${value}T00:00:00Z`) - Date.parse(`${PROJECT_START}T00:00:00Z`)) / 86400000);
+  return Number.isFinite(day) ? day : null;
+};
+
+let DATA = null;
+let activeModel = 0;
+
+function scores() {
+  const board = node('div', undefined, 'score-board bar-chart');
+  board.setAttribute('role', 'img');
+  board.title = 'Weighted category score; not a raw landing rate.';
+  board.setAttribute('aria-label', 'Overall weighted scores: ' + DATA.models.map(model => {
+    const info = policyInfo(model);
+    const planned = model.summary?.planned_cases ?? DATA.benchmark.case_count;
+    const day = daysFromStart(MODEL_CREATED[model.id]);
+    return `${info.name} ${pct(model.summary?.total)} (${model.summary?.landings ?? 0}/${planned} landed${day === null ? '' : `, created day ${day}`})`;
+  }).join('; '));
+
+  const stage = node('div', undefined, 'bar-stage');
+  const axis = node('div', undefined, 'bar-axis');
+  axis.setAttribute('aria-hidden', 'true');
+  for (const value of [100, 75, 50, 25, 0]) axis.append(node('span', value));
+  stage.append(axis);
+
+  const plot = node('div', undefined, 'bar-plot');
+  const grid = node('div', undefined, 'bar-grid');
+  grid.setAttribute('aria-hidden', 'true');
+  for (const value of [25, 50, 75, 100]) {
+    const line = node('span', undefined, 'bar-gridline');
+    line.style.setProperty('--tick', value);
+    grid.append(line);
+  }
+  plot.append(grid);
+
+  const columns = node('div', undefined, 'bar-columns');
+  const labels = node('div', undefined, 'bar-label-grid');
+  DATA.models.forEach((model, index) => {
+    const info = policyInfo(model);
+    const total = model.summary?.total;
+    const score = clamp(total);
+    const planned = model.summary?.planned_cases ?? DATA.benchmark.case_count;
+    const created = MODEL_CREATED[model.id];
+    const day = daysFromStart(created);
+    const column = node('div', undefined, `bar-column ${info.tone}`);
+    column.style.setProperty('--score', score);
+    const fill = node('div', undefined, 'bar-fill');
+    fill.style.animationDelay = `${index * 60}ms`;
+    column.append(fill, node('div', pct(total), 'bar-value'));
+    columns.append(column);
+
+    const label = node('div', undefined, 'bar-label');
+    const meta = node('span', undefined, 'bar-meta');
+    meta.append(node('span', `${model.summary?.landings ?? 0}/${planned} landed`));
+    if (day !== null) meta.append(node('span', ' · ', 'bar-sep'), node('span', `created day ${day}`, 'bar-created'));
+    label.append(node('strong', info.name, 'bar-name'), meta);
+    if (created && day !== null) label.title = `Created ${created} (day ${day} from project start, ${PROJECT_START})`;
+    labels.append(label);
+  });
+  plot.append(columns);
+  stage.append(plot);
+
+  const labelRow = node('div', undefined, 'bar-labels');
+  labelRow.append(labels);
+  board.append(stage, labelRow);
+  $('scores').replaceChildren(board);
+}
+
+function categoryTable() {
+  const table = node('table', undefined, 'matrix');
+  const head = node('thead');
+  const headRow = node('tr');
+  headRow.append(node('th', 'Policy'));
+  for (const [key, category] of Object.entries(DATA.benchmark.categories)) {
+    const count = key === 'speed'
+      ? DATA.benchmark.cases.length
+      : DATA.benchmark.cases.filter(item => item.category === key).length;
+    const header = node('th', `${category.label} (${count})`, 'num');
+    header.title = `${CATEGORY_NOTES[key] || category.label} (${count} cases)`;
+    headRow.append(header);
+  }
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const model of DATA.models) {
+    const info = policyInfo(model);
+    const row = node('tr');
+    const name = node('td');
+    const nameLine = node('div', undefined, 'policy-name');
+    nameLine.append(node('span', undefined, `policy-dot dot-${info.tone}`), node('strong', info.name));
+    name.append(nameLine);
+    row.append(name);
+    for (const [key, category] of Object.entries(DATA.benchmark.categories)) {
+      const result = model.summary?.categories?.[key] || {};
+      const cell = node('td', pct(result.score), 'num cat');
+      cell.title = `${category.label}: ${pct(result.score)}; ${result.landings ?? 0}/${result.valid ?? 0} strict landings.`;
+      row.append(cell);
+    }
+    body.append(row);
+  }
+  table.append(body);
+  $('categories').replaceChildren(table);
+}
+
+function tabs() {
+  const buttons = DATA.models.map((model, index) => {
+    const info = policyInfo(model);
+    const button = node('button', info.name, index === activeModel ? 'tab active' : 'tab');
+    button.type = 'button';
+    button.setAttribute('aria-pressed', index === activeModel ? 'true' : 'false');
+    button.addEventListener('click', () => {
+      activeModel = index;
+      tabs();
+      caseTable();
+    });
+    return button;
+  });
+  $('case-tabs').replaceChildren(...buttons);
+}
+
+function caseTable() {
+  const model = DATA.models[activeModel];
+  const info = policyInfo(model);
+  const byId = Object.fromEntries((model.results || []).map(result => [result.case_id, result]));
+  const table = node('table');
+  const head = node('thead');
+  const headRow = node('tr');
+  for (const label of ['Case', 'Condition', 'Outcome', 'Valid', 'Landed', 'Mission time']) {
+    headRow.append(node('th', label));
+  }
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const item of DATA.benchmark.cases) {
+    const result = byId[item.id];
+    const scenario = item.scenario || {};
+    const orbit = item.bounded_route ? `; orbit ${num(item.bounded_route.radius_m, 0)} m` : '';
+    const condition = `${num(scenario.distance, 0)} m; boat ${num(scenario.boat_speed, 1)} m/s; `
+      + `wind ${num(scenario.wind_mean_m_s, 1)} m/s; wave ${num(scenario.wave_height, 2)} m; `
+      + `radio ${item.radio}; decoys ${item.decoys ? 'on' : 'off'}${orbit}`;
+    const notRun = !result || result.status === 'not_run';
+    const row = node('tr', undefined, notRun ? 'pending' : (result.condition_valid === false ? 'invalid' : ''));
+    const caseCell = node('td');
+    caseCell.append(node('strong', item.id), node('div', item.category, 'pending-label'));
+    const outcome = notRun ? 'Not run'
+      : result.status === 'completed' ? (result.outcome || 'completed')
+      : `${result.status}${result.outcome ? ': ' + result.outcome : ''}`;
+    row.append(
+      caseCell,
+      node('td', condition),
+      node('td', outcome),
+      node('td', notRun ? '—' : (result.condition_valid === true ? 'Yes' : 'No')),
+      node('td', notRun ? '—' : (result.strict_landing ? 'Yes' : 'No')),
+      node('td', notRun ? '—' : secs(result.mission_time_s)),
+    );
+    if (result?.source?.path) row.title = result.source.path;
+    body.append(row);
+  }
+  table.append(body);
+  $('case-table').replaceChildren(table);
+}
+
+function design() {
+  const weights = Object.entries(DATA.benchmark.categories).map(([key, category]) => {
+    const item = node('span', undefined, 'weight');
+    item.append(node('b', `${Math.round((category.weight || 0) * 100)}%`), ` ${category.label}`);
+    return item;
+  });
+  const wrapper = node('div');
+  wrapper.append(node('p', DATA.benchmark.design_note, 'design-note'));
+  const weightRow = node('div', undefined, 'weights');
+  weightRow.append(...weights);
+  wrapper.append(weightRow);
+
+  const table = node('table');
+  const head = node('thead');
+  const headRow = node('tr');
+  for (const label of ['Case', 'Category', 'Map / repeat', 'Range', 'Boat', 'Wind', 'Waves', 'Radio', 'Decoys', 'Start view', 'Speed ref', 'Orbit']) {
+    headRow.append(node('th', label));
+  }
+  head.append(headRow);
+  table.append(head);
+  const body = node('tbody');
+  for (const item of DATA.benchmark.cases) {
+    const scenario = item.scenario || {};
+    const row = node('tr');
+    row.append(
+      node('td', item.id),
+      node('td', item.category),
+      node('td', `${item.map} / r${item.repeat}`),
+      node('td', `${num(scenario.distance, 0)} m`),
+      node('td', `${num(scenario.boat_speed, 1)} m/s`),
+      node('td', `${num(scenario.wind_mean_m_s, 1)} m/s`),
+      node('td', `${num(scenario.wave_height, 2)} m`),
+      node('td', item.radio),
+      node('td', item.decoys ? 'on' : 'off'),
+      node('td', item.initial_view),
+      node('td', secs(item.speed_reference_s)),
+      node('td', item.bounded_route ? `${num(item.bounded_route.radius_m, 0)} m` : '—'),
+    );
+    body.append(row);
+  }
+  table.append(body);
+  const scroll = node('div', undefined, 'scroll');
+  scroll.append(table);
+  wrapper.append(scroll);
+  $('design').replaceChildren(wrapper);
+}
+
+function provenance() {
+  const wrapper = node('div', undefined, 'prose');
+  const notes = node('ul');
+  for (const note of DATA.notes || []) notes.append(node('li', note));
+  if (DATA.warnings?.length) {
+    wrapper.append(node('h3', 'Warnings'));
+    const warnings = node('ul');
+    for (const warning of DATA.warnings) warnings.append(node('li', warning, 'warn-text'));
+    wrapper.append(warnings);
+  }
+  wrapper.append(node('h3', 'Run receipts'), notes);
+
+  if (DATA.runs?.length) {
+    const table = node('table');
+    const head = node('thead');
+    const headRow = node('tr');
+    for (const label of ['Run', 'Created', 'Device / workers', 'Policies', 'Cases', 'Progress']) {
+      headRow.append(node('th', label));
+    }
+    head.append(headRow);
+    table.append(head);
+    const body = node('tbody');
+    for (const run of DATA.runs) {
+      const row = node('tr');
+      const progress = run.progress
+        ? `${run.progress.status} / ${run.progress.completed}/${run.progress.planned}`
+        : '—';
+      row.append(
+        node('td', run.id),
+        node('td', stamp(run.created_utc)),
+        node('td', `${run.device || '—'} / ${run.workers ?? '—'}`),
+        node('td', (run.policies || []).map(id => policyInfo({id, label: id, role: ''}).name).join(', ') || '—'),
+        node('td', Array.isArray(run.cases) ? String(run.cases.length) : String(run.cases ?? '—')),
+        node('td', progress),
+      );
+      body.append(row);
+    }
+    table.append(body);
+    const scroll = node('div', undefined, 'scroll');
+    scroll.append(table);
+    wrapper.append(scroll);
+  } else {
+    wrapper.append(node('p', 'No new runs recorded yet. Existing evidence is listed below.'));
+  }
+
+  wrapper.append(node('h3', 'Evidence by policy'));
+  for (const model of DATA.models) {
+    const info = policyInfo(model);
+    const details = node('details');
+    details.append(node('summary', `${info.name} / ${model.sources?.length || 0} episodes`));
+    const list = node('ul', undefined, 'source-list');
+    for (const source of model.sources || []) list.append(node('li', source));
+    details.append(list);
+    wrapper.append(details);
+  }
+  $('provenance').replaceChildren(wrapper);
+}
+
+function init(data) {
+  DATA = data;
+  $('status').hidden = true;
+  $('fallback').hidden = true;
+  $('content').hidden = false;
+  const valid = data.models.reduce((sum, model) => sum + (model.summary?.valid_cases || 0), 0);
+  const planned = data.models.length * data.benchmark.case_count;
+  $('subtitle').textContent = `${data.benchmark.case_count} frozen cases / ${data.models.length} policies / ${valid}/${planned} valid`;
+  activeModel = 0;
+  scores();
+  categoryTable();
+  tabs();
+  caseTable();
+  design();
+  provenance();
+}
+
+async function load() {
+  $('status').hidden = false;
+  $('status').textContent = 'Loading benchmark.json…';
+  $('fallback').hidden = true;
+  try {
+    const response = await fetch('../benchmark.json', {cache: 'no-store'});
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    init(await response.json());
+  } catch (error) {
+    $('status').textContent = `benchmark.json could not be loaded (${error.message}).`;
+    $('fallback').hidden = false;
+  }
+}
+
+async function readFile(file) {
+  if (!file) return;
+  try {
+    init(JSON.parse(await file.text()));
+  } catch (error) {
+    $('status').hidden = false;
+    $('status').textContent = `That file is not valid benchmark JSON (${error.message}).`;
+  }
+}
+
+$('reload').addEventListener('click', load);
+$('file').addEventListener('change', event => readFile(event.target.files[0]));
+document.addEventListener('dragover', event => event.preventDefault());
+document.addEventListener('drop', event => {
+  event.preventDefault();
+  readFile(event.dataTransfer.files[0]);
+});
+load();
+</script>
+</body>
+</html>

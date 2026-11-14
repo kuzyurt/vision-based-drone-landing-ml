@@ -1,0 +1,40 @@
+{
+  "created_utc": "2026-10-25T19:19:41.171417+00:00",
+  "source": "D:\\Dokumente\\CODE_PROJEKTE\\SMARTSYSTEMS\\schiebel-drone-landing\\training_runs\\search_revision_20261025\\operations\\cheap_fixes_20261025\\handover\\latest.pt",
+  "source_sha256": "bfb99a56828c6cd26722f3c5c6f7952e07c95caf2b34dc8a4217bae0f337b634",
+  "old_implementation": {
+    "train_optimized.py": "7d3a5d8e6edc2f9ef245645fe852a9c958ffcdee8245f6f2f256250cf4c3d512",
+    "input_pipeline.py": "84625a7e54a6277813c05e91e938797c3fa37509e147aad4a464e2a204030165"
+  },
+  "new_implementation": {
+    "train_cheap.py": "0370e027a39ae771a25bc082f52d171789fef47cad5de96fe562ad3ee2a96243",
+    "fast_input.py": "91fe688bb5fdd1954f4c78db79ebcce1e489c460dd4441c61d2e51fa86259fb9",
+    "cheap_loss.py": "567be98a49c639510a4dc68b68274c909e1f8602e9566d3a64743804e77108f5",
+    "input_pipeline.py": "84625a7e54a6277813c05e91e938797c3fa37509e147aad4a464e2a204030165"
+  },
+  "cursor": {
+    "epoch": 8,
+    "phase": "training",
+    "progress": {
+      "batch": 918,
+      "counts": 7344,
+      "totals": {
+        "total": 941.3032930493355,
+        "heat": 563.2806970560923,
+        "offset": 49.32784671988338,
+        "presence": 84.6121045868108,
+        "evidence": 320.20306128264974,
+        "identity": 0.030480796225724305
+      }
+    },
+    "training_metrics": null
+  },
+  "frame_visits": 655187,
+  "optimizer_reinitialized": false,
+  "batch_size": 8,
+  "objective_preserved": true,
+  "fp32_loss_reductions_vectorized": true,
+  "optimizer_steps": [
+    63701
+  ]
+}

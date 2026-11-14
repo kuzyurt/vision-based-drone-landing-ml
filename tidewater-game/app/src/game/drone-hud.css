@@ -360,9 +360,11 @@
 /* The game opens here: same ink, mono and letter-spacing as the consoles, so the old Tidewater
    interface never appears before the flight HUD. Click anywhere (or Enter) to start. */
 #flight-start {
-	--ink: #dfe4e1;
-	--ink-2: rgba(223, 228, 225, .64);
-	--ink-3: rgba(223, 228, 225, .46);
+	/* This card opens over open water, so its text is solid white rather than the consoles' grey and
+	   the .46-alpha hints that disappeared into the sea. Sizes, tracking and positions are unchanged. */
+	--ink: #ffffff;
+	--ink-2: #ffffff;
+	--ink-3: #ffffff;
 	--line: rgba(223, 228, 225, .14);
 	position: fixed;
 	inset: 0;
@@ -373,7 +375,7 @@
 	padding: 0 6vw 7vh;
 	background: linear-gradient(180deg, rgba(3, 5, 6, .34) 0%, rgba(3, 5, 6, 0) 26%, rgba(3, 5, 6, 0) 52%, rgba(3, 5, 6, .72) 100%);
 	color: var(--ink);
-	font: 400 11px/1.5 'JetBrains Mono', ui-monospace, monospace;
+	font: 500 11px/1.5 'JetBrains Mono', ui-monospace, monospace; /* 500 is the heaviest weight the page loads */
 	letter-spacing: .06em;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -400,7 +402,7 @@
 	border-radius: 50% 50% 50% 3px;
 	font-size: 11px;
 }
-#flight-start .fs-brand b { font-weight: 400; letter-spacing: .5em; }
+#flight-start .fs-brand b { font-weight: 500; letter-spacing: .5em; }
 #flight-start .fs-brand small { display: block; margin-top: 5px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); }
 #flight-start .fs-lead {
 	max-width: 46ch;
@@ -446,7 +448,7 @@
 	transition: background .15s ease, border-color .15s ease;
 }
 #flight-start .fs-go:hover:not(:disabled) { background: rgba(223, 228, 225, .12); border-color: rgba(223, 228, 225, .46); }
-#flight-start .fs-go:disabled { color: var(--ink-3); cursor: default; }
+#flight-start .fs-go:disabled { color: rgba(255, 255, 255, .45); cursor: default; }
 #flight-start .fs-status { margin-top: 12px; font-size: 7px; letter-spacing: .24em; color: var(--ink-3); text-shadow: 0 1px 10px rgba(0, 0, 0, .8); }
 #flight-start.is-error .fs-status { color: #c8806f; }
 #flight-start :focus-visible { outline: 1px solid rgba(223, 228, 225, .5); outline-offset: 3px; }

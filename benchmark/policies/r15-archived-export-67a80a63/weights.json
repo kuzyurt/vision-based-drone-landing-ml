@@ -1,0 +1,14 @@
+{
+  "pose.pt": {
+    "sha256": "2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4",
+    "path": "policies/weights/2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4.pt"
+  },
+  "acquisition.pt": {
+    "sha256": "8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65",
+    "path": "policies/weights/8324afb1b8eb2274bad7d9948b654035473a51c7e7c8f84561f037964d32dc65.pt"
+  },
+  "spatial_acquisition.pt": {
+    "sha256": "b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b",
+    "path": "policies/weights/b432c1584b778d1959e950e855fcdf78c468d7f5ec7e86b71641f5052a6ce14b.pt"
+  }
+}

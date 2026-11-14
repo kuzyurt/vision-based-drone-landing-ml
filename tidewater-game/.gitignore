@@ -16,3 +16,20 @@ __pycache__/
 
 # Scratch captures, HUD drafts and throwaway browser profiles
 /.tmp-*/
+
+# In-game session recordings (dev key Z)
+/recordings/
+/.backup-before-claude-*/
+
+# Dev server log
+/.server.log
+
+# Chrome profiles and scratch screenshots from HUD work
+/app/.shots/
+
+# Exported flight logs; regenerate them from a recording when needed
+/app/diagnostics/
+
+# Retired vision-first policy kept for rollback. Its ORT/Pyodide runtime is
+# already tracked under app/public/policy/, so this is 84 MB of duplicates.
+/app/public/policy-legacy-vision-first/
