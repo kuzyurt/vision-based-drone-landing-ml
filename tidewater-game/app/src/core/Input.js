@@ -19,6 +19,9 @@ export class Input {
 			if ( range && e.code.startsWith( 'Arrow' ) ) return;
 			if ( e.target && ! range && ( e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA' ) ) return;
 			if ( ! this.keys.has( e.code ) ) this.pressed.add( e.code );
+			// layout independent: the letter printed on the key ('Char:z'), for shortcuts that should
+			// follow the label (on a QWERTZ keyboard the key labelled Z reports code 'KeyY')
+			if ( ! e.repeat && e.key && e.key.length === 1 ) this.pressed.add( 'Char:' + e.key.toLowerCase() );
 			this.keys.add( e.code );
 			if ( [ 'Space', 'ArrowUp', 'ArrowDown', 'Tab' ].includes( e.code ) ) e.preventDefault();
 

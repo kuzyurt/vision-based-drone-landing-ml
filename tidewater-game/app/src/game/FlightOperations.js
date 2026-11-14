@@ -907,7 +907,8 @@ export class FlightOperations {
 
 	beforePhysics( dt ) {
 
-		if ( this.active && this.app.input.hit( 'KeyZ' ) ) this.recorder.toggle();
+		// Z and Y follow the letter on the key, not its position (QWERTZ keyboards swap them)
+		if ( this.active && this.app.input.hit( 'Char:z' ) ) this.recorder.toggle();
 		if ( ! this.active || this._holding ) return;
 		const input = this.app.input;
 		if ( input.hit( 'KeyG' ) ) this.captureScreenshot();
@@ -925,7 +926,7 @@ export class FlightOperations {
 		if ( input.hit( 'KeyK' ) ) this.toggleLid();
 		if ( input.hit( 'KeyJ' ) ) this.togglePlatform();
 		if ( input.hit( 'KeyX' ) ) this.toggleRadio();
-		if ( input.hit( 'KeyY' ) ) this.recordTiming();
+		if ( input.hit( 'Char:y' ) ) this.recordTiming();
 		if ( this.mode === 'drone' && ! this._airborne() && FLIGHT_KEYS.some( code => input.hit( code ) ) ) this._needFlight();
 
 		this._inputTime += dt;

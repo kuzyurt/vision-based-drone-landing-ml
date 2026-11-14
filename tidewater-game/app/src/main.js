@@ -20,6 +20,15 @@ if ( studioMode ) {
 
 }
 
+// ?timerframes: automated test runs in an embedded browser whose pane is hidden but still
+// reports 'visible' (rAF never fires there). Frames are driven by a 16 ms timer instead.
+if ( /[?&]timerframes\b/.test( location.search ) ) {
+
+	window.requestAnimationFrame = ( cb ) => setTimeout( () => cb( performance.now() ), 16 );
+	window.cancelAnimationFrame = ( id ) => clearTimeout( id );
+
+}
+
 // ?bench runs in background tabs too (automation): rAF does not fire in a hidden page
 if ( /[?&]bench\b/.test( location.search ) ) {
 

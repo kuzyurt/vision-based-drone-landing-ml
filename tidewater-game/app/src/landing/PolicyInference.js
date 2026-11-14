@@ -1,7 +1,7 @@
 import * as ort from 'onnxruntime-web/wasm';
 import {GpuPolicyModel} from './GpuPolicyModel.js';
 import {MarkerKernel} from './MarkerKernel.js';
-import {decodeStudentSearch} from './StudentSearch.js';
+import {decodeStudentSearch,weakSearchPeaks} from './StudentSearch.js';
 
 export class PolicyInference {
  async initialize({base,loadPython,executionProvider='webgpu',accelerateMarker=true,keepPythonRgb=false}) {
@@ -76,7 +76,7 @@ export class PolicyInference {
   if(this.student){proposals=decodeStudentSearch(search,this.manifest.search_thresholds);this.proposals=proposals;}
   const inferred=performance.now();pyRGB=this.kernel&&!this.keepPythonRgb?null:py.toPy(rgb);pyPrediction=py.toPy(this.prediction);
   if(pyRGB)py.globals.set('policy_rgb',pyRGB);else py.runPython('policy_rgb=None');py.globals.set('policy_prediction',pyPrediction);py.globals.set('policy_elapsed',elapsed);
-  if(this.student)py.globals.set('policy_proposals_json',JSON.stringify(proposals));
+  if(this.student)py.globals.set('policy_proposals_json',JSON.stringify(proposals.concat(weakSearchPeaks(search,proposals))));
   const result=JSON.parse(this.student?py.runPython('landing_api.step(policy_rgb,policy_prediction,policy_proposals_json,observation_json,policy_elapsed)'):py.runPython('landing_api.step(policy_rgb,policy_prediction,observation_json,policy_elapsed)')),end=performance.now();
   result.timings={prepare_ms:prepared-start,neural_ms:inferred-prepared,controller_ms:end-inferred,total_ms:end-start,backend:this.backend,marker:this.kernel?.timings};return result;
   }finally{

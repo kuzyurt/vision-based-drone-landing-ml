@@ -1,5 +1,6 @@
 import {PolicyCamera} from './PolicyCamera.js';
 import {GPU} from '../engine/gpu/GPU.js';
+import {policyEphemeris} from './PolicyEphemeris.js';
 
 async function createSharedNeural(model,base,inputContract,outputContract){
  const {GpuPolicyModel}=await import('./GpuPolicyModel.js');const neural=new GpuPolicyModel();
@@ -129,6 +130,8 @@ export class PolicyControl {
   try {
    if(!this.worker||!this.status.enabled)throw new Error('ML policy is unavailable');
    const start=performance.now(),neural=this.neural;let neuralResult;
+   // Solar ephemeris (mission clock + site), as a real drone computes it.
+   const ephemeris=policyEphemeris(this.bridge.app?.settings);if(ephemeris)packet.observation.ephemeris=ephemeris;
    // Prepare the original Python numeric observation while the sensor renders.
    // Its GPU texture feeds the network before RGB readback finishes. The CPU
    // registration still receives every original RGB pixel from that same frame.
@@ -144,10 +147,13 @@ export class PolicyControl {
    const completed=await neuralResult;if(completed.error)throw completed.error;if(!completed.result||generation!==this.generation)return;
    const inferred=performance.now(),prediction=completed.result.prediction;
    if(recording?.frame?.id===packet.id)recording.frame.prediction=Array.from(prediction);
+   // Developer tap (console only): a copy of the exact policy frame and inputs.
+   const tap=globalThis.__policyTap,tapped=tap?{rgb:new Uint8Array(rgb),observation:structuredClone(packet.observation),search:completed.result.search,state:packet.state}:null;
    const result=await this.request({type:'act',rgb,observation:packet.observation,elapsed:packet.elapsed,prediction,search:completed.result.search},[rgb.buffer,prediction.buffer]);
    result.timings={...result.timings,...this.camera.timings,neural_ms:completed.result.ms,camera_ms:captured-start,parallel_camera_neural_ms:inferred-start,controller_roundtrip_ms:performance.now()-inferred,roundtrip_ms:performance.now()-start};
    this.latestTiming=result.timings;this.latestDiagnostics=result.diagnostics;this.latestSearch=completed.result.search;
    if(recording?.frame?.id===packet.id)recording.frame.diagnostics=result.diagnostics;
+   if(tapped){try{tap({...tapped,diagnostics:result.diagnostics});}catch(error){console.warn('policy tap',error);}}
    if(generation===this.generation)this.bridge.worker?.postMessage({type:'policy_result',id:packet.id,result});
   }catch(error){if(generation===this.generation){this.bridge.worker?.postMessage({type:'policy_result',id:packet.id,error:error.message});this.disable(error.message,{discard:true});}}
  }

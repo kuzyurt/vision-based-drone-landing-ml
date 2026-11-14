@@ -213,6 +213,7 @@
   },
   "reference_entry": "student_api.py",
   "reference_adapter_sha256": {
+    "tidewater_guidance.py": "3527eab1f3e3dec3d96028c037d6b870065584b60826accb75fad2565abfbab6",
     "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
     "approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
@@ -232,9 +233,9 @@
     "recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
     "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
     "search_decision.py": "a41e9ab11bd8d52805a3a787d1f2883918a0d7fc2632a28cdf46e6d6c26d7d15",
-    "student_api.py": "ed81d662ce28faf7c77c5bd46ab332b183d514d956e2b88cbfe92bea4f58e770",
-    "student_radio.py": "d3a614f7154e90578ddf4652e483e8dc07049c85ab0b7117ff50f4c663cba42e",
-    "student_runtime.py": "9e524a780d100fdae7b9f08486afeaa25e74e6394c4041cd2d16c491eab59d44",
+    "student_api.py": "e6d46ecc78cd5e67805272beb4f1a14e4c6b87bd6798bfcaba4df791391dec5e",
+    "student_radio.py": "9d916697ffb71093f868de6d18110e92a32e53966659aaffc998d31af53ed6a9",
+    "student_runtime.py": "df6edd7bcb74bc88e61689bad7951c3b94b2bddee144a9a657c027b81977fa81",
     "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
     "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
     "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095"
