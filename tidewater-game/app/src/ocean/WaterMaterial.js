@@ -347,16 +347,32 @@ ${ SH ? '	let folded = surf.jacobian < 0.1 || normalize( in.vs.vShoreN ).y < 0.3
 		// horizon can hit anything, so steep reflections skip the march entirely
 		// (looking down, F is tiny: the reflection can't be seen, skip the march)
 		if ( Rraw.y < 0.45 && F > 0.05 && mat.ssr > 0.5 ) {
-			// Far away the normal map is undersampled: every pixel's reflected ray points a slightly
-			// different way and, at a grazing angle, lands tens of metres apart on the far hillside,
-			// which dithers the reflection into noise. As the waves go unresolved the march follows the
-			// mean (flat-water) reflection instead; the sky reflection already models that spread.
-			let Rflat = vec3f( - V.x, V.y, - V.z );
-			let Rs = normalize( mix( Rraw, Rflat, unresolved * 0.75 ) );
+			// At a grazing angle one pixel spans many wave slopes, and every slope sends the reflected
+			// ray to a different height on the far hillside (a 0.05 slope moves a ray by ~0.1 rad: 10 m
+			// at 100 m). Marching one ray along the normal-map normal makes each pixel pick one of them
+			// at random: hill or sky, nothing between, which showed as thin horizontal dashes under the
+			// shoreline. Instead, the ray follows the mean reflection (the normal blended toward flat
+			// water as the waves go unresolved) with a random tilt drawn from the slope spread the pixel
+			// can't resolve. The noise changes every frame; the temporal resolve (water keeps its
+			// history) averages the hit/miss samples into the smooth blend the pixel should show.
+			let sigSSR = max( sigmaUnres * 2.0, 0.05 * unresolved );
+			let fr = f32( frame.frameIndex & 15u );
+			let nA = interleavedGradientNoise( in.pixel + vec2f( 5.588238, 3.1 ) * fr );
+			let nB = interleavedGradientNoise( in.pixel.yx + vec2f( 17.0, 41.0 ) + vec2f( 2.71, 5.588238 ) * fr );
+			let nC = interleavedGradientNoise( in.pixel * 1.37 + vec2f( 9.1, 4.7 ) + vec2f( 7.3, 1.9 ) * fr );
+			let nD = interleavedGradientNoise( in.pixel.yx * 0.83 + vec2f( 29.0, 13.0 ) + vec2f( 3.7, 6.1 ) * fr );
+			// triangular noise in -1..1 scaled to unit variance; most of the spread along the view
+			// direction (the tilt that moves the reflection up and down), a little across it
+			let gA = ( nA + nB - 1.0 ) * 2.45;
+			let gB = ( nC + nD - 1.0 ) * 2.45;
+			let dirH = normalize( vec2f( - V.x, - V.z ) + vec2f( 1e-5, 0.0 ) );
+			let Nr = normalize( mix( N, vec3f( 0.0, 1.0, 0.0 ), unresolved * 0.75 ) );
+			let Np = normalize( Nr + vec3f( dirH.x, 0.0, dirH.y ) * ( gA * sigSSR ) + vec3f( - dirH.y, 0.0, dirH.x ) * ( gB * sigSSR * 0.4 ) );
+			let Rs = reflect( - V, Np );
 			let Rv = normalize( ( frame.view * vec4f( Rs, 0.0 ) ).xyz );
 			// (rays toward the camera get no weight: see facing in _waterSSR)
 			if ( Rv.z < 0.5 ) {
-				let r = _waterSSR( posV, Rv, pos.y, Rs.y, in.pixel );
+				let r = _waterSSR( posV, Rv, pos.y, Rs.y, in.pixel, sigSSR );
 				reflCol = mix( reflCol, r.rgb, r.a );
 				ssrW = r.a;
 			}
@@ -691,7 +707,8 @@ fn _waterProject( p: vec3f ) -> vec2f {
 // back toward the camera and at the end of the search range.
 // y0, ry: world height of the start and the ray's rise per metre. A hit beyond 260 m, or below the
 // water on a descending ray, is weighted 0, so the march stops once the last miss is there.
-fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32, px: vec2f ) -> vec4f {
+// sig: slope spread of the cone the caller sampled the ray from (sets the hit-colour filter size).
+fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32, px: vec2f, sig: f32 ) -> vec4f {
 	var hit = false;
 	// steps grow with the distance: far away the first ones would all land in the same pixel
 	let stepScale = max( - posV.z / 60.0, 1.0 );
@@ -749,7 +766,18 @@ fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32, px: vec2f ) -> vec4f {
 		// anything under the surface (seabed seen through the water, submerged hull) is not
 		// visible to a reflected ray: those rays run into the next wave instead
 		let hitY = ( frame.invView * vec4f( hitV, 1.0 ) ).y;
-		color = textureSampleLevel( waterSceneColor, smpLinearClamp, uv, 0.0 ).rgb;
+		// Wave slopes smear a reflection up and down, not sideways: average the hit colour over a short
+		// vertical run (4 taps, jittered so TAA fills the gaps). The radius is a quarter of the screen-space
+		// size of the slope spread the cone of rays already covers, capped: the rays supply the stochastic
+		// part, the taps only soften the silhouette where hill meets sky.
+		let sizeC = vec2f( textureDimensions( waterSceneColor ) );
+		let blurPx = clamp( sig * frame.proj[ 1 ][ 1 ] * sizeC.y * 0.25, 0.0, 6.0 );
+		let dy = blurPx / sizeC.y;
+		let tap0 = ( jit - 0.5 ) * 0.5;
+		color = ( textureSampleLevel( waterSceneColor, smpLinearClamp, uv + vec2f( 0.0, dy * ( - 1.0 + tap0 ) ), 0.0 ).rgb
+			+ textureSampleLevel( waterSceneColor, smpLinearClamp, uv + vec2f( 0.0, dy * ( - 0.33 + tap0 ) ), 0.0 ).rgb
+			+ textureSampleLevel( waterSceneColor, smpLinearClamp, uv + vec2f( 0.0, dy * ( 0.33 + tap0 ) ), 0.0 ).rgb
+			+ textureSampleLevel( waterSceneColor, smpLinearClamp, uv + vec2f( 0.0, dy * ( 1.0 + tap0 ) ), 0.0 ).rgb ) * 0.25;
 		let edge = smoothstep( 0.0, 0.06, uv.x ) * smoothstep( 1.0, 0.94, uv.x ) * smoothstep( 0.0, 0.06, uv.y ) * smoothstep( 1.0, 0.94, uv.y );
 		let facing = smoothstep( 0.5, 0.1, Rv.z ); // rays toward the camera leave the screen
 		weight = edge * facing * touch * smoothstep( 260.0, 120.0, hitT ) * smoothstep( frame.seaLevel - 0.15, frame.seaLevel + 0.35, hitY );
