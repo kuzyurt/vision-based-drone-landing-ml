@@ -347,10 +347,16 @@ ${ SH ? '	let folded = surf.jacobian < 0.1 || normalize( in.vs.vShoreN ).y < 0.3
 		// horizon can hit anything, so steep reflections skip the march entirely
 		// (looking down, F is tiny: the reflection can't be seen, skip the march)
 		if ( Rraw.y < 0.45 && F > 0.05 && mat.ssr > 0.5 ) {
-			let Rv = normalize( ( frame.view * vec4f( Rraw, 0.0 ) ).xyz );
+			// Far away the normal map is undersampled: every pixel's reflected ray points a slightly
+			// different way and, at a grazing angle, lands tens of metres apart on the far hillside,
+			// which dithers the reflection into noise. As the waves go unresolved the march follows the
+			// mean (flat-water) reflection instead; the sky reflection already models that spread.
+			let Rflat = vec3f( - V.x, V.y, - V.z );
+			let Rs = normalize( mix( Rraw, Rflat, unresolved * 0.75 ) );
+			let Rv = normalize( ( frame.view * vec4f( Rs, 0.0 ) ).xyz );
 			// (rays toward the camera get no weight: see facing in _waterSSR)
 			if ( Rv.z < 0.5 ) {
-				let r = _waterSSR( posV, Rv, pos.y, Rraw.y );
+				let r = _waterSSR( posV, Rv, pos.y, Rs.y, in.pixel );
 				reflCol = mix( reflCol, r.rgb, r.a );
 				ssrW = r.a;
 			}
@@ -685,35 +691,48 @@ fn _waterProject( p: vec3f ) -> vec2f {
 // back toward the camera and at the end of the search range.
 // y0, ry: world height of the start and the ray's rise per metre. A hit beyond 260 m, or below the
 // water on a descending ray, is weighted 0, so the march stops once the last miss is there.
-fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32 ) -> vec4f {
+fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32, px: vec2f ) -> vec4f {
 	var hit = false;
 	// steps grow with the distance: far away the first ones would all land in the same pixel
 	let stepScale = max( - posV.z / 60.0, 1.0 );
+	// Steps start linear, then grow by a constant fraction of the distance travelled (16%): 36 of them
+	// cover 260 m with every step a bounded share of the range. The old 11 steps grew 1.7x each, so
+	// beyond ~100 m a single step spanned tens of metres: hits landed on a quantised grid of depths,
+	// which showed as a blocky, dithered mosaic on the water in front of the far shoreline.
+	// Screen-space IGN offsets the sample inside each step (the same offset for every step of a pixel),
+	// trading the banding of a fixed grid for fine noise the temporal resolve averages.
+	let jit = interleavedGradientNoise( px );
+	let dt0 = 0.25 * stepScale;
 	var t = 0.15 * stepScale;
-	var dt = 0.25 * stepScale;
+	var dt = dt0;
 	var prevT = 0.0;
-	for ( var i = 0; i < 11; i++ ) {
-		prevT = t;
+	var tHit = 0.0;
+	for ( var i = 0; i < 36; i++ ) {
+		prevT = tHit;
 		if ( prevT >= 260.0 || ( ry <= 0.0 && y0 + ry * prevT < frame.seaLevel - 0.2 ) ) { break; }
-		t += dt;
-		dt *= 1.7;
-		let p = posV + Rv * t;
+		let ts = t + dt * ( jit - 0.5 );
+		let p = posV + Rv * ts;
 		let uv = _waterProject( p );
 		if ( uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0 || p.z > -0.1 ) { break; }
 		let sz = _waterSceneZAt( uv );
 		// behind the visible surface, within a thickness covering the last step
-		if ( p.z < sz && sz - p.z < max( dt * 1.3, max( t * 0.08, 0.3 ) ) ) {
+		if ( p.z < sz && sz - p.z < max( dt * 1.3, max( ts * 0.08, 0.3 ) ) ) {
 			hit = true;
+			tHit = ts;
 			break;
 		}
+		tHit = ts;
+		t += dt;
+		dt = max( dt0, t * 0.16 );
 	}
 
 	var color = vec3f( 0.0 );
 	var weight = 0.0;
 	if ( hit ) {
-		// refine between the last miss and the hit
-		var a = prevT; var b = t;
-		for ( var k = 0; k < 3; k++ ) {
+		// refine between the last miss and the hit (6 halvings: the interval shrinks 64x, to a few
+		// centimetres to decimetres even for the longest steps)
+		var a = prevT; var b = tHit;
+		for ( var k = 0; k < 6; k++ ) {
 			let m = ( a + b ) * 0.5;
 			let p = posV + Rv * m;
 			let behind = p.z < _waterSceneZAt( _waterProject( p ) );
@@ -724,9 +743,9 @@ fn _waterSSR( posV: vec3f, Rv: vec3f, y0: f32, ry: f32 ) -> vec4f {
 		let hitV = posV + Rv * b;
 		let uv = _waterProject( hitV );
 		// after refining, the ray must really touch the surface there (a ray that only passed far
-		// behind a thin or distant object is a false hit)
+		// behind a thin or distant object, or over the edge of a hill into the sky, is a false hit)
 		let gap = abs( _waterSceneZAt( uv ) - hitV.z );
-		let touch = smoothstep( max( b * 0.04, 0.4 ), max( b * 0.02, 0.2 ), gap );
+		let touch = smoothstep( max( b * 0.02, 0.3 ), max( b * 0.008, 0.12 ), gap );
 		// anything under the surface (seabed seen through the water, submerged hull) is not
 		// visible to a reflected ray: those rays run into the next wave instead
 		let hitY = ( frame.invView * vec4f( hitV, 1.0 ) ).y;
