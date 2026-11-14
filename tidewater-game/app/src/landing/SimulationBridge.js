@@ -120,6 +120,7 @@ export class SimulationBridge {
 	async _installDetailMeshes() {
 
 		this.detailPairs = [];
+		this.detailExtras = [];
 		const base = new URL( import.meta.env?.BASE_URL || './', location.href );
 		try {
 			const response = await fetch( new URL( 'landing/detail/detail.json', base ), { cache: 'force-cache', signal: this.assetAbort.signal } );
@@ -145,6 +146,37 @@ export class SimulationBridge {
 				mesh.visible = false;
 				trained.detailMesh = mesh;
 				this.detailPairs.push( [ trained, mesh ] );
+				this.app.scene.add( mesh );
+			}
+			// Parts that exist in the operator view only (the battery cradle, its straps and screws:
+			// tools/battery_cradle.py). Each is modelled in the mesh frame of a trained part, its
+			// anchor, and follows that part; it has its own material.
+			for ( const part of manifest.extras || [] ) {
+				const anchor = this.meshes.get( part.anchor );
+				if ( ! anchor ) continue;
+				const bytes = await ( await fetch( new URL( part.url.replace( /^\/+/, '' ), base ), { signal: this.assetAbort.signal } ) ).arrayBuffer();
+				const count = part.vertex_count;
+				if ( bytes.byteLength !== count * 32 + part.index_count * 4 ) continue;
+				const geometry = new E.BufferGeometry();
+				geometry.setAttribute( 'position', new E.Float32BufferAttribute( new Float32Array( bytes, 0, count * 3 ), 3 ) );
+				geometry.setAttribute( 'normal', new E.Float32BufferAttribute( new Float32Array( bytes, count * 12, count * 3 ), 3 ) );
+				geometry.setAttribute( 'uv', new E.Float32BufferAttribute( new Float32Array( bytes, count * 24, count * 2 ), 2 ) );
+				geometry.setIndex( new E.Uint32BufferAttribute( new Uint32Array( bytes, count * 32, part.index_count ), 1 ) );
+				const data = part.material;
+				const material = standard( {
+					name: `CAD ${ data.name }`, color: new E.Color().setRGB( ...data.rgba.slice( 0, 3 ) ),
+					opacity: data.rgba[ 3 ], roughness: data.roughness, metalness: data.metalness ?? 0, side: 'double',
+				} );
+				material.underwaterLighting = 'lite';
+				const mesh = new E.Mesh( geometry, material );
+				mesh.matrixAutoUpdate = false;
+				mesh.castShadow = true;
+				mesh.receiveShadow = true;
+				mesh.frustumCulled = true;
+				mesh.name = `${ part.name } (operator view only)`;
+				mesh.visible = false;
+				( anchor.detailExtras ||= [] ).push( mesh );
+				this.detailExtras.push( mesh );
 				this.app.scene.add( mesh );
 			}
 		} catch ( error ) {
@@ -231,6 +263,12 @@ export class SimulationBridge {
 				detail.matrixWorldNeedsUpdate = true;
 				detail.visible = true;
 				mesh.visible = false;
+			}
+			for ( const extra of mesh.detailExtras || [] ) {
+				if ( extra.parent !== group ) group.add( extra );
+				extra.matrix.copy( mesh.matrix );
+				extra.matrixWorldNeedsUpdate = true;
+				extra.visible = true;
 			}
 		}
 

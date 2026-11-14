@@ -133,13 +133,44 @@ const S = srgb;
 // module part: meadow weight shared between the surface and the key-light modulation, the gust
 // field and the wetness fallback
 const TERRAIN_MATERIAL_WGSL = /* wgsl */`
+// Shade the point of the real height field that this pixel's view ray reaches, not the point
+// of the mesh it was rasterised on. Away from the camera the mesh is 1-13 m coarse: where a
+// flat sand shelf meets a steep shore, the one row of triangles that spans the kink runs
+// through the air above the shelf. Shaded at their own position those triangles carried the
+// shelf's pale sand up the cliff foot and stuck out of the cliff's own shadow into the sun,
+// alternating with the triangle diagonal: the saw-toothed waterline of steep coasts seen from
+// out at sea and from above (never on the flat beach, and too small to notice from the deck).
+// The surface is looked up at the corrected point and the heightfield sun shadow is taken there
+// (terShadeP). The shadow maps keep the mesh point: their occluder is the same mesh.
+var<private> terShadeP: vec3f;
+fn terrainFragPoint( P: vec3f ) -> vec3f {
+	let ray = normalize( P - frame.cameraPos );
+	// only for rays that come down onto the ground; at grazing angles the mesh point is kept
+	let down = -ray.y;
+	let reach = smoothstep( 0.1, 0.25, down ) * min( length( P - frame.cameraPos ) * 0.04, 14.0 );
+	if ( reach <= 0.01 ) { return P; }
+	// secant search along the ray for ( ray height - terrain height ) = 0, at most reach metres away
+	var t0 = 0.0;
+	var e0 = P.y - terrainHeightAt( P.xz );
+	var t1 = clamp( e0 / down, -reach, reach );
+	for ( var i = 0; i < 3; i++ ) {
+		let q = P + ray * t1;
+		let e1 = q.y - terrainHeightAt( q.xz );
+		let de = e1 - e0;
+		var t2 = t1;
+		if ( abs( de ) > 1e-4 ) { t2 = clamp( t1 - e1 * ( t1 - t0 ) / de, -reach, reach ); }
+		t0 = t1; e0 = e1; t1 = t2;
+	}
+	return P + ray * t1;
+}
+
 // meadow weight of the current fragment (written by the surface, read by the sun modulation)
 var<private> terMeadowW: f32 = 0.0;
 
 // tall grass shades itself when the sun is low (the meadow darkens and gains contrast)
 fn materialSunModulation( P: vec3f, N: vec3f ) -> vec3f {
 	let grass = mix( 1.0, smoothstep( -0.05, 0.45, frame.sunDir.y ) * 0.35 + 0.62, terMeadowW );
-	return vec3f( terrainSunShadowAt( P ) * grass );
+	return vec3f( terrainSunShadowAt( terShadeP ) * grass );
 }
 
 // Travelling gust field in [0, 1] (VegNodes gustAt): noise of (worldXZ - windDir * t * speed),
@@ -167,9 +198,12 @@ fn terDetail( uv: vec2f ) -> vec4f {
 `;
 
 const TERRAIN_SURFACE = /* wgsl */`
-	let p = in.P;
+	// the point of the real height field on this pixel's view ray (terrainFragPoint above): the
+	// maps are looked up at its xz and the height bands use the real height there
+	let p = terrainFragPoint( in.P );
+	terShadeP = p;
 	let xz = p.xz;
-	let h = p.y;
+	let h = terrainHeightAt( xz );
 	var outRough = 0.9;
 	var outN = vec3f( 0.0, 1.0, 0.0 );
 	var outAO = 1.0;

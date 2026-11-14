@@ -292,8 +292,14 @@ def main():
     manifest = dict(schema='tidewater.render_detail.v1',
                     purpose='Operator view only. The drone camera keeps the trained meshes.',
                     crease_deg=CREASE_DEG, geoms=entries)
+    # the battery pack's corrected box and the battery cradle (hand-modelled, not derived from CAD)
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('battery_cradle', Path(__file__).with_name('battery_cradle.py'))
+    battery_cradle = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(battery_cradle)
+    battery_cradle.merge(manifest)
     (OUT / 'detail.json').write_text(json.dumps(manifest, indent=1) + '\n')
-    print(len(entries), 'detail meshes;', len(skipped), 'skipped;', left, 'parts left (run again)')
+    print(len(manifest['geoms']), 'detail meshes;', len(skipped), 'skipped;', left, 'parts left (run again)')
     for name, note in skipped:
         print('  skipped', name, '-', note)
 

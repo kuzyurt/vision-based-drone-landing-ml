@@ -15,7 +15,7 @@ const MOVING_PLATFORM_PARAMETERS = {EKF2_GPS_CHECK: 1023 & ~(32|64|128|256)};
 // estimate is the deck's velocity. That velocity is carried through the climb
 // so the drone leaves the bay without being dragged against it, then eased
 // out once it is clear of the boat.
-const TAKEOFF = {clearHeight: .9, liftoffHeight: .15, release: .6, filter: .5};
+const TAKEOFF = {clearHeight: .9, liftoffHeight: .15, release: .6, filter: .5, limitMargin: .4};
 const NED = vector => [vector[1],vector[0],-vector[2]];
 
 export class BrowserPX4 {
@@ -79,6 +79,7 @@ export class BrowserPX4 {
 	}
 	policyPilot(action,yawNed) {
 		if(action.length!==6 || !action.every(Number.isFinite))throw new Error('Invalid ML action');
+		this.carryLimit([0,0]);
 		const yaw=yawNed??estimatorObservation(this).attitude_ned_rad[2],packet=velocityPacket(action,yaw,this.data.time,this.policySequence++);
 		this.module.HEAPU8.set(packet,this.raw);this.module._tw_offboard_write(this.raw,packet.length);this.module._tw_heartbeat();
 		this.forces.pan+=action[4]*.04;this.forces.tilt=clamp(this.forces.tilt+action[5]*.04,-61*Math.PI/180,140*Math.PI/180);
@@ -98,7 +99,7 @@ export class BrowserPX4 {
 		}
 		// Also disarm a late arming response after a grounded takeoff cancellation.
 		if(this.armed && this.targetHeight<.23 && this.landed && t-this.lastDisarmTry>1) {this.vehicleCommand(400,[0]);this.lastDisarmTry=t;}
-		if(!this.flightRequested) return;
+		if(!this.flightRequested){this.carryLimit([0,0]);return;}
 		const d=this.data,b=this.configuration.drone.base,R=d.xmat.subarray(b*9,b*9+9);
 		let x=(held('KeyW')?1:0)-(held('KeyS')?1:0),y=(held('KeyA')?1:0)-(held('KeyD')?1:0);
 		const length=Math.hypot(x,y);if(length>1){x/=length;y/=length;}
@@ -106,7 +107,7 @@ export class BrowserPX4 {
 		// setpoint made the X500 slower than the boat while MPC_XY_VEL_MAX already caps it.
 		const maxSpeed=this.configuration.parameters?.MPC_XY_VEL_MAX??2;
 		const velocity=NED([R[0]*x+R[1]*y,R[3]*x+R[4]*y,R[6]*x+R[7]*y]).map(v=>v*maxSpeed);
-		const carry=this.takeoffCarry(.04);velocity[0]+=carry[0];velocity[1]+=carry[1];
+		const carry=this.takeoffCarry(.04);this.carryLimit(carry);velocity[0]+=carry[0];velocity[1]+=carry[1];
 		const values=this.buffer();values[0]=Math.trunc(t*1000)>>>0;values[1]=-(this.targetHeight-.216);values.set(velocity,2);
 		values[5]=((held('KeyE')?1:0)-(held('KeyQ')?1:0))*.5;
 		this.module._tw_setpoint(this.pointer);
@@ -137,6 +138,20 @@ export class BrowserPX4 {
 			if(next<.02){c.phase='done';c.velocity=[0,0];}else c.velocity=c.velocity.map(v=>v*next/speed);
 		}
 		return c.phase==='done'?[0,0]:c.velocity;
+	}
+	// PX4 clamps every horizontal velocity setpoint to MPC_XY_VEL_MAX. A deck
+	// that moves faster than that limit (the boat reaches about 3 m/s under
+	// manual throttle, the airframe limit is 2 m/s) had its carried velocity
+	// cut down: the drone braked against the boat while still inside the bay,
+	// pitched back on the wrong rotor pair and struck the bay. While a deck
+	// velocity is carried the limit therefore follows it, and returns to the
+	// airframe's own value as soon as the carry has been released below it.
+	carryLimit(carry) {
+		const base=this.configuration.parameters?.MPC_XY_VEL_MAX??12,speed=Math.hypot(carry[0],carry[1]);
+		// Steps of 0.5 m/s keep parameter updates rare while the deck speed drifts.
+		const wanted=speed+TAKEOFF.limitMargin>base?Math.ceil((speed+TAKEOFF.limitMargin)*2)/2:base;
+		if(wanted===(this.velocityLimit??base))return;
+		if(this.command(`param set MPC_XY_VEL_MAX ${wanted}`)===0)this.velocityLimit=wanted;
 	}
 	sensors() {
 		const d=this.data,c=this.configuration,b=c.drone.base,R=d.xmat.subarray(b*9,b*9+9),s=d.sensordata;
