@@ -244,7 +244,7 @@ export class FlightOperations {
 			</nav>
 
 			<footer class="foot">
-				<span class="keys" data-bind="keys">W/S THROTTLE · A/D STEER · U CAMERA · P AUTO · B DRONE · C RETRY · V FREE · G SHOT · HOME RESET</span>
+				<span class="keys" data-bind="keys">W/S throttle · A/D steer · K lids · J platform</span>
 				<span class="right"><button type="button" data-action="freecam">Free cam · V</button><button type="button" data-action="shot">Frame · G</button></span>
 			</footer>
 
@@ -265,10 +265,10 @@ export class FlightOperations {
 		root.innerHTML = `
 			<div class="scrim" aria-hidden="true"></div>
 			<header class="top">
-				<div class="brand"><b>AERODOCK</b><small>X500 · PX4 · MuJoCo</small></div>
+				<div class="brand"><b>AERODOCK</b></div>
 				<div class="stats" aria-label="Flight data">
 					<div class="stat"><label>ALT</label><b><span data-bind="alt">—</span><i>m</i></b></div>
-					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>km/h</i></b><small data-bind="spd-ms">—</small></div>
+					<div class="stat"><label>SPD</label><b><span data-bind="spd">—</span><i>km/h</i></b></div>
 					<div class="stat"><label>HDG</label><b><span data-bind="hdg">—</span><i>°</i></b></div>
 					<div class="stat"><label>SEP</label><b><span data-bind="sep">—</span><i>m</i></b></div>
 					<div class="stat"><label>BAT</label><b><span data-bind="batt">—</span><i>%</i></b></div>
@@ -276,13 +276,22 @@ export class FlightOperations {
 				<div class="top-right">
 					<span class="freecam">Free camera</span>
 					<span class="link"><i></i><span data-bind="link-text">SX1262 · WAIT</span></span>
-					<span class="radio-power" data-bind="radio-power">Disable SX1262 · X</span>
-					<button class="mode-toggle hit" type="button" data-action="switch">Helm · B</button>
 				</div>
 			</header>
 
-			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><b>STUDENT POLICY</b><span data-bind="ml-banner-note">Search + landing · L for manual</span></div>
+			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><i></i><b>Policy control</b><span data-bind="ml-banner-note">Search</span><kbd>L manual</kbd></div>
 			<div class="policy-warning" data-bind="policy-warning" role="status" hidden><b>POLICY WARNING</b><span data-bind="policy-warning-text"></span></div>
+
+			<div class="handover" data-bind="handover" aria-hidden="true">
+				<i class="ho-sweep"></i>
+				<svg class="ho-lock" viewBox="-130 -130 260 260">
+					<circle class="ho-ring ho-ring-a" r="112" pathLength="100"></circle>
+					<circle class="ho-ring ho-ring-b" r="84" pathLength="100"></circle>
+					<path class="ho-brackets" d="M-56 -36V-56H-36M36 -56H56V-36M56 36V56H36M-36 56H-56V36"></path>
+					<path class="ho-ticks" d="M0 -124V-104M0 104V124M-124 0H-104M104 0H124"></path>
+				</svg>
+				<div class="ho-title"><small data-bind="ho-kicker">Control handover</small><b data-bind="ho-title">Policy control</b><i></i><span data-bind="ho-sub">Camera · search · align · land</span></div>
+			</div>
 
 			<div class="datum">
 				<div class="agl-block"><small>AGL</small><div class="agl"><span class="agl-bar"></span><b><span data-bind="agl">—</span><em>m</em></b></div></div>
@@ -365,16 +374,15 @@ export class FlightOperations {
 			<nav class="actions" aria-label="Flight actions">
 				<svg class="actions-frame" viewBox="0 0 720 56" preserveAspectRatio="none" aria-hidden="true"><path d="M36 55 L92 1 H628 L684 55"></path></svg>
 				<button class="hit" type="button" data-action="flight" data-bind="flight-btn">Take off</button>
-				<button class="hit" type="button" data-action="ml" data-bind="ml-btn">ML landing</button>
-				<button class="hit" type="button" data-action="timing" data-bind="timing-btn">Record 10 s · Y</button>
+				<button class="hit" type="button" data-action="ml" data-bind="ml-btn">Policy · L</button>
 				<button class="hit" type="button" data-action="switch">Helm · B</button>
 			</nav>
 
 			<p class="alarm" data-bind="alarm" role="status"></p>
 
 			<footer class="foot">
-				<span class="keys" data-bind="keys">WASD FLY · R/F ALT · Q/E YAW · LOOK MOUSE/ARROWS · B HELM · U BOAT CAM · V FREE · G SHOT · C RETRY · HOME RESET</span>
-				<span class="right"><button class="mini hit" type="button" data-action="freecam">Free cam · V</button><button class="mini hit" type="button" data-action="shot">Frame · G</button><button class="mini hit" type="button" data-action="reset">Reset · Home</button></span>
+				<span class="keys" data-bind="keys">WASD fly · R/F altitude · Q/E yaw · Mouse look</span>
+				<span class="right"><button class="mini hit" type="button" data-action="timing" data-bind="timing-btn">Record 10 s · Y</button><button class="mini hit" type="button" data-action="freecam">Free cam · V</button><button class="mini hit" type="button" data-action="shot">Frame · G</button><button class="mini hit" type="button" data-action="reset">Reset · Home</button></span>
 			</footer>
 
 			<div class="toast" data-bind="toast" role="status"></div>
@@ -1211,7 +1219,7 @@ export class FlightOperations {
 		this._hText( 'cam', this.boatCamera === 'boat_dock' ? 'CAM · DOCK' : 'CAM · NAV' );
 		this._hText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
-			: 'W/S THROTTLE · A/D STEER · P AUTO · K LIDS · J PLATFORM · U CAMERA · X RADIO · B DRONE · V FREE · HOME RESET' );
+			: 'W/S throttle · A/D steer · K lids · J platform · X radio' );
 
 	}
 
@@ -1290,7 +1298,15 @@ export class FlightOperations {
 		root.classList.toggle( 'is-ml', mlActive );
 		const banner = this._dBind( 'ml-banner' );
 		if ( banner ) banner.hidden = ! ( mlActive || ml.loading );
-		this._dText( 'ml-banner-note', ml.loading ? 'Loading the student policy…' : 'Search + landing · L for manual' );
+		const phase = String( state.ml?.phase || 'search' ).replaceAll( '_', ' ' );
+		this._dText( 'ml-banner-note', ml.loading ? 'Loading' : phase );
+		// Handover animation on the frame the policy takes or returns control (not on the first update).
+		if ( mlActive !== this._mlShown ) {
+
+			if ( this._mlShown !== undefined ) this._handover( mlActive );
+			this._mlShown = mlActive;
+
+		}
 		const diagnostics = this.bridge?.policy?.latestDiagnostics || {};
 		const warningCode = diagnostics.search_warning;
 		const warning = mlActive && warningCode
@@ -1305,8 +1321,8 @@ export class FlightOperations {
 		this._dText( 'keys', this.freeCamera
 			? 'FREE CAMERA · WASD MOVE · Q/E HEIGHT · SHIFT FAST · V FLIGHT CAMERA'
 			: mlActive || ml.loading
-				? 'STUDENT POLICY · L MANUAL CONTROL · T LAND · B HELM · V FREE · G SHOT'
-				: 'WASD FLY · R/F ALT · Q/E YAW · T FLIGHT · L ML · X RADIO · K LIDS · J PLATFORM · B HELM · V FREE · G SHOT · HOME RESET' );
+				? 'L manual control · T land'
+				: 'WASD fly · R/F altitude · Q/E yaw · Mouse look · X radio' );
 		const control = this._flightControl();
 		const flightButton = this._dBind( 'flight-btn' );
 		if ( flightButton ) {
@@ -1318,7 +1334,7 @@ export class FlightOperations {
 		const mlButton = this._dBind( 'ml-btn' );
 		if ( mlButton ) {
 
-			mlButton.textContent = ml.loading ? 'Cancel ML · L' : ml.enabled ? 'Manual control · L' : 'Student policy · L';
+			mlButton.textContent = ml.loading ? 'Cancel · L' : ml.enabled ? 'Manual · L' : 'Policy · L';
 			mlButton.setAttribute( 'aria-pressed', String( mlActive ) );
 			mlButton.disabled = ! ( ml.loading || ml.enabled ) && ( ! state.ready || ! this.bridge?.cameraView || ! drone?.armed || drone.landed || drone.landing_requested || !! state.error );
 
@@ -1514,6 +1530,23 @@ export class FlightOperations {
 	_hBind( key ) {
 
 		return this._helm?.bindings.get( key );
+
+	}
+
+	// Control handover: a sweep, a closing lock and a title when the policy takes the aircraft
+	// (L), a short release when the pilot takes it back. CSS runs it (drone-hud.css, .handover).
+	_handover( engaged ) {
+
+		const root = this._drone?.root;
+		if ( ! root ) return;
+		clearTimeout( this._handoverTimer );
+		root.classList.remove( 'ml-engage', 'ml-release' );
+		this._dText( 'ho-kicker', 'Control handover' );
+		this._dText( 'ho-title', engaged ? 'Policy control' : 'Manual control' );
+		this._dText( 'ho-sub', engaged ? 'Camera · search · align · land' : 'You have the aircraft' );
+		void root.offsetWidth; // restart the animation when toggled twice in a row
+		root.classList.add( engaged ? 'ml-engage' : 'ml-release' );
+		this._handoverTimer = setTimeout( () => root.classList.remove( 'ml-engage', 'ml-release' ), engaged ? 2600 : 1300 );
 
 	}
 
