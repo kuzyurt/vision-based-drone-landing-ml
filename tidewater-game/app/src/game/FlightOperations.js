@@ -282,20 +282,6 @@ export class FlightOperations {
 			<div class="ml-banner" data-bind="ml-banner" role="status" hidden><i></i><b>Policy control</b><span data-bind="ml-banner-note">Search</span><kbd>L manual</kbd></div>
 			<div class="policy-warning" data-bind="policy-warning" role="status" hidden><b>POLICY WARNING</b><span data-bind="policy-warning-text"></span></div>
 
-			<div class="handover" data-bind="handover" aria-hidden="true">
-				<i class="ho-sweep"></i>
-				<svg class="ho-lock" viewBox="-150 -150 300 300">
-					<circle class="ho-ripple" r="60"></circle>
-					<circle class="ho-ring ho-ring-a" r="118" pathLength="360"></circle>
-					<circle class="ho-ring ho-ring-b" r="92" pathLength="360" transform="rotate(-90)"></circle>
-					<circle class="ho-ring ho-ring-c" r="66" pathLength="360"></circle>
-					<path class="ho-ticks" d="M0 -138V-124M0 124V138M-138 0H-124M124 0H138"></path>
-					<path class="ho-chevrons" d="M-9 -47L0 -38L9 -47M-9 47L0 38L9 47M-47 -9L-38 0L-47 9M47 -9L38 0L47 9"></path>
-					<circle class="ho-dot" r="3.2"></circle>
-				</svg>
-				<div class="ho-title"><small data-bind="ho-kicker">Control handover</small><div class="ho-line"><i></i><b data-bind="ho-title">Policy control</b><i></i></div><span data-bind="ho-sub">Camera · search · align · land</span></div>
-			</div>
-
 			<div class="datum">
 				<div class="agl-block"><small>AGL</small><div class="agl"><span class="agl-bar"></span><b><span data-bind="agl">—</span><em>m</em></b></div></div>
 				<div class="datum-right">
@@ -326,6 +312,7 @@ export class FlightOperations {
 					<path d="M-172 -172L-236 -236M172 172L236 236M172 -172L236 -236M-172 172L-236 236" stroke="currentColor" stroke-opacity=".13" fill="none"></path>
 					<circle r="150" fill="none" stroke="currentColor" stroke-opacity=".26" stroke-dasharray="200 35.6" transform="rotate(18)"></circle>
 					<circle r="96" fill="none" stroke="currentColor" stroke-opacity=".48" stroke-width="1.2" stroke-dasharray="150 151.6" transform="rotate(135)"></circle>
+					<circle class="ho-ring" r="96" fill="none" stroke="currentColor" stroke-width="1.6" pathLength="360" transform="rotate(-90)"></circle>
 					<circle r="26" fill="none" stroke="currentColor" stroke-opacity=".16"></circle>
 					<path d="M-30 0H-8M8 0H30M0 -30V-8M0 8V30" stroke="currentColor" stroke-opacity=".38"></path>
 					<circle r="1.8" fill="currentColor"></circle>
@@ -1301,7 +1288,10 @@ export class FlightOperations {
 		root.classList.toggle( 'is-ml', mlActive );
 		const banner = this._dBind( 'ml-banner' );
 		if ( banner ) banner.hidden = ! ( mlActive || ml.loading );
-		const phase = String( state.ml?.phase || 'search' ).replaceAll( '_', ' ' );
+		// the policy's internal phase names, in the six words of the flight
+		const raw = String( state.ml?.phase || '' );
+		const phase = /touchdown|commit|contact|landed/.test( raw ) ? 'Touchdown' : /descend/.test( raw ) ? 'Descend' : /align|visibility/.test( raw ) ? 'Align'
+			: /recovery/.test( raw ) ? 'Recover' : /approach/.test( raw ) ? 'Approach' : 'Search';
 		this._dText( 'ml-banner-note', ml.loading ? 'Loading' : phase );
 		// Handover animation on the frame the policy takes or returns control (not on the first update).
 		if ( mlActive !== this._mlShown ) {
@@ -1536,20 +1526,17 @@ export class FlightOperations {
 
 	}
 
-	// Control handover: a sweep, a closing lock and a title when the policy takes the aircraft
-	// (L), a short release when the pilot takes it back. CSS runs it (drone-hud.css, .handover).
+	// Control handover (L): the reticle takes the policy colour and one ring draws round it while
+	// the status label appears in the top bar; handing back undraws the ring. CSS: drone-hud.css.
 	_handover( engaged ) {
 
 		const root = this._drone?.root;
 		if ( ! root ) return;
 		clearTimeout( this._handoverTimer );
 		root.classList.remove( 'ml-engage', 'ml-release' );
-		this._dText( 'ho-kicker', 'Control handover' );
-		this._dText( 'ho-title', engaged ? 'Policy control' : 'Manual control' );
-		this._dText( 'ho-sub', engaged ? 'Camera · search · align · land' : 'You have the aircraft' );
 		void root.offsetWidth; // restart the animation when toggled twice in a row
 		root.classList.add( engaged ? 'ml-engage' : 'ml-release' );
-		this._handoverTimer = setTimeout( () => root.classList.remove( 'ml-engage', 'ml-release' ), engaged ? 2600 : 1300 );
+		this._handoverTimer = setTimeout( () => root.classList.remove( 'ml-engage', 'ml-release' ), 900 );
 
 	}
 

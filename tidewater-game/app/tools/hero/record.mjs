@@ -105,10 +105,10 @@ function step( s ) {
 
 	} else if ( phase === 'approach' ) {
 
-		send( { keys: since < 6 ? [ 'KeyW' ] : [] } );
+		// keep flying toward the boat: L is pressed in flight, the game eases the policy in
+		send( { keys: [ 'KeyW' ] } );
 		if ( since >= 6 ) {
 
-			send( { keys: [] } );
 			go( 'handover' );
 			bridge.policy.enable().then( () => log( 'policy enabled' ), ( e ) => { log( 'policy enable failed: ' + e.message ); done = true; } );
 

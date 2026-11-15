@@ -100,6 +100,12 @@ export class BrowserPX4 {
 		this.forces.pan+=action[4]*.04;this.forces.tilt=clamp(this.forces.tilt+action[5]*.04,-61*Math.PI/180,140*Math.PI/180);
 		if(this.data.time-this.lastPowerReport>.2){const values=this.buffer();values[0]=this.forces.voltage;values[1]=this.forces.current;values[2]=this.forces.charge;values[3]=this.forces.current>.1?Math.trunc(3600*this.forces.charge/this.forces.current):0;this.module._tw_battery(this.pointer);this.lastPowerReport=this.data.time;}
 	}
+	// The drone's own horizontal velocity in its body frame (forward, right), from PX4's estimate.
+	bodyVelocity() {
+		const yaw=estimatorObservation(this).attitude_ned_rad[2],north=this.status[4],east=this.status[5];
+		if(!Number.isFinite(north)||!Number.isFinite(east)||!Number.isFinite(yaw))return [0,0];
+		return [north*Math.cos(yaw)+east*Math.sin(yaw),-north*Math.sin(yaw)+east*Math.cos(yaw)];
+	}
 	manualHold() {this.targetHeight=Math.max(.205,.216-this.observation()[3]);this.landingRequested=false;}
 	pilot(keys,lookX=0,lookY=0) {
 		const t=this.data.time,f=this.forces,held=key=>keys.includes(key);

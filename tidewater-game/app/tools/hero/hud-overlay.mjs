@@ -42,10 +42,12 @@ window.setFrame=(row,ms)=>{
  if(other){other.style.display='';other.setAttribute('transform','translate('+(Math.sin(rel)*r).toFixed(1)+' '+(-Math.cos(rel)*r).toFixed(1)+')');}
  const line=bind('other-line');if(line){line.setAttribute('x2',(Math.sin(rel)*r).toFixed(1));line.setAttribute('y2',(-Math.cos(rel)*r).toFixed(1));}
  bind('own-rot')?.setAttribute('transform','rotate('+heading.toFixed(1)+')');bind('own-vec')?.setAttribute('transform','rotate('+heading.toFixed(1)+')');
- const on=ms>=0;root.classList.toggle('is-ml',on);root.classList.toggle('ml-engage',on&&ms<2600);
- const banner=bind('ml-banner');banner.hidden=!on;text('ml-banner-note',String(row.phase||'search').replaceAll('_',' '));
+ const on=ms>=0;root.classList.toggle('is-ml',on);
+ const banner=bind('ml-banner');banner.hidden=!on;const raw=String(row.phase||'');text('ml-banner-note',/touchdown|commit|contact|landed/.test(raw)?'Touchdown':/descend/.test(raw)?'Descend':/align|visibility/.test(raw)?'Align':/recovery/.test(raw)?'Recover':/approach/.test(raw)?'Approach':'Search');
  const ml=bind('ml-btn');if(ml)ml.textContent=on?'Manual · L':'Policy · L';const fl=bind('flight-btn');if(fl)fl.textContent='Land · T';
  text('keys',on?'L manual control · T land':'WASD fly · R/F altitude · Q/E yaw · Mouse look · X radio');
+ const ring=root.querySelector('.ho-ring');if(ring){const x=Math.min(1,Math.max(0,ms/700)),e=x*x*(3-2*x);ring.style.transition='none';ring.style.strokeDashoffset=String(360*(1-e));ring.style.opacity=on?'.95':'0';}
+ const optic=root.querySelector('.optic');if(optic)optic.style.transition='none';
  for(const a of document.getAnimations()){a.pause();const delay=a.effect.getComputedTiming().delay||0;a.currentTime=Math.max(0,ms);}
 };
 </script>`;

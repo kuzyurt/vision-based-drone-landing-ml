@@ -173,6 +173,9 @@ const platform60 = when( M.platform, ( r ) => r.boat.platform >= 0.6 );
 const liftOff = when( M.takeoff, ( r ) => r.drone.armed && r.drone.position[ 1 ] - r.boat.position[ 1 ] > 1.0 );
 const landed = M.landed ?? tEnd - 4;
 const SHOTS = {
+	// wake checks (not in the film): render with `wakeTop wakeLow --preview`
+	wakeTop: { debug: true, exposure: 0.62, start: M.lids - 6, length: 1.4, camera( v ) { look( at( v, - 6, 0, 22 ), at( v, - 6, 0, 0 ), 40, v.forward.clone() ); } },
+	wakeLow: { debug: true, start: M.lids - 6, length: 1.4, camera( v ) { look( at( v, - 9.5, 2.4, 2.6 ), at( v, - 1, 0, 0.2 ), 42 ); } },
 	// straight down: the boat drives in from the left edge to the middle of the frame
 	top: { exposure: 0.62, start: M.lids - 7.5, length: 5.2, setup( t0, length ) {
 
@@ -222,7 +225,7 @@ const SHOTS = {
 const frameOnce = async ( dt ) => { app._frame( dt ); await state.device.queue.onSubmittedWorkDone(); };
 for ( const [ name, shot ] of Object.entries( SHOTS ) ) {
 
-	if ( wanted.length && ! wanted.includes( name ) ) continue;
+	if ( wanted.length ? ! wanted.includes( name ) : shot.debug ) continue;
 	if ( ! Number.isFinite( shot.start ) || shot.start + shot.length > tEnd + 0.01 ) { console.log( 'skip', name, '(not recorded yet)' ); continue; }
 	shot.setup?.( shot.start, shot.length );
 	const frames = Math.round( shot.length * FPS );
@@ -250,7 +253,9 @@ for ( const [ name, shot ] of Object.entries( SHOTS ) ) {
 
 		const t = shot.start + f / FPS;
 		// preview: the frames in between still advance the wake along the track
-		if ( preview && f > 0 && wake ) for ( let g = f - 19; g < f; g ++ ) { pose( shot.start + g / FPS ); GPU.beginFrame(); wakeUpdate( 1 / FPS, bridge.boatObject, true, bridge.state ); GPU.submit(); }
+		if ( preview && f > 0 && wake ) for ( let g = f - 19; g < f - 2; g ++ ) { pose( shot.start + g / FPS ); GPU.beginFrame(); wakeUpdate( 1 / FPS, bridge.boatObject, true, bridge.state ); GPU.submit(); }
+		// preview: two real frames lead in, so the saved one has ordinary frame-to-frame motion
+		if ( preview && f > 0 ) for ( const back of [ 2, 1 ] ) { const u = vehicle( t - back / FPS ); shot.camera( u, f / Math.max( 1, frames - 1 ) ); await frameOnce( 1 / FPS ); }
 		const v = vehicle( t );
 		shot.camera( v, f / Math.max( 1, frames - 1 ) );
 		await frameOnce( 1 / FPS );
