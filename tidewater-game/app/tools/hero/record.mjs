@@ -73,23 +73,32 @@ function step( s ) {
 
 		// climb while the boat drives on; then tilt the camera down toward it
 		send( { keys: above < 7 ? [ 'KeyR' ] : [] } );
-		if ( above >= 7 && range > 22 ) { tiltProbe = { tilt: d.tilt, t: s.time_s }; go( 'aim' ); }
+		if ( above >= 7 && range > 22 ) { tiltProbe = { tilt: d.tilt, t: s.time_s, forwardY: - s.views.drone.matrix[ 6 ] }; go( 'aim' ); }
 
 	} else if ( phase === 'aim' ) {
 
-		// find which way look_y moves the camera, then tilt until the boat sits in the frame
-		const wanted = Math.atan2( above, range ) * .8; // radians below the horizon
+		// Tilt the camera down until the boat sits in the lower-middle of the frame. Which way
+		// look_y turns the gimbal is measured first (a short nudge), then the boat's elevation
+		// below the horizon is approached from the recorded tilt angle.
+		const wanted = Math.atan2( above, range ) * .85; // radians of travel from the level start
 		if ( ! tiltSign ) {
 
-			send( { keys: [], look_y: 6 } );
-			if ( since > .6 ) tiltSign = Math.sign( d.tilt - tiltProbe.tilt ) || 1;
+			send( { keys: [], look_y: 4 } );
+			if ( since > .5 && Math.abs( d.tilt - tiltProbe.tilt ) > .01 ) {
+
+				// camera pitch from its view matrix: does the nudge look further down?
+				const m0 = tiltProbe.forwardY, m1 = - s.views.drone.matrix[ 6 ];
+				tiltSign = m1 < m0 ? 1 : - 1; // +1: positive look_y looks down
+				log( `look_y sign ${ tiltSign } (forward.y ${ m0.toFixed( 3 ) } -> ${ m1.toFixed( 3 ) })` );
+
+			} else if ( since > 3 ) tiltSign = 1;
 
 		} else {
 
-			const error = ( tiltProbe.tilt + tiltSign * 0 ) - d.tilt; // unused; kept simple below
-			const down = d.tilt - tiltProbe.tilt; // camera travel since the probe
-			const target = wanted; // travel wanted (magnitude)
-			if ( Math.abs( down ) < target && since < 8 ) send( { keys: [], look_y: 6 } );
+			const forwardY = - s.views.drone.matrix[ 6 ]; // y of the camera's viewing direction
+			const below = Math.asin( Math.max( - 1, Math.min( 1, - forwardY ) ) ); // radians below the horizon
+			if ( below < wanted - .03 && since < 12 ) send( { keys: [], look_y: 5 * tiltSign } );
+			else if ( below > wanted + .06 && since < 12 ) send( { keys: [], look_y: - 3 * tiltSign } );
 			else go( 'approach' );
 
 		}

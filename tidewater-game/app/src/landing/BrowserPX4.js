@@ -10,7 +10,13 @@ const FRD = [1,-1,-1];
 // invalid and PX4 falls back to a blind descent. PX4's guidance for moving
 // platforms is to disable exactly these checks; all other GNSS quality checks
 // (satellites, PDOP, accuracy, spoofing) stay on.
-const MOVING_PLATFORM_PARAMETERS = {EKF2_GPS_CHECK: 1023 & ~(32|64|128|256)};
+// Recovery has the same assumption in the land detector: "landed" needs a
+// horizontal speed below LNDMC_XY_VEL_MAX (1.5 m/s by default). A drone that
+// stands on a deck cruising at 1.4-1.5 m/s sits on that limit, PX4 never
+// reports the landing, the motors keep running and the policy's touchdown
+// window runs out. The limit is raised above the boat's top speed (3 m/s);
+// the vertical-speed, rotation and thrust conditions are unchanged.
+const MOVING_PLATFORM_PARAMETERS = {EKF2_GPS_CHECK: 1023 & ~(32|64|128|256), LNDMC_XY_VEL_MAX: 4};
 // Take-off from a moving deck: before lift-off the drone's own velocity
 // estimate is the deck's velocity. That velocity is carried through the climb
 // so the drone leaves the bay without being dragged against it, then eased
