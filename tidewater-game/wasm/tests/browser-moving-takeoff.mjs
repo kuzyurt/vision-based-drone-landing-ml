@@ -25,10 +25,12 @@ for(const test of CASES) {
  try {
   await wait(()=>latest?.ready&&latest.drone.px4_ready,90000);
   send(test.drive);await wait(()=>latest.boat.speed>test.minimumSpeed);
-  send({action:'takeoff'});const start=latest.time_s,modes=new Set();let maxTilt=0,offsetAtClearance=null,last=null;
+  send({action:'takeoff'});const start=latest.time_s,modes=new Set();let maxTilt=0,offsetAtClearance=null,last=null,rearLead=0,rampSamples=0;
   await wait(()=>{
    if(latest===last)return false;last=latest;const d=latest.drone,b=latest.boat,above=d.position[1]-b.position[1];
    modes.add(d.px4_mode);
+   // spool-up on the deck: rotors 0/1 are the forward pair, 2/3 the rear pair
+   const m=d.motor_commands,mean=(m[0]+m[1]+m[2]+m[3])/4;if(d.armed&&mean>.05&&mean<.45){rearLead+=(m[2]+m[3]-m[0]-m[1])/2;rampSamples++;}
    if(d.armed&&above<1.6)maxTilt=Math.max(maxTilt,Math.abs(d.pitch),Math.abs(d.roll));
    if(offsetAtClearance===null&&above>1.6)offsetAtClearance=Math.hypot(d.position[0]-b.position[0],d.position[2]-b.position[2]);
    return above>1.9||latest.time_s>start+25;
@@ -37,6 +39,7 @@ for(const test of CASES) {
   assert(!modes.has(12),'PX4 must not fall back to a blind descent on a moving deck');
   assert(d.position[1]-b.position[1]>1.9,`The drone must climb clear of the moving deck within 25 s (${test.name})`);
   assert(offsetAtClearance<test.maximumOffset,`The drone must leave the bay vertically relative to the boat (${test.name}): `+offsetAtClearance);
+  assert(rampSamples>0&&rearLead/rampSamples>-.01,`The forward rotor pair must not lead the spool-up on a moving deck (${test.name}): `+rearLead/rampSamples);
   assert(maxTilt<.2,`No braking against the boat during lift-off (${test.name}): `+maxTilt);
   console.log(`Moving-deck take-off, ${test.name}, at ${b.speed.toFixed(2)} m/s: clear in ${(latest.time_s-start).toFixed(1)} s, offset ${offsetAtClearance.toFixed(2)} m at clearance, max tilt ${maxTilt.toFixed(2)} rad.`);
  }finally{worker.postMessage({type:'shutdown'});try{await wait(()=>disposed,60000);}finally{await worker.terminate();}}
