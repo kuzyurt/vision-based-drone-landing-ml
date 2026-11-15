@@ -18,8 +18,8 @@ driver (`mesa-vulkan-drivers` is enough). Run from `tidewater-game/app` after
 The flight is real. Until **L** the script holds the same keys a player would;
 after it the policy flies alone and the script only waits. The policy step
 (onboard render and network) takes about 1.6 s on four CPU cores, so the
-landing simulates about 40 times slower than real time. Rendering takes about
-3 s per frame.
+landing simulates about 40 times slower than real time (about an hour for one
+flight). Rendering takes 2-3 s per frame.
 
 `render.mjs <flight> <dir> <shot> --preview` writes every 20th frame as PNG to
 check framing. Shots and cameras are defined in `SHOTS` in `render.mjs`.
@@ -27,3 +27,7 @@ check framing. Shots and cameras are defined in `SHOTS` in `render.mjs`.
 On an LF checkout the policy bundle's checksums (taken from CRLF files) do not
 match. `policy-worker.mjs` therefore loads it in report-only mode; the game
 itself still enforces the checksums.
+
+The recorded flight used for the film: take-off from the deck at 1.44 m/s,
+handover at 85 s, touchdown at 165 s, disarmed and stable on the pad at 168 s,
+about 2 cm from the pad centre.
