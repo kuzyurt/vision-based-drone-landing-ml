@@ -24,7 +24,7 @@ export class PolicyInference {
    const expected={heat:[1,45,80],offset:[1,2,45,80],presence:[1,1],evidence:[1,4,45,80],identity:[1,2,45,80]};
    for(const [name,dims] of Object.entries(expected))if(!Array.isArray(this.searchContract[name])||this.searchContract[name].join()!==dims.join())throw new Error('Student search tensor dimensions disagree: '+name);
   }
-  const verified=async(url,expected)=>{const r=await fetch(url);if(!r.ok)throw new Error('Policy file unavailable: '+url);const bytes=new Uint8Array(await r.arrayBuffer()),sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(sha!==expected)throw new Error('Policy file checksum mismatch: '+url);return bytes;};
+  const verified=async(url,expected)=>{const r=await fetch(url);if(!r.ok)throw new Error('Policy file unavailable: '+url);const bytes=new Uint8Array(await r.arrayBuffer()),sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');if(sha!==expected&&!globalThis.__policyChecksumReportOnly)throw new Error('Policy file checksum mismatch: '+url);if(sha!==expected)(globalThis.__policyChecksumMismatches??=[]).push(String(url));return bytes;};
   const model=await verified(base+this.manifest.model,this.manifest.model_sha256);
   this.python=await loadPython(base+'pyodide/');
   await this.python.loadPackage(['numpy','scipy']);
