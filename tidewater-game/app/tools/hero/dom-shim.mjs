@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 Object.assign( globalThis, globals );
 const gpu = create( [ 'backend=vulkan' ] );
 export const PUBLIC = new URL( '../../public/', import.meta.url );
-export const state = { width: 1280, height: 720, texture: null, device: null };
+export const state = { width: Number( process.env.HERO_W || 1280 ), height: Number( process.env.HERO_H || 720 ), texture: null, device: null };
 
 const noop = () => {};
 function element( tag = 'div' ) {
@@ -112,13 +112,15 @@ win.__assetImage = async ( bytes ) => {
 import { Worker as NodeWorker } from 'node:worker_threads';
 const ADAPTERS = {
 	'BrowserSimulationWorker.js': new URL( '../../../wasm/tests/runtime-worker.mjs', import.meta.url ),
-	'PolicyInferenceWorker.js': new URL( '../../../wasm/tests/policy-controller-worker.mjs', import.meta.url ),
+	'PolicyInferenceWorker.js': new URL( './policy-worker.mjs', import.meta.url ),
 };
 win.Worker = class {
 
 	constructor( url ) {
 
 		const name = String( url ).split( '/' ).pop();
+		// replay: the recorded packets are fed by hand, no physics runs
+		if ( process.env.HERO_REPLAY && name === 'BrowserSimulationWorker.js' ) { this.postMessage = () => {}; this.terminate = () => {}; return; }
 		if ( ! ADAPTERS[ name ] ) throw new Error( 'No Node adapter for worker ' + name );
 		this.worker = new NodeWorker( ADAPTERS[ name ] );
 		this.worker.on( 'message', ( data ) => this.onmessage?.( { data } ) );
@@ -147,5 +149,46 @@ export async function readCanvas() {
 	for ( let i = 0; i < out.length; i += 4 ) { const b = out[ i ]; out[ i ] = out[ i + 2 ]; out[ i + 2 ] = b; out[ i + 3 ] = 255; } // BGRA canvas -> RGBA
 	buffer.unmap(); buffer.destroy();
 	return { data: out, width: t.width, height: t.height };
+
+}
+
+// ---- Dawn's Node binding rejects SharedArrayBuffer sources that browsers accept (policy tensors)
+{
+
+	const request = gpu.requestAdapter.bind( gpu );
+	gpu.requestAdapter = async ( options ) => {
+
+		const adapter = await request( options );
+		if ( ! adapter || adapter.__wrapped ) return adapter;
+		adapter.__wrapped = true;
+		const requestDevice = adapter.requestDevice.bind( adapter );
+		adapter.requestDevice = async ( ...args ) => {
+
+			const device = await requestDevice( ...args );
+			const write = device.queue.writeBuffer.bind( device.queue );
+			device.queue.writeBuffer = ( buffer, offset, data, dataOffset = 0, size ) => {
+
+				if ( data instanceof SharedArrayBuffer ) return write( buffer, offset, new Uint8Array( data ), dataOffset, size );
+				if ( ArrayBuffer.isView( data ) && data.buffer instanceof SharedArrayBuffer ) {
+
+					// dataOffset / size are in elements of the view
+					const bytes = data.BYTES_PER_ELEMENT || 1;
+					const begin = data.byteOffset + dataOffset * bytes;
+					const length = size === undefined ? data.byteLength - dataOffset * bytes : size * bytes;
+					return write( buffer, offset, new Uint8Array( data.buffer, begin, length ).slice() );
+
+				}
+
+				return size === undefined ? write( buffer, offset, data, dataOffset ) : write( buffer, offset, data, dataOffset, size );
+
+			};
+
+			return device;
+
+		};
+
+		return adapter;
+
+	};
 
 }
