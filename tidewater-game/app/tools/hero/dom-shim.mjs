@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 Object.assign( globalThis, globals );
-const gpu = create( [ 'backend=vulkan' ] );
+const gpu = create( [ `backend=${ process.env.HERO_BACKEND || 'vulkan' }` ] ); // d3d12 on Windows
 export const PUBLIC = new URL( '../../public/', import.meta.url );
 export const state = { width: Number( process.env.HERO_W || 1280 ), height: Number( process.env.HERO_H || 720 ), texture: null, device: null };
 
@@ -102,7 +102,7 @@ gpu.getPreferredCanvasFormat = () => 'bgra8unorm';
 import { execFileSync } from 'node:child_process';
 win.__assetImage = async ( bytes ) => {
 
-	const out = execFileSync( 'python3', [ '-c', 'import sys,io,struct\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert("RGBA")\nsys.stdout.buffer.write(struct.pack("<II",*im.size)+im.tobytes())' ], { input: Buffer.from( bytes.buffer, bytes.byteOffset, bytes.byteLength ), maxBuffer: 1 << 30 } );
+	const out = execFileSync( process.env.HERO_PYTHON || 'python3', [ '-c', 'import sys,io,struct\nfrom PIL import Image\nim=Image.open(io.BytesIO(sys.stdin.buffer.read())).convert("RGBA")\nsys.stdout.buffer.write(struct.pack("<II",*im.size)+im.tobytes())' ], { input: Buffer.from( bytes.buffer, bytes.byteOffset, bytes.byteLength ), maxBuffer: 1 << 30 } );
 	const width = out.readUInt32LE( 0 ), height = out.readUInt32LE( 4 );
 	return { data: new Uint8Array( out.buffer, out.byteOffset + 8, width * height * 4 ).slice(), width, height };
 

@@ -1,6 +1,6 @@
 # Tidewater
 
-[![A MuJoCo-trained policy landing in Tidewater without retraining](../docs/media/tidewater-landing-preview.gif)](../docs/media/tidewater-landing-1080p.mp4)
+[![The AERODOCK boat under way in Tidewater](../docs/media/tidewater-boat-preview.gif)](../docs/media/tidewater-boat-1080p.mp4)
 
 Tidewater puts the drone and the boat into a realistic coastal world as a small
 playable game. Fly either vehicle, or hand the drone to the trained policy.
