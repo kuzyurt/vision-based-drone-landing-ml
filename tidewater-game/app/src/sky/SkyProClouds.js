@@ -956,15 +956,23 @@ ${ MAIN } {
 		this._prevCam = cur;
 
 		// ---- sampling lattice (Morton-style permutation over the 4x4 cycle)
-		const lat = q.lattice, index = this.frameIndex % ( lat * lat );
-		let lx = 0, ly = 0;
-		for ( let bit = 0; ( 1 << bit ) < lat; bit ++ ) {
+		const lat = q.lattice;
+		const slot = ( index ) => {
 
-			const pair = ( index >> ( bit * 2 ) ) & 3;
-			lx |= ( ( pair >> 1 ) ^ ( pair & 1 ) ) << ( Math.log2( lat ) - bit - 1 );
-			ly |= ( pair & 1 ) << ( Math.log2( lat ) - bit - 1 );
+			let x = 0, y = 0;
+			for ( let bit = 0; ( 1 << bit ) < lat; bit ++ ) {
 
-		}
+				const pair = ( index >> ( bit * 2 ) ) & 3;
+				x |= ( ( pair >> 1 ) ^ ( pair & 1 ) ) << ( Math.log2( lat ) - bit - 1 );
+				y |= ( pair & 1 ) << ( Math.log2( lat ) - bit - 1 );
+
+			}
+
+			return [ x, y ];
+
+		};
+
+		const [ lx, ly ] = slot( this.frameIndex % ( lat * lat ) );
 
 		F.viewport.value = [ size.x * this.resolutionScale, size.y * this.resolutionScale, this.historyWidth, this.historyHeight ];
 		F.sampling.value = [ lx, ly, lat, this.historyValid ? 1 : 0 ];
@@ -1053,10 +1061,44 @@ ${ MAIN } {
 
 		} else {
 
-			this.traceKernel.dispatch( [ Math.ceil( this.sourceWidth / 8 ), Math.ceil( this.sourceHeight / 8 ), 1 ] );
-			this.temporalKernel.dispatch( [ Math.ceil( this.historyWidth / 8 ), Math.ceil( this.historyHeight / 8 ), 1 ] );
-			this.viewTex = this.colors[ this._pp ];
-			this._pp = 1 - this._pp;
+			const traceGroups = [ Math.ceil( this.sourceWidth / 8 ), Math.ceil( this.sourceHeight / 8 ), 1 ];
+			const resolveGroups = [ Math.ceil( this.historyWidth / 8 ), Math.ceil( this.historyHeight / 8 ), 1 ];
+			// A frame without history (camera cut, resize, new light) has one trace per 4x4 block:
+			// an eighth of the output resolution, visibly blocky until the lattice cycle has gone
+			// round. Such a frame traces every lattice slot at once instead (a still-view resolve
+			// keeps the slots already traced), so the first frame after a cut is already complete.
+			// Uniforms differ between the passes, so each is submitted on its own. Not more often
+			// than every quarter second: a view that keeps cutting falls back to the plain fill.
+			const warm = ! this.historyValid && this._elapsed - ( this._lastWarm ?? - 1 ) > 0.25;
+			if ( warm ) {
+
+				this._lastWarm = this._elapsed;
+				const cycle = lat * lat, first = this.frameIndex % cycle;
+				for ( let k = 0; k < cycle; k ++ ) {
+
+					const [ sx, sy ] = slot( ( first + k ) % cycle );
+					F.sampling.value = [ sx, sy, lat, k > 0 ? 1 : 0 ];
+					F.clock.value = [ ( this.frameIndex + k ) % 4096, this._elapsed, dt, 0 ];
+					// history weight ~0: a traced slot replaces the fill outright; z = 1: still view
+					F.temporal.value = [ 1e-4, 0, k > 0 ? 1 : 0, 0 ];
+					F.windDelta.value = [ 0, 0, 0, 0 ];
+					this.traceKernel.dispatch( traceGroups );
+					this.temporalKernel.dispatch( resolveGroups );
+					this.viewTex = this.colors[ this._pp ];
+					this._pp = 1 - this._pp;
+					if ( k < cycle - 1 ) GPU.submit();
+
+				}
+
+			} else {
+
+				this.traceKernel.dispatch( traceGroups );
+				this.temporalKernel.dispatch( resolveGroups );
+				this.viewTex = this.colors[ this._pp ];
+				this._pp = 1 - this._pp;
+
+			}
+
 			const V = this.viewCam;
 			V.right.value.set( R[ 0 ], R[ 1 ], R[ 2 ] );
 			V.up.value.set( Up[ 0 ], Up[ 1 ], Up[ 2 ] );
