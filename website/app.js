@@ -9,31 +9,31 @@ const STAGES = {
 	},
 	see: {
 		title: 'See — a neural network finds the boat',
-		text: 'A compact image network locates boats in the frame and estimates the target\'s position and motion. A small memory keeps track between frames, so a wave or a brief occlusion does not lose the boat.',
+		text: 'A compact image network locates boats in the frame and estimates the target\'s position and motion. A small memory carries information from one frame to the next.',
 		facts: [ [ 'Encoder', 'MobileNetV3-Small, shared by all heads' ], [ 'Search', 'heatmap of boats, plus “is this the right one?”' ], [ 'Memory', 'recurrent unit (GRU) with 128 states' ] ],
 	},
 	measure: {
 		title: 'Measure — geometry locates the pad',
-		text: 'Close to the boat, the known pattern on the landing pad is fitted in the image with the calibrated camera. This gives a metric position, heading and tilt of the deck — a measurement, not a guess.',
+		text: 'Close to the boat, the known marking on the landing pad is fitted in the image with the calibrated camera. That gives the pad\'s position in metres — a measurement, not a guess. Tracking it over time gives the deck\'s motion.',
 		facts: [ [ 'Input', 'pad markings and camera calibration' ], [ 'Output', 'pad position, heading and deck motion' ], [ 'Rule', 'a confident network alone cannot start the descent' ] ],
 	},
 	decide: {
 		title: 'Decide — an explicit landing controller',
 		text: 'A hand-written controller turns the estimates into a flight: search, approach, match the deck, descend, touch down. It limits every command and backs off when the measurement is lost.',
-		facts: [ [ 'Output', 'three velocities, turn rate, camera pan and tilt' ], [ 'Rate', '25 commands per second' ], [ 'Safety', 'bounded commands, wave-aware descent, recovery' ] ],
+		facts: [ [ 'Output', 'three velocities, turn rate, camera pan and tilt' ], [ 'Rate', '25 commands per second' ], [ 'Safety', 'bounded commands, descent only on a measured pad, recovery' ] ],
 	},
 	fly: {
 		title: 'Fly — PX4 turns commands into thrust',
 		text: 'The open-source PX4 autopilot — the same software that flies real drones — stabilises the aircraft and drives the four motors. The policy only tells it where to go.',
-		facts: [ [ 'Autopilot', 'PX4 1.16, unmodified' ], [ 'Loop', 'sensors and motors at 250 Hz' ], [ 'Hardware path', 'the same interface a real X500 uses' ] ],
+		facts: [ [ 'Autopilot', 'PX4 1.16, unmodified' ], [ 'Loop', 'sensors and motors at 250 Hz' ], [ 'Commands', 'velocity setpoints in PX4 offboard mode' ] ],
 	},
 };
 
 const MODELS = [
 	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'Search policy', note: 'camera only', score: 87.8, landed: 18 },
+	{ key: 'current', name: 'Search policy', note: 'uses no boat radio', score: 87.8, landed: 18 },
 	{ key: 'r15', name: 'Landing policy R15', note: 'before search training', score: 57.5, landed: 11 },
-	{ key: 'radio', name: 'First radio policy', note: 'needs boat radio', score: 54.9, landed: 7 },
+	{ key: 'radio', name: 'Radio-robust policy', note: 'landed only with boat radio', score: 54.9, landed: 7 },
 ];
 
 // current policy, per category (score out of 100)

@@ -12,7 +12,7 @@ INK, SOFT, LINE, TEAL, GREY, PAPER = '#0d1b24', '#2c3f4b', '#d3dde1', '#0b7a75',
 FONT = "font-family=\"Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif\""
 NAMES = {
     'teacher': ('Teacher', 'sees simulator truth'),
-    'student': ('Search policy (current)', 'camera only'),
+    'student': ('Search policy (current)', 'uses no boat radio'),
 }
 
 
@@ -27,7 +27,7 @@ def benchmark():
         elif model['id'].startswith('r15'):
             name, note = 'Landing policy R15', 'before search training'
         else:
-            name, note = 'First radio policy', 'needs boat radio'
+            name, note = 'Radio-robust policy', 'landed only with boat radio'
         rows.append((name, note, summary['total'], landed, summary['planned_cases'], model['kind']))
     width, top, step = 1200, 120, 104
     height = top + step * len(rows) + 30

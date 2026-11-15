@@ -43,7 +43,7 @@
 	</div>
 	<dl class="hero-facts">
 		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
-		<div><dt>Camera only</dt><dd>no boat position needed</dd></div>
+		<div><dt>No boat radio</dt><dd>the policy finds the boat by camera</dd></div>
 		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
 	</dl>
 </section>
@@ -117,7 +117,7 @@
 			<li><b>Identify</b><span>Fly closer and confirm it is the right boat.</span></li>
 			<li><b>Approach</b><span>Close the distance and keep the boat in view.</span></li>
 			<li><b>Align</b><span>Match the deck's speed and heading above the pad.</span></li>
-			<li><b>Descend</b><span>Come down only while the pad is measured and the deck is calm.</span></li>
+			<li><b>Descend</b><span>Come down only while the pad is measured.</span></li>
 			<li><b>Touch down</b><span>Land, disarm and stay on the pad.</span></li>
 		</ol>
 	</div>
@@ -205,7 +205,7 @@
 		<h2>Results</h2>
 		<p class="lead narrow">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
 
-		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, current policy 87.8 with 18 of 20, earlier R15 policy 57.5 with 11 of 20, first radio policy 54.9 with 7 of 20."></div>
+		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, current policy 87.8 with 18 of 20, earlier R15 policy 57.5 with 11 of 20, radio-robust policy 54.9 with 7 of 20."></div>
 
 		<div class="two results-notes">
 			<div>
@@ -214,7 +214,7 @@
 			</div>
 			<div>
 				<h3>Where it still fails</h3>
-				<p>Both missions that combine crosswind, waves, a 100&nbsp;m search and decoy boats at once. One ended in a collision, one in a controlled abort.</p>
+				<p>Both missions that combine crosswind, waves, a 100&nbsp;m search and decoy boats at once. One ended in a collision, one aborted without landing.</p>
 			</div>
 		</div>
 		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
@@ -234,7 +234,7 @@
 			<li>
 				<span class="when">Step 2</span>
 				<h3>Copy the expert — and fail</h3>
-				<p>A network trained to imitate the expert's stick commands looked accurate on recorded data and landed 0 of 12 flights.</p>
+				<p>A network trained to imitate the expert's commands failed in flight: 0 of 12 comparison flights landed.</p>
 			</li>
 			<li>
 				<span class="when">Step 3</span>
