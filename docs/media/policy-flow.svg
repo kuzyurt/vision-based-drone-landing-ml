@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 380" width="1400" height="380" font-family="Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif">
+<rect width="1400" height="380" fill="#ffffff"/>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2c3f4b"/></marker></defs>
+<text x="32" y="54" font-size="32" font-weight="700" fill="#0d1b24">How the policy lands</text>
+<rect x="32" y="96" width="232" height="150" rx="14" fill="#ffffff" stroke="#d3dde1" stroke-width="2.5"/>
+<text x="148.0" y="148" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="middle">Camera</text>
+<text x="148.0" y="186" font-size="18" fill="#2c3f4b" text-anchor="middle">640 × 360 at 25 Hz</text>
+<text x="148.0" y="214" font-size="18" fill="#2c3f4b" text-anchor="middle">+ own sensors</text>
+<path d="M268 171.0H303" stroke="#2c3f4b" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="308" y="96" width="232" height="150" rx="14" fill="#0b7a75" stroke="#0b7a75" stroke-width="2.5"/>
+<text x="424.0" y="148" font-size="30" font-weight="700" fill="#ffffff" text-anchor="middle">See</text>
+<text x="424.0" y="186" font-size="18" fill="#ffffff" text-anchor="middle">MobileNetV3 + GRU</text>
+<text x="424.0" y="214" font-size="18" fill="#ffffff" text-anchor="middle">find the target boat</text>
+<path d="M544 171.0H579" stroke="#2c3f4b" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="584" y="96" width="232" height="150" rx="14" fill="#ffffff" stroke="#d3dde1" stroke-width="2.5"/>
+<text x="700.0" y="148" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="middle">Measure</text>
+<text x="700.0" y="186" font-size="18" fill="#2c3f4b" text-anchor="middle">pad marker geometry</text>
+<text x="700.0" y="214" font-size="18" fill="#2c3f4b" text-anchor="middle">metric deck position</text>
+<path d="M820 171.0H855" stroke="#2c3f4b" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="860" y="96" width="232" height="150" rx="14" fill="#ffffff" stroke="#d3dde1" stroke-width="2.5"/>
+<text x="976.0" y="148" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="middle">Decide</text>
+<text x="976.0" y="186" font-size="18" fill="#2c3f4b" text-anchor="middle">landing controller</text>
+<text x="976.0" y="214" font-size="18" fill="#2c3f4b" text-anchor="middle">search · align · descend</text>
+<path d="M1096 171.0H1131" stroke="#2c3f4b" stroke-width="2.5" marker-end="url(#a)"/>
+<rect x="1136" y="96" width="232" height="150" rx="14" fill="#ffffff" stroke="#d3dde1" stroke-width="2.5"/>
+<text x="1252.0" y="148" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="middle">Fly</text>
+<text x="1252.0" y="186" font-size="18" fill="#2c3f4b" text-anchor="middle">PX4 autopilot</text>
+<text x="1252.0" y="214" font-size="18" fill="#2c3f4b" text-anchor="middle">motors and gimbal</text>
+<path d="M1252.0 250V308H148.0V254" fill="none" stroke="#2c3f4b" stroke-width="2.5" stroke-dasharray="7 7" marker-end="url(#a)"/>
+<text x="700.0" y="346" font-size="19" fill="#2c3f4b" text-anchor="middle">The drone moves and the camera sees a new image. Only “See” is a neural network; it never commands the motors.</text>
+</svg>

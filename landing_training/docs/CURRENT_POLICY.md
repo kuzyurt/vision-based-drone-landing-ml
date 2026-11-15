@@ -3,7 +3,7 @@
 **25 October navigation update:** this page identifies the deployed **R15**
 snapshot. The next search head is [training separately](../../training_runs/search_revision_20261025/README.md)
 and is not deployed. The latest matched teacher/R15/older-policy comparison is
-the [verified 60-flight benchmark (archived)](../../old/benchmark/archive/2026-11-10/reports/2026-10-25/RESULTS.md).
+the [verified 60-flight benchmark (archived)](../../benchmark/README.md).
 Its results are separate from the earlier 58/60 suite below.
 
 Verified local snapshot: **18 October 2026, R15 hardening**. This page identifies the current

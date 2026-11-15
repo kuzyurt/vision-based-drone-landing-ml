@@ -2,21 +2,16 @@
 
 | Read | Purpose |
 |---|---|
-| [Project overview](../README.md) | Landing demo, architecture and measured progress |
-| [Training](../landing_training/README.md) | MuJoCo world, teacher, model and workflow |
-| [Tidewater](../tidewater-game/README.md) | Play locally and understand the browser simulation |
-| [Benchmark](../benchmark/README.md) | Evaluation contract, inventory and dashboard |
-| [Verified comparison](../benchmark/reports/2026-10-25/RESULTS.md) | Durable report from the completed 60-flight comparison |
-| [Media](media/README.md) | Recording provenance and asset regeneration |
-| [Repository architecture](architecture/README.md) | Lifecycle layout, dependency direction and the benchmark-pinned boundary |
-| [Workspace notes](maintenance/WORKSPACE.md) | Folder responsibilities and deletion candidates |
+| [Project overview](../README.md) | What it does, how it lands, results |
+| [Training and architecture](../landing_training/README.md) | MuJoCo world, teacher, network and controller |
+| [Benchmark](../benchmark/README.md) | 20 missions, four policies, evidence and viewer |
+| [Tidewater](../tidewater-game/README.md) | Run the browser game and fly with the policy |
+| [Media](media/README.md) | Where each video and figure comes from, and how to rebuild it |
+| [Repository architecture](architecture/README.md) | Dependency direction and the paths the benchmark pins |
 
-`architecture_review_20261024/` preserves the detailed architecture investigation
-and original diagrams. Its teacher diagram describes that review snapshot;
-the current README uses the simpler R15 policy flow in `media/`.
+Background material, not needed to use the project:
 
-`research/repository-comprehension/` holds the repository research previously
-stored at the root. It is background reading, not a runtime dependency.
-
-`tools/` contains CPU-only documentation export scripts. They do not import
-training modules, run flights or update model weights.
+- `architecture_review_20261024/` — detailed architecture study with the original diagrams (R15 snapshot).
+- `research/` — earlier repository research notes.
+- `operations/`, `maintenance/` — working notes from training and clean-up sessions.
+- `tools/` — scripts that build the README figures. They run no flights and load no models.

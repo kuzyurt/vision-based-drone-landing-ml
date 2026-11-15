@@ -66,10 +66,10 @@ def main() -> int:
         if not (ROOT / relative).exists():
             errors.append(f"missing required path: {relative}")
 
-    runtime_file = ROOT / "benchmark/environments/runtime.json"
+    runtime_file = ROOT / "benchmark/definition/runtime.json"
     counts: dict[str, int] = {}
     if not runtime_file.is_file():
-        errors.append("missing benchmark/environments/runtime.json")
+        errors.append("missing benchmark/definition/runtime.json")
     else:
         runtime = json.loads(runtime_file.read_text(encoding="utf-8"))
         for group in ("source_files", "assets", "harness_files"):

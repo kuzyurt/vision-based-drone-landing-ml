@@ -1,63 +1,71 @@
 [![Autonomous drone landing on a moving boat in Tidewater](docs/media/tidewater-landing-preview.gif)](docs/media/tidewater-landing-1080p.mp4)
 
-[Watch the landing in 1080p](docs/media/tidewater-landing-1080p.mp4) · [Recording details](docs/media/README.md)
+[Watch the landing in 1080p](docs/media/tidewater-landing-1080p.mp4) · [Project website](website/index.html)
 
 # Vision-based drone landing
 
-A drone that finds a boat through its onboard camera, matches the moving deck,
-and lands under PX4 control.
+A drone that finds a moving boat through its onboard camera, matches the deck
+and lands on it under PX4 control.
 
-**Trained only in MuJoCo.** The frozen policy also lands in Tidewater, an
-environment it never saw during training. The opening flight demonstrates
-that transfer without retraining.
+**Trained only in MuJoCo.** The same frozen policy also lands in Tidewater, a
+realistic ocean game it never saw during training.
 
-[Training and architecture](landing_training/README.md) ·
-[Tidewater game](tidewater-game/README.md) ·
-[Benchmark results](benchmark/README.md)
+| | |
+|---|---|
+| Benchmark | **18 of 20** missions landed, score 87.8 / 100 |
+| Inputs | One 640 × 360 camera and the drone's own sensors. No boat position. |
+| Outputs | Velocity, yaw rate and camera pan/tilt at 25 Hz, flown by PX4 1.16 |
+| Vehicles | Holybro X500 V2 drone and the AERODOCK boat, both from FreeCAD |
 
-## Repository layout
+## How it lands
 
-The project is migrating in place. The frozen benchmark pins the current paths
-of the simulator and policy source, so those trees stay where they are until a
-new benchmark snapshot re-bases its receipts. Generated data and operational
-notes are already separated.
+![Camera, learned perception, pad geometry, landing controller and PX4](docs/media/policy-flow.png)
 
-- [Architecture and the pinned boundary](docs/architecture/README.md)
-- [Data lifecycle](data/README.md)
-- [Folder disposition and future roots](docs/architecture/FOLDER_DISPOSITION.md)
+A neural network finds the boat and estimates its motion. Close to the deck,
+the known pad marking gives a metric position. An explicit controller searches,
+aligns, matches the deck and descends; PX4 flies the commands. The network
+never commands the motors.
+
+[Training and architecture in detail](landing_training/README.md)
+
+## Results
+
+![Four policies on the same 20 missions](docs/media/benchmark-comparison.png)
+
+All policies fly the same 20 MuJoCo missions: five coasts, boat speeds up to
+1.5 m/s, 4 m/s crosswind, waves, a search from 100 m and decoy boats. A landing
+counts only when the drone is disarmed and stable on the pad.
+
+The current search policy lands every mission in the landing, wind, wave and
+search categories. It fails both missions that combine all conditions at once.
+The teacher uses simulator truth and is the upper reference, not a deployable
+policy.
+
+[Benchmark, evidence and viewer](benchmark/README.md)
 
 ## Beyond the training scenes
 
 ![Frozen policy landing in situations absent from its training data](docs/media/drone-policy-landing.gif)
 
-The montage tests new combinations of water appearance, rain, fog, wind and
-waves. These scenarios were absent from training, and the policy was not
-retrained for them.
+New combinations of water, rain, fog, wind and waves in MuJoCo. None were in
+the training data, and the policy was not retrained.
 
-## How it lands
+## Repository
 
-![R15 policy: learned vision, pad localization, landing control and PX4](docs/media/policy-architecture.png)
+| Folder | Content |
+|---|---|
+| [`landing_training/`](landing_training/README.md) | Coupled MuJoCo world, teacher, data recording and the policy |
+| [`px4-mujoco-drone-simulation/`](px4-mujoco-drone-simulation/README.md) | X500 V2 drone: CAD, MuJoCo model, PX4 link |
+| [`AERODOCK_MuJoCo/`](AERODOCK_MuJoCo/README.md) | AERODOCK boat: CAD, water physics, world generator |
+| [`benchmark/`](benchmark/README.md) | 20-mission benchmark, four policies, all flight evidence |
+| [`tidewater-game/`](tidewater-game/README.md) | Browser game with PX4, MuJoCo and the policy running locally |
+| [`training_runs/`](training_runs/search_revision_20261025/README.md) | Search-head datasets and training runs |
+| [`website/`](website/README.md) | Static project site |
+| [`docs/`](docs/README.md) | Media, figures and background documents |
+| `artifacts/`, `old/` | Frozen experiments and the previous benchmark, kept as evidence |
 
-Learned vision finds the boat and estimates its pose. Marker geometry and
-tracking localize the landing pad. The controller matches deck motion and
-descends; PX4 flies the commands.
+The benchmark pins the simulator and policy source by path and hash, so those
+folders keep their names. `python -B tools/check_layout.py` verifies the pins on
+a working tree that also holds the untracked experiment files in `artifacts/`.
 
-## Measured performance
-
-![Teacher, R15 and the older radio-robust policy on 20 identical missions each](benchmark/figures/model-comparison.png)
-
-The score combines landing, acquisition and completion speed.
-[See the 25 October comparison and every flight](benchmark/reports/2026-10-25/RESULTS.md).
-
-The separate wave-gate teacher completed the full revised 20-case suite at
-**99.17/100** with **20/20 strict target landings** in November 2026.
-[Full-20 results](benchmark/reports/2026-11-04-teacher-four/FULL20_RESULTS.md).
-
-The project began with a coupled boat–drone world and an action-imitation
-baseline. Flight failures led to the hybrid vision-and-geometry policy;
-Tidewater demonstrated visual transfer. Current work improves finding the
-correct boat among decoys.
-
-[Boat simulation](AERODOCK_MuJoCo/README.md) ·
-[Drone simulation](px4-mujoco-drone-simulation/README.md) ·
-[Documentation](docs/README.md) · [License](LICENSE)
+[License](LICENSE)
