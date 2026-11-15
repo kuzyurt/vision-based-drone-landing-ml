@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AERODOCK — a drone that lands itself on a moving boat</title>
+<meta name="description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
+<meta property="og:title" content="AERODOCK — a drone that lands itself on a moving boat">
+<meta property="og:description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
+<meta property="og:image" content="assets/hero-poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav" id="nav">
+	<a class="brand" href="#top">AERODOCK</a>
+	<nav aria-label="Sections">
+		<a href="#how">How it works</a>
+		<a href="#vehicles">Vehicles</a>
+		<a href="#worlds">Simulation</a>
+		<a href="#results">Results</a>
+		<a href="#story">Development</a>
+	</nav>
+	<a class="button small" href="https://github.com/kuzyurt/vision-based-drone-landing-ml">GitHub</a>
+</header>
+
+<main id="top">
+
+<!-- ------------------------------------------------------------------ hero -->
+<section class="hero">
+	<video class="hero-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg" data-src="assets/hero.mp4" data-fallback="assets/tidewater-landing.mp4"></video>
+	<div class="hero-shade"></div>
+	<div class="hero-text">
+		<h1>A drone that lands itself on a moving boat.</h1>
+		<p>It finds the boat through its own camera, follows the deck through wind and waves, and touches down on a 60&nbsp;cm pad. The policy was trained only in simulation.</p>
+		<div class="hero-actions">
+			<a class="button primary" href="#how">How it works</a>
+			<a class="button ghost" href="#results">Results</a>
+		</div>
+	</div>
+	<dl class="hero-facts">
+		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
+		<div><dt>Camera only</dt><dd>no boat position needed</dd></div>
+		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
+	</dl>
+</section>
+
+<!-- --------------------------------------------------------------- problem -->
+<section class="band" id="problem">
+	<div class="wrap two">
+		<div>
+			<h2>The problem</h2>
+			<p class="lead">A boat does not wait. It moves, turns, and rises and falls with every wave. The drone has to find it, catch up, and set down at the one moment the deck is safe.</p>
+		</div>
+		<ul class="points">
+			<li><b>A small, moving target.</b> The landing pad is 60&nbsp;cm wide, on a boat that keeps driving.</li>
+			<li><b>Wind and waves.</b> Crosswind pushes the drone while the deck pitches, rolls and heaves.</li>
+			<li><b>No help from the boat.</b> The current policy lands without the boat's radio position, and picks the right boat among others.</li>
+		</ul>
+	</div>
+</section>
+
+<!-- ---------------------------------------------------------- how it works -->
+<section class="band alt" id="how">
+	<div class="wrap">
+		<h2>How it works</h2>
+		<p class="lead narrow">A neural network sees. Geometry measures. A controller decides. The network never commands the motors directly — that separation is what made landings reliable.</p>
+
+		<div class="arch" id="arch">
+			<svg class="arch-svg" viewBox="0 0 1180 330" role="img" aria-label="Signal flow: camera and drone sensors feed learned perception, then geometric localization, then the landing controller, then PX4, which drives the motors and the camera gimbal. The camera sees the result and the loop repeats 25 times per second.">
+				<defs>
+					<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
+				</defs>
+				<g class="links" fill="none" stroke="currentColor" stroke-width="2.5">
+					<path d="M200 105H246" marker-end="url(#ah)"/>
+					<path d="M446 105H492" marker-end="url(#ah)"/>
+					<path d="M692 105H738" marker-end="url(#ah)"/>
+					<path d="M938 105H984" marker-end="url(#ah)"/>
+					<path class="loop" d="M1080 170V262H100V176" marker-end="url(#ah)" stroke-dasharray="7 7"/>
+				</g>
+				<text class="loop-label" x="590" y="296" text-anchor="middle">The drone moves, the camera sees a new image — 25 times per second</text>
+				<g class="node" data-node="sense" tabindex="0" role="button" aria-label="Camera and sensors">
+					<rect x="0" y="40" width="200" height="130" rx="14"/>
+					<text x="100" y="92" text-anchor="middle" class="t">Camera</text>
+					<text x="100" y="122" text-anchor="middle" class="s">+ drone sensors</text>
+				</g>
+				<g class="node" data-node="see" tabindex="0" role="button" aria-label="Learned perception">
+					<rect x="246" y="40" width="200" height="130" rx="14"/>
+					<text x="346" y="92" text-anchor="middle" class="t">See</text>
+					<text x="346" y="122" text-anchor="middle" class="s">neural network</text>
+				</g>
+				<g class="node" data-node="measure" tabindex="0" role="button" aria-label="Geometric localization">
+					<rect x="492" y="40" width="200" height="130" rx="14"/>
+					<text x="592" y="92" text-anchor="middle" class="t">Measure</text>
+					<text x="592" y="122" text-anchor="middle" class="s">pad geometry</text>
+				</g>
+				<g class="node" data-node="decide" tabindex="0" role="button" aria-label="Landing controller">
+					<rect x="738" y="40" width="200" height="130" rx="14"/>
+					<text x="838" y="92" text-anchor="middle" class="t">Decide</text>
+					<text x="838" y="122" text-anchor="middle" class="s">landing controller</text>
+				</g>
+				<g class="node" data-node="fly" tabindex="0" role="button" aria-label="PX4 flight control">
+					<rect x="984" y="40" width="196" height="130" rx="14"/>
+					<text x="1082" y="92" text-anchor="middle" class="t">Fly</text>
+					<text x="1082" y="122" text-anchor="middle" class="s">PX4 autopilot</text>
+				</g>
+			</svg>
+			<div class="arch-detail" id="arch-detail" aria-live="polite"></div>
+		</div>
+
+		<h3>One flight, six steps</h3>
+		<ol class="phases">
+			<li><b>Search</b><span>Sweep the camera until a boat appears.</span></li>
+			<li><b>Identify</b><span>Fly closer and confirm it is the right boat.</span></li>
+			<li><b>Approach</b><span>Close the distance and keep the boat in view.</span></li>
+			<li><b>Align</b><span>Match the deck's speed and heading above the pad.</span></li>
+			<li><b>Descend</b><span>Come down only while the pad is measured and the deck is calm.</span></li>
+			<li><b>Touch down</b><span>Land, disarm and stay on the pad.</span></li>
+		</ol>
+	</div>
+</section>
+
+<!-- -------------------------------------------------------------- vehicles -->
+<section class="band" id="vehicles">
+	<div class="wrap">
+		<h2>Two vehicles, designed in CAD</h2>
+		<p class="lead narrow">Both were modelled part by part in FreeCAD and brought into the physics simulation with their real mass, joints and collision shapes.</p>
+
+		<div class="cards two">
+			<article class="card">
+				<video class="card-media" muted loop playsinline preload="none" poster="assets/drone-mujoco.jpg" data-autoplay src="assets/gimbal.mp4"></video>
+				<div class="card-body">
+					<h3>The drone</h3>
+					<p>A Holybro X500 V2 quadrotor with a pan-tilt camera, flown by the unmodified PX4 autopilot.</p>
+					<dl class="specs">
+						<div><dt>Mass</dt><dd>2.07 kg</dd></div>
+						<div><dt>Camera</dt><dd>640 × 360, 25 Hz</dd></div>
+						<div><dt>Autopilot</dt><dd>PX4 1.16</dd></div>
+						<div><dt>Parts</dt><dd>about €1,760</dd></div>
+					</dl>
+					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/px4-mujoco-drone-simulation">Drone simulation</a>
+				</div>
+			</article>
+			<article class="card">
+				<div class="card-media swap" data-swap>
+					<img src="assets/boat-exterior.jpg" alt="AERODOCK boat, exterior render" loading="lazy">
+					<img src="assets/boat-cutaway.jpg" alt="AERODOCK boat with the hull hidden: landing bay, lift, batteries and electronics" loading="lazy">
+					<button type="button" class="swap-btn" aria-pressed="false">Show inside</button>
+				</div>
+				<div class="card-body">
+					<h3>The boat — AERODOCK</h3>
+					<p>A drone-carrying boat. Two lids slide open and a platform lifts the landing pad above the deck.</p>
+					<dl class="specs">
+						<div><dt>Landing pad</dt><dd>60 × 60 cm</dd></div>
+						<div><dt>Drive</dt><dd>two electric motors</dd></div>
+						<div><dt>Physics</dt><dd>buoyancy, drag, waves</dd></div>
+						<div><dt>Cameras</dt><dd>route and landing bay</dd></div>
+					</dl>
+					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/AERODOCK_MuJoCo">Boat simulation</a>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
+
+<!-- ---------------------------------------------------------------- worlds -->
+<section class="band alt" id="worlds">
+	<div class="wrap">
+		<h2>Trained in one world, tested in another</h2>
+		<p class="lead narrow">All training happened in MuJoCo, a physics simulator with simple graphics. Tidewater is an open-source ocean game we extended. The policy never saw it during training, and lands there anyway.</p>
+
+		<div class="cards two worlds">
+			<figure class="card">
+				<video class="card-media" muted loop playsinline preload="none" poster="assets/mujoco-landings.jpg" data-autoplay src="assets/mujoco-landings.mp4"></video>
+				<figcaption class="card-body">
+					<span class="tag">Training</span>
+					<h3>MuJoCo</h3>
+					<p>Accurate physics, plain rendering. Five kinds of coast, random routes, wind, waves and other boats. PX4 runs in step with the physics.</p>
+				</figcaption>
+			</figure>
+			<figure class="card">
+				<video class="card-media" muted loop playsinline preload="none" poster="assets/tidewater-landing.jpg" data-autoplay src="assets/tidewater-landing.mp4"></video>
+				<figcaption class="card-body">
+					<span class="tag test">Test only</span>
+					<h3>Tidewater</h3>
+					<p>A realistic ocean rendered in the browser. The same physics, autopilot and policy run locally — no server. You can fly it yourself and hand over to the policy with one key.</p>
+				</figcaption>
+			</figure>
+		</div>
+
+		<div class="rates">
+			<div><b>1000 Hz</b><span>physics</span></div>
+			<div><b>250 Hz</b><span>autopilot sensors and motors</span></div>
+			<div><b>25 Hz</b><span>camera and policy</span></div>
+		</div>
+	</div>
+</section>
+
+<!-- --------------------------------------------------------------- results -->
+<section class="band" id="results">
+	<div class="wrap">
+		<h2>Results</h2>
+		<p class="lead narrow">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
+
+		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, current policy 87.8 with 18 of 20, earlier R15 policy 57.5 with 11 of 20, first radio policy 54.9 with 7 of 20."></div>
+
+		<div class="two results-notes">
+			<div>
+				<h3>What the current policy does well</h3>
+				<p>It landed every mission in boat speed, wind, waves and target search — including finding the boat from a distance with other boats nearby, without radio.</p>
+			</div>
+			<div>
+				<h3>Where it still fails</h3>
+				<p>Both missions that combine crosswind, waves, a 100&nbsp;m search and decoy boats at once. One ended in a collision, one in a controlled abort.</p>
+			</div>
+		</div>
+		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
+	</div>
+</section>
+
+<!-- ----------------------------------------------------------------- story -->
+<section class="band alt" id="story">
+	<div class="wrap">
+		<h2>How it got here</h2>
+		<ol class="story">
+			<li>
+				<span class="when">Step 1</span>
+				<h3>Build the world</h3>
+				<p>Drone and boat from CAD, water and wind physics, and the real PX4 autopilot in the loop.</p>
+			</li>
+			<li>
+				<span class="when">Step 2</span>
+				<h3>Copy the expert — and fail</h3>
+				<p>A network trained to imitate the expert's stick commands looked accurate on recorded data and landed 0 of 12 flights.</p>
+			</li>
+			<li>
+				<span class="when">Step 3</span>
+				<h3>Split seeing from flying</h3>
+				<p>The network estimates the boat; marker geometry and an explicit controller do the landing. 12 of 12 comparison flights landed.</p>
+			</li>
+			<li>
+				<span class="when">Step 4</span>
+				<h3>Stop trusting the radio</h3>
+				<p>Vision leads and radio is only a bounded hint, so a wrong boat position can no longer pull the drone off course.</p>
+			</li>
+			<li>
+				<span class="when">Step 5</span>
+				<h3>Find the right boat</h3>
+				<p>A search head learns to scan, tell the target from other boats and hand over to the landing policy. 18 of 20 on the benchmark.</p>
+			</li>
+		</ol>
+	</div>
+</section>
+
+<!-- ------------------------------------------------------------------- end -->
+<section class="band end">
+	<div class="wrap">
+		<h2>Look inside</h2>
+		<div class="links-grid">
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml"><b>Repository</b><span>Code, models and data layout</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/landing_training"><b>Training and architecture</b><span>Network, teacher and controller in detail</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/tidewater-game"><b>Tidewater game</b><span>Run it locally and fly</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark"><b>Benchmark</b><span>20 missions, four policies, all evidence</span></a>
+		</div>
+	</div>
+</section>
+
+</main>
+
+<footer class="footer">
+	<div class="wrap">
+		<span>AERODOCK — vision-based drone landing</span>
+		<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml">github.com/kuzyurt/vision-based-drone-landing-ml</a>
+	</div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
