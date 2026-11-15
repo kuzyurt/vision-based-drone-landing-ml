@@ -114,6 +114,29 @@ function vehicle( t ) {
 
 }
 
+const { GPU } = await import( '../../src/engine/gpu/GPU.js' );
+const wake = app.aerodockWake;
+const wakeUpdate = wake ? wake.update.bind( wake ) : null;
+// Lay the wake the boat left before the shot starts: step the wake simulation alone along the
+// recorded track (the held pre-roll frames below must not deposit foam at one spot).
+async function wakePreroll( t0, seconds = 16 ) {
+
+	if ( ! wake ) return;
+	const step = 1 / 30;
+	for ( let t = Math.max( rows[ 0 ].t, t0 - seconds ); t < t0; t += step ) {
+
+		pose( t );
+		GPU.beginFrame();
+		wakeUpdate( step, bridge.boatObject, true, bridge.state );
+		GPU.submit();
+
+	}
+
+	await state.device.queue.onSubmittedWorkDone();
+
+}
+
+const baseExposure = app.settings.exposure;
 const camera = app.camera;
 function look( position, target, fov, up = new E.Vector3( 0, 1, 0 ) ) {
 
@@ -151,7 +174,7 @@ const liftOff = when( M.takeoff, ( r ) => r.drone.armed && r.drone.position[ 1 ]
 const landed = M.landed ?? tEnd - 4;
 const SHOTS = {
 	// straight down: the boat drives in from the left edge to the middle of the frame
-	top: { start: M.lids - 7.5, length: 5.2, setup( t0, length ) {
+	top: { exposure: 0.62, start: M.lids - 7.5, length: 5.2, setup( t0, length ) {
 
 		const end = vehicle( t0 + length );
 		this.centre = end.boat.clone(); this.forward = end.forward.clone();
@@ -215,16 +238,22 @@ for ( const [ name, shot ] of Object.entries( SHOTS ) ) {
 	shot.camera( vehicle( shot.start ), 0 );
 	app.clouds?.resetHistory?.();
 	// (auto exposure and the cloud history follow the clock: let them run on the held first pose)
+	app.settings.exposure = baseExposure * ( shot.exposure ?? 1 );
+	if ( wake ) wake.update = () => {};
 	for ( let i = 0; i < 14; i ++ ) await frameOnce( 0.12 );
+	await wakePreroll( shot.start );
+	shot.camera( vehicle( shot.start ), 0 );
 	for ( let i = 0; i < 4; i ++ ) await frameOnce( 0 );
+	if ( wake ) wake.update = wakeUpdate;
 	const began = performance.now();
 	for ( let f = 0; f < frames; f += preview ? 20 : 1 ) {
 
 		const t = shot.start + f / FPS;
+		// preview: the frames in between still advance the wake along the track
+		if ( preview && f > 0 && wake ) for ( let g = f - 19; g < f; g ++ ) { pose( shot.start + g / FPS ); GPU.beginFrame(); wakeUpdate( 1 / FPS, bridge.boatObject, true, bridge.state ); GPU.submit(); }
 		const v = vehicle( t );
 		shot.camera( v, f / Math.max( 1, frames - 1 ) );
-		await frameOnce( preview ? 0 : 1 / FPS );
-		if ( preview ) await frameOnce( 0 );
+		await frameOnce( 1 / FPS );
 		const image = await readCanvas();
 		if ( preview ) writePNG( `${ outDir }/${ name }-${ String( f ).padStart( 4, '0' ) }.png`, image.width, image.height, image.data );
 		else if ( ! encoder.stdin.write( Buffer.from( image.data.buffer ) ) ) await new Promise( ( r ) => encoder.stdin.once( 'drain', r ) );

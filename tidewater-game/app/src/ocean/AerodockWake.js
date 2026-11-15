@@ -468,10 +468,15 @@ fn awCell( col: u32, row: u32 ) -> f32 {
 	let alphaFoam = clamp( dt * ( 1.4 + turb * 3.8 ), 0.0, 0.28 );
 	let f0 = max( mix( sAdv.z, foamAvg, alphaFoam ), 0.0 );
 
-	let gen = ( washGen * 1.45 + bowGen * 1.25 + brk * 2.2 );
+	// Whitewater grows with speed: a 3 m hull at its 1.4 m/s cruise (Froude number about 0.27)
+	// leaves a narrow band of stirred, aerated water with thin lace on it; solid white churn
+	// belongs to full throttle.
+	let speedGain = 0.52 + 0.48 * smoothstep( 1.0, 3.1, spd );
+	let gen = ( washGen * 1.45 + bowGen * 1.25 ) * speedGain + brk * 2.2;
 	let breakup = awNoise( p * 0.42 + vec2f( 13.1, 7.3 ) ) * 0.65 + awNoise( p * 1.35 + vec2f( 3.7, 1.9 ) ) * 0.35;
 	let clr = smoothstep( 0.28, 0.72, breakup ) * 2.6 + 0.22;
-	let foam1 = awFinite( f0 * exp( - dt * ( f0 * f0 * 0.55 + clr / 18.0 ) ) + gen * dt, 0.0, 2.6 );
+	// (lace lasts seconds, not a minute: a few boat lengths of trail at cruise)
+	let foam1 = awFinite( f0 * exp( - dt * ( f0 * f0 * 0.8 + clr / 11.0 + 0.03 ) ) + gen * dt, 0.0, 1.8 );
 
 	// ---- Turbulence & Subsurface Aeration Evolution
 	let turbAvg = 0.25 * ( sL.w + sR.w + sD.w + sU.w );
@@ -703,7 +708,7 @@ fn aerodockWakeFragment( xz: vec2f, footprint: f32, waveH: f32 ) -> AerodockWake
 	if ( aerRaw > 0.01 ) {
 		let m = awNoise( xz * 0.55 + vec2f( frame.time * 0.03, 0.0 ) ) * 0.55 + awNoise( xz * 1.55 + 17.3 ) * 0.45;
 		let aN = ( 1.0 - exp( - aerRaw * 0.55 ) ) * ( m * 0.8 + 0.6 );
-		aerOut = smoothstep( m * 0.2 + 0.04, m * 0.2 + 0.58, aN ) * 0.18 * fadeLong;
+		aerOut = smoothstep( m * 0.2 + 0.04, m * 0.2 + 0.58, aN ) * 0.26 * fadeLong;
 	}
 
 	let freshFrac = smoothstep( 0.35, 1.35, foamRaw );
@@ -712,7 +717,7 @@ fn aerodockWakeFragment( xz: vec2f, footprint: f32, waveH: f32 ) -> AerodockWake
 	o.slopes = clamp( slopes, vec2f( - 0.32 ), vec2f( 0.32 ) );
 	o.coverage = awFinite( foamRaw, 0.0, 2.2 );
 	o.fresh = awFinite( freshFrac, 0.0, 1.0 );
-	o.aeration = awFinite( aerOut, 0.0, 0.22 );
+	o.aeration = awFinite( aerOut, 0.0, 0.30 );
 	o.slick = awFinite( slick, 0.0, 0.80 );
 	o.roughBoost = awFinite( freshFrac * 0.12, 0.0, 0.18 );
 	return o;
@@ -721,7 +726,7 @@ fn aerodockWakeFragment( xz: vec2f, footprint: f32, waveH: f32 ) -> AerodockWake
 // Shades the wake foam using FoamTexture (waterFoamTex) at boat-proportioned scales so thick
 // propeller churn tears naturally into bubbly rafts, circular Worley holes, and dissolving lace.
 fn aerodockWakeShadeFoam( xz: vec2f, footprint: f32, aw: AerodockWakeFrag, wf1: vec4f, wf2: vec4f ) -> f32 {
-	let cov = sat( aw.coverage * 0.82 );
+	let cov = sat( aw.coverage * 0.70 );
 	if ( cov <= 1e-4 ) { return 0.0; }
 
 	let pattern = wf1.x * 0.58 + wf2.x * 0.42;
@@ -730,7 +735,7 @@ fn aerodockWakeShadeFoam( xz: vec2f, footprint: f32, aw: AerodockWakeFrag, wf1: 
 	let soft = 0.09 + footprint * 0.12;
 	let detail = smoothstep( thresh - soft, thresh + soft, pattern ) * ( bubbles * 0.28 + 0.76 );
 	let far = smoothstep( 0.15, 1.0, footprint );
-	return awFinite( mix( detail, cov * 0.80, far ), 0.0, 0.88 );
+	return awFinite( mix( detail, cov * 0.60, far ), 0.0, 0.76 );
 }
 `,
 		} );
