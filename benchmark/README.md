@@ -7,9 +7,9 @@ Four policies fly the same 20 MuJoCo missions with PX4 in the loop.
 | Policy | Score | Landed | What it is |
 |---|---:|---:|---|
 | Privileged teacher, wave-aware gate | 99.2 | 20 / 20 | Uses simulator truth. Upper reference, source of training labels. |
-| Search policy on frozen R15 | 87.8 | 18 / 20 | Current policy. Camera and own sensors only. |
+| Search policy on frozen R15 | 87.8 | 18 / 20 | Current policy. Camera and own sensors; no boat-radio input. |
 | R15 | 57.5 | 11 / 20 | Landing policy before search training. |
-| Radio-robust, 15 October | 54.9 | 7 / 20 | First hybrid policy; relies on the boat radio. |
+| Radio-robust, 15 October | 54.9 | 7 / 20 | Earlier hybrid policy trained for degraded radio. Landed 7 of 14 with radio, 0 of 6 without. |
 
 All 80 flights were valid. Exact values and every episode are in
 [`benchmark.json`](benchmark.json).
