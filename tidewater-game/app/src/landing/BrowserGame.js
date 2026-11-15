@@ -140,7 +140,7 @@ export class BrowserGame {
  }
  vehicles() {
   const p=this.px4,obs=p.observation(),u=this.c.drone,drone=this.vehicle(u.base),boat=this.vehicle(this.c.boat.body);
-  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,landed:p.landed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,landing_requested:p.landingRequested,takeoff_pending:this.takeoffPending});
+  Object.assign(drone,{pan:this.d.qpos[u.camera_qpos[0]],tilt:this.d.qpos[u.camera_qpos[1]],altitude:drone.position[1],battery_v:this.f.voltage,battery_pct:this.f.charge/12*100,armed:p.armed,landed:p.landed,failed_rotors:[...this.f.failed],px4_ready:!!obs[0],px4_mode:obs[15],flight_requested:p.flightRequested,landing_requested:p.landingRequested,takeoff_pending:this.takeoffPending,motor_commands:Array.from(this.f.commands)});
   Object.assign(boat,this.mechanisms(),this.f.drainage.status(),{speed:this.boatSpeed(),port_power:this.f.power[0],starboard_power:this.f.power[1]});return {drone,boat};
  }
  setRadioEnabled(enabled) {

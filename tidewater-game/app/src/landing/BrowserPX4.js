@@ -15,7 +15,16 @@ const MOVING_PLATFORM_PARAMETERS = {EKF2_GPS_CHECK: 1023 & ~(32|64|128|256)};
 // estimate is the deck's velocity. That velocity is carried through the climb
 // so the drone leaves the bay without being dragged against it, then eased
 // out once it is clear of the boat.
-const TAKEOFF = {clearHeight: .9, liftoffHeight: .15, release: .6, filter: .5, limitMargin: .4};
+// Deck trim: a boat under way does not sit level (about 1.5 degrees at full
+// throttle). During the thrust ramp PX4 already steers attitude, so it tried
+// to level the drone against the deck it was still standing on and spun the
+// forward rotor pair up first. Until lift-off the velocity setpoint therefore
+// carries the small lead that makes PX4's wanted thrust direction equal the
+// deck normal (acceleration g*tan(tilt), through the velocity gain), with a
+// slight bias toward the deck's direction of travel so the pair that leads
+// is the one that pushes the drone along with the boat. It fades out after
+// lift-off (trimRelease seconds).
+const TAKEOFF = {clearHeight: .9, liftoffHeight: .15, release: .6, filter: .5, limitMargin: .4, velocityGain: 1.8, trimLead: .022, liftThrust: .46, trimRelease: .4};
 const NED = vector => [vector[1],vector[0],-vector[2]];
 
 export class BrowserPX4 {
@@ -108,6 +117,7 @@ export class BrowserPX4 {
 		const maxSpeed=this.configuration.parameters?.MPC_XY_VEL_MAX??2;
 		const velocity=NED([R[0]*x+R[1]*y,R[3]*x+R[4]*y,R[6]*x+R[7]*y]).map(v=>v*maxSpeed);
 		const carry=this.takeoffCarry(.04);this.carryLimit(carry);velocity[0]+=carry[0];velocity[1]+=carry[1];
+		const trim=this.deckTrim(R,carry,.04);velocity[0]+=trim[0];velocity[1]+=trim[1];
 		const values=this.buffer();values[0]=Math.trunc(t*1000)>>>0;values[1]=-(this.targetHeight-.216);values.set(velocity,2);
 		values[5]=((held('KeyE')?1:0)-(held('KeyQ')?1:0))*.5;
 		this.module._tw_setpoint(this.pointer);
@@ -129,7 +139,8 @@ export class BrowserPX4 {
 		}
 		const c=this.carry;
 		if(c.phase==='deck'){
-			if(Number.isFinite(s[4])&&Number.isFinite(s[5])){const k=Math.min(1,dt/TAKEOFF.filter);c.velocity[0]+=(s[4]-c.velocity[0])*k;c.velocity[1]+=(s[5]-c.velocity[1])*k;}
+			// only while the deck still carries the drone: near hover thrust its velocity is its own
+			if(!this.lifting()&&Number.isFinite(s[4])&&Number.isFinite(s[5])){const k=Math.min(1,dt/TAKEOFF.filter);c.velocity[0]+=(s[4]-c.velocity[0])*k;c.velocity[1]+=(s[5]-c.velocity[1])*k;}
 			if(this.armed&&!landed&&height>TAKEOFF.liftoffHeight)c.phase='climb';
 		}else if(c.phase==='climb'){
 			if(height>TAKEOFF.clearHeight)c.phase='release';
@@ -138,6 +149,23 @@ export class BrowserPX4 {
 			if(next<.02){c.phase='done';c.velocity=[0,0];}else c.velocity=c.velocity.map(v=>v*next/speed);
 		}
 		return c.phase==='done'?[0,0]:c.velocity;
+	}
+	// Thrust close to hover: the drone is leaving (or has left) the deck.
+	lifting() {return this.armed&&(this.actuators[3]+this.actuators[4]+this.actuators[5]+this.actuators[6])/4>TAKEOFF.liftThrust;}
+	// Velocity lead that matches PX4's thrust direction to the deck normal while
+	// the drone still stands on a moving deck (see TAKEOFF). R is the drone's
+	// own attitude; the result is NED north/east in m/s.
+	deckTrim(R,carry,dt) {
+		const c=this.carry,speed=Math.hypot(carry[0],carry[1]);
+		if(!c||c.phase==='done'||c.phase==='release'||speed<.3){this.trim=null;return [0,0];}
+		const gain=(this.configuration.parameters?.MPC_XY_VEL_P_ACC??TAKEOFF.velocityGain)||TAKEOFF.velocityGain;
+		if(c.phase==='deck'&&!this.lifting()){
+			const up=Math.max(.5,R[8]),g=9.80665;
+			// body z axis in the world (east, north, up) -> horizontal acceleration that needs this tilt
+			const north=g*R[5]/up,east=g*R[2]/up,lead=g*TAKEOFF.trimLead;
+			this.trim={value:[(north+lead*carry[0]/speed)/gain,(east+lead*carry[1]/speed)/gain],scale:1};
+		}else if(this.trim)this.trim.scale=Math.max(0,this.trim.scale-dt/TAKEOFF.trimRelease);
+		const t=this.trim;return t?[t.value[0]*t.scale,t.value[1]*t.scale]:[0,0];
 	}
 	// PX4 clamps every horizontal velocity setpoint to MPC_XY_VEL_MAX. A deck
 	// that moves faster than that limit (the boat reaches about 3 m/s under
