@@ -1,6 +1,6 @@
-[![Autonomous drone landing on a moving boat in Tidewater](docs/media/tidewater-landing-preview.gif)](docs/media/tidewater-landing-1080p.mp4)
+[![AERODOCK launches the drone; the policy lands it on the moving deck](docs/media/hero-film-poster.jpg)](website/assets/hero.mp4)
 
-[Watch the landing in 1080p](docs/media/tidewater-landing-1080p.mp4) · [Project website](website/index.html)
+[Watch the film (45 s)](website/assets/hero.mp4) · [Earlier landing in 1080p](docs/media/tidewater-landing-1080p.mp4) · [Project website](website/index.html)
 
 # Vision-based drone landing
 

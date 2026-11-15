@@ -22,7 +22,7 @@ const from = source.indexOf( 'root.innerHTML = `', source.indexOf( "root.id = 'd
 const markup = source.slice( from, source.indexOf( '`;', from ) );
 const css = readFileSync( new URL( '../../src/game/drone-hud.css', import.meta.url ), 'utf8' );
 const html = `<!doctype html><meta charset="utf8"><style>html,body{margin:0;height:100%;background:transparent;overflow:hidden}${ css }
-#drone-hud .scrim{display:none}</style><body><div id="drone-hud" data-link="live">${ markup }</div><script>
+</style><body><div id="drone-hud" data-link="live">${ markup }</div><script>
 const root=document.getElementById('drone-hud'),bind=k=>root.querySelector('[data-bind="'+k+'"]'),text=(k,v)=>{const e=bind(k);if(e)e.textContent=v;};
 const c=bind('compass');let ring='';for(let i=0;i<72;i++){const a=i*5*Math.PI/180,major=i%6===0,mid=i%3===0,r2=major?213:mid?224:230;ring+='<line x1="'+(Math.sin(a)*238).toFixed(1)+'" y1="'+(-Math.cos(a)*238).toFixed(1)+'" x2="'+(Math.sin(a)*r2).toFixed(1)+'" y2="'+(-Math.cos(a)*r2).toFixed(1)+'" stroke="currentColor" stroke-opacity="'+(major?.36:mid?.19:.1)+'"/>';}c.innerHTML=ring;
 for(const s of root.querySelectorAll('.segbar i'))s.classList.add('on');
