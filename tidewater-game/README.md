@@ -2,13 +2,11 @@
 
 [![A MuJoCo-trained policy landing in Tidewater without retraining](../docs/media/tidewater-landing-preview.gif)](../docs/media/tidewater-landing-1080p.mp4)
 
-Tidewater puts the boat–drone system into a richer coastal environment and turns
-it into a small playable game. Pilot either vehicle, change conditions, or hand
-the drone to the trained landing policy.
+Tidewater puts the drone and the boat into a realistic coastal world as a small
+playable game. Fly either vehicle, or hand the drone to the trained policy.
 
-**The models train only in MuJoCo. They never train on Tidewater scenes.**
-The opening flight shows a frozen policy landing in Tidewater without retraining:
-new scenery and camera images, the same learned policy.
+**The policy is trained only in MuJoCo, never on Tidewater scenes.** Tidewater
+tests whether it still lands when everything it sees looks different.
 
 ## Run locally
 
@@ -28,24 +26,26 @@ the collision world and shaders. Wait for **Offline files ready** for offline pl
 
 ## Play with the policy
 
-1. Take off near a visible boat in mild conditions.
-2. Switch to the boat with **B**. Open both lids, then raise the landing
-   platform. The boat does not need to stop for takeoff.
-3. Return to the drone and press **ML landing**. Press **Manual control** to
-   take over; **Land** also cancels policy control.
+1. Press **B** for the boat. Open the lids (**K**), then raise the platform (**J**).
+   The boat can keep driving.
+2. Press **B** for the drone and take off (**T**).
+3. Press **L**. The policy takes the drone, finds the boat and lands. **L** again
+   returns manual control.
 
-| Control | Action |
+| Key | Action |
 |---|---|
-| B / U | Switch vehicle / boat camera |
-| Drone: WASD, R/F, Q/E | Translate, climb/descend, yaw |
-| Arrows or mouse | Aim the camera |
-| Boat: P, W/S, A/D | Auto/manual motors, throttle, steering |
-| Disable / Enable SX1262 | Remove / restore simulated boat radio |
-| Home, Reset, Retry | Return to spawn |
+| B | Switch between drone and boat |
+| Drone: WASD, R/F, Q/E | Fly, climb/descend, yaw |
+| Mouse or arrows | Aim the camera |
+| T / L | Take off or land / hand over to the policy |
+| Boat: W/S, A/D, P | Throttle, steering, automatic route |
+| K / J | Lids / landing platform |
+| U / V / G | Boat camera / free camera / screenshot |
+| X / C | Boat radio off and on / reconnect |
+| Home | Reset |
 
-The boat remains independently controllable during landing. Its 1.5 m/s cruise
-stays inside the policy's nominal 2 m/s horizontal limit, which is also the
-full-stick manual flight speed. Lower the platform before closing the lids.
+The boat stays controllable during a landing. Lower the platform before closing
+the lids.
 
 ## What the game adds
 

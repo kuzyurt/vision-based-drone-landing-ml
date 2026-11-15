@@ -1,27 +1,38 @@
-# AeroDock Benchmark V2
+# Benchmark
 
-A clean, frozen four-policy benchmark for the 20-case maritime landing suite.
-The benchmark code, policy assets, and canonical evidence live here; the
-existing simulator, source bundles, and pinned PX4 assets are shared
-repository-level dependencies and are not duplicated.
+Four policies fly the same 20 MuJoCo missions with PX4 in the loop.
 
-The previous benchmark tree is archived at `old/benchmark/` for provenance and
-comparison. It is not imported by this package.
+![Four policies on the same 20 missions](../docs/media/benchmark-comparison.png)
 
-## Result
+| Policy | Score | Landed | What it is |
+|---|---:|---:|---|
+| Privileged teacher, wave-aware gate | 99.2 | 20 / 20 | Uses simulator truth. Upper reference, source of training labels. |
+| Search policy on frozen R15 | 87.8 | 18 / 20 | Current policy. Camera and own sensors only. |
+| R15 | 57.5 | 11 / 20 | Landing policy before search training. |
+| Radio-robust, 15 October | 54.9 | 7 / 20 | First hybrid policy; relies on the boat radio. |
 
-Canonical evidence is complete for all four participants:
+All 80 flights were valid. Exact values and every episode are in
+[`benchmark.json`](benchmark.json).
 
-| Policy | Score | Strict landings | Valid cases |
-| --- | ---: | ---: | ---: |
-| Privileged teacher / wave-aware gate | 99.16594561880042 | 20/20 | 20/20 |
-| Fresh search student / frozen R15 | 87.7710373737363 | 18/20 | 20/20 |
-| R15 / archived export | 57.49461407701248 | 11/20 | 20/20 |
-| Radio-robust / 15 October | 54.88614553000801 | 7/20 | 20/20 |
+## What is measured
 
-`benchmark.json` is generated from evidence and is the viewer's data source. A
-policy lock is not proof of a scored acquisition; treat `condition_valid` as
-scenario validity, not as a landing grade.
+| Category | Weight | Missions |
+|---|---:|---|
+| Find the target boat | 30 % | 10: near and 100 m starts, radio on/off, with and without decoy boats |
+| Landing / boat speed | 20 % | 4: 0.6 and 1.5 m/s |
+| Wind | 15 % | 2: 4 m/s crosswind |
+| Waves | 15 % | 2: 0.15 m |
+| Combined | 10 % | 2: wind, waves, 100 m search and decoys together |
+| Mission speed | 10 % | Time to a successful landing |
+
+A landing counts only when the drone is disarmed and stable on the pad. The
+search policy lands everything except the two combined missions (one collision,
+one fallback).
+
+`condition_valid` means the scenario ran as specified; it is not a landing
+grade. A policy's own "lock" is not a scored acquisition.
+
+The previous benchmark is archived unchanged in `old/benchmark/`.
 
 ## Layout
 

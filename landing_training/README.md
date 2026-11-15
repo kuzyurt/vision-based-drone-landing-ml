@@ -126,9 +126,9 @@ Implementation: [encoder and GRU](../artifacts/landing_hardening_20261018/candid
 [radio fusion](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/model.py),
 [runtime](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/runtime.py).
 
-### Search head under training
+### Search head
 
-The next revision freezes the R15 model and trains a multi-boat search head on
+The current policy freezes the R15 model and adds a multi-boat search head on
 its fine/context features. It initializes from the spatial acquisition weights,
 then adds four-class evidence and two-class identity readouts to the shared
 48-channel feature map. Heatmap, offsets and presence locate candidates;
@@ -140,23 +140,19 @@ landing runtime. It learns acquisition rather than replacing PX4 or the landing
 controller. [Search head implementation](../training_runs/search_revision_20261025/model.py).
 
 The run uses AdamW, a 0.0003 learning rate, batch size 8 and 15 configured epochs.
-It is separate from deployed R15 and the completed benchmark.
+The resulting bundle is the benchmark's search policy (`fresh-search-f62c10a2`).
 [Dataset and current trainer](../training_runs/search_revision_20261025/README.md).
 
-## Matched benchmark
+## Benchmark
 
-![Teacher, R15 and older policy on the same 20 missions](../old/benchmark/archive/2026-11-10/figures/model-comparison.png)
+![Four policies on the same 20 missions](../docs/media/benchmark-comparison.png)
 
-The 25 October comparison covers boat speed, crosswind, waves, distant search,
-radio availability and static decoys. All **60 cases** were valid.
+Twenty matched MuJoCo missions cover boat speed, crosswind, waves, search from
+100 m, radio availability and decoy boats. The search policy on the frozen R15
+base lands **18 of 20** (score 87.8). It fails both missions that combine every
+condition. The privileged teacher lands 20 of 20 and is the upper reference.
 
-R15 completes more landings than the older policy. The older policy earns a
-higher overall score because acquisition and completion speed also count.
-No-radio acquisition remains the main weakness. Twenty cases per actor make
-this a comparative screen; earlier suites use different conditions.
-
-[Archived full results and failure analysis](../old/benchmark/archive/2026-11-10/reports/2026-10-25/RESULTS.md) ·
-[Current benchmark design](../benchmark/README.md) · [Archived dashboard](../old/benchmark/archive/2026-11-10/ui/index.html)
+[Benchmark design, evidence and viewer](../benchmark/README.md)
 
 ## Development
 
@@ -166,6 +162,7 @@ this a comparative screen; earlier suites use different conditions.
 | 10–15 October | Learned pose, marker geometry and explicit control; unseen-condition tests and Tidewater transfer without retraining |
 | 17–18 October | Vision-first radio fusion; R15 tracking, braking and recovery |
 | 24–25 October | Matched benchmark and multi-boat search training |
+| 4–12 November | Wave-aware teacher, bounded search and the four-policy benchmark |
 
 ## Find the implementation
 
@@ -175,7 +172,7 @@ this a comparative screen; earlier suites use different conditions.
 | Teacher | [`privileged_teacher.py`](teacher/privileged_teacher.py), [`smooth_landing.py`](teacher/smooth_landing.py), [`wave_teacher.py`](teacher/wave_teacher.py) |
 | Data | [`recording.py`](data/recording.py), [`review.py`](data/review.py), [`collect.py`](data/collect.py) |
 | Deployed R15 | [Frozen bundle and qualification](docs/CURRENT_POLICY.md) |
-| Active search revision | [Run guide](../training_runs/search_revision_20261025/README.md) |
+| Search revision | [Run guide](../training_runs/search_revision_20261025/README.md) |
 | Original setup | [Linux/WSL workflow](docs/history/ENVIRONMENT_REVIEW_BASELINE.md) |
 | Detailed evidence | [Development report](docs/reports/LANDING_POLICY_DEVELOPMENT_REPORT_2026-10-17.md), [Tidewater tests](docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md) |
 

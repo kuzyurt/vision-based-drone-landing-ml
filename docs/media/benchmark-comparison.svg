@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 566" width="1200" height="566" font-family="Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif">
+<rect width="1200" height="566" fill="#ffffff"/>
+<text x="40" y="58" font-size="34" font-weight="700" fill="#0d1b24">Same 20 missions, four policies</text>
+<text x="40" y="92" font-size="20" fill="#2c3f4b">Score out of 100: landing, wind, waves, finding the boat, combined conditions and mission speed</text>
+<text x="40" y="154" font-size="24" font-weight="700" fill="#0d1b24">Teacher</text>
+<text x="40" y="182" font-size="19" fill="#2c3f4b">sees simulator truth</text>
+<rect x="340" y="132" width="620" height="52" rx="8" fill="#f1f5f6"/>
+<rect x="340" y="132" width="614.8" height="52" rx="8" fill="#5f7a84"/>
+<text x="1160" y="156" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">99.2</text>
+<text x="1160" y="184" font-size="19" fill="#2c3f4b" text-anchor="end">20 / 20 landed</text>
+<text x="40" y="258" font-size="24" font-weight="700" fill="#0d1b24">Search policy (current)</text>
+<text x="40" y="286" font-size="19" fill="#2c3f4b">camera only</text>
+<rect x="340" y="236" width="620" height="52" rx="8" fill="#f1f5f6"/>
+<rect x="340" y="236" width="544.2" height="52" rx="8" fill="#0b7a75"/>
+<text x="1160" y="260" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">87.8</text>
+<text x="1160" y="288" font-size="19" fill="#2c3f4b" text-anchor="end">18 / 20 landed</text>
+<text x="40" y="362" font-size="24" font-weight="700" fill="#0d1b24">Landing policy R15</text>
+<text x="40" y="390" font-size="19" fill="#2c3f4b">before search training</text>
+<rect x="340" y="340" width="620" height="52" rx="8" fill="#f1f5f6"/>
+<rect x="340" y="340" width="356.5" height="52" rx="8" fill="#9db3bb"/>
+<text x="1160" y="364" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">57.5</text>
+<text x="1160" y="392" font-size="19" fill="#2c3f4b" text-anchor="end">11 / 20 landed</text>
+<text x="40" y="466" font-size="24" font-weight="700" fill="#0d1b24">First radio policy</text>
+<text x="40" y="494" font-size="19" fill="#2c3f4b">needs boat radio</text>
+<rect x="340" y="444" width="620" height="52" rx="8" fill="#f1f5f6"/>
+<rect x="340" y="444" width="340.3" height="52" rx="8" fill="#9db3bb"/>
+<text x="1160" y="468" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">54.9</text>
+<text x="1160" y="496" font-size="19" fill="#2c3f4b" text-anchor="end">7 / 20 landed</text>
+</svg>

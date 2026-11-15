@@ -5,6 +5,8 @@
 | [Tidewater landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback |
 | [Animated preview](tidewater-landing-preview.gif) | Final approach and landing, 640 × 360 at 8 fps and 2× playback |
 | [Poster](tidewater-landing-poster.jpg) | Frame from that flight |
+| [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
+| [Benchmark comparison](benchmark-comparison.png) | Four policies on the current 20-mission benchmark; [SVG](benchmark-comparison.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |
 | [System data flow](policy-architecture-detailed.png) | Camera, PX4 telemetry, radio, perception, geometry, flight/gimbal commands and feedback; [SVG](policy-architecture-detailed.svg) |
 | [Neural architecture](policy-neural-architecture.png) | Shared encoder, spatial acquisition, recurrent pose and bounded radio fusion; [SVG](policy-neural-architecture.svg) |
@@ -37,6 +39,15 @@ The spectator view was originally rendered at 640 × 360 and archived at
 [Export receipt and hashes](tidewater-landing-provenance.json).
 
 ## Regenerate
+
+Current figures (policy flow and benchmark comparison), from `benchmark/benchmark.json`:
+
+```sh
+python -B docs/tools/build_current_figures.py
+node docs/tools/rasterize_svg.mjs
+```
+
+Earlier R15 figures and the landing video:
 
 From the repository root, with Python 3, Pillow and FFmpeg installed:
 
