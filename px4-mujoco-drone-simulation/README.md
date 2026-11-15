@@ -19,7 +19,7 @@ The close-up moves from calm to **10 m/s toward North, South, East and West**. T
 | [Holybro X500 V2 / Pixhawk 6C kit](https://holybro.com/products/px4-development-kit-x500-v2), including motors, ESCs, propellers, GPS and telemetry | €544 |
 | [ALLXF D-80Pro 40x-4K](https://allxf.com/product/d-80pro-40x-4k-spherical-gimbal-camera/) | €768 |
 | [Khadas Edge2 Basic](https://www.soundimports.eu/en/khadas-keg2-b-001.html) | €240 |
-| XIAO ESP32S3 + SX1262 · user price estimate | €9 |
+| XIAO ESP32S3 + SX1262 | €9 |
 | [Lumenier NAV 12000mAh 4S Amprius](https://www.lumenier.com/products/lumenier-nav-12000mah-4s-21700-amprius-lithium-ion-battery-xt60) | €195 |
 | **Reference parts subtotal** | **~€1,756** |
 
