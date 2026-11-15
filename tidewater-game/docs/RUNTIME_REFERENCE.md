@@ -117,11 +117,11 @@ cover PX4, MuJoCo and the translated NumPy RNG routines. Additional game/asset
 notices accompany their models and textures.
 ## Trained drone landing policy
 
-After taking off, press **ML landing** to hand the drone to the workspace's
+After taking off, press **L** to hand the drone to the workspace's
 **vision-first radio-fusion** policy. The button changes to **Manual control**; press it
 to resume piloting. **Land** also cancels ML control. Boat control is independent
 of ML: route following keeps its normal 1.5 m/s target, and manual throttles,
-steering, stop and auto/manual selection remain available during ML landing.
+steering, stop and auto/manual selection remain available while the policy flies.
 The policy's existing 2 m/s horizontal command limit remains unchanged; it may
 not catch or land on a faster boat.
 
