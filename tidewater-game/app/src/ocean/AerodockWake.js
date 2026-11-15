@@ -427,7 +427,13 @@ fn awCell( col: u32, row: u32 ) -> f32 {
 	let mottle = clamp( ( streaks - 0.5 ) * 3.2, - 0.85, 0.85 ) + 1.0;
 
 	let washDrive = twinFocus * 1.25 + smoothstep( 0.15, 1.4, spd ) * 0.55;
-	let washGen = inWash * washDrive * ( streak * patchN * 0.65 + race + 0.12 ) * mix( mottle, 1.0, smoothstep( 2.2, 0.0, behind ) * 0.55 );
+	// Whitewater sits where water is actually torn: a short churn straight behind the transom and
+	// thin lace along the two edges of the wake band, where the smooth strip shears against
+	// the undisturbed water. The strip between them carries no foam.
+	let churn = smoothstep( 1.5, 0.1, behind ) * ( streak * patchN * 0.65 + race + 0.12 );
+	let edgeAt = washW * 0.80;
+	let edgeLace = smoothstep( 0.16, 0.0, abs( abs( bxTurn ) - edgeAt ) ) * smoothstep( 0.2, 1.2, behind ) * smoothstep( 7.5, 2.0, behind ) * ( streaks * 0.9 + 0.1 ) * 0.42;
+	let washGen = inWash * washDrive * churn * mix( mottle, 1.0, 0.55 ) + smoothstep( - 0.1, 0.4, behind ) * washDrive * edgeLace;
 
 	// ---- Bow Wave & Forward Shoulder Spray (rolls off the pointed bow wedge and forward cheeks)
 	let nearBow = smoothstep( 0.42, - 0.02, sd ) * smoothstep( - 0.04, 0.04, sd );
@@ -476,7 +482,7 @@ fn awCell( col: u32, row: u32 ) -> f32 {
 	let breakup = awNoise( p * 0.42 + vec2f( 13.1, 7.3 ) ) * 0.65 + awNoise( p * 1.35 + vec2f( 3.7, 1.9 ) ) * 0.35;
 	let clr = smoothstep( 0.28, 0.72, breakup ) * 2.6 + 0.22;
 	// (lace lasts seconds, not a minute: a few boat lengths of trail at cruise)
-	let foam1 = awFinite( f0 * exp( - dt * ( f0 * f0 * 0.8 + clr / 11.0 + 0.03 ) ) + gen * dt, 0.0, 1.8 );
+	let foam1 = awFinite( f0 * exp( - dt * ( f0 * f0 * 0.9 + clr / 6.0 + 0.14 ) ) + gen * dt, 0.0, 1.8 );
 
 	// ---- Turbulence & Subsurface Aeration Evolution
 	let turbAvg = 0.25 * ( sL.w + sR.w + sD.w + sU.w );
@@ -487,9 +493,10 @@ fn awCell( col: u32, row: u32 ) -> f32 {
 	let a0 = max( mix( aAdv.z, aerAvg, clamp( dt * ( 2.2 + turb * 4.5 ), 0.0, 0.32 ) ), 0.0 );
 	let wA = washW * ( awNoise( p * 0.55 + time * 0.06 ) * 0.75 + 0.82 );
 	let aerBand = smoothstep( - 0.35, 0.25, behind ) * smoothstep( 6.5, 1.4, behind ) * smoothstep( wA, wA * 0.20, abs( bxTurn ) );
-	let aerGen = aerBand * washDrive * ( ( race * 1.1 + 0.15 ) * ( patchN * 1.2 + streak * 0.5 + 0.1 ) ) * ( mottle * mottle * 0.55 ) + bowGen * 0.55 + brk * 1.2;
+	// (a continuous strip the width of the hull: stirred, slightly paler water)
+	let aerGen = aerBand * washDrive * ( race * 1.1 + 0.25 ) * ( 0.80 + patchN * 0.40 ) * mix( 1.0, mottle, 0.25 ) * 0.9 + bowGen * 0.55 + brk * 1.2;
 	let rise = smoothstep( 0.25, 0.75, breakup * 0.6 + patchN * 0.4 ) * 1.3 + 0.45;
-	let aer1 = awFinite( a0 * exp( - dt * ( a0 * 0.08 + rise / 18.0 ) ) + aerGen * dt, 0.0, 2.5 );
+	let aer1 = awFinite( a0 * exp( - dt * ( a0 * 0.08 + rise / 15.0 ) ) + aerGen * dt, 0.0, 2.5 );
 
 	trailScratch[ idx ] = vec4f( h, w1, foam1, turb1 );
 	trailAuxB[ idx ] = vec4f( vel.x, vel.y, aer1, 0.0 );
@@ -499,7 +506,7 @@ fn awCell( col: u32, row: u32 ) -> f32 {
 	let hullMask = smoothstep( - 0.06, 0.10, sd );
 	let boilAmp = min( turb1 * 0.055 + foam1 * 0.035, 0.16 ) * hullMask;
 	let boilSlope = vec2f( g1.y * 0.55 + g2.y * 0.45, g1.z * 0.55 + g2.z * 0.45 ) * boilAmp;
-	let outSlope = clamp( vec2f( gx, gz ) * ( 1.45 * hullMask ) + boilSlope, vec2f( - 0.35 ), vec2f( 0.35 ) );
+	let outSlope = clamp( vec2f( gx, gz ) * ( 2.7 * hullMask ) + boilSlope, vec2f( - 0.45 ), vec2f( 0.45 ) );
 
 	textureStore( trailOut, vec2u( col, row ), vec4f( foam1, aer1, outSlope.x, outSlope.y ) );
 
@@ -707,17 +714,17 @@ fn aerodockWakeFragment( xz: vec2f, footprint: f32, waveH: f32 ) -> AerodockWake
 	var aerOut = 0.0;
 	if ( aerRaw > 0.01 ) {
 		let m = awNoise( xz * 0.55 + vec2f( frame.time * 0.03, 0.0 ) ) * 0.55 + awNoise( xz * 1.55 + 17.3 ) * 0.45;
-		let aN = ( 1.0 - exp( - aerRaw * 0.55 ) ) * ( m * 0.8 + 0.6 );
-		aerOut = smoothstep( m * 0.2 + 0.04, m * 0.2 + 0.58, aN ) * 0.26 * fadeLong;
+		let aN = ( 1.0 - exp( - aerRaw * 0.75 ) ) * ( m * 0.3 + 0.85 );
+		aerOut = smoothstep( 0.03, 0.62, aN ) * 0.25 * fadeLong;
 	}
 
 	let freshFrac = smoothstep( 0.35, 1.35, foamRaw );
-	let slick = sat( aerRaw * 0.45 + foamRaw * 0.25 ) * ( 1.0 - freshFrac * 0.4 );
+	let slick = sat( aerRaw * 0.75 + foamRaw * 0.25 ) * ( 1.0 - freshFrac * 0.4 );
 
-	o.slopes = clamp( slopes, vec2f( - 0.32 ), vec2f( 0.32 ) );
+	o.slopes = clamp( slopes, vec2f( - 0.42 ), vec2f( 0.42 ) );
 	o.coverage = awFinite( foamRaw, 0.0, 2.2 );
 	o.fresh = awFinite( freshFrac, 0.0, 1.0 );
-	o.aeration = awFinite( aerOut, 0.0, 0.30 );
+	o.aeration = awFinite( aerOut, 0.0, 0.38 );
 	o.slick = awFinite( slick, 0.0, 0.80 );
 	o.roughBoost = awFinite( freshFrac * 0.12, 0.0, 0.18 );
 	return o;

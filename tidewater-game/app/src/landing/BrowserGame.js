@@ -57,12 +57,22 @@ export class BrowserGame {
    this.message=null;
   }
  }
+ // Soft handover: the policy used to take over with a zero command (a hard brake from the pilot's
+ // speed) and its first camera sweep at full rate, which jolted the aircraft and the picture.
+ // For the first HANDOVER seconds its velocity command is eased in from the velocity the drone
+ // had at the handover, and its yaw and camera rates are eased in from zero. After that the
+ // policy's actions pass unchanged.
+ handover(action) {
+  const HANDOVER=1.5,x=clamp((this.d.time-this.mlStarted)/HANDOVER,0,1),k=x*x*(3-2*x),v=this.mlEntry||[0,0];
+  if(k>=1)return action;
+  return [v[0]+(action[0]-v[0])*k,v[1]+(action[1]-v[1])*k,action[2]*k,action[3]*k,action[4]*k,action[5]*k];
+ }
  setPolicy(enabled) {
   if(enabled===this.ml.enabled)return;
   if(enabled && (!this.px4.armed || this.px4.landed || this.px4.landingRequested || !this.px4.observation()[0])){this.message='Take off before handing control to ML';return;}
   this.mlGeneration++;this.cancelPolicy?.();this.policyFrame=null;if(this.mode==='drone')this.keys=[];this.lookX=this.lookY=0;
   this.ml={enabled,phase:enabled?'acquire':'manual',error:null};
-  if(enabled){this.policyTelemetry=new PolicyTelemetry(this);this.landingResult=new PolicyLandingResult(this);this.mlStarted=this.d.time;this.mlGroundedAt=null;this.mlWasAirborne=true;this.px4.vehicleCommand(176,[1,6]);this.px4.policyPilot([0,0,0,0,0,0]);}
+  if(enabled){this.policyTelemetry=new PolicyTelemetry(this);this.landingResult=new PolicyLandingResult(this);this.mlStarted=this.d.time;this.mlGroundedAt=null;this.mlWasAirborne=true;this.px4.vehicleCommand(176,[1,6]);this.mlEntry=this.px4.bodyVelocity();this.px4.policyPilot([this.mlEntry[0],this.mlEntry[1],0,0,0,0]);}
   else {this.px4.manualHold();this.policyTelemetry=null;}
  }
  mechanisms() {
@@ -117,7 +127,7 @@ export class BrowserGame {
       if(frame){const {result,error}=await frame.promise;if(error)throw error;
        if(result && this.ml.enabled && generation===this.mlGeneration){
         if(result.intervention==='mission_deadline'||result.intervention==='bounded_recovery_exhausted'){const exhausted=result.intervention==='bounded_recovery_exhausted';this.setPolicy(false);this.ml.phase=exhausted?'recovery exhausted · manual hold':'mission deadline · manual hold';this.message=exhausted?'ML could not recover a safe landing view · manual control restored':'ML search timed out · manual control restored';}
-        else {this.px4.policyPilot(result.action,frame.yaw);this.policyTelemetry.previous=[...result.action];this.ml.action=[...result.action];this.ml.phase=result.diagnostics?.control_phase||'tracking';this.ml.diagnostics=result.diagnostics;this.ml.timings={...result.timings,command_age_s:this.d.time-frame.time};this.ml.intervention=result.intervention;}
+        else {const action=this.handover(result.action);this.px4.policyPilot(action,frame.yaw);this.policyTelemetry.previous=[...action];this.ml.action=[...action];this.ml.phase=result.diagnostics?.control_phase||'tracking';this.ml.diagnostics=result.diagnostics;this.ml.timings={...result.timings,command_age_s:this.d.time-frame.time};this.ml.intervention=result.intervention;}
        }
       }
       if(this.ml.enabled&&generation===this.mlGeneration){

@@ -407,7 +407,7 @@ ${ AW ? /* wgsl */`		// AERODOCK wake: visual only, the surface height above sti
 ${ AW ? /* wgsl */`	var awFoam = 0.0;
 	var awBubbles = p1.y;
 	if ( landingWaves.enabled > 0.5 && aw.coverage > 1e-4 ) {
-		let wuv = lagXZ * 0.34;
+		let wuv = lagXZ * 1.15; // foam cells of centimetres on a 3 m boat
 		let wr2 = vec2f( wuv.x * 0.8 - wuv.y * 0.6, wuv.x * 0.6 + wuv.y * 0.8 ) * 2.37 + vec2f( 0.31, 0.77 );
 		let wf1 = textureSampleLevel( waterFoamTex, smpLinearRepeat, wuv, max( log2( footprint * 180.0 ), 0.0 ) );
 		let wf2 = textureSampleLevel( waterFoamTex, smpLinearRepeat, wr2, max( log2( footprint * 425.0 ), 0.0 ) );
