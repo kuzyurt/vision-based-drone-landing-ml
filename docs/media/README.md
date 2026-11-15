@@ -2,6 +2,7 @@
 
 | Asset | What it shows |
 |---|---|
+| [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded Tidewater flight: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
 | [Tidewater landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback |
 | [Animated preview](tidewater-landing-preview.gif) | Final approach and landing, 640 × 360 at 8 fps and 2× playback |
 | [Poster](tidewater-landing-poster.jpg) | Frame from that flight |
