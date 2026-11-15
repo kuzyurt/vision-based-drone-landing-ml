@@ -40,3 +40,13 @@ It is cut from two recorded flights of the same scripted mission:
   1.2 m above the pad, backed off and lost the boat; it did not land.
 
 Of three complete recorded attempts on the 1.44 m/s deck, one landed.
+
+## Boat-only shot
+
+`HERO_BOAT_ONLY=45 node tools/hero/record.mjs boat.jsonl` records just the boat
+under way (45 s of cruise, lids closed, no flight). `render.mjs boat.jsonl out/ boatFront`
+then renders it from off the port bow; `BOAT_START` (default 44) is the start in
+simulation seconds. This is the clip in `docs/media/tidewater-boat-1080p.mp4`.
+
+On Windows set `HERO_BACKEND=d3d12` (Vulkan did not load) and `HERO_PYTHON=python`
+(image decoding needs Python with Pillow).

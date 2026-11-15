@@ -50,6 +50,8 @@ function step( s ) {
 
 	} else if ( phase === 'cruise' ) {
 
+		// HERO_BOAT_ONLY=<s>: record only the boat under way (lids closed), for boat shots
+		if ( process.env.HERO_BOAT_ONLY ) { if ( since > Number( process.env.HERO_BOAT_ONLY ) ) done = true; return; }
 		if ( since > 14 && b.speed > 1.2 ) { send( { action: 'lid', open: true } ); go( 'lids' ); }
 
 	} else if ( phase === 'lids' ) {

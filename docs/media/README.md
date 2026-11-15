@@ -3,9 +3,10 @@
 | Asset | What it shows |
 |---|---|
 | [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded Tidewater flight: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
-| [Tidewater landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback |
-| [Animated preview](tidewater-landing-preview.gif) | Final approach and landing, 640 × 360 at 8 fps and 2× playback |
-| [Poster](tidewater-landing-poster.jpg) | Frame from that flight |
+| [Tidewater boat](tidewater-boat-1080p.mp4) | 5 s of the AERODOCK under way, seen from off its port bow, 1920 × 1080, 30 fps. Rendered from a recorded simulation run with the [hero-film tools](../../tidewater-game/app/tools/hero/README.md) (`boatFront` shot) |
+| [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
+| [Poster](tidewater-boat-poster.jpg) | Frame from that clip |
+| [Earlier landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback (see provenance below) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
 | [Benchmark comparison](benchmark-comparison.png) | Four policies on the current 20-mission benchmark; [SVG](benchmark-comparison.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |

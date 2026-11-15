@@ -176,6 +176,19 @@ const SHOTS = {
 	// wake checks (not in the film): render with `wakeTop wakeLow --preview`
 	wakeTop: { debug: true, exposure: 0.62, start: M.lids - 6, length: 1.4, camera( v ) { look( at( v, - 6, 0, 22 ), at( v, - 6, 0, 0 ), 40, v.forward.clone() ); } },
 	wakeLow: { debug: true, start: M.lids - 6, length: 1.4, camera( v ) { look( at( v, - 9.5, 2.4, 2.6 ), at( v, - 1, 0, 0.2 ), 42 ); } },
+	// the boat under way from off its port bow (needs only a flight recorded with HERO_BOAT_ONLY):
+	// the camera travels with the boat over the water, low, and slowly swings round toward the beam
+	boatFront: { start: Number( process.env.BOAT_START || 44 ), length: 10, camera( v, u ) {
+
+		const k = ease( u ), r = 7.8 - 1.2 * k, az = ( 22 + 13 * k ) * Math.PI / 180, h = 0.85 + 0.4 * k;
+		// the track, not the deck, carries the camera: it does not heave with the boat
+		const position = v.boat.clone().addScaledVector( v.forward, Math.cos( az ) * r ).addScaledVector( v.right, - Math.sin( az ) * r );
+		position.y = h;
+		// aim a little aft of the deck's middle: the bow fills the left, the wake trails across the right
+		const target = v.boat.clone().addScaledVector( v.forward, - 1.5 ); target.y = v.boat.y + 1.3;
+		look( position, target, 34 );
+
+	} },
 	// straight down: the boat drives in from the left edge to the middle of the frame
 	top: { exposure: 0.62, start: M.lids - 7.5, length: 5.2, setup( t0, length ) {
 
