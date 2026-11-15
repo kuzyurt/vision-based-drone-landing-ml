@@ -284,13 +284,16 @@ export class FlightOperations {
 
 			<div class="handover" data-bind="handover" aria-hidden="true">
 				<i class="ho-sweep"></i>
-				<svg class="ho-lock" viewBox="-130 -130 260 260">
-					<circle class="ho-ring ho-ring-a" r="112" pathLength="100"></circle>
-					<circle class="ho-ring ho-ring-b" r="84" pathLength="100"></circle>
-					<path class="ho-brackets" d="M-56 -36V-56H-36M36 -56H56V-36M56 36V56H36M-36 56H-56V36"></path>
-					<path class="ho-ticks" d="M0 -124V-104M0 104V124M-124 0H-104M104 0H124"></path>
+				<svg class="ho-lock" viewBox="-150 -150 300 300">
+					<circle class="ho-ripple" r="60"></circle>
+					<circle class="ho-ring ho-ring-a" r="118" pathLength="360"></circle>
+					<circle class="ho-ring ho-ring-b" r="92" pathLength="360" transform="rotate(-90)"></circle>
+					<circle class="ho-ring ho-ring-c" r="66" pathLength="360"></circle>
+					<path class="ho-ticks" d="M0 -138V-124M0 124V138M-138 0H-124M124 0H138"></path>
+					<path class="ho-chevrons" d="M-9 -47L0 -38L9 -47M-9 47L0 38L9 47M-47 -9L-38 0L-47 9M47 -9L38 0L47 9"></path>
+					<circle class="ho-dot" r="3.2"></circle>
 				</svg>
-				<div class="ho-title"><small data-bind="ho-kicker">Control handover</small><b data-bind="ho-title">Policy control</b><i></i><span data-bind="ho-sub">Camera · search · align · land</span></div>
+				<div class="ho-title"><small data-bind="ho-kicker">Control handover</small><div class="ho-line"><i></i><b data-bind="ho-title">Policy control</b><i></i></div><span data-bind="ho-sub">Camera · search · align · land</span></div>
 			</div>
 
 			<div class="datum">
