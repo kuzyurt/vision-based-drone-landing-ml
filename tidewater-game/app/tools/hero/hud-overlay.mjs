@@ -52,7 +52,9 @@ window.setFrame=(row,ms)=>{
 };
 </script>`;
 const browser = await chromium.launch();
-const page = await browser.newPage( { viewport: { width: Number( W ), height: Number( H ) } } );
+// HERO_HUD_SCALE: lay the HUD out for a smaller window and scale it up (1.5 turns 1280 x 720 into 1080p)
+const scale = Number( process.env.HERO_HUD_SCALE || 1 );
+const page = await browser.newPage( { viewport: { width: Math.round( Number( W ) / scale ), height: Math.round( Number( H ) / scale ) }, deviceScaleFactor: scale } );
 await page.setContent( html );
 await page.waitForTimeout( 300 );
 const frames = Math.round( length * FPS );

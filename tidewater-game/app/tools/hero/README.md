@@ -28,6 +28,15 @@ On an LF checkout the policy bundle's checksums (taken from CRLF files) do not
 match. `policy-worker.mjs` therefore loads it in report-only mode; the game
 itself still enforces the checksums.
 
-The recorded flight used for the film: take-off from the deck at 1.44 m/s,
-handover at 85 s, touchdown at 165 s, disarmed and stable on the pad at 168 s,
-about 2 cm from the pad centre.
+## The flights in the film
+
+The film is 1920 × 1080 (`HERO_W=1920 HERO_H=1080`, HUD with `HERO_HUD_SCALE=1.5`).
+It is cut from two recorded flights of the same scripted mission:
+
+- Launch and landing shots: the flight that landed. Take-off from the deck at
+  1.44 m/s, touchdown at 165 s, disarmed and stable on the pad at 168 s, about
+  2 cm from the pad centre.
+- Handover shot: a later flight with the soft handover. That flight reached
+  1.2 m above the pad, backed off and lost the boat; it did not land.
+
+Of three complete recorded attempts on the 1.44 m/s deck, one landed.
