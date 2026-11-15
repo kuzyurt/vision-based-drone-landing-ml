@@ -33,17 +33,9 @@
 <section class="hero">
 	<video class="hero-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg" data-src="assets/hero.mp4" data-fallback="assets/tidewater-landing.mp4"></video>
 	<div class="hero-shade"></div>
-	<div class="hero-text">
-		<h1>A drone that lands itself on a moving boat.</h1>
-		<p>It finds the boat through its own camera, follows the deck through wind and waves, and touches down on a 60&nbsp;cm pad. The policy was trained only in simulation.</p>
-		<div class="hero-actions">
-			<a class="button primary" href="#how">How it works</a>
-			<a class="button ghost" href="#results">Results</a>
-		</div>
-	</div>
 	<dl class="hero-facts">
 		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
-		<div><dt>No boat radio</dt><dd>the policy finds the boat by camera</dd></div>
+		<div><dt>Radio + camera</dt><dd>radio finds the boat, vision lands it</dd></div>
 		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
 	</dl>
 </section>
@@ -58,7 +50,7 @@
 		<ul class="points">
 			<li><b>A small, moving target.</b> The landing pad is 60&nbsp;cm wide, on a boat that keeps driving.</li>
 			<li><b>Wind and waves.</b> Crosswind pushes the drone while the deck pitches, rolls and heaves.</li>
-			<li><b>No help from the boat.</b> The current policy lands without the boat's radio position, and picks the right boat among others.</li>
+			<li><b>Radio to find, vision to land.</b> The boat's radio gets the drone to the target; nothing from the boat steers the landing itself — the camera and the pad geometry do.</li>
 		</ul>
 	</div>
 </section>
@@ -182,7 +174,7 @@
 				</figcaption>
 			</figure>
 			<figure class="card">
-				<video class="card-media" muted loop playsinline preload="none" poster="assets/tidewater-landing.jpg" data-autoplay src="assets/tidewater-landing.mp4"></video>
+				<video class="card-media" muted loop playsinline preload="none" poster="assets/tidewater-boat.jpg" data-autoplay src="assets/tidewater-boat.mp4"></video>
 				<figcaption class="card-body">
 					<span class="tag test">Test only</span>
 					<h3>Tidewater</h3>
@@ -210,11 +202,11 @@
 		<div class="two results-notes">
 			<div>
 				<h3>What the current policy does well</h3>
-				<p>It landed every mission in boat speed, wind, waves and target search — including finding the boat from a distance with other boats nearby, without radio.</p>
+				<p>It landed 18 of 20: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, and the search itself, with other boats in the scene.</p>
 			</div>
 			<div>
 				<h3>Where it still fails</h3>
-				<p>Both missions that combine crosswind, waves, a 100&nbsp;m search and decoy boats at once. One ended in a collision, one aborted without landing.</p>
+				<p>The search without radio is the weak point. With only its camera, 100&nbsp;m away and with other boats in the scene, it struggles to pick the target boat out and can lose it before the approach.</p>
 			</div>
 		</div>
 		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
@@ -243,8 +235,8 @@
 			</li>
 			<li>
 				<span class="when">Step 4</span>
-				<h3>Stop trusting the radio</h3>
-				<p>Vision leads and radio is only a bounded hint, so a wrong boat position can no longer pull the drone off course.</p>
+				<h3>Use the radio only to find</h3>
+				<p>The radio is used to find the boat and nothing else. From the handover on, vision and pad geometry fly the landing, so a wrong boat position cannot pull the descent off course.</p>
 			</li>
 			<li>
 				<span class="when">Step 5</span>

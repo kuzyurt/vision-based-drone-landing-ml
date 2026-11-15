@@ -5,7 +5,7 @@ const STAGES = {
 	sense: {
 		title: 'Camera and drone sensors',
 		text: 'Everything the policy knows comes from the drone itself: one camera on a pan-tilt mount and the autopilot\'s own estimate of where the drone is and how it moves.',
-		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Not used', 'the boat\'s position — the current policy flies without boat radio' ] ],
+		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Radio', 'the boat\'s position, used to find it, never to land' ] ],
 	},
 	see: {
 		title: 'See — a neural network finds the boat',
@@ -31,14 +31,9 @@ const STAGES = {
 
 const MODELS = [
 	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'Search policy', note: 'uses no boat radio', score: 87.8, landed: 18 },
+	{ key: 'current', name: 'Search policy', note: 'radio finds, camera lands', score: 87.8, landed: 18 },
 	{ key: 'r15', name: 'Landing policy R15', note: 'before search training', score: 57.5, landed: 11 },
 	{ key: 'radio', name: 'Radio-robust policy', note: 'landed only with boat radio', score: 54.9, landed: 7 },
-];
-
-// current policy, per category (score out of 100)
-const CATEGORIES = [
-	[ 'Boat speed', 100 ], [ 'Wind', 100 ], [ 'Waves', 100 ], [ 'Finding the boat', 100 ], [ 'Everything at once', 0 ],
 ];
 
 // ---- navigation bar turns solid after the hero
@@ -101,8 +96,7 @@ chart.innerHTML = MODELS.map( ( m ) => `
 		<div class="bar-name"><b>${ m.name }</b><span>${ m.note }</span></div>
 		<div class="bar-track"><div class="bar-fill" data-width="${ m.score }"></div></div>
 		<div class="bar-value"><b>${ m.score.toFixed( 1 ) }</b><span>${ m.landed } / 20 landed</span></div>
-	</div>` ).join( '' )
-	+ `<div class="cats">${ CATEGORIES.map( ( [ name, score ] ) => `<div class="cat ${ score === 100 ? 'ok' : 'bad' }"><b>${ score === 100 ? 'All landed' : 'None landed' }</b><span>${ name }</span></div>` ).join( '' ) }</div>`;
+	</div>` ).join( '' );
 
 // ---- boat: outside / inside
 document.querySelectorAll( '[data-swap]' ).forEach( ( box ) => {
@@ -120,7 +114,7 @@ document.querySelectorAll( '[data-swap]' ).forEach( ( box ) => {
 
 // ---- reveal on scroll, bars grow, clips play only while visible
 const still = matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
-document.querySelectorAll( '.band h2, .band .lead, .card, .story li, .phases li, .arch, .bar-row, .cat, .rates, .points li' ).forEach( ( el ) => el.classList.add( 'reveal' ) );
+document.querySelectorAll( '.band h2, .band .lead, .card, .story li, .phases li, .arch, .bar-row, .rates, .points li' ).forEach( ( el ) => el.classList.add( 'reveal' ) );
 const seen = new IntersectionObserver( ( entries ) => {
 
 	for ( const entry of entries ) {
