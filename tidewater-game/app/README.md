@@ -1,16 +1,13 @@
 # Tidewater
 
-## Flight operations
+This is the upstream Tidewater game with the AERODOCK flight build on top. The
+game opens into the drone-and-boat mission; keys and the policy handover are
+described in [the flight build's README](../README.md).
 
-The game now opens into a drone-and-boat mission over Tidewater Bay. Fly the survey drone with a
-mouse-controlled camera, watch its attitude and relative position, and keep the simulated SX1262 link
-clear. Press **B** to take the boat helm. The boat can follow a closed offshore loop or use manual motor
-and rudder input; **U** changes between the helm and chase cameras. The helm console operates the deck
-hatch and retractable launch pad. **Home** resets both vehicles.
+The SX1262 radio figures are simulated from separation, terrain and line of
+sight. They are not readings from real radios.
 
-The SX1262 figures are a browser simulation based on separation, terrain and solid-object line of sight.
-They are not live readings from attached radios. The offshore loop is checked against the terrain height
-field before autopilot is enabled, and is laid east of the wooden pier and reef.
+## The original game
 
 An island fishing game for the browser. Cast from the pier, the beach or your own boat, fight the fish,
 sell your catch to Joe at the fish stand, and spend it on better gear at Marta's chandlery. Around it is a
@@ -26,7 +23,7 @@ breach. It runs directly on WebGPU and WGSL with its own small rendering engine,
 ## Requirements
 
 - A recent WebGPU browser with cross-origin isolation and SharedArrayBuffer. See [hosting requirements](../README.md).
-- A capable GPU. Dynamic resolution adapts rendering on slower machines. The browser PX4 port has not yet been measured in a real browser on this machine.
+- A capable GPU. Dynamic resolution adapts rendering on slower machines.
 - The first load compiles several hundred shaders, which can take a minute or more. Later visits are
   faster because the browser caches them.
 
