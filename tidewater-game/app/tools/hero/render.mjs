@@ -116,7 +116,7 @@ function vehicle( t ) {
 }
 
 const { GPU } = await import( '../../src/engine/gpu/GPU.js' );
-const { buildScripted, sampleScripted, rowIndex, smooth, SCRIPT } = await import( './scripted.mjs' );
+const { buildScripted, sampleScripted, attitudeOf, camHunt, rowIndex, SCRIPT } = await import( './scripted.mjs' );
 const wake = app.aerodockWake;
 const wakeUpdate = wake ? wake.update.bind( wake ) : null;
 // Lay the wake the boat left before the shot starts: step the wake simulation alone along the
@@ -140,11 +140,12 @@ async function wakePreroll( t0, seconds = 16 ) {
 
 const baseExposure = app.settings.exposure;
 const camera = app.camera;
-// After L, the scripted shot (scripted.mjs). The drone body is moved along the track, its
-// gimbal turns from the recorded view to the boat, and the onboard camera stays on that gimbal.
+// After L, the scripted shot (scripted.mjs). The drone body moves along the track and tilts with its
+// acceleration and turns; the onboard camera stays on the gimbal of that body. The gimbal lags behind
+// its aim point and hunts a little around it.
 const hRow = rows[ rowIndex( rows, marks.handover ) ];
 const UP = new E.Vector3( 0, 1, 0 );
-let scriptedTrack = null, dronePose = null, lastScriptedCam = null;
+let scriptedTrack = null, dronePose = null, camTrack = null, lastScriptedCam = null;
 function droneRelative() {
 
 	if ( dronePose ) return dronePose;
@@ -162,39 +163,48 @@ function droneRelative() {
 
 }
 
-function applyScriptedDrone( t ) {
+// the body and the camera position at time t (a pure function of t)
+function bodyAt( t ) {
 
 	const D = droneRelative();
 	scriptedTrack ??= buildScripted( rows, marks.handover );
 	const s = sampleScripted( scriptedTrack, t );
-	const boat = rows[ rowIndex( rows, t ) ].boat.position;
-	// the nose turns about the vertical axis; the HUD bearing convention is the negative of the three.js angle
+	const att = attitudeOf( s );
 	const qYaw = new E.Quaternion().setFromAxisAngle( UP, - ( s.psi - D.psi0 ) );
-	const body = new E.Matrix4().compose( new E.Vector3( ...s.pos ), qYaw.multiply( D.qBase.clone() ), new E.Vector3( 1, 1, 1 ) );
-	for ( const [ name, rm ] of D.rel ) {
-
-		const g = bridge._bodyGroup( name );
-		body.clone().multiply( rm ).decompose( g.position, g.quaternion, g.scale );
-		g.target.position.copy( g.position ); g.target.quaternion.copy( g.quaternion ); g.initialized = true;
-
-	}
-
-	const camPos = new E.Vector3(), camRot = new E.Quaternion(), camScale = new E.Vector3();
-	body.clone().multiply( D.camRel ).decompose( camPos, camRot, camScale );
-	const target = new E.Vector3( boat[ 0 ], boat[ 1 ] + 0.5, boat[ 2 ] );
-	const qAim = new E.Quaternion().setFromRotationMatrix( new E.Matrix4().lookAt( camPos, target, UP ) );
-	const qCam = D.qCamH.clone().slerp( qAim, smooth( ( t - marks.handover ) / SCRIPT.turn ) );
-	for ( const name of [ 'drone_cam_x_pan', 'drone_cam_y_tilt' ] ) {
-
-		const g = bridge._bodyGroup( name );
-		g.position.copy( camPos ); g.quaternion.copy( qCam ); g.target.position.copy( camPos ); g.target.quaternion.copy( qCam ); g.initialized = true;
-
-	}
-
-	lastScriptedCam = { pos: camPos.clone(), q: qCam.clone() };
+	const qTilt = new E.Quaternion().setFromUnitVectors( UP, new E.Vector3( ...att.up ) );
+	const body = new E.Matrix4().compose( new E.Vector3( ...s.pos ), qTilt.multiply( qYaw.multiply( D.qBase.clone() ) ), new E.Vector3( 1, 1, 1 ) );
+	const camPos = new E.Vector3(), q0 = new E.Quaternion(), sc = new E.Vector3();
+	body.clone().multiply( D.camRel ).decompose( camPos, q0, sc );
+	const boat = rows[ rowIndex( rows, t ) ].boat.position;
+	return { s, att, body, camPos, target: new E.Vector3( boat[ 0 ], boat[ 1 ] + 0.5, boat[ 2 ] ) };
 
 }
 
+// the gimbal's aim orientation at time t, with hunting and a little of the body's roll left in the horizon
+function aimAt( b, t ) {
+
+	const q = new E.Quaternion().setFromRotationMatrix( new E.Matrix4().lookAt( b.camPos, b.target, UP ) );
+	const hunt = camHunt( t );
+	q.multiply( new E.Quaternion().setFromEuler( new E.Euler( hunt.pitch, hunt.yaw, 0, 'YXZ' ) ) );
+	q.multiply( new E.Quaternion().setFromAxisAngle( new E.Vector3( 0, 0, 1 ), 0.25 * b.att.roll ) );
+	return q;
+
+}
+
+// the gimbal's orientation over the track: aim, lagged (first order, camLag)
+function buildCamTrack() {
+
+	const D = droneRelative(), H = marks.handover, dt = SCRIPT.dt;
+	const N = Math.round( SCRIPT.span / dt ) + 1, alpha = 1 - Math.exp( - dt / SCRIPT.camLag );
+	const out = [];
+	let q = D.qCamH.clone();
+	out.push( q.clone() );
+	for ( let k = 1; k < N; k ++ ) { q = q.slerp( aimAt( bodyAt( H + k * dt ), H + k * dt ), alpha ); out.push( q.clone() ); }
+	return out;
+
+}
+
+// the onboard camera: the drone's camera on the moving gimbal (not a free camera)
 function scriptedCamera( v ) {
 
 	if ( ! lastScriptedCam ) return;
@@ -206,6 +216,32 @@ function scriptedCamera( v ) {
 	camera.updateMatrixWorld();
 
 }
+
+function applyScriptedDrone( t ) {
+
+	const D = droneRelative();
+	camTrack ??= buildCamTrack();
+	const b = bodyAt( t );
+	for ( const [ name, rm ] of D.rel ) {
+
+		const g = bridge._bodyGroup( name );
+		b.body.clone().multiply( rm ).decompose( g.position, g.quaternion, g.scale );
+		g.target.position.copy( g.position ); g.target.quaternion.copy( g.quaternion ); g.initialized = true;
+
+	}
+
+	const k = Math.min( camTrack.length - 1, Math.max( 0, Math.round( ( t - marks.handover ) / SCRIPT.dt ) ) );
+	for ( const name of [ 'drone_cam_x_pan', 'drone_cam_y_tilt' ] ) {
+
+		const g = bridge._bodyGroup( name );
+		g.position.copy( b.camPos ); g.quaternion.copy( camTrack[ k ] ); g.target.position.copy( b.camPos ); g.target.quaternion.copy( camTrack[ k ] ); g.initialized = true;
+
+	}
+
+	lastScriptedCam = { pos: b.camPos.clone(), q: camTrack[ k ].clone() };
+
+}
+
 function look( position, target, fov, up = new E.Vector3( 0, 1, 0 ) ) {
 
 	camera.matrixAutoUpdate = true;

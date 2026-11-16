@@ -4,7 +4,7 @@
 // The handover animation starts on the frame the recorded flight enabled the policy.
 import { createRequire } from 'node:module';
 import { readFileSync, mkdirSync } from 'node:fs';
-import { buildScripted, sampleScripted } from './scripted.mjs';
+import { buildScripted, sampleScripted, attitudeOf } from './scripted.mjs';
 const { chromium } = createRequire( import.meta.url )( 'playwright' );
 const [ flightPath, startArg, lengthArg, outDir, W = '1280', H = '720' ] = process.argv.slice( 2 );
 const start = Number( startArg ), length = Number( lengthArg ), FPS = 30;
@@ -72,7 +72,9 @@ for ( let f = 0; f < frames; f ++ ) {
 
 		scripted ??= buildScripted( rows, marks.handover );
 		const st = sampleScripted( scripted, t );
-		row = { ...row, drone: { ...row.drone, position: st.pos, speed: st.speed, heading: st.psi, pitch: 0, roll: 0 }, phase: 'approach' };
+		const att = attitudeOf( st );
+		// the policy's first 2 s after L: visual acquisition, then approach
+		row = { ...row, drone: { ...row.drone, position: st.pos, speed: st.speed, heading: st.psi, pitch: att.pitch, roll: att.roll }, phase: t - marks.handover < 2 ? 'visual_acquire' : 'approach' };
 
 	}
 	await page.evaluate( ( [ row, ms ] ) => window.setFrame( row, ms ), [ row, ( t - engage ) * 1000 ] );
