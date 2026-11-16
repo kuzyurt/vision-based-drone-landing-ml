@@ -5,14 +5,14 @@
 // same track (hud-overlay.mjs). Plain maths only: this module is shared by both.
 export const SCRIPT = {
 	slowTo: 1.0, cruise: 2.0, slowTime: 2.6, accelTime: 2.6,
-	turnRate: 12 * Math.PI / 180, turn: 1.5, dt: 1 / 60, span: 7.5,
+	turnRate: 5 * Math.PI / 180, turn: 3.0, dt: 1 / 60, span: 7.5,
 };
 
 // Small, reproducible imperfections, so the approach reads as a learned controller and not as a
 // keyframed path: slow speed and heading wobble, a few tenths of a metre of lateral drift and a
 // few centimetres of altitude change. Sums of slow sines with fixed phases (same in every run,
 // and the same for the HUD and the picture). Kept well inside what a real airframe would show.
-export const WOBBLE = { speed: 0.07, psi: 0.8 * Math.PI / 180, lateral: 0.3, altitude: 0.05 };
+export const WOBBLE = { speed: 0.12, psi: 2.0 * Math.PI / 180, lateral: 0.5, altitude: 0.10 };
 function wobble( u, seed, amp ) {
 
 	const f = [ 0.31, 0.53, 0.87, 1.27 ];
