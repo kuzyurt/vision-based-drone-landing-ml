@@ -94,6 +94,7 @@ function pose( t ) {
 
 	}
 
+	if ( process.env.HERO_SCRIPTED && t >= marks.handover ) applyScriptedDrone( t );
 	return { a, b, k };
 
 }
@@ -115,7 +116,7 @@ function vehicle( t ) {
 }
 
 const { GPU } = await import( '../../src/engine/gpu/GPU.js' );
-const { scriptedDrone, smooth, SCRIPT } = await import( './scripted.mjs' );
+const { buildScripted, sampleScripted, rowIndex, smooth, SCRIPT } = await import( './scripted.mjs' );
 const wake = app.aerodockWake;
 const wakeUpdate = wake ? wake.update.bind( wake ) : null;
 // Lay the wake the boat left before the shot starts: step the wake simulation alone along the
@@ -139,19 +140,69 @@ async function wakePreroll( t0, seconds = 16 ) {
 
 const baseExposure = app.settings.exposure;
 const camera = app.camera;
-// After L, the scripted shot: the camera leaves the recorded view and turns to the boat
-const hRow = rows[ indexAt( marks.handover ) ];
-const pRecH = new E.Vector3(), qRecH = new E.Quaternion(), sRecH = new E.Vector3();
-new E.Matrix4().set( ...hRow.views.drone.matrix ).decompose( pRecH, qRecH, sRecH );
+// After L, the scripted shot (scripted.mjs). The drone body is moved along the track, its
+// gimbal turns from the recorded view to the boat, and the onboard camera stays on that gimbal.
+const hRow = rows[ rowIndex( rows, marks.handover ) ];
+const UP = new E.Vector3( 0, 1, 0 );
+let scriptedTrack = null, dronePose = null, lastScriptedCam = null;
+function droneRelative() {
+
+	if ( dronePose ) return dronePose;
+	const bodies = new Map( hRow.bodies );
+	const base = new E.Matrix4().set( ...bodies.get( 'drone_base_link' ) );
+	const inv = base.clone().invert();
+	const rel = new Map();
+	for ( const [ name, m ] of bodies ) if ( name.startsWith( 'drone_' ) ) rel.set( name, inv.clone().multiply( new E.Matrix4().set( ...m ) ) );
+	const camH = new E.Matrix4().set( ...hRow.views.drone.matrix );
+	dronePose = {
+		rel, qBase: new E.Quaternion().setFromRotationMatrix( base ), psi0: hRow.drone.heading,
+		camRel: inv.clone().multiply( camH ), qCamH: new E.Quaternion().setFromRotationMatrix( camH ),
+	};
+	return dronePose;
+
+}
+
+function applyScriptedDrone( t ) {
+
+	const D = droneRelative();
+	scriptedTrack ??= buildScripted( rows, marks.handover );
+	const s = sampleScripted( scriptedTrack, t );
+	const boat = rows[ rowIndex( rows, t ) ].boat.position;
+	// the nose turns about the vertical axis; the HUD bearing convention is the negative of the three.js angle
+	const qYaw = new E.Quaternion().setFromAxisAngle( UP, - ( s.psi - D.psi0 ) );
+	const body = new E.Matrix4().compose( new E.Vector3( ...s.pos ), qYaw.multiply( D.qBase.clone() ), new E.Vector3( 1, 1, 1 ) );
+	for ( const [ name, rm ] of D.rel ) {
+
+		const g = bridge._bodyGroup( name );
+		body.clone().multiply( rm ).decompose( g.position, g.quaternion, g.scale );
+		g.target.position.copy( g.position ); g.target.quaternion.copy( g.quaternion ); g.initialized = true;
+
+	}
+
+	const camPos = new E.Vector3(), camRot = new E.Quaternion(), camScale = new E.Vector3();
+	body.clone().multiply( D.camRel ).decompose( camPos, camRot, camScale );
+	const target = new E.Vector3( boat[ 0 ], boat[ 1 ] + 0.5, boat[ 2 ] );
+	const qAim = new E.Quaternion().setFromRotationMatrix( new E.Matrix4().lookAt( camPos, target, UP ) );
+	const qCam = D.qCamH.clone().slerp( qAim, smooth( ( t - marks.handover ) / SCRIPT.turn ) );
+	for ( const name of [ 'drone_cam_x_pan', 'drone_cam_y_tilt' ] ) {
+
+		const g = bridge._bodyGroup( name );
+		g.position.copy( camPos ); g.quaternion.copy( qCam ); g.target.position.copy( camPos ); g.target.quaternion.copy( qCam ); g.initialized = true;
+
+	}
+
+	lastScriptedCam = { pos: camPos.clone(), q: qCam.clone() };
+
+}
+
 function scriptedCamera( v ) {
 
-	const st = scriptedDrone( rows, marks.handover, v.t );
-	const p = new E.Vector3( ...st.position );
-	const target = v.boat.clone().add( new E.Vector3( 0, 0.6, 0 ) );
-	look( p, target, hRow.views.drone.fovy );
-	const qLook = camera.quaternion.clone();
-	camera.position.copy( p );
-	camera.quaternion.copy( qRecH ).slerp( qLook, smooth( ( v.t - marks.handover ) / SCRIPT.turn ) );
+	if ( ! lastScriptedCam ) return;
+	camera.matrixAutoUpdate = true;
+	camera.position.copy( lastScriptedCam.pos );
+	camera.quaternion.copy( lastScriptedCam.q );
+	camera.fov = hRow.views.drone.fovy;
+	camera.updateProjectionMatrix();
 	camera.updateMatrixWorld();
 
 }

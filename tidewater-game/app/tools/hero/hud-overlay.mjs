@@ -4,7 +4,7 @@
 // The handover animation starts on the frame the recorded flight enabled the policy.
 import { createRequire } from 'node:module';
 import { readFileSync, mkdirSync } from 'node:fs';
-import { scriptedDrone } from './scripted.mjs';
+import { buildScripted, sampleScripted } from './scripted.mjs';
 const { chromium } = createRequire( import.meta.url )( 'playwright' );
 const [ flightPath, startArg, lengthArg, outDir, W = '1280', H = '720' ] = process.argv.slice( 2 );
 const start = Number( startArg ), length = Number( lengthArg ), FPS = 30;
@@ -55,6 +55,7 @@ window.setFrame=(row,ms)=>{
 const browser = await chromium.launch();
 // HERO_HUD_SCALE: lay the HUD out for a smaller window and scale it up (1.5 turns 1280 x 720 into 1080p)
 const scale = Number( process.env.HERO_HUD_SCALE || 1 );
+let scripted = null; // the track is built once, from the rows above
 const page = await browser.newPage( { viewport: { width: Math.round( Number( W ) / scale ), height: Math.round( Number( H ) / scale ) }, deviceScaleFactor: scale } );
 await page.setContent( html );
 await page.waitForTimeout( 300 );
@@ -69,8 +70,9 @@ for ( let f = 0; f < frames; f ++ ) {
 	// after L the HUD shows the scripted approach (render.mjs HERO_SCRIPTED) instead of the policy
 	if ( process.env.HERO_SCRIPTED && t >= marks.handover ) {
 
-		const st = scriptedDrone( rows, marks.handover, t );
-		row = { ...row, drone: { ...row.drone, position: st.position, speed: st.speed, heading: st.heading, pitch: 0, roll: 0 }, phase: 'approach' };
+		scripted ??= buildScripted( rows, marks.handover );
+		const st = sampleScripted( scripted, t );
+		row = { ...row, drone: { ...row.drone, position: st.pos, speed: st.speed, heading: st.psi, pitch: 0, roll: 0 }, phase: 'approach' };
 
 	}
 	await page.evaluate( ( [ row, ms ] ) => window.setFrame( row, ms ), [ row, ( t - engage ) * 1000 ] );

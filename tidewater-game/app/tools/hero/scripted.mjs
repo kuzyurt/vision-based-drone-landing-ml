@@ -1,8 +1,12 @@
-// Scripted drone motion after L, for the drone-HUD shot.
-// The policy is not run for this shot. From the handover the drone eases from the position it had
-// then to a hover 3 m astern of the boat and 4 m above its deck; the camera and the HUD follow.
-// The boat is the recorded physics.
-export const SCRIPT = { ramp: 18, standoff: 3, height: 4, turn: 1.5 };
+// Scripted drone motion after L, for the drone-HUD shot. The policy is not run for this shot.
+// From the handover the drone slows from its speed to SCRIPT.slowTo, accelerates to SCRIPT.cruise,
+// flies straight at the boat at constant altitude and turns its nose toward the boat at a limited
+// rate. The body, its gimbal and the onboard camera move with it (render.mjs); the HUD reads the
+// same track (hud-overlay.mjs). Plain maths only: this module is shared by both.
+export const SCRIPT = {
+	slowTo: 1.0, cruise: 2.0, slowTime: 2.6, accelTime: 2.6,
+	turnRate: 12 * Math.PI / 180, turn: 1.5, dt: 1 / 60, span: 7.5,
+};
 
 export function rowIndex( rows, t ) {
 
@@ -13,30 +17,51 @@ export function rowIndex( rows, t ) {
 }
 
 export const smooth = ( x ) => { const c = Math.min( 1, Math.max( 0, x ) ); return c * c * ( 3 - 2 * c ); };
+const wrap = ( a ) => Math.atan2( Math.sin( a ), Math.cos( a ) );
 
-// { position [x, y, z], speed (m/s), heading (rad, bearing to the boat) } at simulation time t
-export function scriptedDrone( rows, handover, t ) {
+// speed (m/s) u seconds after L, starting from v0
+export function speedAt( u, v0 ) {
 
-	const boat = ( tt ) => rows[ rowIndex( rows, tt ) ].boat.position;
-	const hover = ( tt ) => {
+	const a = SCRIPT.slowTime, b = a + SCRIPT.accelTime;
+	if ( u < a ) return v0 + ( SCRIPT.slowTo - v0 ) * smooth( u / a );
+	if ( u < b ) return SCRIPT.slowTo + ( SCRIPT.cruise - SCRIPT.slowTo ) * smooth( ( u - a ) / SCRIPT.accelTime );
+	return SCRIPT.cruise;
 
-		const p0 = boat( tt - 1 ), p1 = boat( tt + 1 ), b = boat( tt );
-		let fx = p1[ 0 ] - p0[ 0 ], fz = p1[ 2 ] - p0[ 2 ];
-		const L = Math.hypot( fx, fz );
-		if ( L < 0.2 ) { fx = 1; fz = 0; } else { fx /= L; fz /= L; }
-		return [ b[ 0 ] - fx * SCRIPT.standoff, b[ 1 ] + SCRIPT.height, b[ 2 ] - fz * SCRIPT.standoff ];
+}
 
+// The track from the handover H, integrated every SCRIPT.dt:
+// pos [x, y, z] (m), speed (m/s), psi (rad, bearing of the nose in the HUD's convention).
+export function buildScripted( rows, H ) {
+
+	const h = rows[ rowIndex( rows, H ) ];
+	const boat = ( t ) => rows[ rowIndex( rows, t ) ].boat.position;
+	const N = Math.round( SCRIPT.span / SCRIPT.dt ) + 1;
+	const tr = { H, dt: SCRIPT.dt, pos: [], speed: [], psi: [] };
+	let p = h.drone.position.slice(), psi = h.drone.heading;
+	for ( let k = 0; k < N; k ++ ) {
+
+		const u = k * SCRIPT.dt, b = boat( H + u ), v = speedAt( u, h.drone.speed );
+		tr.pos.push( p.slice() ); tr.speed.push( v ); tr.psi.push( psi );
+		const dx = b[ 0 ] - p[ 0 ], dz = b[ 2 ] - p[ 2 ], L = Math.hypot( dx, dz ) || 1;
+		const target = Math.atan2( dx, - dz );
+		psi += Math.max( - SCRIPT.turnRate * SCRIPT.dt, Math.min( SCRIPT.turnRate * SCRIPT.dt, wrap( target - psi ) ) );
+		p = [ p[ 0 ] + dx / L * v * SCRIPT.dt, p[ 1 ], p[ 2 ] + dz / L * v * SCRIPT.dt ];
+
+	}
+
+	return tr;
+
+}
+
+export function sampleScripted( tr, t ) {
+
+	const k = Math.min( tr.pos.length - 1, Math.max( 0, ( t - tr.H ) / tr.dt ) );
+	const i = Math.floor( k ), f = k - i, j = Math.min( i + 1, tr.pos.length - 1 );
+	const lerp = ( a, b ) => a + ( b - a ) * f;
+	return {
+		pos: [ 0, 1, 2 ].map( ( c ) => lerp( tr.pos[ i ][ c ], tr.pos[ j ][ c ] ) ),
+		speed: lerp( tr.speed[ i ], tr.speed[ j ] ),
+		psi: lerp( tr.psi[ i ], tr.psi[ j ] ),
 	};
-	const start = rows[ rowIndex( rows, handover ) ].drone.position;
-	const position = ( tt ) => {
-
-		const k = smooth( ( tt - handover ) / SCRIPT.ramp ), h = hover( tt );
-		return [ 0, 1, 2 ].map( ( i ) => start[ i ] + ( h[ i ] - start[ i ] ) * k );
-
-	};
-	const p = position( t ), q = position( t + 0.05 ), r = position( t - 0.05 );
-	const speed = Math.hypot( q[ 0 ] - r[ 0 ], q[ 1 ] - r[ 1 ], q[ 2 ] - r[ 2 ] ) / 0.1;
-	const b = boat( t );
-	return { position: p, speed, heading: Math.atan2( b[ 0 ] - p[ 0 ], - ( b[ 2 ] - p[ 2 ] ) ) };
 
 }
