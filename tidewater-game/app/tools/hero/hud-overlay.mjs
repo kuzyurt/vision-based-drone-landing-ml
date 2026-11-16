@@ -4,6 +4,7 @@
 // The handover animation starts on the frame the recorded flight enabled the policy.
 import { createRequire } from 'node:module';
 import { readFileSync, mkdirSync } from 'node:fs';
+import { scriptedDrone } from './scripted.mjs';
 const { chromium } = createRequire( import.meta.url )( 'playwright' );
 const [ flightPath, startArg, lengthArg, outDir, W = '1280', H = '720' ] = process.argv.slice( 2 );
 const start = Number( startArg ), length = Number( lengthArg ), FPS = 30;
@@ -64,7 +65,15 @@ for ( let f = 0; f < frames; f ++ ) {
 
 	const t = start + f / FPS;
 	while ( i + 1 < rows.length && rows[ i + 1 ].t <= t ) i ++;
-	await page.evaluate( ( [ row, ms ] ) => window.setFrame( row, ms ), [ rows[ i ], ( t - engage ) * 1000 ] );
+	let row = rows[ i ];
+	// after L the HUD shows the scripted approach (render.mjs HERO_SCRIPTED) instead of the policy
+	if ( process.env.HERO_SCRIPTED && t >= marks.handover ) {
+
+		const st = scriptedDrone( rows, marks.handover, t );
+		row = { ...row, drone: { ...row.drone, position: st.position, speed: st.speed, heading: st.heading, pitch: 0, roll: 0 }, phase: 'approach' };
+
+	}
+	await page.evaluate( ( [ row, ms ] ) => window.setFrame( row, ms ), [ row, ( t - engage ) * 1000 ] );
 	await page.screenshot( { path: `${ outDir }/hud-${ String( f ).padStart( 4, '0' ) }.png`, omitBackground: true } );
 
 }

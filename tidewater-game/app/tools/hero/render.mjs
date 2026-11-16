@@ -110,11 +110,12 @@ function vehicle( t ) {
 	if ( forward.length() < 0.2 ) forward.set( 1, 0, 0 );
 	forward.normalize();
 	const right = new E.Vector3().crossVectors( forward, new E.Vector3( 0, 1, 0 ) ).normalize();
-	return { a, b, k, boat, drone, forward, right };
+	return { t, a, b, k, boat, drone, forward, right };
 
 }
 
 const { GPU } = await import( '../../src/engine/gpu/GPU.js' );
+const { scriptedDrone, smooth, SCRIPT } = await import( './scripted.mjs' );
 const wake = app.aerodockWake;
 const wakeUpdate = wake ? wake.update.bind( wake ) : null;
 // Lay the wake the boat left before the shot starts: step the wake simulation alone along the
@@ -138,6 +139,22 @@ async function wakePreroll( t0, seconds = 16 ) {
 
 const baseExposure = app.settings.exposure;
 const camera = app.camera;
+// After L, the scripted shot: the camera leaves the recorded view and turns to the boat
+const hRow = rows[ indexAt( marks.handover ) ];
+const pRecH = new E.Vector3(), qRecH = new E.Quaternion(), sRecH = new E.Vector3();
+new E.Matrix4().set( ...hRow.views.drone.matrix ).decompose( pRecH, qRecH, sRecH );
+function scriptedCamera( v ) {
+
+	const st = scriptedDrone( rows, marks.handover, v.t );
+	const p = new E.Vector3( ...st.position );
+	const target = v.boat.clone().add( new E.Vector3( 0, 0.6, 0 ) );
+	look( p, target, hRow.views.drone.fovy );
+	const qLook = camera.quaternion.clone();
+	camera.position.copy( p );
+	camera.quaternion.copy( qRecH ).slerp( qLook, smooth( ( v.t - marks.handover ) / SCRIPT.turn ) );
+	camera.updateMatrixWorld();
+
+}
 function look( position, target, fov, up = new E.Vector3( 0, 1, 0 ) ) {
 
 	camera.matrixAutoUpdate = true;
@@ -207,7 +224,7 @@ const SHOTS = {
 
 	} },
 	// the drone's own camera: manual approach, then L hands over to the policy
-	onboard: { start: M.handover - 4.2, length: 9.4, camera( v ) { view( v, 'drone' ); } },
+	onboard: { start: M.handover - 4.2, length: 9.4, camera( v ) { if ( process.env.HERO_SCRIPTED && v.t >= M.handover ) scriptedCamera( v ); else view( v, 'drone' ); } },
 	// the policy flying, seen from behind and above the drone
 	chase: { start: Math.max( M.policy + 6, landed - 26 ), length: 5.5, camera( v, u ) {
 
