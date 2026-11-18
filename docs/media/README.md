@@ -7,6 +7,8 @@
 | [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
 | [Poster](tidewater-boat-poster.jpg) | Frame from that clip |
 | [Earlier landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback (see provenance below) |
+| [Landing flow](landing-flow.png) | Search, identify, approach, measure, land; where the radio helps; [SVG](landing-flow.svg) |
+| [Training story](training-story.png) | Four design steps with their benchmark results; [SVG](training-story.svg) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
 | [Benchmark comparison](benchmark-comparison.png) | Four policies on the current 20-mission benchmark; [SVG](benchmark-comparison.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |

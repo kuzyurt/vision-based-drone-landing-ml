@@ -1,181 +1,73 @@
-# Training a drone to land on a boat
+# Landing a drone on a moving boat
 
-**All model training happens in the MuJoCo training environment.** Tidewater is
-used for visual-transfer experiments and gameplay; its scenes are not training
-data. The frozen policy can also land under the unseen conditions shown in the
-[five-map montage](../docs/media/drone-policy-landing.gif).
+A quadrotor finds a moving boat up to 100 m away and lands on the small pad on
+its deck, using its camera and its own sensors. The boat's radio can help it
+find the boat but is not required. The task is hard because the boat keeps
+moving, waves rock the deck, wind pushes the drone, and other boats can look
+like the target. Everything is trained in simulation, with the real PX4
+autopilot flying the drone. [Watch it land](../website/assets/hero.mp4).
 
-This package combines the drone and AERODOCK boat, generates demonstrations,
-records observations and supplies the original learning pipeline.
+![The drone's path from search to touchdown](../docs/media/landing-flow.png)
 
-## Training environment
+## How it works
 
-| Part | Role |
+A neural network looks at the camera image, finds boats and decides which one
+is the target. It does not steer. Once the drone is close, the known marking on
+the pad gives its exact position, and a rule-based controller matches the
+deck's motion and descends. PX4 turns those commands into motor output. The
+radio, when there is one, only helps find the boat; the landing relies on the
+camera.
+
+This split is the key design decision. A first version, a network that learned
+to fly directly by copying a teacher, landed in none of its 12 test flights,
+because its small errors added up during the flight.
+
+## How it was trained
+
+A teacher that knows everything in the simulator flew the demonstrations and
+supplied the labels. The learner only receives what a real drone would have:
+the camera image and its own sensors. The search stage, which finds the target
+among other boats, learned from 60 recorded flights. Since early November it
+also checks what the camera sees against the radio position, when there is one,
+and ignores sun glare.
+
+![Missions landed by each version of the design](../docs/media/training-story.png)
+
+Each bar is one version of the design. The first was tested on its own 12
+flights, the others on the 20-mission benchmark below. The version that relied
+on the radio landed none of the six missions flown without it. The camera-first
+version (R15) landed only half of the search missions, and the search stage
+fixed that.
+
+## Results
+
+All versions fly the same 20 missions: boat speeds up to 1.5 m/s, 4 m/s
+crosswind, waves, searches from 100 m and decoy boats. A landing counts only
+when the drone ends up disarmed and stable on the pad.
+
+| Policy | Score | Landed |
+|---|---:|---:|
+| Teacher (sees simulator truth, upper reference) | 99.2 | 20 / 20 |
+| Current search policy (8 Nov) | 87.8 | 18 / 20 |
+| Camera-first policy R15, before the search stage | 57.5 | 11 / 20 |
+| Radio-robust policy (15 Oct) | 54.9 | 7 / 20 |
+
+The same network also flies in Tidewater, a browser game with graphics it never
+saw in training. In a recorded session the drone started 122 m from a
+stationary boat with the radio off and landed on the pad.
+
+## What does not work yet
+
+- The two missions that combine wind, waves, a 100 m search and decoys. With
+  the updated control logic, one of them landed in a replay. In the other the
+  drone got within 0.4 m of the deck, lost sight of the pad and ran out of time.
+- Everything so far is simulation. There has been no real-world flight.
+
+## Go deeper
+
+| Question | Read |
 |---|---|
-| MuJoCo world | Original vehicle CAD, rotor thrust, buoyancy, drag and physical deck contact |
-| PX4 | State estimation and low-level flight control |
-| Variation | Five coastal map types, seeded routes, camera starts, wind, waves and appearance |
-| Inputs | 640 × 360 onboard RGB, own telemetry and gimbal state; optional boat radio in the R15 lineage |
-| Outputs | Forward/right/down velocity, yaw rate and camera pan/tilt rate at 25 Hz |
-| Landing success | Stable, disarmed support on the target deck for at least two seconds |
-
-Physics advances at 1 ms with 250 Hz sensor/actuator lockstep. The current search
-dataset adds similar and dissimilar decoy boats, with no boat-radio input to
-the learner.
-
-## Learning from the teacher
-
-The privileged teacher uses exact visible-instance pixels and simulator labels
-to demonstrate search, inspection and landing. Visibility and resolution rules
-limit which boats it can inspect and when identity labels become available.
-Hidden boats do not enter its search controller. This extra information supplies
-**training labels, never student inputs**.
-
-Recordings synchronize RGB, sensors, commands and outcomes. The current curated
-dataset has **60 episodes: 48 training, 6 validation and 6 test**. Validation
-selects the checkpoint; test data is excluded from optimization. The learner
-must then fly independently—teacher-assisted flights do not count as its successes.
-
-Training is supervised. Early action imitation failed in flight, leading to
-separate learned perception, geometric localization and explicit control.
-
-## Policy architecture
-
-R15 is the evaluated hybrid policy. Its neural components estimate the target
-and its motion; calibrated geometry and explicit control turn those estimates
-into a landing. The network does not directly predict motor commands.
-
-[![R15 system: camera, own telemetry and radio through perception, tracking and control to PX4, gimbal and drone](../docs/media/policy-architecture-detailed.png)](../docs/media/policy-architecture-detailed.svg)
-
-| Signal | From | To |
-|---|---|---|
-| RGB frame | Onboard camera | Image encoder and metric marker registration |
-| Image capture timing | Camera observation | Capture-motion compensation and metric tracking |
-| Own pose, velocity, attitude and gimbal state | PX4 estimates and camera-joint feedback | Recurrent perception, geometric tracking and landing control |
-| Boat position/velocity, packet age and uncertainty | Boat radio | Bounded position/velocity fusion |
-| Reported dock readiness | Boat radio | Command safety checks |
-| Target image bearing and learned pose | Spatial head and recurrent pose model | Metric registration and tracking |
-| Pad pose and deck motion | Accepted geometric measurements and tracking | Landing controller |
-| Three velocity commands and yaw rate | Landing controller and supervisor | PX4 flight control, then motor actuation |
-| Pan and tilt rates | Landing controller and supervisor | Gimbal joints, changing the next camera view |
-
-Motor actuation changes drone motion; simulated sensors update the PX4 estimate
-and the camera renders the next view. The policy acts again on those observations.
-
-### Neural architecture
-
-[![R15 neural detail: shared encoder, spatial acquisition, visual memory and bounded fusion](../docs/media/policy-neural-architecture.png)](../docs/media/policy-neural-architecture.svg)
-
-### Shared image encoder
-
-The 640 × 360 RGB frame is normalized with the model's stored image statistics
-and passed through **MobileNetV3-Small**. Both perception branches reuse this
-encoder. Intermediate feature maps preserve local target detail; the final
-576-channel map supplies the recurrent pose branch.
-
-### Spatial acquisition branch
-
-Fine and context maps with 24 and 48 channels are projected to 24 channels each,
-aligned in image space, and merged by two 3 × 3 convolutions. The resulting
-48-channel map predicts a **target heatmap, sub-cell offsets and presence**.
-Decoding yields an image center to guide acquisition and camera aiming before
-a reliable metric pad pose is available.
-
-### Recurrent pose branch
-
-For each of the final 576 channels, the encoder retains mean activation and
-activation-weighted horizontal/vertical position. These **1,728 values** preserve
-coarse spatial information and are projected to **256 visual features**.
-
-The numeric observation follows a **32-value contract**. A two-layer MLP maps it
-to 64 features. Periodic angle representations replace the baseline's previous
-action inputs. Boat-radio values and status are masked before this visual
-memory path, so they cannot supply a hidden target coordinate to the GRU.
-
-The 256 visual and 64 numeric features form a **320-value input to a GRU with
-128 hidden units**. Its state carries information between camera frames.
-Linear readouts produce a 15-value pose representation, including visibility,
-relative position and velocity, heading, deck normal, image center and contact
-probability. A separate six-value visual readout supplies the position/velocity
-estimate used when no radio reference is available.
-
-### Optional radio fusion
-
-Boat radio enters **after** visual recurrence. A small MLP (**13 → 48 → 2**)
-uses visual/radio disagreement, reported uncertainty and packet age to predict
-separate position and velocity weights. Each weight is capped at **0.35**;
-invalid or stale radio receives zero weight. The fused estimate moves toward
-the radio estimate by that bounded amount. Raw radio coordinates do not bypass
-this fusion stage to steer the controller.
-
-### Geometry and flight control
-
-The controller receives RGB, own telemetry and the learned estimates. Known
-pad markings and camera calibration support metric marker fitting. Accepted
-measurements, tracking and own-motion compensation estimate deck position and
-motion. A confident neural detection alone cannot enable descent.
-
-Explicit control handles search, alignment, motion matching, descent and
-touchdown, with command bounds and recovery logic. It emits six values at 25 Hz:
-three velocity commands, yaw rate, camera pan rate and camera tilt rate. PX4
-handles flight control; the final two commands move the camera gimbal.
-
-Implementation: [encoder and GRU](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/policy.py),
-[pose readout](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/parent_model.py),
-[spatial head](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/spatial_acquisition.py),
-[radio fusion](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/model.py),
-[runtime](../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/runtime.py).
-
-### Search head
-
-The current policy freezes the R15 model and adds a multi-boat search head on
-its fine/context features. It initializes from the spatial acquisition weights,
-then adds four-class evidence and two-class identity readouts to the shared
-48-channel feature map. Heatmap, offsets and presence locate candidates;
-evidence and identity decide which boat to inspect.
-
-This head is feed-forward. The sensor-only search runtime maintains object
-tracks and search state, then hands a confirmed target to the frozen R15
-landing runtime. It learns acquisition rather than replacing PX4 or the landing
-controller. [Search head implementation](../training_runs/search_revision_20261025/model.py).
-
-The run uses AdamW, a 0.0003 learning rate, batch size 8 and 15 configured epochs.
-The resulting bundle is the benchmark's search policy (`fresh-search-f62c10a2`).
-[Dataset and current trainer](../training_runs/search_revision_20261025/README.md).
-
-## Benchmark
-
-![Four policies on the same 20 missions](../docs/media/benchmark-comparison.png)
-
-Twenty matched MuJoCo missions cover boat speed, crosswind, waves, search from
-100 m, radio availability and decoy boats. The search policy on the frozen R15
-base lands **18 of 20** (score 87.8). It fails both missions that combine every
-condition. The privileged teacher lands 20 of 20 and is the upper reference.
-
-[Benchmark design, evidence and viewer](../benchmark/README.md)
-
-## Development
-
-| Stage | Change |
-|---|---|
-| 8–10 October | Coupled world, demonstrations and action-imitation baseline |
-| 10–15 October | Learned pose, marker geometry and explicit control; unseen-condition tests and Tidewater transfer without retraining |
-| 17–18 October | Vision-first radio fusion; R15 tracking, braking and recovery |
-| 24–25 October | Matched benchmark and multi-boat search training |
-| 4–12 November | Wave-aware teacher, bounded search and the four-policy benchmark |
-
-## Find the implementation
-
-| Area | Entry point |
-|---|---|
-| World | [`scene.py`](sim/scene.py), [`environment.py`](sim/environment.py), [`config.py`](sim/config.py), [`px4.py`](sim/px4.py) |
-| Teacher | [`privileged_teacher.py`](teacher/privileged_teacher.py), [`smooth_landing.py`](teacher/smooth_landing.py), [`wave_teacher.py`](teacher/wave_teacher.py) |
-| Data | [`recording.py`](data/recording.py), [`review.py`](data/review.py), [`collect.py`](data/collect.py) |
-| Deployed R15 | [Frozen bundle and qualification](docs/CURRENT_POLICY.md) |
-| Search revision | [Run guide](../training_runs/search_revision_20261025/README.md) |
-| Original setup | [Linux/WSL workflow](docs/history/ENVIRONMENT_REVIEW_BASELINE.md) |
-| Detailed evidence | [Development report](docs/reports/LANDING_POLICY_DEVELOPMENT_REPORT_2026-10-17.md), [Tidewater tests](docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md) |
-
-The `training/policy.py` and `training/train.py` modules remain the original action-imitation baseline.
-Use the run guide for current training and the [source map](docs/SOURCE_MAP.md)
-to navigate modules. Frozen experiments remain in `artifacts/`.
+| How do the network, the geometry and the search stage work? | [Architecture and training details](docs/ARCHITECTURE.md) |
+| How are the 20 missions defined and scored? | [Benchmark](../benchmark/README.md) |
+| How was the search stage trained? | [Search training run](../training_runs/search_revision_20261025/README.md) |
+| Where is the code? | [Source map](docs/SOURCE_MAP.md) |

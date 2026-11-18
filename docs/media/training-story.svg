@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 600" width="1600" height="600" font-family="Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif">
+  <rect width="1600" height="600" fill="#ffffff"/>
+  <text x="48" y="70" font-size="38" font-weight="700" fill="#0d1b24">Missions landed, by design step</text>
+
+  <!-- baseline -->
+  <line x1="48" y1="470" x2="1552" y2="470" stroke="#c9d6db" stroke-width="3"/>
+
+  <!-- bar heights: ratio * 320 -->
+  <rect x="150" y="466" width="240" height="4" fill="#9db3bb"/>
+  <rect x="520" y="358" width="240" height="112" rx="8" fill="#9db3bb"/>
+  <rect x="890" y="294" width="240" height="176" rx="8" fill="#9db3bb"/>
+  <rect x="1260" y="182" width="240" height="288" rx="8" fill="#0b7a75"/>
+
+  <g font-size="52" font-weight="700" fill="#0d1b24" text-anchor="middle">
+    <text x="270" y="440">0 of 12</text>
+    <text x="640" y="334">7 of 20</text>
+    <text x="1010" y="270">11 of 20</text>
+    <text x="1380" y="158">18 of 20</text>
+  </g>
+  <g font-size="30" font-weight="600" fill="#0d1b24" text-anchor="middle">
+    <text x="270" y="522">Network flies</text>
+    <text x="640" y="522">Needs the radio</text>
+    <text x="1010" y="522">Camera first</text>
+    <text x="1380" y="522">With search</text>
+  </g>
+</svg>

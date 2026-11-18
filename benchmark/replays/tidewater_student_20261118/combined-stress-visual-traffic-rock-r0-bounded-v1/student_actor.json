@@ -1,0 +1,41 @@
+{
+  "actual_class": "reference.student_api (Tidewater browser stack, native)",
+  "identity": {
+    "files": {
+      "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "action_guard.py": "c4444bd75aa16b0faac4c795b96472cc2e5ac8cb2ee8ae2c8e0fe57f488a8436",
+      "approach_envelope.py": "79f163dd2421268b25162f04f5541dd3edc87f4b281154798d28d247b2367c14",
+      "browser_api.py": "432b1cd89d5d2dcffbab98fcb4f401e2f147b1650cdf21f59b7576bfb74a283d",
+      "camera_feedback.py": "9c17bc151afe5f5bbbc9de4b260cb6a4cedf141ccac947de2a8a84cf3f44f2aa",
+      "camera_geometry.py": "75a66bd72e1321b294f9c22cf38ae704f882897a2f265b0153f213717892ad8e",
+      "camera_geometry_fast.py": "df5a6c675ea1abfd44af6ce03387e4ba04299c320c37f4d466a58380e4a26d7f",
+      "hybrid_policy.py": "78006c3ff9fc8aeeaab264f382905742ad54483b86d42d27b1a1d95bd2df2888",
+      "marker_geometry.py": "f533d1aa07f818773bb79feb35a883106d6afb34aedda32a33bfb752d89b0d4d",
+      "marker_geometry_fast.py": "e756d29a20c0ad13837870b979d917346072c62f1702c8eb93fe79ee1d45c1f8",
+      "marker_policy.py": "e1a9145c5c9bbbb4428cb5e595e39c2484abb834ad39063d29525fd8cac88a86",
+      "nearfield_visibility.py": "9b311aea81da1b021b961c14bd9221b7f0ae981ed9851f42ae7393d9ffa9c5c1",
+      "observable_acquisition.py": "bc258e6ea9db227b601113e79fc822a7d5b0387d98934522832f90ed8f2cb444",
+      "persistent_target.py": "581aec11b0ef92c800306b216b5de1d3dac06eeeb4120eb09603ed1a988c34e9",
+      "physical_pose_context.py": "00f8beea2b16b29684e8c9282c9a053ad8d737897b9db1a136254010e2bb61c0",
+      "recording.py": "4d03218827fc4e1786a70b3d990ceb349457687d30f58462ee69aa1b0fe3a27c",
+      "runtime_fixes.py": "703c48078f52e8514af197ad8700b3f4c1a785a4e27aab999aeff96ddbc1c0a0",
+      "search_decision.py": "a41e9ab11bd8d52805a3a787d1f2883918a0d7fc2632a28cdf46e6d6c26d7d15",
+      "student_api.py": "e6d46ecc78cd5e67805272beb4f1a14e4c6b87bd6798bfcaba4df791391dec5e",
+      "student_radio.py": "9d916697ffb71093f868de6d18110e92a32e53966659aaffc998d31af53ed6a9",
+      "student_runtime.py": "df6edd7bcb74bc88e61689bad7951c3b94b2bddee144a9a657c027b81977fa81",
+      "supervision.py": "2a67d086a683cbc701f508664df3ab0dd93990d302307faa5103ba0e904aabb6",
+      "tidewater_guidance.py": "3527eab1f3e3dec3d96028c037d6b870065584b60826accb75fad2565abfbab6",
+      "visibility_recovery.py": "1dca93d4bc81642e9ccf3062e79b73732fc27b1b5e63b96c8827b566547fee90",
+      "visual_acquisition.py": "51122b2d6b4b94bd1a89826e75c49d7f81926432640f799271ff51958e085095",
+      "student.onnx": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
+      "manifest.json": "b716121645a7d275a703637eccd0190fc6a6dd51a60eebb91e507862f3c570c2"
+    },
+    "git_commit": "f4dbabf",
+    "policy_dir_dirty": false,
+    "checkpoint_sha256": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
+    "base_identity_sha256": "67a80a637b03d28b08321544b1f9202ffdeffff6e278dc31da4c131089547ca4"
+  },
+  "boat_radio": "declared packet only; none in radio-off cases",
+  "ephemeris": false,
+  "oracle_used": false
+}

@@ -4,6 +4,7 @@ Start with the [training overview](../README.md).
 
 | Need | Read |
 |---|---|
+| Understand the mechanics (world, teacher, R15, search head) | [Architecture and training details](ARCHITECTURE.md) |
 | Find a module | [Source map](SOURCE_MAP.md) |
 | Understand the layout migration | [Layout migration](LAYOUT_MIGRATION_2026-11-11.md) |
 | Identify the deployed R15 bundle | [Current policy reference](CURRENT_POLICY.md) |

@@ -1,0 +1,71 @@
+{
+  "schema": "aerodock.benchmark.trial.v1",
+  "policy_id": "tidewater-student-f466108f",
+  "case_id": "combined-stress-visual-traffic-island-r1",
+  "policy_identity_sha256": "f466108f1346b1d2972b25f47bb1eefd0f13e422aa2582da96d4beb1dab3458c",
+  "started_utc": "2026-11-18T19:49:04.521687+00:00",
+  "context": {
+    "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
+    "runtime_sha256": "7c83256bc738bec027b2cb1d0aa02de2d90fbf4ac11251c4b79d0d399d79a2cb",
+    "suite_sha256": "cc40c7d93226f261228a0e452575e1550ee3a95522666836dc49dd59754bc946",
+    "inference_device": "cuda",
+    "control_hz": 25,
+    "backend": "windows_mujoco_px4_wasm",
+    "benchmark": "aerodock-20-wave-gate-3c2b501",
+    "workers": 2
+  },
+  "training_eligible": false,
+  "status": "completed",
+  "condition_valid": true,
+  "actor_role": "unprivileged learned search policy, Tidewater reference controller",
+  "privileged_reference": false,
+  "outcome": "landed",
+  "disarmed": true,
+  "px4_landed": true,
+  "stable_disarmed_contact_s": 2.0009999999998906,
+  "collision": false,
+  "water_strike": false,
+  "assistance_frames": 0,
+  "wrong_target_contacts": 0,
+  "verified_acquisition_s": 102.84000000022189,
+  "false_acquisition_events": 0,
+  "mission_time_s": 143.72000000041538,
+  "path_length_m": 201.71414475001325,
+  "actual_start_distance_m": 100.0551014439986,
+  "final_lateral_error_m": 0.02967107675811193,
+  "touchdown_relative_velocity_m_s": [
+    0.022545263085884896,
+    -0.005989455743394188,
+    -0.16783064747552168
+  ],
+  "final_deck_tilt_deg": 1.685923784833381,
+  "requested_boat_speed_m_s": 1.0,
+  "measured_boat_speed_mean_m_s": 1.0104223520388451,
+  "speed_outside_tolerance_fraction": 0.0,
+  "route_completed": false,
+  "inference_p50_ms": 37.7398999999059,
+  "inference_p95_ms": 238.3718600000064,
+  "control_deadline_miss_fraction": 0.4316726969106596,
+  "events": [
+    {
+      "time_s": 157.95600000039016,
+      "kind": "touchdown",
+      "relative_velocity": [
+        0.022545263085884896,
+        -0.005989455743394188,
+        -0.16783064747552168
+      ]
+    },
+    {
+      "time_s": 161.86700000040884,
+      "kind": "stable_contact"
+    },
+    {
+      "time_s": 163.45700000041643,
+      "kind": "landed"
+    }
+  ],
+  "trace_sha256": "8357bed7a72e7461d4237382e3c51356ef4c53d0eadf1dd613a84a23ccedbdcc",
+  "wall_seconds": 1301.9403093,
+  "completed_utc": "2026-11-18T20:10:54.207507+00:00"
+}
