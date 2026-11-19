@@ -10,7 +10,7 @@ const game=Object.assign(Object.create(BrowserGame.prototype),{
  d:{time:0,xpos:new Float64Array([10,0,0,10,0,3]),xipos:new Float64Array(6),site_xpos:new Float64Array([0,0,0]),xmat:new Float64Array([1,0,0,0,1,0,0,0,1]),qpos:new Float64Array(2)},
  c:{boat:{body:0},drone:{base:1,camera_qpos:[0,1]},pad_site:0,rng_state:{state:'123456789',inc:'17'}},
  m:{site_bodyid:[0]},f:{velocity:()=>[0,0,0,0,0,0],siteVelocity:()=>[0,0,0,.5,0,0],power:[0,0]},
- px4:{armed:true,landed:false,observation:()=>observation,pilot(){},vehicleCommand(){},policyPilot(){},manualHold(){},originENU:[0,0,0],lastSensor:0},
+ px4:{armed:true,landed:false,observation:()=>observation,pilot(){},vehicleCommand(){},policyPilot(){},manualHold(){},bodyVelocity:()=>[0,0],originENU:[0,0,0],lastSensor:0},
  route:{points,arc:points.map((_,i)=>i*10),length:400},
  progress:0,travelled:0,mode:'boat',launchComplete:true,takeoffPending:false,automatic:false,motors:[37,62],keys:['KeyW'],lookX:0,lookY:0,
  ml:{enabled:false},mlGeneration:0,radio:{enabled:true,connected:true},samples:[],tx:0,rx:0,dropped:0,randomState:0x1262,lastRx:0,retryTime:0,retryPending:false,
@@ -22,7 +22,7 @@ game.setPolicy(true);
 assert.equal(game.automatic,false);assert.deepEqual(game.motors,[37,62]);assert.deepEqual(game.keys,['KeyW']);
 game.control();assert.deepEqual(game.f.power,[37,62],'ML must preserve manual throttles');
 game.input({action:'autopilot',enabled:true});game.control();
-assert.equal(game.targetSpeed,2.8,'ML must preserve normal route speed');
+assert.equal(game.targetSpeed,1.5,'ML must preserve normal route speed (1.5 m/s cruise ceiling)');
 const automaticPower=[...game.f.power];game.setPolicy(false);game.control();assert.deepEqual(game.f.power,automaticPower);
 game.setPolicy(true);game.input({action:'autopilot',enabled:false,motors:[0,0]});game.control();
 assert.deepEqual(game.f.power,[0,0],'Stop motors must work during ML');
