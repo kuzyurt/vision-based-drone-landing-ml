@@ -5,7 +5,7 @@
 There is one final version: `student.onnx` (main network + search head, no pad
 finder) with the control code in `tidewater-game/app/public/policy/reference/`.
 It runs in the browser game and natively via `benchmark.harness.tidewater_run`.
-Its benchmark result is `benchmark/evidence/final/summary.json` (84.9, 18/20).
+Its benchmark result is `benchmark/evidence/final/summary.json` (79.9, 18/20).
 The version table is in `landing_training/docs/ARCHITECTURE.md`. Older policies
 (the 8 November search student with the pad finder, R15, radio-robust) are
 history kept as evidence; do not describe them as current.

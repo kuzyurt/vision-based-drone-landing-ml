@@ -1,0 +1,29 @@
+{
+  "schema": "aerodock.benchmark.scoring_weights.v1",
+  "revised": "2026-11-19",
+  "weights": {
+    "acquisition": 0.25,
+    "landing": 0.20,
+    "wind": 0.10,
+    "waves": 0.10,
+    "combined": 0.25,
+    "speed": 0.10
+  },
+  "rationale": {
+    "acquisition": "Finding the right boat among decoys is half of the job, but not more than the landing itself.",
+    "landing": "Landing on a moving deck is the core task.",
+    "wind": "A single stress factor; it is also part of every combined mission.",
+    "waves": "A single stress factor; it is also part of every combined mission.",
+    "combined": "Wind, waves, a 100 m search and decoys at once: the condition the drone would actually face, and the hardest test.",
+    "speed": "Success matters more than how fast it comes."
+  },
+  "previous_weights": {
+    "acquisition": 0.30,
+    "landing": 0.20,
+    "wind": 0.15,
+    "waves": 0.15,
+    "combined": 0.10,
+    "speed": 0.10
+  },
+  "note": "Reporting only. The mission plan (suite.json) and every flight receipt are unchanged; the tracker applies these weights when it builds benchmark.json. The previous weights came from the first suite draft and gave combined conditions the lowest weight."
+}

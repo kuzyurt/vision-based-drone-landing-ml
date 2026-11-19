@@ -24,7 +24,7 @@ unless marked "unverified".
 !! ONE FINAL VERSION (decided with the user 2026-11-19): student.onnx = main
    network + search head, NO pad finder, with the control code in
    tidewater-game/app/public/policy/reference/. It runs in the browser game
-   and natively via benchmark.harness.tidewater_run. Benchmark: 84.9, 18/20,
+   and natively via benchmark.harness.tidewater_run. Benchmark: 79.9, 18/20,
    one run (benchmark/evidence/final/summary.json; full traces only local in
    benchmark/runs/tidewater_v1fix_20261119). Fails: waves-moderate-gravel and
    combined rock, both by hovering 0.5-0.9 m above the pad (pad_fix_too_old /
@@ -67,11 +67,16 @@ Three networks see, none flies; control code computes the 6 commands
   main network) and call the browser game "realistic simulator/game". The
   name Tidewater appears only as origin (dgreenheck/tidewater) and in real
   folder/file names. Rule is also in AGENTS.md.
-- Numbers used: teacher 99.2 (20/20), final version 84.9 (18/20, radio used
-  where the mission offers it), 8 Nov search student 87.8 (18/20, radio
-  blocked, with pad finder), R15 57.5 (11/20), radio-robust 54.9 (7/20, 0 of 6
+- Numbers used: teacher 99.2 (20/20), final version 79.9 (18/20, radio used
+  where the mission offers it), 8 Nov search student 72.8 (18/20, radio
+  blocked, with pad finder), R15 47.5 (11/20), radio-robust 44.4 (7/20, 0 of 6
   without radio), imitation baseline 0/12.
 - Version table: landing_training/docs/ARCHITECTURE.md "Versions".
+- Scoring weights were revised 2026-11-19 (user's request; old ones were an
+  unreasoned first draft): finding 25, landing 20, wind 10, waves 10,
+  combined 25, speed 10, in benchmark/definition/scoring_weights.json, read by
+  track.py (scoring_plan). suite.json and its pinned hash are untouched. The
+  change and the old weights are stated in benchmark/README.md.
 - Game evidence (recordings/ is gitignored, so no links): session-2026-11-14_
   23-20-34.jsonl (122 m, radio off, landed, before the 19 Nov fixes) and
   session-2026-11-19_16-38-41.jsonl (final version, 15 m, boat behind the

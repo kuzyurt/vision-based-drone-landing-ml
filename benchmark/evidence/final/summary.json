@@ -6,7 +6,7 @@
   "runs": 1,
   "inference": "CPU onnxruntime",
   "radio": "used in the radio missions, as the suite provides it; blocked nowhere",
-  "score": 84.9,
+  "score": 79.9,
   "landings": 18,
   "cases": 20,
   "categories": {
@@ -74,5 +74,6 @@
     "student.onnx": "4b60fffe532b5e9139085d42a89648928943e86e256d9cb661ff7c3bde605f4e",
     "manifest.json": "0a27c096da765c0842a0b4fd135407d591692d2556e39fc2bfe31b8bbd93fb77"
   },
-  "note": "Git tracks result.json, diagnostic_digest.txt and this summary, like the other evidence folders; case.json and student_actor.json are kept beside them locally. The full steps.jsonl traces (437 MB) stay in benchmark/runs/tidewater_v1fix_20261119 on the machine that flew them; each result.json keeps its trace_sha256. After this run only the tidewater_guidance.py checksum line in manifest.json was corrected; no policy code changed."
+  "note": "Git tracks result.json, diagnostic_digest.txt and this summary, like the other evidence folders; case.json and student_actor.json are kept beside them locally. The full steps.jsonl traces (437 MB) stay in benchmark/runs/tidewater_v1fix_20261119 on the machine that flew them; each result.json keeps its trace_sha256. After this run only the tidewater_guidance.py checksum line in manifest.json was corrected; no policy code changed.",
+  "weights": "benchmark/definition/scoring_weights.json"
 }

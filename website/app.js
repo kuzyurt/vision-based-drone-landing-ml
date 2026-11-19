@@ -32,10 +32,10 @@ const STAGES = {
 
 const MODELS = [
 	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'Final version', note: 'two networks, radio if offered', score: 84.9, landed: 18 },
-	{ key: 'nov', name: '8 November', note: 'with pad finder, no radio', score: 87.8, landed: 18 },
-	{ key: 'r15', name: 'Camera first', note: 'before the search head', score: 57.5, landed: 11 },
-	{ key: 'radio', name: 'Radio-dependent', note: 'landed only with boat radio', score: 54.9, landed: 7 },
+	{ key: 'current', name: 'Final version', note: 'two networks, radio if offered', score: 79.9, landed: 18 },
+	{ key: 'nov', name: '8 November', note: 'with pad finder, no radio', score: 72.8, landed: 18 },
+	{ key: 'r15', name: 'Camera first', note: 'before the search head', score: 47.5, landed: 11 },
+	{ key: 'radio', name: 'Radio-dependent', note: 'landed only with boat radio', score: 44.4, landed: 7 },
 ];
 
 // ---- navigation bar turns solid after the hero

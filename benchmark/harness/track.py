@@ -39,6 +39,22 @@ def canonical_plan():
     return read(ROOT / 'definition/suite.json')
 
 
+def scoring_plan():
+    """The pinned plan with the reporting weights from scoring_weights.json applied.
+
+    suite.json (missions and its pinned hash) stays untouched; only the tracker's
+    category weights come from the separate reporting file.
+    """
+    plan = canonical_plan()
+    path = ROOT / 'definition/scoring_weights.json'
+    if path.exists():
+        weights = read(path)['weights']
+        if set(weights) != set(plan['categories']) or abs(sum(weights.values()) - 1) > 1e-9:
+            raise ValueError('scoring_weights.json must give every category a weight, summing to 1')
+        plan = dict(plan, categories={k: dict(v, weight=weights[k]) for k, v in plan['categories'].items()})
+    return plan
+
+
 def _inventory():
     return {row['id']: row for row in read(ROOT / 'policies/inventory.json')['policies']}
 
@@ -194,7 +210,7 @@ def _runs():
 
 
 def build():
-    plan = canonical_plan()
+    plan = scoring_plan()
     cases = {case['id']: case for case in plan['cases']}
     categories = plan['categories']
     inventory = _inventory()
@@ -271,6 +287,7 @@ def build():
         schema=plan['schema'],
         plan_sha256=plan['plan_sha256'],
         suite_path='benchmark/definition/suite.json',
+        weights_path='benchmark/definition/scoring_weights.json',
         runtime_sha256=sha(ROOT / 'definition/runtime.json'),
         case_count=len(plan['cases']),
         categories=categories,
