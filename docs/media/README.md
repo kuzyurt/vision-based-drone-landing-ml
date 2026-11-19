@@ -11,9 +11,11 @@
 | [Training story](training-story.png) | Four design steps with their benchmark results; [SVG](training-story.svg) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
 | [Benchmark comparison](benchmark-comparison.png) | Five policies, including the final version, on the 20-mission benchmark; [SVG](benchmark-comparison.svg) |
+| [Final system](final-system.png) | Final version: camera, encoder, search head, main network, control code, PX4; [SVG](final-system.svg) |
+| [Final networks](final-networks.png) | Inside the two networks of the final version; [SVG](final-networks.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |
-| [System data flow](policy-architecture-detailed.png) | Camera, PX4 telemetry, radio, perception, geometry, flight/gimbal commands and feedback; [SVG](policy-architecture-detailed.svg) |
-| [Neural architecture](policy-neural-architecture.png) | Shared encoder, spatial acquisition, recurrent pose and bounded radio fusion; [SVG](policy-neural-architecture.svg) |
+| [System data flow](policy-architecture-detailed.png) | R15 (history): camera, PX4 telemetry, radio, perception, geometry, flight/gimbal commands and feedback; [SVG](policy-architecture-detailed.svg) |
+| [Neural architecture](policy-neural-architecture.png) | R15 (history): shared encoder, spatial acquisition, recurrent pose and bounded radio fusion; [SVG](policy-neural-architecture.svg) |
 | [Five-map montage](drone-policy-landing.gif) | October 2026 policy (before R15) landing in scenarios absent from its training data |
 
 ## Training and visual transfer

@@ -3,8 +3,15 @@
 [![The AERODOCK boat under way in the realistic simulator](../docs/media/tidewater-boat-preview.gif)](../docs/media/tidewater-boat-1080p.mp4)
 
 This game puts the drone and the boat into a realistic coastal world that runs
-in the browser. Fly either vehicle yourself, or hand the
-drone over and let it find the boat and land.
+in the browser. Fly either vehicle yourself, or hand the drone over and let it
+find the boat and land.
+
+The world comes from [Tidewater](https://github.com/dgreenheck/tidewater) by
+dgreenheck (DRG Software Solutions, MIT licence), an open-source island fishing
+game with its own
+WebGPU ocean, sky and reef. We kept its world and rendering, and added the
+drone, the AERODOCK boat, MuJoCo and PX4 running in the browser, the boat
+radio and the landing policy.
 
 The networks that do this were trained only in MuJoCo and never saw an image
 from this world, so every landing here is a test of how well they carry over.
@@ -83,8 +90,6 @@ and [stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-
 | [WASM integration](wasm/README.md) | PX4/MuJoCo builds and parity tests |
 | [Recording details](../docs/media/README.md) | Demo source, model version and 1080p export |
 
-The game extends the open-source ocean game
-[Tidewater by dgreenheck](https://github.com/dgreenheck/tidewater).
 [Asset credits](app/CREDITS.md) and [runtime licenses](app/public/licenses/)
 are retained. Custom hosts must support the COOP/COEP headers configured by the
 included server.

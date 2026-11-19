@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700 850" width="1700" height="850" font-family="Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2c3f4b"/></marker>
+  </defs>
+  <rect width="1700" height="850" fill="#ffffff"/>
+  <text x="48" y="64" font-size="38" font-weight="700" fill="#0d1b24">From camera to flight commands</text>
+
+
+  <!-- camera, encoder, own sensors -->
+  <g font-size="19" fill="#2c3f4b">
+    <rect x="48" y="290" width="240" height="140" rx="14" fill="#ffffff" stroke="#c9d6db" stroke-width="2.5"/>
+    <text x="168" y="342" font-size="28" font-weight="700" fill="#0d1b24" text-anchor="middle">Camera</text>
+    <text x="168" y="376" text-anchor="middle">640 × 360, 25 Hz</text>
+    <text x="168" y="404" text-anchor="middle">turns and tilts</text>
+
+    <rect x="340" y="290" width="250" height="140" rx="14" fill="#ffffff" stroke="#c9d6db" stroke-width="2.5"/>
+    <text x="465" y="342" font-size="28" font-weight="700" fill="#0d1b24" text-anchor="middle">Image encoder</text>
+    <text x="465" y="376" text-anchor="middle">MobileNetV3-Small</text>
+    <text x="465" y="404" text-anchor="middle">shared by both networks</text>
+
+    <rect x="340" y="600" width="250" height="110" rx="14" fill="#ffffff" stroke="#c9d6db" stroke-width="2.5"/>
+    <text x="465" y="644" font-size="26" font-weight="700" fill="#0d1b24" text-anchor="middle">Own sensors</text>
+    <text x="465" y="678" text-anchor="middle">motion and camera angles</text>
+  </g>
+
+  <!-- the two networks -->
+  <g font-size="19" fill="#ffffff">
+    <rect x="650" y="200" width="310" height="140" rx="14" fill="#0b7a75"/>
+    <text x="805" y="252" font-size="28" font-weight="700" text-anchor="middle">Search head</text>
+    <text x="805" y="286" text-anchor="middle">about 45,000 parameters</text>
+    <text x="805" y="314" text-anchor="middle">marks boats, picks the target</text>
+
+    <rect x="650" y="380" width="310" height="140" rx="14" fill="#0b7a75"/>
+    <text x="805" y="432" font-size="28" font-weight="700" text-anchor="middle">Main network</text>
+    <text x="805" y="466" text-anchor="middle">about 1.55 million, with memory</text>
+    <text x="805" y="494" text-anchor="middle">pad position, deck motion</text>
+  </g>
+
+  <!-- radio -->
+  <g font-size="19" fill="#2c3f4b">
+    <rect x="1030" y="40" width="340" height="90" rx="14" fill="#ffffff" stroke="#c9d6db" stroke-width="2.5" stroke-dasharray="8 6"/>
+    <text x="1200" y="78" font-size="24" font-weight="700" fill="#0d1b24" text-anchor="middle">Boat radio, optional</text>
+    <text x="1200" y="108" text-anchor="middle">only helps find the boat</text>
+  </g>
+
+  <!-- control code -->
+  <rect x="1010" y="170" width="380" height="390" rx="18" fill="#f1f5f6"/>
+  <text x="1030" y="207" font-size="22" font-weight="700" fill="#0d1b24">Control code</text>
+  <g font-size="19" fill="#2c3f4b">
+    <rect x="1030" y="225" width="340" height="120" rx="12" fill="#ffffff" stroke="#c9d6db" stroke-width="2"/>
+    <text x="1200" y="270" font-size="25" font-weight="700" fill="#0d1b24" text-anchor="middle">Search</text>
+    <text x="1200" y="302" text-anchor="middle">climb, turn, fly to the target</text>
+    <rect x="1030" y="400" width="340" height="140" rx="12" fill="#ffffff" stroke="#c9d6db" stroke-width="2"/>
+    <text x="1200" y="446" font-size="25" font-weight="700" fill="#0d1b24" text-anchor="middle">Landing</text>
+    <text x="1200" y="478" text-anchor="middle">measures the pad marking,</text>
+    <text x="1200" y="506" text-anchor="middle">follows the deck, descends</text>
+  </g>
+
+  <!-- PX4 -->
+  <g font-size="19" fill="#2c3f4b">
+    <rect x="1440" y="300" width="220" height="140" rx="14" fill="#ffffff" stroke="#c9d6db" stroke-width="2.5"/>
+    <text x="1550" y="352" font-size="28" font-weight="700" fill="#0d1b24" text-anchor="middle">PX4</text>
+    <text x="1550" y="386" text-anchor="middle">6 commands, 25 Hz</text>
+    <text x="1550" y="414" text-anchor="middle">motors and camera</text>
+  </g>
+
+  <g fill="none" stroke="#2c3f4b" stroke-width="2.5">
+    <path d="M288 360H336" marker-end="url(#a)"/>
+    <path d="M590 360H620V270H646" marker-end="url(#a)"/>
+    <path d="M620 360V450H646" marker-end="url(#a)"/>
+    <path d="M960 270H1026" marker-end="url(#a)"/>
+    <path d="M960 450H1026" marker-end="url(#a)"/>
+    <path d="M1200 345V396" marker-end="url(#a)"/>
+    <path d="M1200 130V221" marker-end="url(#a)"/>
+    <path d="M1390 370H1436" marker-end="url(#a)"/>
+    <path d="M590 655H1200V564" marker-end="url(#a)"/>
+    <path d="M805 655V524" marker-end="url(#a)"/>
+    <path d="M1550 440V780H168V434" stroke-dasharray="8 8" marker-end="url(#a)"/>
+  </g>
+
+  <text x="850" y="818" font-size="20" fill="#2c3f4b" text-anchor="middle">The drone moves, the camera sees a new image, and it all runs again, 25 times per second.</text>
+</svg>
