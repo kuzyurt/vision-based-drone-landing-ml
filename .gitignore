@@ -100,3 +100,4 @@ desktop.ini
 # Cloudflare Pages build (tools/build-site.mjs)
 /site/
 /website/.cache/
+/.wrangler/
