@@ -105,12 +105,11 @@ from 15 m with the boat behind it.
 
 ## What does not work yet
 
-- Two missions with waves: the drone reaches the pad but hovers just above it
-  for minutes, because the last half metre needs a fresh measurement of the
-  pad and a nearly steady deck, and it runs out of time. One of them also has
-  wind, a 100 m search and decoys. The 8 November version landed the other one
-  in under a minute; why the final version waits there has not been
-  investigated.
+- Two missions with waves, one of them also with wind, a 100 m search and
+  decoys. The drone reaches the pad and stays right above it, but for the last
+  half metre it waits for a fresh measurement of the pad while the deck is
+  nearly steady. In these two missions that moment did not come often enough
+  before the time limit.
 - The final version has been flown on the benchmark once. One run is not a
   success rate.
 - It has only flown in simulation, never on real hardware.

@@ -1,65 +1,175 @@
-# Efficient water physics for the AERODOCK MuJoCo export
+# Water physics
 
-Research date: 2026-10-07. Four search queries used. The implementation choices below are engineering recommendations derived from the cited primary sources; no measured hull resistance or propeller curves were supplied.
+MuJoCo simulates the boat as articulated rigid bodies: hull, lids, lift
+platform and propellers, with gravity, inertia, joints and actuators. MuJoCo's
+own fluid model is switched off (`density="0" viscosity="0"` in
+[`models/boat.xml`](../models/boat.xml)), because it applies one medium to the
+whole scene and has no waterline; the drone above would fly through water.
+Instead, [`usv/boat_sim.py`](../usv/boat_sim.py) computes the water forces
+itself and adds them to the hull once per 5 ms physics step.
 
-## Recommendation
+This is a model for a control simulator: believable motion in calm to moderate
+seas at low cost. It is not a fluid simulation or a certified seakeeping model.
+All coefficients below are engineering estimates, not measurements of a real
+vessel.
 
-Keep MuJoCo responsible for articulated rigid bodies, gravity, inertia, actuators and integration. Add a small vectorized water-force module containing CAD-derived displacement cells, hydrostatic buoyancy, water-relative drag, analytic wave kinematics and two independent propeller forces. Render water separately on a flat surface. This is appropriate for an efficient control simulator with believable moderate-weather motion. It is not a computational-fluid-dynamics or certified seakeeping model.
+## Buoyancy
 
-MuJoCo documents its fluid forces as stateless phenomenological approximations. Its built-in fluid density is global and the documented model provides no waterline clipping. Therefore setting density to 1000 throughout the scene would apply the water medium to aerial hardware too. Use density=0 and viscosity=0 for this custom water implementation. The docs recommend implicit/implicitfast integration for velocity-dependent built-in fluid forces; custom explicit external forces still need a suitably small integration step. [MuJoCo fluid forces](https://mujoco.readthedocs.io/en/stable/computation/fluid.html)
+The hull's outer shape (the watertight envelope, including the dry inside of
+the hull) was cut into **276 vertical cells** in FreeCAD. Each cell stores its
+position, horizontal area $A_i$, bottom and top. Together they hold
+1.37 m³ when fully submerged. They are listed in
+[`models/manifest.json`](../models/manifest.json) (`buoyancy_cells`).
 
-## Hydrostatic buoyancy and equilibrium
+Every step, each cell is moved with the hull and compared with the wave surface
+height $\eta$ at its position. Its wet height $h_i$ is how far the surface lies
+above the cell bottom, measured along the cell and clipped to the cell height,
+so a cell fills smoothly instead of switching between dry and wet. The buoyancy
+of the cell acts straight up at the centre of its wet part:
 
-The standard marine-craft model distinguishes rigid-body mass, added mass, water-relative damping, and hydrostatic restoring forces. Buoyancy is B=rho*g*displaced_volume; center-of-buoyancy offsets produce restoring moments. Linearized roll and pitch restoring stiffness depends on metacentric height, and heave stiffness depends on waterplane area. Currents enter through velocity relative to water. These facts support using distributed displacement rather than a single vertical force at the boat origin. [Fossen marine craft model](https://www.fossen.biz/html/marineCraftModel.html)
+$$
+\mathbf{F}_{B,i} = \rho\, g\, A_i\, h_i\, \hat{\mathbf{z}}
+$$
 
-Implementation recommendation:
+with water density $\rho = 1000\ \mathrm{kg/m^3}$ and $g = 9.81\ \mathrm{m/s^2}$.
+Because the cells sit at different places, their forces also create a torque
+about the centre of mass $\mathbf{p}_\mathrm{COM}$:
 
-1. Export the **watertight exterior displacement envelope** of the hull. Do not use the sum of shell material volume, internal components or mesh convex hull volume: the dry enclosed cavity displaces water too. Do not count overlapping volumes twice.
-2. In FreeCAD, intersect that outer envelope with a grid of small cells offline. Store cell positions, actual CAD intersection volumes and sizes. A few hundred to roughly one thousand cells should be inexpensive when processed as NumPy arrays; select resolution from a convergence comparison rather than an unsupported timing promise.
-3. In each physics substep, transform cell geometry to world space and evaluate the shared analytic wave height at cell locations. Compute submerged fraction f_i in [0,1]. Exact clipping of tetrahedra against a local plane is strongest; smooth voxel fill is a cheaper approximation. A Boolean center wet/dry test creates discontinuous force and should be avoided.
-4. Apply F_B,i = rho*g*V_i*f_i*[0,0,1] at the submerged cell centroid, and sum tau_i=(p_i-p_COM) cross F_B,i. Do not apply buoyancy along the wave surface normal: gravity defines its vertical direction.
-5. Solve initial draft and, if needed, trim from sum(rho*V_i*f_i)=total articulated mass and buoyancy torque balancing weight torque. Include the UAV payload and moving platform/lids in mass and inertia. Moving the platform changes center of gravity and therefore stability.
+$$
+\boldsymbol{\tau}_{B} = \sum_i \left(\mathbf{p}_i - \mathbf{p}_\mathrm{COM}\right) \times \mathbf{F}_{B,i}
+$$
 
-For a box approximation, signed surface depth divided by the box's projected vertical extent can provide a smooth fill fraction. That estimate has discretization error at large heel or short waves; record this limitation. CAD cell volume, fully immersed total displacement, and nominal draft should be saved as inspectable metadata.
+That torque is what rights the boat after it heels and lets waves pitch and
+roll it.
 
-## Drag, damping and currents
+On reset, the draft (how deep it floats), roll and pitch are solved so that
+total buoyancy equals the weight of the whole boat, including lids, platform
+and payload, and the buoyancy torque is zero. The boat therefore starts at
+rest and does not bob. The cell approximation is meant for moderate heel; near
+90° it falls back to a simple blend, and capsizing is not modelled.
 
-At each wet cell or hull station compute:
+## Waves
 
-v_point = v_COM + omega cross (p_i-p_COM)
+The sea is the sum of four deep-water (Airy) waves. Component $j$ has amplitude
+$a_j$, period $T_j$, direction $\mathbf{d}_j$ and a fixed phase $\varphi_j$:
 
-v_relative = v_point - (v_current + v_wave(p_i,t)).
+$$
+\omega_j = \frac{2\pi}{T_j}, \qquad k_j = \frac{\omega_j^2}{g}, \qquad
+\theta_j = k_j\, (\mathbf{d}_j \cdot \mathbf{x}) - \omega_j t + \varphi_j
+$$
 
-Transform relative velocity to boat axes. A useful empirical model is F_j=-c_linear,j*v_j-c_quadratic,j*abs(v_j)*v_j, with nonnegative coefficients. Distribute lateral and vertical forces across the hull to produce yaw, roll and pitch damping; distribute the **total** projected drag area across samples instead of assigning the full hull area to each cell. Apply forces only to the wet portion. Fixed-water damping should dissipate energy: sum(F_i dot v_relative,i)<=0. A uniform current should carry a stopped boat rather than mysteriously anchor it to the world.
+$$
+\eta(\mathbf{x}, t) = \sum_j a_j \cos\theta_j
+$$
 
-Expose coefficients and their units in configuration. Calibrate surge drag with steady thrust versus terminal speed, sway/yaw from maneuvering trials, and roll/heave damping from decay tests. Avoid a global root-joint damping term as the only water model: it suppresses motion relative to the world and ignores local immersion.
+The water also moves. At depth $z \le 0$ below the mean surface, the orbital
+velocity is
 
-Added mass materially affects acceleration and wave response. A first deliverable can honestly state it is omitted or approximated. Do not increase gravitational hull mass to fake added mass, and do not apply -M_added*previous_step_acceleration without a coupled solve: that creates an unstable delayed feedback. A future calibrated six-axis added-mass model should enter an implicit generalized mass/force solve with its matching Coriolis terms.
+$$
+\mathbf{u}_\mathrm{wave} = \sum_j a_j\, \omega_j\, e^{k_j z} \cos\theta_j\; \mathbf{d}_j,
+\qquad
+w_\mathrm{wave} = \sum_j a_j\, \omega_j\, e^{k_j z} \sin\theta_j
+$$
 
-## Analytic waves and local water velocity
+plus a uniform current, if one is set. The four components are spread around
+the main direction (0°, +22°, −30°, +52°), with periods of 1, 0.72, 1.31 and
+0.52 times the set period, and share 55 %, 23 %, 15 % and 7 % of the amplitude.
+The default sea in [`config.json`](../config.json) has a 0.06 m wave height and a
+3 s period; the benchmark's wave missions use 0.15 m.
 
-MIT's primary teaching material gives linear deep-water wave height, dispersion, particle velocity and depth attenuation. For world Z upward and phase theta=k*d dot xy-omega*t+phi:
+The same wave field drives buoyancy, drag and propeller immersion. The boat is
+never rocked by an imposed sine motion: it moves because the water under each
+cell rises and falls. Waves from the side therefore make it roll, waves from
+ahead make it pitch, and a stopped boat still responds. Breaking waves,
+slamming, spray and wave reflection from the hull are not modelled.
 
-eta(x,y,t)=sum(a*cos(theta)), omega=sqrt(g*k), k=2*pi/wavelength.
+## Drag
 
-u_wave=sum(a*omega*exp(k*z)*cos(theta)*d),
+For each wet cell the velocity of the hull at that point, relative to the
+moving water, is
 
-w_wave=sum(a*omega*exp(k*z)*sin(theta)).
+$$
+\mathbf{v}_{\mathrm{rel},i} = \mathbf{v}_\mathrm{COM} + \boldsymbol{\omega} \times \left(\mathbf{p}_i - \mathbf{p}_\mathrm{COM}\right) - \mathbf{u}_\mathrm{water}(\mathbf{p}_i)
+$$
 
-Here z<=0 is depth relative to mean surface; clamp the attenuation evaluation at the surface when extrapolating into the crest. The vertical sign above satisfies d(eta)/dt at z=0. These are small-amplitude deep-water relations. [MIT Design for the Ocean Environment, slides 4–5](https://ocw.mit.edu/courses/2-017j-design-of-electromechanical-robotic-systems-fall-2009/7151e72b8574054869f03394f07a843e_MIT2_017JF09_oceans.pdf)
+It is turned into boat axes (forward, sideways, up) and damped with a linear and
+a quadratic term per axis:
 
-Recommendation: use 3–4 fixed deterministic directional components and shared coefficients for buoyancy, drag and visual texture motion. The boat encounters waves by evaluating their world position at each displaced hull cell; do not impose independent sine rotations on its pose. Broadside waves then produce roll, head seas pitch, and stopped boats still respond. Local orbital velocities make the wave response richer than raising a fake waterline alone. This simplified combination does not resolve diffraction, radiation memory, breaking waves, slamming or spray. Keep wave steepness modest and expose a calm-water preset.
+$$
+F_{D,i,k} = -\,w_i \left( c^\mathrm{lin}_k\, v_k + c^\mathrm{quad}_k\, |v_k|\, v_k \right),
+\qquad k \in \{\text{forward}, \text{side}, \text{up}\}
+$$
 
-## Twin propellers and power controls
+The weight $w_i$ is the cell's share of the currently submerged volume, scaled
+by how deep the hull sits compared with its normal draft (at most 1.5 times).
+The total drag therefore does not grow with the number of cells, and only the
+wet part of the hull feels it. Because the forces act at the cells, they also damp yaw, roll
+and pitch. A small extra rotational damping acts on the hull's angular
+velocity. Measured against the moving water, drag only removes energy, and a
+current carries a stopped boat along instead of holding it in place.
 
-Quasi-steady propeller models use advance ratio J=V_advance/(n*D), thrust T=rho*n*abs(n)*D^4*K_T(J), and shaft torque Q=rho*n*abs(n)*D^5*K_Q(J); n is revolutions per second. Coefficients can be constant, tabulated or fitted, and near-zero rotation needs smoothing. [MathWorks marine propeller documentation](https://www.mathworks.com/help/sdl/ref/marinepropeller.html)
+| Coefficient | Forward | Side | Up |
+|---|---:|---:|---:|
+| Linear $c^\mathrm{lin}$ (N·s/m) | 18 | 90 | 120 |
+| Quadratic $c^\mathrm{quad}$ (N·s²/m²) | 14 | 110 | 90 |
 
-Recommendation: map each 0–100 UI power setting to a limited motor shaft-power budget, integrate a short motor/ESC response, and compute thrust at the actual propeller position in boat coordinates. RPM can follow n proportional to cube-root(power_fraction) for a constant-K_Q approximation, because shaft power=2*pi*n*Q scales with n^3; label it as an approximation. An RPM throttle slider instead would scale n directly and must be named accordingly. Reduce thrust for partial propeller immersion. Use V_advance relative to water, not GNSS speed. Apply each axial force at its own propeller center so differential power naturally generates yaw. Opposite shaft directions can visually match the counter-rotating propellers while both create forward thrust. Do not claim any particular K_T, K_Q or top speed is verified from the CAD.
+Added mass, the water that has to be accelerated with the hull, is not
+modelled.
 
-## MuJoCo integration and useful checks
+## Propellers
 
-MuJoCo provides mj_applyFT for a Cartesian force/torque applied at a body point, and mj_objectVelocity for spatial velocity; the latter returns rotational components before linear components. [MuJoCo API functions](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-applyft)
+Each of the two motors gets a power setting from 0 to 100 %, which maps to at
+most 1.5 kW shaft power. With a constant torque coefficient, shaft power grows
+with the cube of the propeller speed $n$ (revolutions per second), so the
+target speed is
 
-Clear qfrc_applied before every substep. Vectorize wetness, orbital velocity and all cell forces; accumulate one total world force and torque about the hull center of mass, then call mj_applyFT on the hull once, with the COM as its application point. Include independent propeller force application or accumulate its moment consistently. Run these force calculations during normal stepping; loading XML in the stock viewer alone cannot execute the external water code.
+$$
+n_\mathrm{target} = \min\!\left( n_\mathrm{max},\ \sqrt[3]{\frac{P}{2\pi\, \rho\, D^5\, K_Q}} \right)
+$$
 
-Recommended acceptance checks: gravity/buoyancy balance in calm water; displaced mass close to model mass at equilibrium; positive restoration after small roll/pitch perturbations; passive drag; drift in a current; equal-power straight motion; differential-power turns; stopping deceleration; waves at zero throttle; changed stability with the platform raised; finite forces over low-speed transitions. Avoid promising physical accuracy beyond supplied and calibrated hydrodynamic coefficients.
+and the actual speed follows it with a 0.45 s lag (motor and controller
+response). Thrust uses the usual propeller law with the advance ratio $J$,
+the water speed into the propeller relative to its rotation:
+
+$$
+J = \frac{V_a}{n D}, \qquad K_T = \max\!\left(0,\ K_{T0} - s\,J\right), \qquad
+T = \rho\, n^2 D^4 K_T \cdot \text{immersion}
+$$
+
+The immersion factor reduces thrust when a wave lifts the propeller partly out
+of the water. Each thrust acts along the hull's forward axis at its own
+propeller, so unequal power turns the boat.
+
+| Parameter | Value |
+|---|---:|
+| Diameter $D$ | 0.132 m |
+| $K_{T0}$, slope $s$ | 0.22, 0.20 |
+| $K_Q$ | 0.04 |
+| Maximum speed $n_\mathrm{max}$ | 65 rev/s |
+
+These are estimates; no propeller curve or top speed was measured.
+
+## How it is stepped
+
+Each 5 ms step splits MuJoCo's `implicitfast` pipeline: `mj_step1`, then the
+water forces (buoyancy, drag, rotational damping, thrust) are summed into one
+force and torque about the hull's centre of mass and applied with
+`mj_applyFT`, then `mj_step2`. The lift platform's weight is carried by its own
+joint so the lift actuator does not sag; the boat still carries the platform's
+full mass.
+
+[`tests/verify_simulation.py`](../tests/verify_simulation.py) checks the
+behaviour: buoyancy balances the real mass and a calm, unpowered boat stays at
+rest; equal power runs straight and unequal power turns; the boat slows down
+when the motors stop; drag only removes energy; an unpowered boat responds to
+waves from the side and stays finite; and it drifts with a current. It also
+tests the lids, the lift platform and the cabin drainage, where water in the
+cabin adds mass and the pumps remove it.
+
+## Sources
+
+- [MuJoCo fluid forces](https://mujoco.readthedocs.io/en/stable/computation/fluid.html): why the built-in model is switched off.
+- [Fossen, marine craft model](https://www.fossen.biz/html/marineCraftModel.html): buoyancy, restoring moments, drag relative to the water.
+- [MIT 2.017, design for the ocean environment](https://ocw.mit.edu/courses/2-017j-design-of-electromechanical-robotic-systems-fall-2009/7151e72b8574054869f03394f07a843e_MIT2_017JF09_oceans.pdf), slides 4–5: deep-water wave relations.
+- [MathWorks marine propeller](https://www.mathworks.com/help/sdl/ref/marinepropeller.html): $K_T$, $K_Q$ and advance ratio.
+- [MuJoCo API](https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-applyft): `mj_applyFT`, `mj_objectVelocity`.
