@@ -355,7 +355,8 @@ fn terrainWetness( xz: vec2f, h: f32 ) -> vec2f {
 			if ( window.__ui && window.__ui.isPointerOverUI ) return;
 			if ( this.flightOps && this.flightOps.active ) {
 
-				if ( this.flightOps.freeCamera ) this.input.requestLock();
+				// The drone camera's pan and tilt follow the mouse while the pointer is locked.
+				if ( this.flightOps.freeCamera || this.flightOps.mode === 'drone' ) this.input.requestLock();
 				if ( this.audio ) this.audio.resume();
 				return;
 

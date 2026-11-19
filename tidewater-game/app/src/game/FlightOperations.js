@@ -26,6 +26,13 @@ export class FlightOperations {
 		this.freeCamera = false;
 		this.mode = 'drone';
 		this.boatCamera = 'boat_dock';
+		// Esc or a panel releases the mouse; say how to get the camera back.
+		document.addEventListener( 'pointerlockchange', () => {
+
+			if ( ! document.pointerLockElement && this.active && this._started && this.mode === 'drone' && ! this.freeCamera )
+				this._toast( 'Click the view to steer the camera with the mouse' );
+
+		} );
 		// The boat stays where it is until the player asks for route following (P).
 		this.autopilot = false;
 		this.state = null;
