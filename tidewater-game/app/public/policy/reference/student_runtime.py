@@ -127,6 +127,9 @@ class SearchRuntime:
         self.proven_areas=[];self.latch_samples=[];self.latch_metric_seen=False
         self.pad_samples=[];self.hop=None;self.hops=0
         self.early_commit=None;self.early_commits=0;self.pause_since=None
+        # Near scan: one steeper turn after losing a boat that was close by.
+        self.recent_close=None;self.near_scan=None
+        self.scan_tilt=math.radians(guidance.SCAN_TILT_DEG)
         # Sun-glare zone (ephemeris sun direction; see tidewater_guidance).
         self._sun=None;self.track_hist={};self.zone_real={};self.glare_keys={}
         self._zone_now={};self.zone_last={};self.glare_active_until=-math.inf;self.last_glare_protocol=-math.inf
@@ -135,7 +138,7 @@ class SearchRuntime:
                         pause_respected_s=0.,unproven_target_boat=0,proven_areas=0,sidestep_s=0.,
                         unlatched=0,zone_spots=0,zone_glare=0,zone_real=0,zone_blocked=0,
                         zone_unproven_target_boat=0,glare_protocols=0,shallow_glare_skipped=0,
-                        horizon_promoted_frames=0)
+                        horizon_promoted_frames=0,near_scans=0)
 
     def guidance_summary(self):
         """Running summary of the 2026-11-14 guidance decisions (for logs)."""
@@ -280,7 +283,7 @@ class SearchRuntime:
         self._view_world={k:v for k,v in self._view_world.items() if k in used}
         pan,tilt=observation['gimbal_rad']
         selected=self.search.decide(t,views,yaw+pan,
-            abs(pan)<math.radians(3) and abs(tilt-math.radians(6))<math.radians(3))
+            abs(pan)<math.radians(3) and abs(tilt-self.scan_tilt)<math.radians(3))
         live=next((v for v in views if v.key==selected and v.detectable),None)
         if (self._glare_event and self._radio_ctx is None and selected is not None
                 and self.zone_last.get(selected) in ('glare','undecided') and t-self.last_glare_protocol>10.):
@@ -299,6 +302,8 @@ class SearchRuntime:
             self.boat_velocity=np.zeros(2);self.last_track_point=None;self.last_track_time=None
         if live:
             self.last_seen=t
+            if math.isfinite(float(live.range_m)) and live.range_m<guidance.NEAR_SCAN_RANGE_M:
+                self.recent_close=dict(t=t,range=float(live.range_m))
             if live.position is not None:
                 self._update_boat_kinematics(live.position,t)
             if live.range_m<self.best_range-.5:
@@ -556,6 +561,27 @@ class SearchRuntime:
         hint=self.radio_hint
         if hint is None or t-hint['t']>1.5:return None
         return hint['velocity']
+
+    def _update_scan_tilt(self,selected,position,yaw,t):
+        """Camera tilt for the 360 deg scan: 6 deg, or one steeper turn after
+        losing a boat that was close by (see tidewater_guidance)."""
+        plain=math.radians(guidance.SCAN_TILT_DEG)
+        if selected is not None:
+            self.near_scan=None;self.scan_tilt=plain;return
+        ns=self.near_scan
+        if ns is None:
+            rc=self.recent_close
+            if rc is not None and t-rc['t']<=guidance.NEAR_SCAN_MEMORY_S:
+                tilt=guidance.near_scan_tilt_rad(float(position[2])-.45,rc['range'])
+                if tilt>plain+math.radians(1):
+                    ns=self.near_scan=dict(start=t,tilt=tilt,last_yaw=yaw,turned=0.,range=rc['range'])
+                    self.g_log['near_scans']+=1
+                self.recent_close=None
+        if ns is not None:
+            ns['turned']+=abs(self.wrap(yaw-ns['last_yaw']));ns['last_yaw']=yaw
+            if ns['turned']>=2*math.pi or t-ns['start']>guidance.NEAR_SCAN_TIMEOUT_S:
+                self.near_scan=None
+        self.scan_tilt=plain if self.near_scan is None else self.near_scan['tilt']
 
     def _record_pad_sample(self,diag,own,position,R,D,t):
         """Remember good pad fixes (pose valid and metric confirmed)."""
@@ -816,10 +842,12 @@ class SearchRuntime:
 
         selected,live=self._update_search(observation,position,yaw,R,D,rotation,focal,t)
         pan,tilt=observation['gimbal_rad']
+        self._update_scan_tilt(selected,position,yaw,t)
+        scan_tilt=self.scan_tilt
 
         action=np.zeros(6);action[2]=-float(np.clip(.8*(self.height-position[2]),-.5,.5))
-        action[3]=.35 if abs(pan)<math.radians(3) and abs(tilt-math.radians(6))<math.radians(3) else 0.
-        action[4:]=[-3*pan,3*(math.radians(6)-tilt)]
+        action[3]=.35 if abs(pan)<math.radians(3) and abs(tilt-scan_tilt)<math.radians(3) else 0.
+        action[4:]=[-3*pan,3*(scan_tilt-tilt)]
         phase='scan'
         if selected and self.last_point is not None:
             delta=self.last_point-position
@@ -887,4 +915,5 @@ class SearchRuntime:
         if own.get('landed') or not own.get('armed'):action[:4]=0.
         return action,dict(self.search.diagnostics(),control_phase=phase,boat_radio=False,
             search_identity_confirmed=self.search.confirmed,intervention=intervention,
+            scan_tilt_deg=math.degrees(self.scan_tilt),near_scan=self.near_scan is not None,
             **selected_visual_evidence,**extra)

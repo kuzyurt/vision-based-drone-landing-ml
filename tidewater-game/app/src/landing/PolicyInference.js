@@ -80,7 +80,8 @@ export class PolicyInference {
   const result=JSON.parse(this.student?py.runPython('landing_api.step(policy_rgb,policy_prediction,policy_proposals_json,observation_json,policy_elapsed)'):py.runPython('landing_api.step(policy_rgb,policy_prediction,observation_json,policy_elapsed)')),end=performance.now();
   result.timings={prepare_ms:prepared-start,neural_ms:inferred-prepared,controller_ms:end-inferred,total_ms:end-start,backend:this.backend,marker:this.kernel?.timings};return result;
   }finally{
-   py.globals.delete('policy_rgb');py.globals.delete('policy_prediction');py.globals.delete('policy_elapsed');py.globals.delete('observation_json');py.globals.delete('policy_proposals_json');numeric?.destroy();pyRGB?.destroy();pyPrediction?.destroy();
+   // Only names that were set: deleting a missing one would hide the error that ended the step early.
+   for(const name of ['policy_rgb','policy_prediction','policy_elapsed','observation_json','policy_proposals_json'])if(py.globals.has(name))py.globals.delete(name);numeric?.destroy();pyRGB?.destroy();pyPrediction?.destroy();
    for(const tensor of Object.values(feeds||{}))tensor.dispose();for(const tensor of Object.values(output||{}))tensor.dispose();
   }
  }

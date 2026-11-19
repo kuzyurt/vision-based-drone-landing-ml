@@ -314,8 +314,39 @@ def approach_velocity(own_xy, pad_xy, boat_velocity, max_speed=APPROACH_MAX_SPEE
     return desired, info
 
 
+# ---------------------------------------------------------------- scan tilt
+# The horizon scan looks 6 deg down. With the 36.1 deg tall image that covers
+# boats from about 13.5 m (at the ~6 m search height) out to the horizon, and
+# nothing closer (2026-11-19 city run: 23 s of turning 11 m from the target
+# without ever seeing it). After the drone loses a boat it was inspecting
+# close by, one turn is flown with the camera tilted further down. The tilt is
+# capped so the top of the image stays just above the horizon: far boats stay
+# in view during that turn, and the bottom edge reaches ~9 m. Searches that
+# never came close to a boat keep the plain 6 deg scan.
+SCAN_TILT_DEG = 6.0
+NEAR_SCAN_RANGE_M = 25.0       # a lost track closer than this triggers one near turn
+NEAR_SCAN_MEMORY_S = 12.0      # ...if it was seen this recently
+NEAR_SCAN_MIN_RANGE_M = 6.0
+NEAR_SCAN_MAX_TILT_DEG = 16.0  # top image edge 2 deg above the horizon
+NEAR_SCAN_TIMEOUT_S = 30.0     # one 360 deg turn takes ~18 s plus settling
+
+
+def near_scan_tilt_rad(height_above_deck_m, range_m):
+    """Camera tilt that centres a boat ``range_m`` away in the image."""
+    r = max(float(range_m), NEAR_SCAN_MIN_RANGE_M)
+    h = max(float(height_above_deck_m), 0.5)
+    deg = math.degrees(math.atan2(h, r))
+    return math.radians(min(max(deg, SCAN_TILT_DEG), NEAR_SCAN_MAX_TILT_DEG))
+
+
 # ---------------------------------------------------------------- near deck
 EARLY_COMMIT_MAX_CLEARANCE_M = 0.18
+# The blind finish only needs the drone to keep matching a boat it is already
+# matching (centred within 5 cm, under 8 cm/s relative). The limit is what the
+# drone can still follow with margin (APPROACH_MAX_SPEED_MPS 1.9), not the
+# approach warning: at 1.5 the nominal 1.5 m/s benchmark boat (measured
+# 1.50-1.52) was refused by measurement noise alone (2026-11-19 fast-boat runs).
+EARLY_COMMIT_MAX_BOAT_SPEED_MPS = 1.7
 HOP_CLEARANCE_M = 0.7          # the whole pad marker fits in view again here
 NEAR_DECK_CLEARANCE_M = 1.2    # pose losses below this are handled near the deck
 NEAR_DECK_MEMORY_S = 6.0       # after this long without a pad fix: old behaviour
@@ -354,7 +385,7 @@ def early_commit_gate(samples, now, radio_velocity_xy=None):
     reference = np.asarray(last['pad_velocity'][:2], dtype=float)
     if max(float(np.linalg.norm(np.asarray(s['pad_velocity'][:2]) - reference)) for s in turning) > 0.15:
         return False, 'boat_turning_or_accelerating'
-    if float(np.linalg.norm(reference)) > LANDING_SPEED_LIMIT_MPS:
+    if float(np.linalg.norm(reference)) > EARLY_COMMIT_MAX_BOAT_SPEED_MPS:
         return False, 'boat_too_fast'
     if radio_velocity_xy is not None and float(
             np.linalg.norm(np.asarray(radio_velocity_xy, dtype=float)[:2] - reference)) > 0.35:

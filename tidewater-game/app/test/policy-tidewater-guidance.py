@@ -178,6 +178,21 @@ check(g.early_commit_gate(calm, calm[-1]['t'] + .05, radio_velocity_xy=[.6, 0.])
 short = calm[-10:]
 check(not g.early_commit_gate(short, short[-1]['t'] + .05)[0], 'only 0.4 s of pad history: refused')
 
+
+def moving_pad(speed):
+    out = pad_samples(n=60, clearance0=.17 + .14 * 59 * .04)
+    for s in out:
+        s['pad_velocity'] = np.array([speed, 0., 0.])
+    return out
+
+
+fast = moving_pad(1.52)
+ok, why = g.early_commit_gate(fast, fast[-1]['t'] + .05)
+check(ok, f'boat at 1.52 m/s (nominal 1.5), centred: blind finish allowed ({why})')
+too_fast = moving_pad(1.8)
+check(g.early_commit_gate(too_fast, too_fast[-1]['t'] + .05)[1] == 'boat_too_fast',
+      'boat at 1.8 m/s: refused (drone tops out at 1.9)')
+
 # ---- sun glint geometry (game sun at 15:00: 43 deg up, compass 255)
 def sun_from(elev_deg, compass_deg):
     e, a = math.radians(elev_deg), math.radians(compass_deg)
@@ -461,6 +476,46 @@ check(any(p == 'radio_dead_reckoning' for _, p in ph), 'radio dropout: dead reck
 dr = [r['t'] for r in s.rows if r['phase'] == 'radio_dead_reckoning']
 check(bool(dr) and dr[-1] - dr[0] <= 6.5, 'radio dropout: dead reckoning lasts at most ~6 s')
 check(ph[-1][1] not in ('radio_dead_reckoning',), 'radio dropout: falls back to the normal search afterwards')
+
+# ---- near scan: one steeper turn after losing a boat close by
+check(abs(math.degrees(g.near_scan_tilt_rad(6.5, 11.)) - 16.) < 1e-6, 'near scan, boat lost at 11 m: tilt capped at 16 deg')
+check(abs(math.degrees(g.near_scan_tilt_rad(6., 30.)) - math.degrees(math.atan2(6., 30.))) < 1e-6, 'near scan, 30 m: tilt centres that range')
+check(abs(math.degrees(g.near_scan_tilt_rad(6., 80.)) - 6.) < 1e-6, 'near scan, 80 m: plain 6 deg')
+
+
+def scan_tilts(sim):
+    return [r['d'].get('scan_tilt_deg') for r in sim.rows if r['phase'] == 'scan' and r['d'].get('scan_tilt_deg') is not None]
+
+
+# Boat 11 m away and below the 6 deg scan view; no radio. Without a recent close
+# track the scan stays at 6 deg (unchanged behaviour) and never sees it.
+def mid_mission(sim):
+    # Skip the one-time start-up climb: these cases happen later in a mission.
+    sim.rt.pre360_done = True; sim.rt.pre360_phase = 'done'; sim.tilt = math.radians(6.)
+    return sim
+
+
+plain = mid_mission(Sim(drone=(0., 0., 7.), boat=(0., 11.), radio=False, detect_m=60.)).run(30.)
+tilts = scan_tilts(plain)
+print(f'    plain scan, boat 11 m below the view: tilts {sorted(set(round(x) for x in tilts))}, selected {any(r["selected"] for r in plain.rows)}')
+check(bool(tilts) and max(tilts) < 6.5, 'plain scan: stays at 6 deg')
+check(not any(r['selected'] for r in plain.rows), 'plain scan: a boat 11 m below the view stays unseen (the old failure)')
+
+# Same scene right after losing a close track: one 16 deg turn finds the boat.
+near = mid_mission(Sim(drone=(0., 0., 7.), boat=(0., 11.), radio=False, detect_m=60.))
+near.rt.recent_close = dict(t=0., range=11.)
+near.run(30., stop=lambda s: bool(s.rows and s.rows[-1]['selected']))
+tilts = scan_tilts(near)
+print(f'    near scan after a lost close track: max tilt {max(tilts) if tilts else float('nan'):.1f} deg, selected {near.rows[-1]["selected"]}')
+check(bool(tilts) and abs(max(tilts) - 16.) < .5, 'near scan: turns at 16 deg')
+check(bool(near.rows[-1]['selected']), 'near scan: the boat 11 m away is found')
+
+# After the near turn the scan returns to 6 deg.
+after = mid_mission(Sim(drone=(0., 0., 7.), boat=(0., 200.), radio=False, detect_m=60.))
+after.rt.recent_close = dict(t=0., range=11.)
+after.run(60.)
+tilts = scan_tilts(after)
+check(bool(tilts) and max(tilts) > 15. and abs(tilts[-1] - 6.) < .5, 'near scan: one turn only, then back to 6 deg')
 
 # ---- sun-glare zone scenarios (ephemeris sun, glitter inside the zone)
 def zone_states(row):
