@@ -1,5 +1,6 @@
 // AERODOCK project site: architecture detail, benchmark chart, media behaviour.
-// Benchmark numbers are copied from benchmark/benchmark.json (20-case suite).
+// Benchmark numbers are copied from benchmark/benchmark.json and, for the final
+// version, benchmark/evidence/final/summary.json (20-case suite).
 
 const STAGES = {
 	sense: {
@@ -8,9 +9,9 @@ const STAGES = {
 		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Radio', 'optional: the boat\'s position helps find it, never lands it' ] ],
 	},
 	see: {
-		title: 'See — three networks find the boat and the pad',
-		text: 'All three share one image encoder. The search head marks every boat in the frame and says which one is the target. The pad finder marks the point where the pad is, so the camera can stay on it. The main network estimates where the pad is relative to the drone and how the deck moves, with a short memory of earlier frames.',
-		facts: [ [ 'Search head', 'about 45,000 parameters: every boat, and which one is the target' ], [ 'Pad finder', 'about 45,000 parameters: one point on the pad, and whether it is in view' ], [ 'Main network', 'about 1.55 million: pad position and deck motion, GRU memory' ] ],
+		title: 'See — two networks find the boat and the pad',
+		text: 'Both share one image encoder. The search head marks every boat in the frame and says which one is the target. The main network says whether the pad is in view and where it is in the picture, so the camera can stay on it, and estimates where the pad is relative to the drone and how the deck moves, with a short memory of earlier frames.',
+		facts: [ [ 'Search head', 'about 45,000 parameters: every boat, and which one is the target' ], [ 'Main network', 'about 1.55 million: pad in view, pad position and deck motion, GRU memory' ], [ 'Neither flies', 'they report what they see; control code decides the moves' ] ],
 	},
 	measure: {
 		title: 'Measure — geometry locates the pad',
@@ -31,7 +32,8 @@ const STAGES = {
 
 const MODELS = [
 	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'With search head', note: 'camera only', score: 87.8, landed: 18 },
+	{ key: 'current', name: 'Final version', note: 'two networks, radio if offered', score: 84.9, landed: 18 },
+	{ key: 'nov', name: '8 November', note: 'with pad finder, no radio', score: 87.8, landed: 18 },
 	{ key: 'r15', name: 'Camera first', note: 'before the search head', score: 57.5, landed: 11 },
 	{ key: 'radio', name: 'Radio-dependent', note: 'landed only with boat radio', score: 54.9, landed: 7 },
 ];

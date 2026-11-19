@@ -4,8 +4,8 @@
 |---|---|
 | [Project overview](../README.md) | What it does, how it lands, results |
 | [Training and architecture](../landing_training/README.md) | MuJoCo world, teacher, network and controller |
-| [Benchmark](../benchmark/README.md) | 20 missions, four policies, evidence and viewer |
-| [Tidewater](../tidewater-game/README.md) | Run the browser game and fly with the policy |
+| [Benchmark](../benchmark/README.md) | 20 missions, five policies, evidence and viewer |
+| [Realistic simulator](../tidewater-game/README.md) | Run the browser game and fly with the policy |
 | [Media](media/README.md) | Where each video and figure comes from, and how to rebuild it |
 | [Repository architecture](architecture/README.md) | Dependency direction and the paths the benchmark pins |
 

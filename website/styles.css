@@ -158,6 +158,7 @@ p { margin: 0; }
 .bar-track { height: 44px; background: var(--paper-alt); border-radius: 8px; overflow: hidden; }
 .bar-fill { height: 100%; width: 0; border-radius: 8px; background: #9db3bb; transition: width 1.1s cubic-bezier(.2, .8, .2, 1); }
 .bar-row.current .bar-fill { background: var(--accent); }
+.bar-row.nov .bar-fill { background: #8fbcb9; }
 .bar-row.teacher .bar-fill { background: repeating-linear-gradient(135deg, #5f7a84 0 10px, #6c8892 10px 20px); }
 .bar-value { text-align: right; }
 .bar-value b { display: block; font-size: 1.5rem; letter-spacing: -0.02em; }

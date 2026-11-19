@@ -1,5 +1,23 @@
 # Agent notes
 
+## One policy version
+
+There is one final version: `student.onnx` (main network + search head, no pad
+finder) with the control code in `tidewater-game/app/public/policy/reference/`.
+It runs in the browser game and natively via `benchmark.harness.tidewater_run`.
+Its benchmark result is `benchmark/evidence/final/summary.json` (84.9, 18/20).
+The version table is in `landing_training/docs/ARCHITECTURE.md`. Older policies
+(the 8 November search student with the pad finder, R15, radio-robust) are
+history kept as evidence; do not describe them as current.
+
+- After editing `public/policy/reference/*.py`, run
+  `node tidewater-game/app/scripts/refresh-policy-hashes.mjs`; the game refuses
+  files whose checksum differs.
+- Public text (READMEs, website, figures) calls the browser game the
+  "realistic simulator" or "realistic game". Use the name Tidewater only to say
+  where it comes from, plus real folder and file names.
+- No real-hardware flight exists. Never imply one.
+
 ## Rollout diagnostics
 
 Every completed bounded-search benchmark episode must produce:
