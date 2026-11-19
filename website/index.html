@@ -34,7 +34,7 @@
 	<video class="hero-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg" data-src="assets/hero.mp4" data-fallback="assets/tidewater-landing.mp4"></video>
 	<div class="hero-shade"></div>
 	<dl class="hero-facts">
-		<div><dt>18 of 20</dt><dd>benchmark missions landed, camera only</dd></div>
+		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
 		<div><dt>Camera lands it</dt><dd>the boat's radio can help find it, never lands it</dd></div>
 		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
 	</dl>
@@ -59,7 +59,7 @@
 <section class="band alt" id="how">
 	<div class="wrap">
 		<h2>How it works</h2>
-		<p class="lead narrow">Three small neural networks look at the camera image and report what they see. Control code and the PX4 autopilot do the flying. An earlier network that flew the drone directly landed in none of its test flights.</p>
+		<p class="lead narrow">Two neural networks look at the camera image and report what they see. Control code and the PX4 autopilot do the flying. An earlier network that flew the drone directly landed in none of its test flights.</p>
 
 		<div class="arch" id="arch">
 			<svg class="arch-svg" viewBox="0 0 1180 330" role="img" aria-label="Signal flow: camera and drone sensors feed learned perception, then geometric localization, then the landing controller, then PX4, which drives the motors and the camera gimbal. The camera sees the result and the loop repeats 25 times per second.">
@@ -162,7 +162,7 @@
 <section class="band alt" id="worlds">
 	<div class="wrap">
 		<h2>Trained in one world, tested in another</h2>
-		<p class="lead narrow">All training happened in MuJoCo, a physics simulator with simple graphics. Tidewater is an open-source ocean game we extended. The policy never saw it during training, and lands there anyway.</p>
+		<p class="lead narrow">All training happened in MuJoCo, a physics simulator with simple graphics. The realistic simulator is an open-source ocean game we extended. The policy never saw it during training, and lands there anyway.</p>
 
 		<div class="cards two worlds">
 			<figure class="card">
@@ -177,7 +177,7 @@
 				<video class="card-media" muted loop playsinline preload="none" poster="assets/tidewater-boat.jpg" data-autoplay src="assets/tidewater-boat.mp4"></video>
 				<figcaption class="card-body">
 					<span class="tag test">Test only</span>
-					<h3>Tidewater</h3>
+					<h3>Realistic simulator</h3>
 					<p>A realistic ocean rendered in the browser. The same physics, autopilot and policy run locally — no server. You can fly it yourself and hand over to the policy with one key.</p>
 				</figcaption>
 			</figure>
@@ -197,16 +197,16 @@
 		<h2>Results</h2>
 		<p class="lead narrow">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
 
-		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, with search head, camera only, 87.8 with 18 of 20; camera first, before the search head, 57.5 with 11 of 20; radio-dependent 54.9 with 7 of 20."></div>
+		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings; final version 84.9 with 18 of 20; 8 November version with pad finder, camera only, 87.8 with 18 of 20; camera first, before the search head, 57.5 with 11 of 20; radio-dependent 54.9 with 7 of 20."></div>
 
 		<div class="two results-notes">
 			<div>
-				<h3>What the current policy does well</h3>
-				<p>It landed 18 of 20 using only its camera and its own sensors: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, and the search from 100&nbsp;m with other boats in the scene.</p>
+				<h3>What the final version does well</h3>
+				<p>It landed 18 of 20: every landing, wind and search mission, with boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind and the search from 100&nbsp;m with other boats in the scene. The boat's radio only helps it find the boat; the camera lands it.</p>
 			</div>
 			<div>
 				<h3>Where it still fails</h3>
-				<p>Both missions that combine everything at once: wind, waves, a 100&nbsp;m search and other boats. In one the drone never confirmed the right boat; in the other it came down to 30&nbsp;cm above the pad, lost sight of it and hit the boat. Everything so far is simulation; there has been no flight with real hardware.</p>
+				<p>Two missions with waves. The drone reaches the pad, then hovers just above it waiting for a clean measurement of the pad until its time runs out. Everything so far is simulation; there has been no flight with real hardware.</p>
 			</div>
 		</div>
 		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
@@ -245,8 +245,8 @@
 			</li>
 			<li>
 				<span class="when">Step 6</span>
-				<h3>Radio, only to find</h3>
-				<p>In Tidewater the drone now flies to the boat's radio position first and lets the camera confirm it. Not yet scored on the benchmark.</p>
+				<h3>One final version</h3>
+				<p>The drone flies to the boat's radio position first and lets the camera confirm it, and the small pad finder from earlier versions is gone. 18 of 20 again, and the same build flies in the realistic simulator.</p>
 			</li>
 		</ol>
 	</div>
@@ -259,8 +259,8 @@
 		<div class="links-grid">
 			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml"><b>Repository</b><span>Code, models and data layout</span></a>
 			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/landing_training"><b>Training and architecture</b><span>Network, teacher and controller in detail</span></a>
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/tidewater-game"><b>Tidewater game</b><span>Run it locally and fly</span></a>
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark"><b>Benchmark</b><span>20 missions, four policies, all evidence</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/tidewater-game"><b>Realistic simulator</b><span>Run it locally and fly</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark"><b>Benchmark</b><span>20 missions, five policies, all evidence</span></a>
 		</div>
 	</div>
 </section>

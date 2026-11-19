@@ -2,15 +2,15 @@
 
 | Asset | What it shows |
 |---|---|
-| [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded Tidewater flight: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
-| [Tidewater boat](tidewater-boat-1080p.mp4) | 5 s of the AERODOCK under way, seen from off its port bow, 1920 × 1080, 30 fps. Rendered from a recorded simulation run with the [hero-film tools](../../tidewater-game/app/tools/hero/README.md) (`boatFront` shot) |
+| [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded flight in the realistic simulator: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
+| [Boat under way](tidewater-boat-1080p.mp4) | 5 s of the AERODOCK under way, seen from off its port bow, 1920 × 1080, 30 fps. Rendered from a recorded simulation run with the [hero-film tools](../../tidewater-game/app/tools/hero/README.md) (`boatFront` shot) |
 | [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
 | [Poster](tidewater-boat-poster.jpg) | Frame from that clip |
 | [Earlier landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback (see provenance below) |
 | [Landing flow](landing-flow.png) | The flight in five steps, split into the search-head phase and precision landing; [SVG](landing-flow.svg) |
 | [Training story](training-story.png) | Four design steps with their benchmark results; [SVG](training-story.svg) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
-| [Benchmark comparison](benchmark-comparison.png) | Four policies on the current 20-mission benchmark; [SVG](benchmark-comparison.svg) |
+| [Benchmark comparison](benchmark-comparison.png) | Five policies, including the final version, on the 20-mission benchmark; [SVG](benchmark-comparison.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |
 | [System data flow](policy-architecture-detailed.png) | Camera, PX4 telemetry, radio, perception, geometry, flight/gimbal commands and feedback; [SVG](policy-architecture-detailed.svg) |
 | [Neural architecture](policy-neural-architecture.png) | Shared encoder, spatial acquisition, recurrent pose and bounded radio fusion; [SVG](policy-neural-architecture.svg) |
@@ -19,15 +19,16 @@
 ## Training and visual transfer
 
 Models are trained only in the MuJoCo training environment. The montage uses
-fresh review scenarios excluded from the training manifest. The Tidewater
-pilot uses the same frozen policy bundle, without training on Tidewater images.
+fresh review scenarios excluded from the training manifest. The pilot in the
+realistic simulator uses the same frozen policy bundle, without training on its
+images.
 
 The preserved evidence is in the
 [montage report](../../artifacts/cinematic_20261011/CINEMATIC_MONTAGE.md),
 [montage audit](../../artifacts/cinematic_20261011/completion_audit_v2.json), and
-[Tidewater pilot results](../../tidewater-game/history/tidewater_20261011/pilot_results.json).
+[realistic-simulator pilot results](../../tidewater-game/history/tidewater_20261011/pilot_results.json).
 
-## Tidewater recording provenance
+## Provenance of the earlier landing recording
 
 Source: `tidewater-game/history/tidewater_20261011/policy_tidewater_windy_reef.mp4`.
 The preserved `pilot_results.json` records **landed**, about 0.658 m/s median boat
@@ -35,7 +36,8 @@ speed, 3.657 m/s median wind and 41.04 s of video. Its source SHA-256 is verifie
 before export. The full pilot report retains its failed flight as well.
 
 This is the historical frozen `policy_bundle_v5`, **not R15 or the new search
-head**. Tidewater's actual onboard render drove the original closed-loop flight.
+head**. The realistic simulator's actual onboard render drove the original
+closed-loop flight.
 The spectator view was originally rendered at 640 × 360 and archived at
 1280 × 720. The README MP4 uses Lanczos upscale to 1920 × 1080; it is not a native
 1080p render. No new flight or generated/interpolated motion was used.
@@ -44,7 +46,8 @@ The spectator view was originally rendered at 640 × 360 and archived at
 
 ## Regenerate
 
-Current figures (policy flow and benchmark comparison), from `benchmark/benchmark.json`:
+Current figures (policy flow and benchmark comparison), from `benchmark/benchmark.json`
+and `benchmark/evidence/final/summary.json`:
 
 ```sh
 python -B docs/tools/build_current_figures.py

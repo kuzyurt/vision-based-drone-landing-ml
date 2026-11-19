@@ -4,17 +4,33 @@ Reference for readers who want the mechanics behind the [overview](../README.md)
 the training world, the teacher, the R15 landing policy and the search head.
 
 Names used in the overview: the **main network** is the R15 pose model below
-(about 1.55 million parameters: encoder and recurrent pose branch), the **pad
-finder** is the spatial acquisition branch (about 45,000 parameters), and the
-**search head** (about 45,000 parameters) is described at the end. The search
-head started from the pad finder's weights. The benchmark student runs all
-three; the Tidewater browser export currently contains only the main network
-and the search head.
+(about 1.55 million parameters: encoder and recurrent pose branch), the **search
+head** (about 45,000 parameters) is described at the end, and the **pad finder**
+is R15's spatial acquisition branch (about 45,000 parameters). The search head
+started from the pad finder's weights.
 
-The R15 sections describe the frozen base policy. The search and radio logic
-that runs on top of it since early November lives in
-[`student_radio.py`](../../tidewater-game/app/public/policy/reference/student_radio.py) and
-[`student_runtime.py`](../../tidewater-game/app/public/policy/reference/student_runtime.py).
+## Versions
+
+There is one final version. Everything else is history kept as evidence.
+
+| Version | Networks | Runs where | Benchmark |
+|---|---|---|---|
+| **Final** (`student.onnx`, 19 Nov) | Main network + search head | Realistic browser game; natively via `benchmark.harness.tidewater_run` | 84.9, 18 / 20 ([evidence](../../benchmark/evidence/final/summary.json)) |
+| Search student `fresh-search-f62c10a2` (8 Nov) | Main network + pad finder + search head, radio blocked | Benchmark only | 87.8, 18 / 20 |
+| R15 | Main network + pad finder | Benchmark only | 57.5, 11 / 20 |
+| Radio-robust (15 Oct) | Earlier hybrid | Benchmark only | 54.9, 7 / 20 |
+
+The final version's control code is
+[`tidewater-game/app/public/policy/reference/`](../../tidewater-game/app/public/policy/reference/):
+search and radio approach in [`student_radio.py`](../../tidewater-game/app/public/policy/reference/student_radio.py)
+and [`student_runtime.py`](../../tidewater-game/app/public/policy/reference/student_runtime.py),
+glare, near scan and near-deck rules in
+[`tidewater_guidance.py`](../../tidewater-game/app/public/policy/reference/tidewater_guidance.py),
+and the frozen R15 landing controller underneath. Where the pad finder used to
+override the main network's pad point, the final version uses the main
+network's own estimate.
+
+The R15 sections below describe the frozen base model and its controller.
 
 ## Training environment
 

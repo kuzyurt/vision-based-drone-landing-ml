@@ -1,6 +1,7 @@
 """Write the current README figures as SVG: benchmark comparison and policy flow.
 
-Reads benchmark/benchmark.json only. No simulator, policy or training import.
+Reads benchmark/benchmark.json and benchmark/evidence/final/summary.json only.
+No simulator, policy or training import.
 Rasterize with:  node docs/tools/rasterize_svg.mjs
 """
 from pathlib import Path
@@ -12,12 +13,14 @@ INK, SOFT, LINE, TEAL, GREY, PAPER = '#0d1b24', '#2c3f4b', '#d3dde1', '#0b7a75',
 FONT = "font-family=\"Inter, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif\""
 NAMES = {
     'teacher': ('Teacher', 'sees simulator truth'),
-    'student': ('Search policy (current)', 'uses no boat radio'),
+    'student': ('8 November', 'with pad finder, no radio'),
 }
+COLORS = {'teacher': '#5f7a84', 'final': TEAL, 'student': '#8fbcb9'}
 
 
 def benchmark():
     data = json.loads((ROOT / 'benchmark/benchmark.json').read_text())
+    final = json.loads((ROOT / 'benchmark/evidence/final/summary.json').read_text())
     rows = []
     for model in data['models']:
         summary = model['summary']
@@ -25,20 +28,23 @@ def benchmark():
         if model['kind'] in NAMES:
             name, note = NAMES[model['kind']]
         elif model['id'].startswith('r15'):
-            name, note = 'Landing policy R15', 'before search training'
+            name, note = 'R15', 'before the search head'
         else:
             name, note = 'Radio-robust policy', 'landed only with boat radio'
         rows.append((name, note, summary['total'], landed, summary['planned_cases'], model['kind']))
+        if model['kind'] == 'teacher':
+            # The final version is not in the tracker (its full traces are not kept); it is scored with the same rules.
+            rows.append(('Final version', 'two networks, radio if offered', final['score'], final['landings'], final['cases'], 'final'))
     width, top, step = 1200, 120, 104
     height = top + step * len(rows) + 30
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="{width}" height="{height}" {FONT}>',
            f'<rect width="{width}" height="{height}" fill="#ffffff"/>',
-           f'<text x="40" y="58" font-size="34" font-weight="700" fill="{INK}">Same 20 missions, four policies</text>',
+           f'<text x="40" y="58" font-size="34" font-weight="700" fill="{INK}">Same 20 missions, {len(rows)} policies</text>'.replace(' 5 policies', ' five policies'),
            f'<text x="40" y="92" font-size="20" fill="{SOFT}">Score out of 100: landing, wind, waves, finding the boat, combined conditions and mission speed</text>']
     x0, bar = 340, 620
     for i, (name, note, score, landed, total, kind) in enumerate(rows):
         y = top + i * step
-        color = TEAL if kind == 'student' else '#5f7a84' if kind == 'teacher' else GREY
+        color = COLORS.get(kind, GREY)
         out += [f'<text x="40" y="{y + 34}" font-size="24" font-weight="700" fill="{INK}">{name}</text>',
                 f'<text x="40" y="{y + 62}" font-size="19" fill="{SOFT}">{note}</text>',
                 f'<rect x="{x0}" y="{y + 12}" width="{bar}" height="52" rx="8" fill="{PAPER}"/>',

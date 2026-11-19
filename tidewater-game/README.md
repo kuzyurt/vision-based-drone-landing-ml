@@ -1,13 +1,15 @@
-# Tidewater
+# Realistic simulator
 
-[![The AERODOCK boat under way in Tidewater](../docs/media/tidewater-boat-preview.gif)](../docs/media/tidewater-boat-1080p.mp4)
+[![The AERODOCK boat under way in the realistic simulator](../docs/media/tidewater-boat-preview.gif)](../docs/media/tidewater-boat-1080p.mp4)
 
-Tidewater puts the drone and the boat into a realistic coastal world as a small
-game you can play in the browser. Fly either vehicle yourself, or hand the
+This game puts the drone and the boat into a realistic coastal world that runs
+in the browser. Fly either vehicle yourself, or hand the
 drone over and let it find the boat and land.
 
-The networks that do this were trained only in MuJoCo and never saw a
-Tidewater image, so every landing here is a test of how well they carry over.
+The networks that do this were trained only in MuJoCo and never saw an image
+from this world, so every landing here is a test of how well they carry over.
+The drone flies the final version of the policy, the same build that was
+scored on the [benchmark](../benchmark/README.md).
 
 ## Run locally
 
@@ -57,14 +59,15 @@ the lids.
 WebGPU draws the coast and the drone's camera image. MuJoCo and PX4 run in the
 browser as WebAssembly, the main network and the search head run locally
 through ONNX Runtime, and the control code runs in Python inside the page. No
-server takes part in a flight. (The benchmark version also runs a small pad
-finder; this browser build does not include it yet.)
+server takes part in a flight.
 
-The networks only ever see the images Tidewater renders, not a new background
+The networks only ever see the images this world renders, not a new background
 pasted behind a recorded flight. So the game checks whether what they learned
-in MuJoCo still works in a world that looks different. In one recorded session
-the drone started 122 m from a stationary boat with the radio off and landed on
-the pad. One recording is not a success rate, though.
+in MuJoCo still works in a world that looks different. Here the sun also makes
+glare on the water; the search code recognises glare spots and ignores them. In recorded sessions
+with the radio off, the drone found the boat and landed on the pad from 122 m
+away, and from 15 m with the boat behind it. A few recordings are not a success
+rate, though.
 
 Tests from October, made with the earlier R15 policy:
 [integration results](benchmarks/flight-parity/landing-hardening-20261018.md)
@@ -80,7 +83,8 @@ and [stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-
 | [WASM integration](wasm/README.md) | PX4/MuJoCo builds and parity tests |
 | [Recording details](../docs/media/README.md) | Demo source, model version and 1080p export |
 
-The game extends [dgreenheck/tidewater](https://github.com/dgreenheck/tidewater).
+The game extends the open-source ocean game
+[Tidewater by dgreenheck](https://github.com/dgreenheck/tidewater).
 [Asset credits](app/CREDITS.md) and [runtime licenses](app/public/licenses/)
 are retained. Custom hosts must support the COOP/COEP headers configured by the
 included server.

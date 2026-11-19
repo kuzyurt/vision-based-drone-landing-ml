@@ -1,4 +1,4 @@
-HANDOFF FOR THE NEXT AGENT  (updated 2026-11-19)
+HANDOFF FOR THE NEXT AGENT  (updated 2026-11-19, evening)
 ==================================================
 
 Read this first. Everything below was checked against code or recorded data
@@ -21,6 +21,20 @@ unless marked "unverified".
 
 1. WHAT THE POLICY IS  (verified in code this session)
 ------------------------------------------------------
+!! ONE FINAL VERSION (decided with the user 2026-11-19): student.onnx = main
+   network + search head, NO pad finder, with the control code in
+   tidewater-game/app/public/policy/reference/. It runs in the browser game
+   and natively via benchmark.harness.tidewater_run. Benchmark: 84.9, 18/20,
+   one run (benchmark/evidence/final/summary.json; full traces only local in
+   benchmark/runs/tidewater_v1fix_20261119). Fails: waves-moderate-gravel and
+   combined rock, both by hovering 0.5-0.9 m above the pad (pad_fix_too_old /
+   too_high_for_blind_finish) until 240 s. Not investigated; the 8 Nov student
+   landed waves-gravel in 53 s. The description below of the pad finder is
+   history: it belongs to the 8 Nov benchmark student and R15.
+   Fixes in the final version (19 Nov): blind-finish boat-speed limit 1.7 m/s
+   (EARLY_COMMIT_MAX_BOAT_SPEED_MPS) and a one-turn near scan at up to 16 deg
+   tilt after losing a close boat (tidewater_guidance.py, student_runtime.py).
+
 Camera 640x360 on a pan/tilt gimbal, drone sensors, optional boat GPS radio.
 Three networks see, none flies; control code computes the 6 commands
 (3 velocities, yaw rate, pan rate, tilt rate) and PX4 flies them.
@@ -44,29 +58,24 @@ Three networks see, none flies; control code computes the 6 commands
 - Near the deck the printed pad marking is fitted; descent pauses without a
   fresh fit (marker_policy.py:164).
 
-!! FOLLOW-UP (not fixed): the Tidewater browser export (student.onnx,
-   tools/export-student-policy.py) contains only main network + search head.
-   The pad finder is missing, so the browser never does the pad-point override
-   and student_runtime.py:737-745 is dead code there. The benchmark student
-   (benchmark/policies/student/runtime.py) does run all three. Fixing it means
-   re-exporting the model and re-testing in the game; ask the user first.
+(The browser export has no pad finder; that is now the intended final
+   version, not a bug. student_runtime.py's pad-point override is dead code.)
 
 2. DOCS STATE  (all edited this session)
 ----------------------------------------
-- README.md, landing_training/README.md, benchmark/README.md,
-  tidewater-game/README.md, website/index.html + app.js + styles.css,
-  landing_training/docs/ARCHITECTURE.md, docs/media/README.md now tell the
-  same story with the same names: search head, pad finder, main network,
-  control code; benchmark rows "With search head, camera only (8 Nov)",
-  "Camera first, no search head" (R15), "Radio-dependent (15 Oct)".
-- Numbers used: teacher 99.2 (20/20), search student 87.8 (18/20, radio
-  blocked by the benchmark adapter), R15 57.5 (11/20), radio-robust 54.9 (7/20,
-  0 of 6 without radio), imitation baseline 0/12.
-- Failed missions (canonical digests): island = never verified the target,
-  fallback; rock = reached 0.3 m above the pad, pad left the view, collision.
-- Tidewater evidence: tidewater-game/recordings/session-2026-11-14_23-20-34.jsonl
-  (122 m, stationary boat, radio off, landed). recordings/ is gitignored, so
-  the docs state it without a link. One recording is not a success rate.
+- All public docs describe the final version with TWO networks (search head,
+  main network) and call the browser game "realistic simulator/game". The
+  name Tidewater appears only as origin (dgreenheck/tidewater) and in real
+  folder/file names. Rule is also in AGENTS.md.
+- Numbers used: teacher 99.2 (20/20), final version 84.9 (18/20, radio used
+  where the mission offers it), 8 Nov search student 87.8 (18/20, radio
+  blocked, with pad finder), R15 57.5 (11/20), radio-robust 54.9 (7/20, 0 of 6
+  without radio), imitation baseline 0/12.
+- Version table: landing_training/docs/ARCHITECTURE.md "Versions".
+- Game evidence (recordings/ is gitignored, so no links): session-2026-11-14_
+  23-20-34.jsonl (122 m, radio off, landed, before the 19 Nov fixes) and
+  session-2026-11-19_16-38-41.jsonl (final version, 15 m, boat behind the
+  drone, radio off, landed ~6 cm from centre after 53 s of policy flight).
 - The five-map montage GIF is from 2026-10-11 (pre-R15); removed from the root
   README, kept in docs/media with that label.
 - Do not mention other student re-runs in the docs unless the user asks.
@@ -74,7 +83,9 @@ Three networks see, none flies; control code computes the 6 commands
 3. FIGURES
 ----------
 docs/media/landing-flow.svg/.png (legend: Search head / Precision landing),
-training-story.*, benchmark-comparison.* (labels updated). Render PNG with:
+training-story.*, benchmark-comparison.* (five rows incl. final version;
+regenerate with python -B docs/tools/build_current_figures.py, which now
+reads benchmark/evidence/final/summary.json too). Render PNG with:
   chrome --headless=new --force-device-scale-factor=2 --window-size=W,H
          --hide-scrollbars --screenshot=out.png file:///path/figure.svg
 Inter is not installed here; PNGs render in Segoe UI.
@@ -97,4 +108,8 @@ Inter is not installed here; PNGs render in Segoe UI.
 - Much of artifacts/ is untracked; link only to tracked files
   (git ls-files). experimental_v39/base_r15 is tracked.
 - Untracked and not ours: renders/, session-2026-11-14_21-25-00.json
+- Game tests: test:ml:radio, test:ml:gpu, test:ml:shared, npm test pass.
+  policy-camera.mjs (inside test:ml) fails on this machine's GPU with or
+  without policy changes ("Bundled draws ... preserve every onboard RGB
+  pixel"); not investigated.
 - No real-world flight exists. Never imply hardware readiness.

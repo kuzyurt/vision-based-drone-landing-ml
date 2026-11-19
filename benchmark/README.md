@@ -1,18 +1,22 @@
 # Benchmark
 
-Four policies fly the same 20 MuJoCo missions with PX4 in the loop.
+Five policies fly the same 20 MuJoCo missions with PX4 in the loop.
 
-![Four policies on the same 20 missions](../docs/media/benchmark-comparison.png)
+![Five policies on the same 20 missions](../docs/media/benchmark-comparison.png)
 
 | Policy | Score | Landed | What it is |
 |---|---:|---:|---|
 | Privileged teacher, wave-aware gate | 99.2 | 20 / 20 | Uses simulator truth. Upper reference, source of training labels. |
-| Search student | 87.8 | 18 / 20 | R15 (main network and pad finder), frozen, plus the search head. Camera and own sensors only; this adapter blocks all boat-radio input. |
+| **Final version** | **84.9** | **18 / 20** | Main network and search head, the build that runs in the realistic browser game. Uses the boat's radio in the missions that offer it. Flown once, 19 November. |
+| Search student, 8 November | 87.8 | 18 / 20 | Main network and pad finder (R15), frozen, plus the search head. Camera and own sensors only; this adapter blocks all boat-radio input. |
 | R15 | 57.5 | 11 / 20 | Main network and pad finder, before the search head existed. Trusts the camera for position and takes only boat velocity from the radio. |
 | Radio-robust, 15 October | 54.9 | 7 / 20 | Earlier hybrid that leaned on the boat's radio. Landed 7 of 14 with radio, 0 of 6 without. |
 
-All 80 flights were valid. Exact values and every episode are in
-[`benchmark.json`](benchmark.json).
+All 100 flights were valid. For the four older policies, exact values and every
+episode are in [`benchmark.json`](benchmark.json). The final version is scored
+with the same rules; its score, results and text digests are in
+[`evidence/final/`](evidence/final/summary.json). The tracker only reads the
+four inventory policies, so it is not in `benchmark.json`.
 
 ## What is measured
 
@@ -25,14 +29,14 @@ All 80 flights were valid. Exact values and every episode are in
 | Combined | 10 % | 2: wind, waves, 100 m search and decoys together |
 | Mission speed | 10 % | Time to a successful landing |
 
-A landing counts only when the drone is disarmed and stable on the pad. The
-search student lands everything except the two combined missions: in one it
-never confirms the target and falls back, in the other it reaches 30 cm above
-the pad, loses it from view and collides.
+A landing counts only when the drone is disarmed and stable on the pad.
 
-The version that runs in Tidewater adds a radio approach and a sun-glare
-filter, and its browser build leaves the pad finder out. The canonical evidence
-here does not cover it.
+The final version fails two missions with waves (one moderate-wave mission and
+the combined rock mission). In both it reaches the pad and then hovers 0.5 to
+0.9 m above it, waiting for a fresh measurement of the pad markings, until the
+240 s limit. The 8 November search student fails the two combined missions: in
+one it never confirms the target and falls back, in the other it reaches 30 cm
+above the pad, loses it from view and collides.
 
 `condition_valid` means the scenario ran as specified; it is not a landing
 grade. A policy's own "lock" is not a scored acquisition.
@@ -55,10 +59,11 @@ benchmark/
   evidence/
     teacher/               20 canonical episodes
     student/               20 canonical episodes (18 strict landings)
+    final/                 final version: results, cases, text digests, score
     r15/                   20 canonical episodes
     radio/                 20 canonical episodes
   harness/                runner, scoring, tracker, digest, routes, PX4 bridge,
-                          and the Tidewater student adapter
+                          and the adapter that flies the browser-game build
   viewer/index.html       static comparison viewer
   runs/                   new flights; intentionally empty
   tests/                  focused digest tests
@@ -87,15 +92,16 @@ The worker subprocess imports the active `benchmark` package, not the archived
 `old/benchmark` tree. New flights are separate working data and are not
 canonical evidence.
 
-To fly the Tidewater version of the student (radio approach, same networks)
-on the same missions, without touching the pinned harness files:
+To fly the final version (the browser-game build) on the same missions,
+without touching the pinned harness files:
 
 ```powershell
 python -B -u -m benchmark.harness.tidewater_run run --name NAME [--case ID ...] [--workers 3]
 ```
 
 It runs `student.onnx` on the CPU and writes to `runs/NAME` like any other new
-flight. MuJoCo has no sun, so the sun-glare filter stays inactive.
+flight. MuJoCo has no sun, so the sun-glare filter stays inactive. The tracker
+does not list these runs; score them with `benchmark.harness.scoring.aggregate`.
 
 ## Viewer
 
