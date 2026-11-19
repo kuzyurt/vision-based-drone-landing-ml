@@ -7,14 +7,14 @@
 | [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
 | [Poster](tidewater-boat-poster.jpg) | Frame from that clip |
 | [Earlier landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback (see provenance below) |
-| [Landing flow](landing-flow.png) | Search, identify, approach, measure, land; where the radio helps; [SVG](landing-flow.svg) |
+| [Landing flow](landing-flow.png) | The flight in five steps, split into the search-head phase and precision landing; [SVG](landing-flow.svg) |
 | [Training story](training-story.png) | Four design steps with their benchmark results; [SVG](training-story.svg) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
 | [Benchmark comparison](benchmark-comparison.png) | Four policies on the current 20-mission benchmark; [SVG](benchmark-comparison.svg) |
 | [Architecture](policy-architecture.png) | R15 perception, localization and flight-command flow; [SVG](policy-architecture.svg) |
 | [System data flow](policy-architecture-detailed.png) | Camera, PX4 telemetry, radio, perception, geometry, flight/gimbal commands and feedback; [SVG](policy-architecture-detailed.svg) |
 | [Neural architecture](policy-neural-architecture.png) | Shared encoder, spatial acquisition, recurrent pose and bounded radio fusion; [SVG](policy-neural-architecture.svg) |
-| [Five-map montage](drone-policy-landing.gif) | Frozen policy landing in scenarios absent from its training data |
+| [Five-map montage](drone-policy-landing.gif) | October 2026 policy (before R15) landing in scenarios absent from its training data |
 
 ## Training and visual transfer
 

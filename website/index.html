@@ -34,8 +34,8 @@
 	<video class="hero-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg" data-src="assets/hero.mp4" data-fallback="assets/tidewater-landing.mp4"></video>
 	<div class="hero-shade"></div>
 	<dl class="hero-facts">
-		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
-		<div><dt>Radio + camera</dt><dd>radio finds the boat, vision lands it</dd></div>
+		<div><dt>18 of 20</dt><dd>benchmark missions landed, camera only</dd></div>
+		<div><dt>Camera lands it</dt><dd>the boat's radio can help find it, never lands it</dd></div>
 		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
 	</dl>
 </section>
@@ -59,7 +59,7 @@
 <section class="band alt" id="how">
 	<div class="wrap">
 		<h2>How it works</h2>
-		<p class="lead narrow">A neural network sees. Geometry measures. A controller decides. The network never commands the motors directly — that separation is what made landings reliable.</p>
+		<p class="lead narrow">Three small neural networks look at the camera image and report what they see. Control code and the PX4 autopilot do the flying. An earlier network that flew the drone directly landed in none of its test flights.</p>
 
 		<div class="arch" id="arch">
 			<svg class="arch-svg" viewBox="0 0 1180 330" role="img" aria-label="Signal flow: camera and drone sensors feed learned perception, then geometric localization, then the landing controller, then PX4, which drives the motors and the camera gimbal. The camera sees the result and the loop repeats 25 times per second.">
@@ -197,16 +197,16 @@
 		<h2>Results</h2>
 		<p class="lead narrow">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
 
-		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, current policy 87.8 with 18 of 20, earlier R15 policy 57.5 with 11 of 20, radio-robust policy 54.9 with 7 of 20."></div>
+		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings, with search head, camera only, 87.8 with 18 of 20; camera first, before the search head, 57.5 with 11 of 20; radio-dependent 54.9 with 7 of 20."></div>
 
 		<div class="two results-notes">
 			<div>
 				<h3>What the current policy does well</h3>
-				<p>It landed 18 of 20: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, and the search itself, with other boats in the scene.</p>
+				<p>It landed 18 of 20 using only its camera and its own sensors: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, and the search from 100&nbsp;m with other boats in the scene.</p>
 			</div>
 			<div>
 				<h3>Where it still fails</h3>
-				<p>The search without radio is the weak point. With only its camera, 100&nbsp;m away and with other boats in the scene, it struggles to pick the target boat out and can lose it before the approach.</p>
+				<p>Both missions that combine everything at once: wind, waves, a 100&nbsp;m search and other boats. In one the drone never confirmed the right boat; in the other it came down to 30&nbsp;cm above the pad, lost sight of it and hit the boat. Everything so far is simulation; there has been no flight with real hardware.</p>
 			</div>
 		</div>
 		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
@@ -225,23 +225,28 @@
 			</li>
 			<li>
 				<span class="when">Step 2</span>
-				<h3>Copy the expert — and fail</h3>
-				<p>A network trained to imitate the expert's commands failed in flight: 0 of 12 comparison flights landed.</p>
+				<h3>Let a network fly</h3>
+				<p>A network trained to copy the teacher's commands landed in none of its 12 test flights. Every small mistake changed what it saw next.</p>
 			</li>
 			<li>
 				<span class="when">Step 3</span>
 				<h3>Split seeing from flying</h3>
-				<p>The network estimates the boat; marker geometry and an explicit controller do the landing. 12 of 12 comparison flights landed.</p>
+				<p>From here on the networks only estimate where the boat and the pad are, and control code flies. The first version leaned on the boat's radio: 7 of 20, and none of the six missions without it.</p>
 			</li>
 			<li>
 				<span class="when">Step 4</span>
-				<h3>Use the radio only to find</h3>
-				<p>The radio is used to find the boat and nothing else. From the handover on, vision and pad geometry fly the landing, so a wrong boat position cannot pull the descent off course.</p>
+				<h3>Camera first</h3>
+				<p>Trust the camera for position. 11 of 20, but it landed only half of the missions that start with a search.</p>
 			</li>
 			<li>
 				<span class="when">Step 5</span>
-				<h3>Find the right boat</h3>
-				<p>A search head learns to scan, tell the target from other boats and hand over to the landing policy. 18 of 20 on the benchmark.</p>
+				<h3>Add a search head</h3>
+				<p>A small network that marks every boat and picks out the target, trained while the main network stayed frozen. 18 of 20, camera only.</p>
+			</li>
+			<li>
+				<span class="when">Step 6</span>
+				<h3>Radio, only to find</h3>
+				<p>In Tidewater the drone now flies to the boat's radio position first and lets the camera confirm it. Not yet scored on the benchmark.</p>
 			</li>
 		</ol>
 	</div>

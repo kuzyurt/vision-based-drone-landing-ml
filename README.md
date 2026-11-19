@@ -4,51 +4,60 @@
 
 # Vision-based drone landing
 
-A drone that finds a moving boat through its onboard camera, matches the deck
-and lands on it under PX4 control.
+A drone finds a moving boat with its camera and lands on the 60 cm pad on its
+deck, in wind and waves, with other boats around. Three small neural networks
+do the seeing; control code and the PX4 autopilot do the flying.
 
-**Trained only in MuJoCo.** The same frozen policy also lands in Tidewater, a
-realistic ocean game it never saw during training.
+Everything runs in simulation. The networks were trained only in MuJoCo and are
+tested in Tidewater, a second simulator with realistic graphics they never saw.
+Nothing has flown on real hardware yet.
 
 | | |
 |---|---|
-| Benchmark | **18 of 20** missions landed, score 87.8 / 100 |
-| Inputs | One 640 × 360 camera and the drone's own sensors. No boat position. |
+| Benchmark | **18 of 20** missions landed, camera only (score 87.8 / 100) |
+| Networks | Search head and pad finder, about 45,000 parameters each; main network, about 1.55 million |
+| Inputs | One 640 × 360 camera that can turn and tilt, the drone's own sensors and, if the boat sends it, its GPS position by radio |
 | Outputs | Velocity, yaw rate and camera pan/tilt at 25 Hz, flown by PX4 1.16 |
-| Vehicles | Holybro X500 V2 drone and the AERODOCK boat, both from FreeCAD |
+| Vehicles | Holybro X500 V2 drone and the AERODOCK boat, both modelled in FreeCAD |
 
 ## How it lands
 
-![Camera, learned perception, pad geometry, landing controller and PX4](docs/media/policy-flow.png)
+![The drone's path from search to touchdown](docs/media/landing-flow.png)
 
-A neural network finds the boat and estimates its motion. Close to the deck,
-the known pad marking gives a metric position. An explicit controller searches,
-aligns, matches the deck and descends; PX4 flies the commands. The network
-never commands the motors.
+The search head looks at every camera frame and marks the boats it sees,
+telling the target apart from similar and different boats. With radio, the
+drone flies to the boat's position first; without it, it climbs to about 7 m
+and turns on the spot until the search head finds the target. Then the pad
+finder marks the pad in the image so the camera can stay on it, the main
+network estimates where the pad is and how the deck is moving, and the control
+code keeps the drone above the pad and brings it down. In the last few metres
+the camera also measures the printed pattern on the pad directly.
 
-[Training and architecture in detail](landing_training/README.md)
+[How it works, step by step](landing_training/README.md)
 
 ## Results
 
-![Four policies on the same 20 missions](docs/media/benchmark-comparison.png)
+![Missions landed by each version of the design](docs/media/training-story.png)
 
-All policies fly the same 20 MuJoCo missions: five coasts, boat speeds up to
-1.5 m/s, 4 m/s crosswind, waves, a search from 100 m and decoy boats. A landing
-counts only when the drone is disarmed and stable on the pad.
+Each bar is one version of the design. The first was tested on 12 flights, the
+others on the same 20 MuJoCo missions: five coasts, boats up to 1.5 m/s, 4 m/s
+crosswind, waves, searches from 100 m and decoy boats. A landing only counts if
+the drone ends up disarmed and stable on the pad.
 
-The current search policy lands every mission in the landing, wind, wave and
-search categories. It fails both missions that combine all conditions at once.
-The teacher uses simulator truth and is the upper reference, not a deployable
-policy.
+With the search head, the drone lands every landing, wind, wave and search
+mission. It still fails the two missions that combine everything at once. The
+teacher, which sees the simulator's ground truth, lands all 20 and marks the
+ceiling.
 
 [Benchmark, evidence and viewer](benchmark/README.md)
 
-## Beyond the training scenes
+## A second world: Tidewater
 
-![Frozen policy landing in situations absent from its training data](docs/media/drone-policy-landing.gif)
-
-New combinations of water, rain, fog, wind and waves in MuJoCo. None were in
-the training data, and the policy was not retrained.
+[Tidewater](tidewater-game/README.md) is a browser game with its own ocean, sky
+and boats, where you can fly the drone yourself and hand it over to the
+networks. They fly there without any retraining. In one recorded session the
+drone started 122 m from a stationary boat with the radio switched off and
+landed on the pad.
 
 ## Repository
 

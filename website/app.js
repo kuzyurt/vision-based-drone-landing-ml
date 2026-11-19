@@ -5,12 +5,12 @@ const STAGES = {
 	sense: {
 		title: 'Camera and drone sensors',
 		text: 'Everything the policy knows comes from the drone itself: one camera on a pan-tilt mount and the autopilot\'s own estimate of where the drone is and how it moves.',
-		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Radio', 'the boat\'s position, used to find it, never to land' ] ],
+		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Radio', 'optional: the boat\'s position helps find it, never lands it' ] ],
 	},
 	see: {
-		title: 'See — a neural network finds the boat',
-		text: 'A compact image network locates boats in the frame and estimates the target\'s position and motion. A small memory carries information from one frame to the next.',
-		facts: [ [ 'Encoder', 'MobileNetV3-Small, shared by all heads' ], [ 'Search', 'heatmap of boats, plus “is this the right one?”' ], [ 'Memory', 'recurrent unit (GRU) with 128 states' ] ],
+		title: 'See — three networks find the boat and the pad',
+		text: 'All three share one image encoder. The search head marks every boat in the frame and says which one is the target. The pad finder marks the point where the pad is, so the camera can stay on it. The main network estimates where the pad is relative to the drone and how the deck moves, with a short memory of earlier frames.',
+		facts: [ [ 'Search head', 'about 45,000 parameters: every boat, and which one is the target' ], [ 'Pad finder', 'about 45,000 parameters: one point on the pad, and whether it is in view' ], [ 'Main network', 'about 1.55 million: pad position and deck motion, GRU memory' ] ],
 	},
 	measure: {
 		title: 'Measure — geometry locates the pad',
@@ -19,7 +19,7 @@ const STAGES = {
 	},
 	decide: {
 		title: 'Decide — an explicit landing controller',
-		text: 'A hand-written controller turns the estimates into a flight: search, approach, match the deck, descend, touch down. It limits every command and backs off when the measurement is lost.',
+		text: 'A controller turns the estimates into a flight: search, approach, match the deck, descend, touch down. It limits every command and backs off when the measurement is lost.',
 		facts: [ [ 'Output', 'three velocities, turn rate, camera pan and tilt' ], [ 'Rate', '25 commands per second' ], [ 'Safety', 'bounded commands, descent only on a measured pad, recovery' ] ],
 	},
 	fly: {
@@ -31,9 +31,9 @@ const STAGES = {
 
 const MODELS = [
 	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'Search policy', note: 'radio finds, camera lands', score: 87.8, landed: 18 },
-	{ key: 'r15', name: 'Landing policy R15', note: 'before search training', score: 57.5, landed: 11 },
-	{ key: 'radio', name: 'Radio-robust policy', note: 'landed only with boat radio', score: 54.9, landed: 7 },
+	{ key: 'current', name: 'With search head', note: 'camera only', score: 87.8, landed: 18 },
+	{ key: 'r15', name: 'Camera first', note: 'before the search head', score: 57.5, landed: 11 },
+	{ key: 'radio', name: 'Radio-dependent', note: 'landed only with boat radio', score: 54.9, landed: 7 },
 ];
 
 // ---- navigation bar turns solid after the hero

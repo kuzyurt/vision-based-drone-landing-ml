@@ -170,7 +170,7 @@ p { margin: 0; }
 .foot-note { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 860px; }
 
 /* ---- story */
-.story { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; }
+.story { list-style: none; margin: 44px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .story li { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 24px 22px 26px; }
 .story .when { font: 500 .95rem var(--mono); color: var(--accent-ink); }
 .story h3 { margin: 10px 0 8px; font-size: 1.2rem; }
