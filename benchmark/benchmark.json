@@ -1,6 +1,6 @@
 {
   "schema": "aerodock.benchmark.track.v1",
-  "updated_utc": "2026-11-12T16:31:58.122065+00:00",
+  "updated_utc": "2026-11-19T16:02:48.232521+00:00",
   "benchmark": {
     "id": "aerodock-20-wave-gate-3c2b501",
     "label": "AeroDock 20-case landing benchmark",
@@ -8,6 +8,7 @@
     "schema": "aerodock.benchmark.mission.v4-bounded-search",
     "plan_sha256": "3c2b501cbd8eb4928c6e3c4ab2781e0b3cfb09bbdd9be1573b25fe8367683c8d",
     "suite_path": "benchmark/definition/suite.json",
+    "weights_path": "benchmark/definition/scoring_weights.json",
     "runtime_sha256": "7c83256bc738bec027b2cb1d0aa02de2d90fbf4ac11251c4b79d0d399d79a2cb",
     "case_count": 20,
     "categories": {
@@ -17,19 +18,19 @@
       },
       "wind": {
         "label": "Wind resilience",
-        "weight": 0.15
+        "weight": 0.1
       },
       "waves": {
         "label": "Wave resilience",
-        "weight": 0.15
+        "weight": 0.1
       },
       "acquisition": {
         "label": "Find the target boat",
-        "weight": 0.3
+        "weight": 0.25
       },
       "combined": {
         "label": "Combined conditions",
-        "weight": 0.1
+        "weight": 0.25
       },
       "speed": {
         "label": "Successful mission speed",
@@ -58,7 +59,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": false,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -104,7 +105,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": false,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -150,7 +151,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -196,7 +197,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -242,7 +243,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -288,7 +289,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -334,7 +335,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -380,7 +381,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -426,7 +427,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -476,7 +477,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.3,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -710,7 +711,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": false,
-        "weight": 0.15,
+        "weight": 0.1,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -756,7 +757,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": false,
-        "weight": 0.15,
+        "weight": 0.1,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -802,7 +803,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.15,
+        "weight": 0.1,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -848,7 +849,7 @@
         "speed_reference_s": 58.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.15,
+        "weight": 0.1,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.15,
@@ -894,7 +895,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.1,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.2,
@@ -944,7 +945,7 @@
         "speed_reference_s": 93.333,
         "speed_deadline_s": 240.0,
         "extrapolation": true,
-        "weight": 0.1,
+        "weight": 0.25,
         "condition_tolerance": {
           "start_distance_m": 0.75,
           "boat_speed_m_s": 0.2,
@@ -1703,7 +1704,7 @@
         "planned": 20
       },
       "summary": {
-        "total": 87.7710373737363,
+        "total": 72.7710373737363,
         "complete": true,
         "categories": {
           "landing": {
@@ -2403,7 +2404,7 @@
         "planned": 20
       },
       "summary": {
-        "total": 57.49461407701248,
+        "total": 47.49461407701248,
         "complete": true,
         "categories": {
           "landing": {
@@ -3075,7 +3076,7 @@
         "planned": 20
       },
       "summary": {
-        "total": 54.88614553000801,
+        "total": 44.38614553000801,
         "complete": true,
         "categories": {
           "landing": {

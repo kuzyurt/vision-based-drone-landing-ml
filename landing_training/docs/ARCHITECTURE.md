@@ -15,10 +15,10 @@ There is one final version. Everything else is history kept as evidence.
 
 | Version | Networks | Runs where | Benchmark |
 |---|---|---|---|
-| **Final** (`student.onnx`, 19 Nov) | Main network + search head | Realistic browser game; natively via `benchmark.harness.tidewater_run` | 84.9, 18 / 20 ([evidence](../../benchmark/evidence/final/summary.json)) |
-| Search student `fresh-search-f62c10a2` (8 Nov) | Main network + pad finder + search head, radio blocked | Benchmark only | 87.8, 18 / 20 |
-| R15 | Main network + pad finder | Benchmark only | 57.5, 11 / 20 |
-| Radio-robust (15 Oct) | Earlier hybrid | Benchmark only | 54.9, 7 / 20 |
+| **Final** (`student.onnx`, 19 Nov) | Main network + search head | Realistic browser game; natively via `benchmark.harness.tidewater_run` | 79.9, 18 / 20 ([evidence](../../benchmark/evidence/final/summary.json)) |
+| Search student `fresh-search-f62c10a2` (8 Nov) | Main network + pad finder + search head, radio blocked | Benchmark only | 72.8, 18 / 20 |
+| R15 | Main network + pad finder | Benchmark only | 47.5, 11 / 20 |
+| Radio-robust (15 Oct) | Earlier hybrid | Benchmark only | 44.4, 7 / 20 |
 
 The final version's control code is
 [`tidewater-game/app/public/policy/reference/`](../../tidewater-game/app/public/policy/reference/):

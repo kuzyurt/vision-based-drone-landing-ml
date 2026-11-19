@@ -14,7 +14,7 @@ Nothing has flown on real hardware yet.
 
 | | |
 |---|---|
-| Benchmark | **18 of 20** missions landed (score 84.9 / 100) |
+| Benchmark | **18 of 20** missions landed (score 79.9 / 100) |
 | Networks | Search head, about 45,000 parameters; main network, about 1.55 million |
 | Inputs | One 640 × 360 camera that can turn and tilt, the drone's own sensors and, if the boat sends it, its GPS position by radio |
 | Outputs | Velocity, yaw rate and camera pan/tilt at 25 Hz, flown by PX4 1.16 |

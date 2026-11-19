@@ -7,10 +7,10 @@ Five policies fly the same 20 MuJoCo missions with PX4 in the loop.
 | Policy | Score | Landed | What it is |
 |---|---:|---:|---|
 | Privileged teacher, wave-aware gate | 99.2 | 20 / 20 | Uses simulator truth. Upper reference, source of training labels. |
-| **Final version** | **84.9** | **18 / 20** | Main network and search head, the build that runs in the realistic browser game. Uses the boat's radio in the missions that offer it. Flown once, 19 November. |
-| Search student, 8 November | 87.8 | 18 / 20 | Main network and pad finder (R15), frozen, plus the search head. Camera and own sensors only; this adapter blocks all boat-radio input. |
-| R15 | 57.5 | 11 / 20 | Main network and pad finder, before the search head existed. Trusts the camera for position and takes only boat velocity from the radio. |
-| Radio-robust, 15 October | 54.9 | 7 / 20 | Earlier hybrid that leaned on the boat's radio. Landed 7 of 14 with radio, 0 of 6 without. |
+| **Final version** | **79.9** | **18 / 20** | Main network and search head, the build that runs in the realistic browser game. Uses the boat's radio in the missions that offer it. Flown once, 19 November. |
+| Search student, 8 November | 72.8 | 18 / 20 | Main network and pad finder (R15), frozen, plus the search head. Camera and own sensors only; this adapter blocks all boat-radio input. |
+| R15 | 47.5 | 11 / 20 | Main network and pad finder, before the search head existed. Trusts the camera for position and takes only boat velocity from the radio. |
+| Radio-robust, 15 October | 44.4 | 7 / 20 | Earlier hybrid that leaned on the boat's radio. Landed 7 of 14 with radio, 0 of 6 without. |
 
 All 100 flights were valid. For the four older policies, exact values and every
 episode are in [`benchmark.json`](benchmark.json). The final version is scored
@@ -22,12 +22,19 @@ four inventory policies, so it is not in `benchmark.json`.
 
 | Category | Weight | Missions |
 |---|---:|---|
-| Find the target boat | 30 % | 10: near and 100 m starts, radio on/off, with and without decoy boats |
+| Find the target boat | 25 % | 10: near and 100 m starts, radio on/off, with and without decoy boats |
 | Landing / boat speed | 20 % | 4: 0.6 and 1.5 m/s |
-| Wind | 15 % | 2: 4 m/s crosswind |
-| Waves | 15 % | 2: 0.15 m |
-| Combined | 10 % | 2: wind, waves, 100 m search and decoys together |
+| Wind | 10 % | 2: 4 m/s crosswind |
+| Waves | 10 % | 2: 0.15 m |
+| Combined | 25 % | 2: wind, waves, 100 m search and decoys together |
 | Mission speed | 10 % | Time to a successful landing |
+
+The combined missions are what the drone would actually face, so they weigh as
+much as finding the boat; wind and waves alone are parts of them. The weights
+were revised on 19 November 2026 (before: finding 30, landing 20, wind 15,
+waves 15, combined 10, speed 10). They live in
+[`definition/scoring_weights.json`](definition/scoring_weights.json); the
+missions and every flight are unchanged.
 
 A landing counts only when the drone is disarmed and stable on the pad.
 

@@ -11,25 +11,25 @@
 <text x="40" y="258" font-size="24" font-weight="700" fill="#0d1b24">Final version</text>
 <text x="40" y="286" font-size="19" fill="#2c3f4b">two networks, radio if offered</text>
 <rect x="340" y="236" width="620" height="52" rx="8" fill="#f1f5f6"/>
-<rect x="340" y="236" width="526.4" height="52" rx="8" fill="#0b7a75"/>
-<text x="1160" y="260" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">84.9</text>
+<rect x="340" y="236" width="495.4" height="52" rx="8" fill="#0b7a75"/>
+<text x="1160" y="260" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">79.9</text>
 <text x="1160" y="288" font-size="19" fill="#2c3f4b" text-anchor="end">18 / 20 landed</text>
 <text x="40" y="362" font-size="24" font-weight="700" fill="#0d1b24">8 November</text>
 <text x="40" y="390" font-size="19" fill="#2c3f4b">with pad finder, no radio</text>
 <rect x="340" y="340" width="620" height="52" rx="8" fill="#f1f5f6"/>
-<rect x="340" y="340" width="544.2" height="52" rx="8" fill="#8fbcb9"/>
-<text x="1160" y="364" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">87.8</text>
+<rect x="340" y="340" width="451.2" height="52" rx="8" fill="#8fbcb9"/>
+<text x="1160" y="364" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">72.8</text>
 <text x="1160" y="392" font-size="19" fill="#2c3f4b" text-anchor="end">18 / 20 landed</text>
 <text x="40" y="466" font-size="24" font-weight="700" fill="#0d1b24">R15</text>
 <text x="40" y="494" font-size="19" fill="#2c3f4b">before the search head</text>
 <rect x="340" y="444" width="620" height="52" rx="8" fill="#f1f5f6"/>
-<rect x="340" y="444" width="356.5" height="52" rx="8" fill="#9db3bb"/>
-<text x="1160" y="468" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">57.5</text>
+<rect x="340" y="444" width="294.5" height="52" rx="8" fill="#9db3bb"/>
+<text x="1160" y="468" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">47.5</text>
 <text x="1160" y="496" font-size="19" fill="#2c3f4b" text-anchor="end">11 / 20 landed</text>
 <text x="40" y="570" font-size="24" font-weight="700" fill="#0d1b24">Radio-robust policy</text>
 <text x="40" y="598" font-size="19" fill="#2c3f4b">landed only with boat radio</text>
 <rect x="340" y="548" width="620" height="52" rx="8" fill="#f1f5f6"/>
-<rect x="340" y="548" width="340.3" height="52" rx="8" fill="#9db3bb"/>
-<text x="1160" y="572" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">54.9</text>
+<rect x="340" y="548" width="275.2" height="52" rx="8" fill="#9db3bb"/>
+<text x="1160" y="572" font-size="30" font-weight="700" fill="#0d1b24" text-anchor="end">44.4</text>
 <text x="1160" y="600" font-size="19" fill="#2c3f4b" text-anchor="end">7 / 20 landed</text>
 </svg>

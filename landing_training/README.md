@@ -86,16 +86,16 @@ the drone ends up disarmed and stable on the pad.
 | Policy | Score | Landed |
 |---|---:|---:|
 | Teacher (sees the simulator's ground truth, sets the ceiling) | 99.2 | 20 / 20 |
-| **Final version** (search head and main network) | **84.9** | **18 / 20** |
-| With search head and pad finder, camera only (8 Nov) | 87.8 | 18 / 20 |
-| Camera first, no search head | 57.5 | 11 / 20 |
-| Radio-dependent (15 Oct) | 54.9 | 7 / 20 |
+| **Final version** (search head and main network) | **79.9** | **18 / 20** |
+| With search head and pad finder, camera only (8 Nov) | 72.8 | 18 / 20 |
+| Camera first, no search head | 47.5 | 11 / 20 |
+| Radio-dependent (15 Oct) | 44.4 | 7 / 20 |
 
 The final version uses the boat's radio in the missions that offer it; the
 8 November version was flown with the radio blocked everywhere. Both land 18
-of 20. The final version scores a little lower because one wave mission ran
-out of time and its landings took slightly longer; in exchange it lands one of
-the two missions that combine everything.
+of 20. The final version scores higher because it lands one of the two
+missions that combine everything, which weigh the most; it loses one wave
+mission, which ran out of time.
 
 The final version also flies in a [realistic browser game](../tidewater-game/README.md)
 whose ocean, light and boats the networks never saw during training. There it
