@@ -58,6 +58,6 @@ npx wrangler login
 npx wrangler pages deploy site --project-name aerodock --branch main
 ```
 
-The first deploy creates the project; the site is then at
-`https://<project-name>.pages.dev`. Repeat the build and the deploy after any
-change.
+The project `aerodock` exists; the site is at
+**https://aerodock-b9t.pages.dev/** (Cloudflare added the suffix). Repeat the
+build and the deploy after any change; only changed files are uploaded.
