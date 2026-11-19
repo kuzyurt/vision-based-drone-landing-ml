@@ -3,10 +3,11 @@
 [![The AERODOCK boat under way in Tidewater](../docs/media/tidewater-boat-preview.gif)](../docs/media/tidewater-boat-1080p.mp4)
 
 Tidewater puts the drone and the boat into a realistic coastal world as a small
-playable game. Fly either vehicle, or hand the drone to the trained policy.
+game you can play in the browser. Fly either vehicle yourself, or hand the
+drone over and let it find the boat and land.
 
-**The policy is trained only in MuJoCo, never on Tidewater scenes.** Tidewater
-tests whether it still lands when everything it sees looks different.
+The networks that do this were trained only in MuJoCo and never saw a
+Tidewater image, so every landing here is a test of how well they carry over.
 
 ## Run locally
 
@@ -32,6 +33,10 @@ the collision world and shaders. Wait for **Offline files ready** for offline pl
 3. Press **L**. The policy takes the drone, finds the boat and lands. **L** again
    returns manual control.
 
+With the boat's radio on, the drone flies straight to the boat and then
+confirms it with the camera. Press **X** to switch the radio off; the drone then
+climbs and turns on the spot until its camera finds the boat.
+
 | Key | Action |
 |---|---|
 | B | Switch between drone and boat |
@@ -47,26 +52,30 @@ the collision world and shaders. Wait for **Offline files ready** for offline pl
 The boat stays controllable during a landing. Lower the platform before closing
 the lids.
 
-## What the game adds
+## What it tests
 
-WebGPU renders the coastal world and the onboard camera. Browser WASM workers
-run MuJoCo vehicle physics and PX4; the policy runs locally with ONNX/WebGPU
-inference and a Python controller. No server-side flight process is needed.
+WebGPU draws the coast and the drone's camera image. MuJoCo and PX4 run in the
+browser as WebAssembly, the main network and the search head run locally
+through ONNX Runtime, and the control code runs in Python inside the page. No
+server takes part in a flight. (The benchmark version also runs a small pad
+finder; this browser build does not include it yet.)
 
-The policy must work from the images Tidewater actually renders. It is not a
-different background placed behind a prerecorded landing. This makes the game
-an interactive visual-transfer experiment as well as a way to explore the system.
+The networks only ever see the images Tidewater renders, not a new background
+pasted behind a recorded flight. So the game checks whether what they learned
+in MuJoCo still works in a world that looks different. In one recorded session
+the drone started 122 m from a stationary boat with the radio off and landed on
+the pad. One recording is not a success rate, though.
 
-Finding a distant or obscured target remains difficult.
-[Integration results](benchmarks/flight-parity/landing-hardening-20261018.md) and
-[stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md)
-document successful flights and failures.
+Tests from October, made with the earlier R15 policy:
+[integration results](benchmarks/flight-parity/landing-hardening-20261018.md)
+and [stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md)
+(in German).
 
 ## Explore the implementation
 
 | Read | Purpose |
 |---|---|
-| [Training and architecture](../landing_training/README.md) | MuJoCo world, teacher and learned policy |
+| [How the landing works](../landing_training/README.md) | The two networks, the search and the landing, and how they were trained |
 | [Runtime reference](docs/RUNTIME_REFERENCE.md) | Hosting headers, offline caching and policy export |
 | [WASM integration](wasm/README.md) | PX4/MuJoCo builds and parity tests |
 | [Recording details](../docs/media/README.md) | Demo source, model version and 1080p export |

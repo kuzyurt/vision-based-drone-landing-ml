@@ -1,118 +1,100 @@
-HANDOFF FOR THE NEXT AGENT  (written 2026-11-18)
+HANDOFF FOR THE NEXT AGENT  (updated 2026-11-19)
 ==================================================
 
-Read this first. The user continues in the cloud. Everything below was checked
-against code or recorded data in this session unless marked "unverified".
+Read this first. Everything below was checked against code or recorded data
+unless marked "unverified".
 
 0. HOW THE USER WANTS TO WORK
 -----------------------------
-- This repo is built and maintained by LLMs. Docs can be old or wrong. Never
-  trust a README/CURRENT_POLICY/benchmark note without checking code or data.
-  Example: a doc said the new policy "must never use radio". That is false.
-  Radio is allowed; the current search is radio-first when a packet exists.
-- Writing: plain English, short enough that nobody gets bored, but NOT clipped
-  telegram sentences. Leave out things no reader needs. Readers are engineers,
-  professors and hiring managers who do not know the topic. Chronological,
-  important points only, no fluff, must not sound like AI. Don't open with
-  technical detail; details go to a linked deeper page.
-- Figures: clean, few words, big type, ONE idea per figure, no small grey side
-  text, no crowded boxes. The user liked the scene figure (drone path over the
-  sea to a boat) and the bar chart far more than the first box-and-legend
-  version. Show things, don't label everything.
-- Don't make hard rules; understand what a rule is meant to prevent.
-- Review every text twice (facts, then length/fluff/jargon like "R15").
-- Ask before big or outward-facing steps. Explain in plain English.
+- This repo is built and maintained by LLMs. Docs can be old or wrong. Check
+  code or data before repeating any claim. Radio IS allowed for the policy.
+- Rules are means, not maths. Understand what a rule prevents and prevent that:
+  "no jargon" = no unexplained words (a parameter count with one sentence of
+  input/output is fine); "short" = no wasted sentences, not clipped telegram
+  style; "not AI-sounding" = no slogans, habit triplets, staccato mottos.
+- READMEs: assume the reader never opens code. Explain the concept in flight
+  order (camera, networks, what each sees, what code does, search, landing).
+- Each README has its own reader: root = one-minute overview; landing_training
+  = how it works; benchmark = numbers and commands; tidewater-game = how to play.
+- Figures: clean, few words, one idea, no small grey side text.
+- Think before each change. Ask before outward-facing steps (push).
 
-1. WHAT THE PROJECT IS
-----------------------
-A drone (Holybro X500 V2, PX4) finds a moving boat (AERODOCK) from up to 100 m
-with its camera and lands on the 60 cm pad. Trained only in MuJoCo with PX4 in
-the loop. Neural net = perception only; geometry + rules fly; PX4 does motors.
-Tidewater (tidewater-game/) is a browser game used as a visual-transfer test.
+1. WHAT THE POLICY IS  (verified in code this session)
+------------------------------------------------------
+Camera 640x360 on a pan/tilt gimbal, drone sensors, optional boat GPS radio.
+Three networks see, none flies; control code computes the 6 commands
+(3 velocities, yaw rate, pan rate, tilt rate) and PX4 flies them.
+- Main network (R15 pose model, base/pose.pt): ~1.55 M params (MobileNetV3-Small
+  encoder + 128-unit GRU). In: image, 32 numbers of own state incl. gimbal
+  angles, memory. Out: 15 values (pad visible, pad position/velocity relative
+  to drone, heading, deck normal, pad pixel, contact).
+- Pad finder (R15 spatial_acquisition.pt): 45,092 params, image only. Out: one
+  pad point + presence. While no fresh marker fit (>0.5 s), its point replaces
+  the main network's pad point/visibility and the camera is aimed at it.
+  Source: artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/
+  package/base_r15/code/landing_training/radio_robust_20261015/runtime.py:74-85.
+- Search head: 45,386 params (pad-finder design + 4-class evidence + 2-class
+  identity), initialised from the pad finder's weights, trained with the other
+  two frozen. 60 flights (48 train / 6 val / 6 test), 45 with decoys.
+- Search without radio: climb to >= 7 m (student_runtime.MIN_SEARCH_HEIGHT_M),
+  scan; pass 1 only target/similar boats, passes 2-3 also unknown boats
+  (search_decision.py). The old separate 360 deg pre-check turn was removed
+  2026-11-14. With radio: fly to the radio position, hand over after 4 frames of
+  "target_boat" >= 0.5 that agree with the radio (student_radio.py).
+- Near the deck the printed pad marking is fitted; descent pauses without a
+  fresh fit (marker_policy.py:164).
 
-2. WHAT HAPPENED THIS SESSION
------------------------------
-a) The benchmark's "student" (benchmark/policies/student, 8 Nov) is OLD logic.
-   The "updated student" = same weights (checkpoint f62c10a2) + new control
-   code in tidewater-game/app/public/policy/reference/ (student_api.py,
-   student_radio.py, student_runtime.py, tidewater_guidance.py) + student.onnx.
-   Changes: radio-first approach, radio-vs-camera agreement check, sun-glare
-   zone, weak heat-map peaks, pre-check climb, intercept approach.
-b) NEW adapter flies that browser stack natively inside the benchmark:
-   benchmark/harness/student_tidewater.py   (actor; onnxruntime CPU, ~13 ms/frame)
-   benchmark/harness/tidewater_run.py       (launcher; does not edit run.py)
-   Run:  python -B -u -m benchmark.harness.tidewater_run run --name NAME
-         [--case ID ...] [--workers 3]      (default = all 20 cases)
-   Output goes to benchmark/runs/NAME (gitignored, working data only).
-   Differences from the browser: no solar ephemeris (MuJoCo has no sun, glare
-   logic inactive); marker fit uses the Python reference because the browser's
-   js.marker_kernel (WASM) does not exist natively; mission budget is the
-   scenario's (240 s), not the game's 180 s.
-c) The two benchmark missions the old student failed (both combined-stress,
-   radio off, decoys, 100 m, wind, waves), one flight each:
-     island-r1 : LANDED (144 s, verified acquisition at 103 s)   [old: fallback]
-     rock-r0   : mission_fallback at 157 s                        [old: collision]
-   Rock: verified acquisition 62 s, matched the deck at 87 s, then
-   "visibility_align" kept the descent at ~0.014 m/s (nearfield_max_descent_command)
-   from 2.1 m down to 0.4 m; the pad left the camera view (gimbal tilt ~85 deg),
-   local_recovery, support lost, time reserve ran out. So the weak spot is the
-   near-deck descent of the frozen R15 landing controller, not the search.
-   Evidence (small): benchmark/replays/tidewater_student_20261118/<case>/
-   (result.json, case.json, student_actor.json, diagnostic_digest.txt).
-   Raw runs are local only (gitignored, 36-81 MB each).
-d) A full 20-mission run with the current student was STARTED and then STOPPED
-   by the user after 3 flights: acquisition-near-radio-clear-island-r0 landed,
-   acquisition-near-radio-clear-beach-r1 landed, acquisition-far-radio-clear-
-   rock-r1 = infrastructure_error (OSError 22, almost certainly killed by the
-   stop; rerun it). The other 17 cases were never flown. There is NO new full
-   score yet. ~25-30 min wall per flight pair; 3 workers ~ 3-4 h for all 20.
-   Needs Windows + PX4 WASM + MuJoCo + CUDA torch; probably cannot run in the cloud.
-e) Tidewater evidence found: tidewater-game/recordings/session-2026-11-14_23-20-34.jsonl
-   starts 122 m from a STATIONARY boat, radio disabled at the start, policy
-   landed on the pad (range 0.02 m). The user also says 120 m without radio
-   works in Tidewater; I verified only this one recording (boat not moving).
-f) landing_training/README.md was rewritten (short, chronological, 2 new
-   figures). Old technical content moved unchanged to
-   landing_training/docs/ARCHITECTURE.md.
-   New figures (hand-written SVG + PNG): docs/media/landing-flow.*,
-   docs/media/training-story.*  Render PNG with headless Chrome:
-   chrome --headless=new --force-device-scale-factor=2 --window-size=1600,660
-          --screenshot=out.png file:///path/to/figure.svg
-   (docs/tools/rasterize_svg.mjs needs playwright, not installed here.)
+!! FOLLOW-UP (not fixed): the Tidewater browser export (student.onnx,
+   tools/export-student-policy.py) contains only main network + search head.
+   The pad finder is missing, so the browser never does the pad-point override
+   and student_runtime.py:737-745 is dead code there. The benchmark student
+   (benchmark/policies/student/runtime.py) does run all three. Fixing it means
+   re-exporting the model and re-testing in the game; ask the user first.
 
-3. OPEN WORK, IN ORDER
-----------------------
-1. Rerun the full 20 with the current student (see 2d), then update the
-   numbers: landing_training/README.md table row "Current search policy
-   (8 Nov) 87.8 / 18 of 20", the bar chart in docs/media/training-story.svg,
-   and the "What does not work yet" bullet. Until then those say 8 Nov.
-   Do NOT write benchmark.json by hand; new student runs are NOT canonical
-   evidence (benchmark/README: canonical evidence is never rewritten).
-2. Bring the other docs to the same story and style: root README.md,
-   website/ (index.html, app.js numbers), benchmark/README.md (its "no
-   boat-radio input" statement is stale for the current policy),
-   tidewater-game/README.md. Reuse landing-flow / training-story; retire the
-   crowded figures (policy-flow, policy-architecture-detailed, ...) from the
-   top level, keep them in ARCHITECTURE.md.
-3. Rock near-deck descent (see 2c) if the user wants it.
-4. Tidewater manifest still says "staged browser port; benchmark policy is not
-   closed-loop qualified" (tidewater-game/app/public/policy/manifest.json).
-5. No real-world flight exists. Do not imply hardware readiness.
+2. DOCS STATE  (all edited this session)
+----------------------------------------
+- README.md, landing_training/README.md, benchmark/README.md,
+  tidewater-game/README.md, website/index.html + app.js + styles.css,
+  landing_training/docs/ARCHITECTURE.md, docs/media/README.md now tell the
+  same story with the same names: search head, pad finder, main network,
+  control code; benchmark rows "With search head, camera only (8 Nov)",
+  "Camera first, no search head" (R15), "Radio-dependent (15 Oct)".
+- Numbers used: teacher 99.2 (20/20), search student 87.8 (18/20, radio
+  blocked by the benchmark adapter), R15 57.5 (11/20), radio-robust 54.9 (7/20,
+  0 of 6 without radio), imitation baseline 0/12.
+- Failed missions (canonical digests): island = never verified the target,
+  fallback; rock = reached 0.3 m above the pad, pad left the view, collision.
+- Tidewater evidence: tidewater-game/recordings/session-2026-11-14_23-20-34.jsonl
+  (122 m, stationary boat, radio off, landed). recordings/ is gitignored, so
+  the docs state it without a link. One recording is not a success rate.
+- The five-map montage GIF is from 2026-10-11 (pre-R15); removed from the root
+  README, kept in docs/media with that label.
+- Do not mention other student re-runs in the docs unless the user asks.
 
-4. TRAPS
+3. FIGURES
+----------
+docs/media/landing-flow.svg/.png (legend: Search head / Precision landing),
+training-story.*, benchmark-comparison.* (labels updated). Render PNG with:
+  chrome --headless=new --force-device-scale-factor=2 --window-size=W,H
+         --hide-scrollbars --screenshot=out.png file:///path/figure.svg
+Inter is not installed here; PNGs render in Segoe UI.
+
+4. TOOLS
 --------
-- benchmark/definition/runtime.json pins sha256 of benchmark/harness/{run,
-  runner,student,actors,common,routes,scoring}.py and px4_bridge.mjs. Do not
-  edit them. New files in harness/ are fine. Check:  python -B tools/check_layout.py
+- benchmark/harness/tidewater_run.py + student_tidewater.py fly the browser
+  stack natively (CPU onnxruntime). Only run when the user asks.
+- README preview: .claude/launch.json "readme-preview" (python http.server on
+  8765, repo root); pages are rendered by a scratch script into
+  .claude/readme-view/ (untracked). Open /.claude/readme-view/root.html.
+
+5. TRAPS
+--------
+- benchmark/definition/runtime.json pins harness files; do not edit
+  run/runner/student/actors/common/routes/scoring.py or px4_bridge.mjs.
+  Check: python -B tools/check_layout.py
 - tidewater-game/app/public/policy/reference/*.py are hashed by the game:
-  after editing run  node tidewater-game/app/scripts/refresh-policy-hashes.mjs
-- reference/marker_geometry.py defines marker_pose three times; the last one
-  needs the browser's js module. student_tidewater.py works around it.
-- Benchmark numbers: teacher 99.2 (20/20), current search policy 8 Nov 87.8
-  (18/20), R15 57.5 (11/20), radio-robust 15 Oct 54.9 (7/20). R15 landed 5/10
-  acquisition missions; radio-robust 0/6 without radio; student 10/10 search.
-- Imitation baseline: 0/12 validation flights landed (artifacts/
-  model_iteration_20261010), 50x error growth when its own actions were fed back.
-- Training data for the search head: 60 curated flights (48/6/6), 45 with decoys.
-- Untracked files that are NOT part of this work and were left alone:
-  .claude/, renders/, session-2026-11-14_21-25-00.json
+  after editing run node tidewater-game/app/scripts/refresh-policy-hashes.mjs
+- Much of artifacts/ is untracked; link only to tracked files
+  (git ls-files). experimental_v39/base_r15 is tracked.
+- Untracked and not ours: renders/, session-2026-11-14_21-25-00.json
+- No real-world flight exists. Never imply hardware readiness.

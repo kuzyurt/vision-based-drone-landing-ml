@@ -17,7 +17,7 @@ from . import run as bench
 from . import student_tidewater
 
 
-def build(name, case_ids, device):
+def build(name, case_ids, device, workers):
     plan = bench.canonical_plan()
     known = {c['id'] for c in plan['cases']}
     unknown = set(case_ids) - known
@@ -31,7 +31,7 @@ def build(name, case_ids, device):
     context = dict(plan_sha256=plan['plan_sha256'], runtime_sha256=sha(ROOT / 'definition/runtime.json'),
                    suite_sha256=sha(ROOT / 'definition/suite.json'), inference_device=device,
                    control_hz=25, backend='windows_mujoco_px4_wasm',
-                   benchmark='aerodock-20-wave-gate-3c2b501', workers=len(case_ids))
+                   benchmark='aerodock-20-wave-gate-3c2b501', workers=min(workers, len(case_ids)))
     jobs = []
     for index, cid in enumerate(case_ids, 1):
         case = next(c for c in plan['cases'] if c['id'] == cid)
@@ -65,7 +65,7 @@ def main(argv=None):
         trial(args.job)
         return 0
     cases = args.case or [c['id'] for c in bench.canonical_plan()['cases']]
-    run_dir, jobs = build(args.name, cases, args.device)
+    run_dir, jobs = build(args.name, cases, args.device, args.workers)
     pending, active, code = list(jobs), [], 0
     while pending or active:
         while pending and len(active) < args.workers:

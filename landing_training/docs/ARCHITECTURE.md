@@ -3,6 +3,14 @@
 Reference for readers who want the mechanics behind the [overview](../README.md):
 the training world, the teacher, the R15 landing policy and the search head.
 
+Names used in the overview: the **main network** is the R15 pose model below
+(about 1.55 million parameters: encoder and recurrent pose branch), the **pad
+finder** is the spatial acquisition branch (about 45,000 parameters), and the
+**search head** (about 45,000 parameters) is described at the end. The search
+head started from the pad finder's weights. The benchmark student runs all
+three; the Tidewater browser export currently contains only the main network
+and the search head.
+
 The R15 sections describe the frozen base policy. The search and radio logic
 that runs on top of it since early November lives in
 [`student_radio.py`](../../tidewater-game/app/public/policy/reference/student_radio.py) and
@@ -120,11 +128,11 @@ touchdown, with command bounds and recovery logic. It emits six values at 25 Hz:
 three velocity commands, yaw rate, camera pan rate and camera tilt rate. PX4
 handles flight control; the final two commands move the camera gimbal.
 
-Implementation: [encoder and GRU](../../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/policy.py),
-[pose readout](../../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/parent_model.py),
-[spatial head](../../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/spatial_acquisition.py),
-[radio fusion](../../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/model.py),
-[runtime](../../artifacts/landing_hardening_20261018/candidate_r15/code/landing_training/radio_robust_20261015/runtime.py).
+Implementation: [encoder and GRU](../../artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/policy.py),
+[pose readout](../../artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/parent_model.py),
+[spatial head](../../artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/spatial_acquisition.py),
+[radio fusion](../../artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/model.py),
+[runtime](../../artifacts/approved_curriculum_20261020/candidate_exports/experimental_v39/package/base_r15/code/landing_training/radio_robust_20261015/runtime.py).
 
 ### Search head
 

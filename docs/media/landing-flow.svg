@@ -2,11 +2,11 @@
   <rect width="1600" height="660" fill="#ffffff"/>
 
   <!-- legend -->
-  <g font-size="26" fill="#0d1b24">
-    <rect x="1000" y="44" width="26" height="26" rx="6" fill="#0b7a75"/>
-    <text x="1040" y="66">Neural network</text>
-    <rect x="1270" y="44" width="26" height="26" rx="6" fill="#1d3a4c"/>
-    <text x="1310" y="66">Geometry and rules</text>
+  <g font-size="28" font-weight="600" fill="#0d1b24">
+    <rect x="1010" y="42" width="28" height="28" rx="6" fill="#0b7a75"/>
+    <text x="1052" y="66">Search head</text>
+    <rect x="1260" y="42" width="28" height="28" rx="6" fill="#1d3a4c"/>
+    <text x="1302" y="66">Precision landing</text>
   </g>
 
   <!-- sea -->
@@ -48,7 +48,7 @@
     <text x="950" y="198">Approach</text>
   </g>
   <g font-size="34" font-weight="700" fill="#0d1b24">
-    <text x="1296" y="296">Measure</text>
+    <text x="1296" y="296">Measure pad</text>
     <text x="1380" y="430">Land</text>
   </g>
 
