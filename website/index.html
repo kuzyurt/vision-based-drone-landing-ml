@@ -7,7 +7,12 @@
 <meta name="description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
 <meta property="og:title" content="AERODOCK — a drone that lands itself on a moving boat">
 <meta property="og:description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
-<meta property="og:image" content="assets/hero-poster.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aerodock-b9t.pages.dev/">
+<meta property="og:image" content="https://aerodock-b9t.pages.dev/assets/hero-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -205,8 +210,12 @@
 			<div class="play-result" id="play-result" aria-live="polite" hidden></div>
 		</div>
 		<figure class="play-video" id="watch">
-			<!-- Placeholder video: replace src/poster with a recorded gameplay video. -->
-			<video controls preload="none" playsinline poster="assets/hero-poster.jpg" src="assets/hero.mp4"></video>
+			<!-- Gameplay video: drop it in as website/assets/gameplay.mp4 (under 25 MB).
+			     Until that file exists the browser falls back to the hero film. -->
+			<video controls preload="none" playsinline poster="assets/hero-poster.jpg">
+				<source src="assets/gameplay.mp4" type="video/mp4">
+				<source src="assets/hero.mp4" type="video/mp4">
+			</video>
 			<figcaption>A recorded flight in the realistic simulator: launch, handover, landing.</figcaption>
 		</figure>
 	</div>

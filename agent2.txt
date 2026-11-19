@@ -107,6 +107,16 @@ Inter is not installed here; PNGs render in Segoe UI.
 
 4. TOOLS
 --------
+- Live site: https://aerodock-b9t.pages.dev/ (Cloudflare Pages project
+  "aerodock", free plan). Website at /, game at /play/. Rebuild and deploy:
+  npm --prefix tidewater-game/app run build:web; node tools/build-site.mjs;
+  npx wrangler pages deploy site --project-name aerodock --branch main.
+  Ask the user before deploying. Details in website/README.md.
+- The user records the gameplay video; it goes to website/assets/gameplay.mp4
+  (the page falls back to the hero film until then).
+- The in-app browser pane got into a bad state after many game sessions
+  ("World compiler worker failed" for every build). A fresh headless Chrome
+  loads fine; test there before blaming the code.
 - benchmark/harness/tidewater_run.py + student_tidewater.py fly the browser
   stack natively (CPU onnxruntime). Only run when the user asks.
 - README preview: .claude/launch.json "readme-preview" (python http.server on

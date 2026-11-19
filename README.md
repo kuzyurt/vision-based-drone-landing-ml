@@ -1,6 +1,6 @@
 [![AERODOCK launches the drone; the policy lands it on the moving deck](docs/media/hero-film-poster.jpg)](website/assets/hero.mp4)
 
-[Watch the film (45 s)](website/assets/hero.mp4) · [Earlier landing in 1080p](docs/media/tidewater-landing-1080p.mp4) · [Project website](website/index.html)
+**[Project website and playable simulator](https://aerodock-b9t.pages.dev/)** · [Watch the film (45 s)](website/assets/hero.mp4) · [Earlier landing in 1080p](docs/media/tidewater-landing-1080p.mp4)
 
 # Vision-based drone landing
 
@@ -56,7 +56,9 @@ ground truth, lands all 20 and marks the ceiling.
 
 The [realistic simulator](tidewater-game/README.md) is a browser game with its
 own ocean, sky and boats, where you can fly the drone yourself and hand it over
-to the networks. They fly there without any retraining. In recorded sessions
+to the networks. They fly there without any retraining. You can
+[play it in your browser](https://aerodock-b9t.pages.dev/#play) (a computer with
+Chrome or Edge and a capable graphics card). In recorded sessions
 with the radio switched off, the drone found the boat and landed on the pad
 from 122 m away, and from 15 m with the boat behind it.
 

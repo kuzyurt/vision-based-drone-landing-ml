@@ -18,6 +18,10 @@ from this world, so every landing here is a test of how well they carry over.
 The drone flies the final version of the policy, the same build that was
 scored on the [benchmark](../benchmark/README.md).
 
+**Play it in your browser:** [aerodock-b9t.pages.dev/#play](https://aerodock-b9t.pages.dev/#play).
+The page first checks whether your computer can run it and always offers a
+video instead.
+
 ## Run locally
 
 Use Node.js 22+ and a WebGPU-capable Chrome or Edge. From the repository root:

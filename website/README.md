@@ -15,8 +15,9 @@ Open **http://127.0.0.1:8000/** to look at the page alone.
   computer, memory and a 0.5 s GPU test decide between "ready", "probably
   slow" and "cannot run". "Watch the video" is always offered. The GPU line
   (`GOOD_GFLOPS`) is set from one laptop with Intel UHD graphics.
-- The video in the Play section is a placeholder (the hero film) until a
-  gameplay recording exists.
+- The video in the Play section plays `assets/gameplay.mp4`. Until that file
+  exists it falls back to the hero film. Any length or size works: the site
+  build makes a 720p copy if it is over the 25 MiB file limit.
 - The hero film `assets/hero.mp4` is rendered from the game by
   `tidewater-game/app/tools/hero/`; `assets/tidewater-landing.mp4` is the fallback.
 
