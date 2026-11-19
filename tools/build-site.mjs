@@ -30,16 +30,34 @@ await fs.rm(site, {recursive: true, force: true});
 await fs.cp(website, site, {recursive: true, filter: source => !/[\\/](\.cache|README\.md)$/.test(source)});
 await fs.cp(game, path.join(site, 'play'), {recursive: true});
 
-// Smaller hero film for the web.
-const hero = path.join(website, 'assets/hero.mp4');
-const heroBytes = await fs.readFile(hero);
-const cache = path.join(website, '.cache', `hero-720p-crf28-${createHash('sha256').update(heroBytes).digest('hex').slice(0, 12)}.mp4`);
-try { await fs.access(cache); } catch {
-	await fs.mkdir(path.dirname(cache), {recursive: true});
-	execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', hero, '-vf', 'scale=1280:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', '28',
-		'-pix_fmt', 'yuv420p', '-an', '-movflags', '+faststart', cache], {stdio: 'inherit'});
+// 720p web copies of large videos (cached by content). The hero film plays in
+// the background for every visitor, so it is always made smaller; a gameplay
+// recording (assets/gameplay.mp4) only when it is over the file limit, and it
+// keeps its sound.
+async function webVideo(name, {always, crf, audio}) {
+	const source = path.join(website, 'assets', name);
+	let bytes;
+	try { bytes = await fs.readFile(source); } catch { return; }
+	if (!always && bytes.length <= LIMIT * 0.95) return;
+	const cache = path.join(website, '.cache', `${path.parse(name).name}-720p-crf${crf}-${createHash('sha256').update(bytes).digest('hex').slice(0, 12)}.mp4`);
+	try { await fs.access(cache); } catch {
+		await fs.mkdir(path.dirname(cache), {recursive: true});
+		execFileSync('ffmpeg', ['-y', '-loglevel', 'error', '-i', source, '-vf', 'scale=1280:-2', '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf),
+			'-pix_fmt', 'yuv420p', ...(audio ? ['-c:a', 'aac', '-b:a', '128k'] : ['-an']), '-movflags', '+faststart', cache], {stdio: 'inherit'});
+	}
+	await fs.copyFile(cache, path.join(site, 'assets', name));
 }
-await fs.copyFile(cache, path.join(site, 'assets/hero.mp4'));
+await webVideo('hero.mp4', {always: true, crf: 28, audio: false});
+await webVideo('gameplay.mp4', {always: false, crf: 26, audio: true});
+
+// Without a 404 page Cloudflare Pages answers unknown paths with index.html and
+// status 200; a missing file must stay a real 404 (the video fallback relies on it).
+await fs.writeFile(path.join(site, '404.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · AERODOCK</title><link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#0d1b24;color:#e8f1f3;font:18px/1.5 system-ui,sans-serif}a{color:#3cc7b4}</style>
+</head><body><p>This page does not exist. <a href="/">Back to AERODOCK</a></p></body></html>
+`);
 
 await fs.writeFile(path.join(site, '_headers'), `/play/*
   Cross-Origin-Opener-Policy: same-origin
