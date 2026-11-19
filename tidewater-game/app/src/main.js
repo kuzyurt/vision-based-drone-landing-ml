@@ -59,6 +59,7 @@ app.init( ( p, text, until ) => ui.setLoading( p, text, until ) ).then( async ()
 	app.ui = new AppUI( app, ui );
 	app.flightOps = new FlightOperations( app );
 	window.__flightOps = app.flightOps;
+	if ( import.meta.env.VITE_WEB_HOSTED === '1' ) import( './web/slowDeviceHint.js' ).then( m => m.watchSimulationSpeed() );
 	// frame-time benchmark and reference shots (see core/Bench.js): it drives the frames itself
 	if ( app.qs.has( 'bench' ) ) {
 

@@ -21,6 +21,7 @@
 		<a href="#how">How it works</a>
 		<a href="#vehicles">Vehicles</a>
 		<a href="#worlds">Simulation</a>
+		<a href="#play">Play</a>
 		<a href="#results">Results</a>
 		<a href="#story">Development</a>
 	</nav>
@@ -191,6 +192,26 @@
 	</div>
 </section>
 
+<!-- ------------------------------------------------------------------ play -->
+<section class="band play" id="play">
+	<div class="wrap two">
+		<div>
+			<h2>Fly it yourself</h2>
+			<p class="lead">The realistic simulator runs in your browser. Fly the drone, then press <b>L</b> and let the policy find the boat and land. It needs a computer with Chrome or Edge, a capable graphics card and about 150&nbsp;MB of download.</p>
+			<div class="play-actions">
+				<button class="button primary" id="play-check" type="button">Check my computer and play</button>
+				<a class="button ghost" href="#watch">Watch the video</a>
+			</div>
+			<div class="play-result" id="play-result" aria-live="polite" hidden></div>
+		</div>
+		<figure class="play-video" id="watch">
+			<!-- Placeholder video: replace src/poster with a recorded gameplay video. -->
+			<video controls preload="none" playsinline poster="assets/hero-poster.jpg" src="assets/hero.mp4"></video>
+			<figcaption>A recorded flight in the realistic simulator: launch, handover, landing.</figcaption>
+		</figure>
+	</div>
+</section>
+
 <!-- --------------------------------------------------------------- results -->
 <section class="band" id="results">
 	<div class="wrap">
@@ -275,5 +296,6 @@
 </footer>
 
 <script src="app.js"></script>
+<script src="playcheck.js"></script>
 </body>
 </html>

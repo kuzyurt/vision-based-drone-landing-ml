@@ -3,10 +3,26 @@ import * as ort from 'onnxruntime-web/all';
 // Fixed FP32 tensors and a captured graph. Every neural operation must have a
 // GPU kernel; unsupported operations fail initialization instead of silently
 // falling back to CPU inference.
+
+// Hosted web build only: the 27 MiB WebGPU runtime is larger than the static
+// host's 25 MiB file limit, so it is loaded from jsDelivr (the identical file of
+// the pinned npm package) and accepted only if its SHA-256 matches. The small
+// .mjs loader still comes from base/ort/.
+async function hostedJsepBinary(base){
+ const spec=await(await fetch(base+'ort/remote-jsep-wasm.json',{cache:'no-store'})).json();
+ const response=await fetch(spec.url,{mode:'cors',credentials:'omit'});
+ if(!response.ok)throw new Error('WebGPU runtime unavailable: '+spec.url);
+ const bytes=new Uint8Array(await response.arrayBuffer());
+ const sha=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)),v=>v.toString(16).padStart(2,'0')).join('');
+ if(sha!==spec.sha256)throw new Error('WebGPU runtime checksum mismatch');
+ return bytes;
+}
+
 export class GpuPolicyModel {
  async initialize(model,base,{capture=true,debug=false,layout,device,adapter,inputContract,outputContract}={}){
   if(!globalThis.navigator?.gpu)throw new Error('ML landing requires WebGPU');
   ort.env.wasm.numThreads=1;ort.env.wasm.wasmPaths=base+'ort/';
+  if(import.meta.env?.VITE_WEB_HOSTED==='1'&&!ort.env.wasm.wasmBinary)ort.env.wasm.wasmBinary=await hostedJsepBinary(base);
   // Pinned ORT 1.30 JSEP requests its device through the adapter hook and
   // ignores a preassigned env.webgpu.device. Supply the existing render device
   // through that hook, advertising only its already enabled limits/features.

@@ -96,3 +96,7 @@ desktop.ini
 
 # Local symlink back to tidewater-game/; git would copy the whole game twice.
 /benchmark/tidewater-game
+
+# Cloudflare Pages build (tools/build-site.mjs)
+/site/
+/website/.cache/

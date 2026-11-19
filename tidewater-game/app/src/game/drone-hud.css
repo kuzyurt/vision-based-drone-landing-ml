@@ -519,7 +519,6 @@
 /* frame edges tint while the policy flies */
 #drone-hud::before { transition: background .5s ease; }
 #drone-hud.is-ml::before { background: rgba(143, 240, 214, .5); }
-}
 #drone-hud .policy-warning {
 	position: absolute;
 	left: 50%;
