@@ -187,11 +187,11 @@ export class FlightOperations {
 				<section class="attitude" aria-label="Boat attitude">
 					<figure class="sketch side">
 						<header class="sketch-head"><b>Pitch <em data-bind="pitch">—</em></b></header>
-						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="side-craft" src="/ui/aerodock-side.png" alt="AERODOCK side profile" style="--tilt: 0deg"></div>
+						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="side-craft" src="ui/aerodock-side.png" alt="AERODOCK side profile" style="--tilt: 0deg"></div>
 					</figure>
 					<figure class="sketch stern">
 						<header class="sketch-head"><b>Roll <em data-bind="roll">—</em></b></header>
-						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="stern-craft" src="/ui/aerodock-stern.png" alt="AERODOCK stern view" style="--tilt: 0deg"></div>
+						<div class="stage"><div class="horizon"></div><img class="craft" data-bind="stern-craft" src="ui/aerodock-stern.png" alt="AERODOCK stern view" style="--tilt: 0deg"></div>
 					</figure>
 				</section>
 

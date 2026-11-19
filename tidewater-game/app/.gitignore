@@ -5,3 +5,4 @@ dist
 
 # local test scratch (CDP drivers, Edge profiles) - not part of the build
 /.tmp-*/
+dist-web
