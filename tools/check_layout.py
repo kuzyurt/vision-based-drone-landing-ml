@@ -26,8 +26,6 @@ REQUIRED = (
     "models",
     "models/registry.json",
     "tools",
-    "docs/architecture",
-    "docs/architecture/FOLDER_DISPOSITION.md",
 )
 
 

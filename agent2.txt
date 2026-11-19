@@ -72,6 +72,16 @@ Three networks see, none flies; control code computes the 6 commands
   blocked, with pad finder), R15 47.5 (11/20), radio-robust 44.4 (7/20, 0 of 6
   without radio), imitation baseline 0/12.
 - Version table: landing_training/docs/ARCHITECTURE.md "Versions".
+- 2026-11-19 cleanup: 215 agent/history .md notes (artifacts/, docs/architecture,
+  docs/operations, docs/research, docs/maintenance, landing_training/docs/
+  {CURRENT_POLICY,LAYOUT_MIGRATION,README,history,reports}, px4 research except
+  the 3 cited findings, tidewater-game/history and dated flight-parity reports,
+  training_runs plans) were git-removed, plus the orphaned R15 diagrams and the
+  user's Windows task exports in docs/operations. Kept: human docs, licences/
+  credits, md files whose hash is listed in a policy package (19, in
+  artifacts/), and the montage provenance note. artifacts/README.md says the
+  folder is frozen records. ARCHITECTURE.md has new final-version figures
+  (docs/media/final-system.*, final-networks.*).
 - Scoring weights were revised 2026-11-19 (user's request; old ones were an
   unreasoned first draft): finding 25, landing 20, wind 10, waves 10,
   combined 25, speed 10, in benchmark/definition/scoring_weights.json, read by

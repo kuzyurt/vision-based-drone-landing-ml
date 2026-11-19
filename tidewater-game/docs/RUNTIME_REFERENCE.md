@@ -117,31 +117,28 @@ cover PX4, MuJoCo and the translated NumPy RNG routines. Additional game/asset
 notices accompany their models and textures.
 ## Trained drone landing policy
 
-After taking off, press **L** to hand the drone to the workspace's
-**vision-first radio-fusion** policy. The button changes to **Manual control**; press it
-to resume piloting. **Land** also cancels ML control. Boat control is independent
-of ML: route following keeps its normal 1.5 m/s target, and manual throttles,
-steering, stop and auto/manual selection remain available while the policy flies.
-The policy's existing 2 m/s horizontal command limit remains unchanged; it may
-not catch or land on a faster boat.
+After taking off, press **L** to hand the drone to the policy. The button changes
+to **Manual control**; press it to resume piloting. **Land** also cancels ML
+control. Boat control is independent of ML: route following keeps its normal
+1.5 m/s target, and manual throttles, steering, stop and auto/manual selection
+remain available while the policy flies. The drone's horizontal speed is
+limited to about 2 m/s, so it cannot catch or land on a much faster boat.
 
-The deployed model is exported from
-`artifacts/vision_first_fusion_20261017/vision_first_fusion_delivery/candidate/pose.pt`
-(SHA-256 `2a1cf3a289fb9c3fb50146f949560f63fabcd90a3351d08d5059fe10046619c4`).
-It receives a separate 640×360 onboard RGB camera and the original 32-value
-estimator/beacon/gimbal observation contract, plus two reported radio uncertainty
-values. Its visual recurrent memory receives no radio coordinates or radio status.
-A learned gate blends radio into the pose estimate with a maximum weight of 0.35;
-raw radio coordinates cannot steer the acquisition or controller directly.
-Missing radio uses explicit validity and uncertainty, rather than a zero-metre
-target. The spatial acquisition head finds image bearings; confirmed visual
-registration is still required for descent and touchdown. ONNX executes every neural operation
-on WebGPU in FP32 with a captured graph and persistent buffers. Unsupported GPUs
-report an error; gameplay does not silently switch to CPU inference. The Python
-landing controller and supervisor run in a separate Pyodide worker. The metric
-registration uses a compiled FP64 implementation of the reference TRF solver,
-loss, bounds, finite differences, samples and acceptance tests. Assets are local
-and included in offline hosting.
+The game runs the final version of the policy: `public/policy/student.onnx`
+(main network and search head, SHA-256 in `public/policy/manifest.json`),
+exported by [`app/tools/export-student-policy.py`](../app/tools/export-student-policy.py).
+It receives a separate 640×360 onboard RGB camera and the 32-value own-state
+contract; the radio slots of that contract are always filled with "no radio".
+The boat's radio position only steers the search, never the networks or the
+landing. The control code in `public/policy/reference/` runs in a Pyodide
+worker: the search, the glare filter and near-deck rules, and the landing
+controller with its metric marker registration (a compiled FP64 version of the
+reference solver). Confirmed visual registration is required for descent and
+touchdown. ONNX executes every neural operation on WebGPU in FP32 with a
+captured graph and persistent buffers; unsupported GPUs report an error instead
+of silently switching to CPU inference. Assets are local and included in
+offline hosting. How the policy works is described in the
+[landing overview](../../landing_training/README.md).
 
 The network shares the rendering GPU device and converts the sensor texture
 directly to the original FP32 inputs. Neural execution overlaps full RGB
@@ -161,8 +158,7 @@ keep the original FP64 order. The sensor renderer can reuse bounded GPU render
 bundles for identical command streams; changing streams retain direct rendering.
 Pixel parity and controller command parity are checked separately. These changes
 do not reduce image size, precision, physics/control rates or render settings.
-See `benchmarks/flight-parity/ml-igpu-20261015.md` for measured performance and
-the remaining Intel UHD real-time limitation.
+On this laptop's Intel UHD the policy runs below real time.
 
 Decisions occur every 0.04 simulation seconds. Camera/inference overlaps physics;
 each timestamped decision is applied at the following control boundary, with a
@@ -180,24 +176,6 @@ are fixed in size and reused across toggles.
 onboard frame for replaying visual registration. The included server retains
 timestamped reports when launched with `--timing-file`; other hosts download JSON.
 
-The **18 October hardening revision** adds uncertainty-aware visual memory,
-braking before close approach, a geometry-based final descent veto and bounded
-recovery with a clearance-gated climb. Neural weights are unchanged. In the
-frozen fresh native suite it landed on the boat in **58/60 flights**, with two
-home fallbacks and zero collisions/water strikes; separate safe-home checks
-passed **10/10**. Actual Tidewater runtime checks landed on an unpowered boat in
-**40.4 s** and an independently moving boat averaging **0.63 m/s in 47.7 s**.
-Both used no boat radio position or velocity input. These are finite simulation
-results, not a hardware or universal reliability guarantee. See the
-[hardening report](../benchmarks/flight-parity/landing-hardening-20261018.md) and
-[hash-bound certificate](../app/public/policy/qualification/r15_simulation_qualification_certificate.json).
-
-**Additional Tidewater stress tests:** the unchanged policy subsequently landed
-in 0/18 challenging search/start cases and 5/8 initially visible diagnostic cases.
-With radio, ~1.00 m/s landed twice; ~1.35 m/s failed. Without radio, even ~0.35 m/s was
-start-dependent. See the [new complete results](../../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md).
-The earlier two simple successes are not evidence of general Tidewater reliability.
-
 A boat landing requires physical foot support and two seconds of stable,
 disarmed deck contact. This boat-launch game has no authorized stationary home:
 bounded recovery exhaustion or the mission deadline restores manual hold.
@@ -207,6 +185,9 @@ the sea-level/nominal-deck prior supplies no dynamic boat position or touchdown
 truth. Independent boat controls and the 1.5 m/s cruise remain unchanged.
 
 Developer preparation: build `wasm/build_marker.sh` with the pinned Emscripten
-runtime, then run `app/tools/export-vision-first-policy.py` with the training
-dependencies, frozen candidate and native fixtures available, then `node tools/vendor-policy-runtime.mjs`
-from `app/`. `npm run test:ml` runs the focused checks after export creates fixtures.
+runtime, run `app/tools/export-student-policy.py` with the training dependencies
+available, then `node tools/vendor-policy-runtime.mjs` from `app/`. After editing
+any file in `public/policy/reference/`, run
+`node scripts/refresh-policy-hashes.mjs`, because the game refuses files whose
+checksum differs. `npm run test:ml` and `npm run test:ml:radio` run the focused
+checks.

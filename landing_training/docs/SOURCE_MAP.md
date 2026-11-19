@@ -35,7 +35,7 @@ imports several modules directly. Files are grouped physically under `sim/`,
 ## Original learning pipeline
 
 The active multi-boat search implementation is in
-[training_runs/search_revision_20261025](../../training_runs/search_revision_20261025/README.md).
+[training_runs/search_revision_20261025](../../training_runs/search_revision_20261025/).
 Its source, curated dataset and output paths are protected while training runs.
 
 | File | Responsibility |
@@ -44,9 +44,8 @@ Its source, curated dataset and output paths are protected while training runs.
 | [train.py](../training/train.py) | Original training workflow |
 | [evaluate.py](../training/evaluate.py) | Held-out evaluation for that baseline workflow |
 
-The current frozen vision-first implementation is linked from
-[CURRENT_POLICY.md](CURRENT_POLICY.md). Do not confuse these baseline entry points
-with the newer candidate's training/runtime.
+These are the original baseline entry points. The final policy's networks and
+control code are listed in [ARCHITECTURE.md](ARCHITECTURE.md#versions).
 
 ## Qualification, measurements and rendering
 

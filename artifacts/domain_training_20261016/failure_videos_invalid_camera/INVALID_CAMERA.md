@@ -1,1 +1,0 @@
-Do not use these camera panels for diagnosis: mj_camlight was missing during replay, so the onboard camera stayed at its initialization pose. Corrected versions are in ../failure_videos and ../corrected_replays. Original flight traces were not changed.
