@@ -5,6 +5,37 @@ import { landingWaveParams } from './PhysicsWaves.js';
 import { PoseTimeline } from './PoseTimeline.js';
 import { PolicyControl } from './PolicyControl.js';
 
+// Download many asset files with a limited number of requests in flight and
+// return one promise per file, in input order. The caller still builds the
+// meshes one by one in that order; only the waiting overlaps. (Fetching them
+// one after another took minutes over the internet: ~1,000 small files, each
+// with its own round trip.)
+function fetchAll( urls, signal, limit = 16 ) {
+
+	const slots = urls.map( () => {
+
+		let resolve, reject;
+		const promise = new Promise( ( a, b ) => { resolve = a; reject = b; } );
+		promise.catch( () => {} ); // a slot the caller never reaches must not report an unhandled rejection
+		return { promise, resolve, reject };
+
+	} );
+	let next = 0;
+	const run = async () => {
+
+		while ( next < urls.length ) {
+
+			const i = next ++;
+			try { slots[ i ].resolve( await ( await fetch( urls[ i ], { signal } ) ).arrayBuffer() ); } catch ( error ) { slots[ i ].reject( error ); }
+
+		}
+
+	};
+	for ( let k = 0; k < Math.min( limit, urls.length ); k ++ ) run();
+	return slots.map( slot => slot.promise );
+
+}
+
 
 export class SimulationBridge {
 
@@ -57,16 +88,20 @@ export class SimulationBridge {
 		const response = await fetch( new URL('landing/vehicles.json', new URL(import.meta.env?.BASE_URL || './', location.href)), { cache: 'force-cache', signal:this.assetAbort.signal } );
 		if ( ! response.ok ) throw new Error( 'The original X500 / AERODOCK CAD manifest is missing' );
 		const payload = await response.json();
-		for ( const item of payload.textures ) {
-			const bytes = new Uint8Array( await ( await fetch( new URL(item.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer() );
+		const assetBase = new URL( import.meta.env?.BASE_URL || './', location.href );
+		const assetUrl = url => new URL( url.replace( /^\/+/, '' ), assetBase );
+		const textureBytes = fetchAll( payload.textures.map( item => assetUrl( item.url ) ), this.assetAbort.signal );
+		const geomBytes = fetchAll( payload.geoms.map( part => assetUrl( part.url ) ), this.assetAbort.signal );
+		for ( const [ index, item ] of payload.textures.entries() ) {
+			const bytes = new Uint8Array( await textureBytes[ index ] );
 			this.textures.set( item.id, new Texture( {
 				width: item.width, height: item.height, format: 'rgba8unorm-srgb', data: bytes,
 				usage: [ 'sample', 'copyDst' ], mips: true, label: item.name,
 			} ) );
 		}
 		const materials = new Map();
-		for ( const part of payload.geoms ) {
-			const bytes = await ( await fetch( new URL(part.url.replace(/^\/+/, ''),new URL(import.meta.env?.BASE_URL || './', location.href)), {signal:this.assetAbort.signal} ) ).arrayBuffer();
+		for ( const [ index, part ] of payload.geoms.entries() ) {
+			const bytes = await geomBytes[ index ];
 			const count = part.vertex_count;
 			const geometry = new E.BufferGeometry();
 			geometry.setAttribute( 'position', new E.Float32BufferAttribute( new Float32Array( bytes, 0, count * 3 ), 3 ) );
@@ -126,10 +161,14 @@ export class SimulationBridge {
 			const response = await fetch( new URL( 'landing/detail/detail.json', base ), { cache: 'force-cache', signal: this.assetAbort.signal } );
 			if ( ! response.ok ) return;
 			const manifest = await response.json();
-			for ( const part of manifest.geoms || [] ) {
+			const detailGeoms = ( manifest.geoms || [] ).filter( part => this.meshes.has( part.name ) );
+			const extras = ( manifest.extras || [] ).filter( part => this.meshes.has( part.anchor ) );
+			const detailBytes = fetchAll( detailGeoms.map( part => new URL( part.url.replace( /^\/+/, '' ), base ) ), this.assetAbort.signal );
+			const extraBytes = fetchAll( extras.map( part => new URL( part.url.replace( /^\/+/, '' ), base ) ), this.assetAbort.signal );
+			for ( const [ index, part ] of detailGeoms.entries() ) {
 				const trained = this.meshes.get( part.name );
 				if ( ! trained || trained.detailMesh ) continue;
-				const bytes = await ( await fetch( new URL( part.url.replace( /^\/+/, '' ), base ), { signal: this.assetAbort.signal } ) ).arrayBuffer();
+				const bytes = await detailBytes[ index ];
 				const count = part.vertex_count;
 				if ( bytes.byteLength !== count * 32 + part.index_count * 4 ) continue;
 				const geometry = new E.BufferGeometry();
@@ -151,10 +190,10 @@ export class SimulationBridge {
 			// Parts that exist in the operator view only (the battery cradle, its straps and screws:
 			// tools/battery_cradle.py). Each is modelled in the mesh frame of a trained part, its
 			// anchor, and follows that part; it has its own material.
-			for ( const part of manifest.extras || [] ) {
+			for ( const [ index, part ] of extras.entries() ) {
 				const anchor = this.meshes.get( part.anchor );
 				if ( ! anchor ) continue;
-				const bytes = await ( await fetch( new URL( part.url.replace( /^\/+/, '' ), base ), { signal: this.assetAbort.signal } ) ).arrayBuffer();
+				const bytes = await extraBytes[ index ];
 				const count = part.vertex_count;
 				if ( bytes.byteLength !== count * 32 + part.index_count * 4 ) continue;
 				const geometry = new E.BufferGeometry();

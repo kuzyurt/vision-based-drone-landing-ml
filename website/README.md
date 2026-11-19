@@ -45,6 +45,11 @@ Test locally with the same headers, then open http://127.0.0.1:8788/:
 node tools/serve-site.mjs
 ```
 
+`node tools/serve-site.mjs 8788 300` adds 300 ms to every response, which is
+roughly what loading over the internet feels like. On this project's test
+laptop the game is ready in about 2.5 minutes from Cloudflare; most of that is
+compiling graphics and the physics world, not downloading.
+
 Upload (the dashboard's drag-and-drop takes at most 1,000 files, so use
 Wrangler):
 
