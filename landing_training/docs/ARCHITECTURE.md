@@ -111,7 +111,7 @@ The head is feed-forward. The search logic keeps tracks of the boats over
 time, decides which one to inspect, and hands a confirmed target to the
 landing logic. [Search head implementation](../../training_runs/search_revision_20261025/model.py).
 The run uses AdamW, a 0.0003 learning rate, batch size 8 and 15 configured
-epochs. [Dataset and trainer](../../training_runs/search_revision_20261025/README.md).
+epochs. [Training-data generation](../../training_runs/training_data_generation/README.md).
 
 ### Main network: recurrent pose branch
 

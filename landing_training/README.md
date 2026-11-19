@@ -120,5 +120,5 @@ from 15 m with the boat behind it.
 |---|---|
 | How are the networks built and what exactly do they output? | [Architecture and training details](docs/ARCHITECTURE.md) |
 | How are the 20 missions defined and scored? | [Benchmark](../benchmark/README.md) |
-| How was the search head trained? | [Search training run](../training_runs/search_revision_20261025/README.md) |
+| How was the search head trained? | [Search head details](docs/ARCHITECTURE.md#search-head) and [training-data generation](../training_runs/training_data_generation/README.md) |
 | Where is the code? | [Source map](docs/SOURCE_MAP.md) |

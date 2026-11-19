@@ -17,6 +17,11 @@ history kept as evidence; do not describe them as current.
   "realistic simulator" or "realistic game". Use the name Tidewater only to say
   where it comes from, plus real folder and file names.
 - No real-hardware flight exists. Never imply one.
+- Documentation is only the human docs listed in `docs/README.md` and the
+  component READMEs they link. Old agent notes, plans and dated reports were
+  removed on 2026-11-19 (they are in git history). Anything under `artifacts/`
+  or `old/` is a frozen record, not a description of the current system. Do
+  not add new status notes, handoffs or plans as `.md` files in the repository.
 
 ## Rollout diagnostics
 

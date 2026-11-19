@@ -76,11 +76,6 @@ with the radio off, the drone found the boat and landed on the pad from 122 m
 away, and from 15 m with the boat behind it. A few recordings are not a success
 rate, though.
 
-Tests from October, made with the earlier R15 policy:
-[integration results](benchmarks/flight-parity/landing-hardening-20261018.md)
-and [stress tests](../landing_training/docs/reports/TIDEWATER_TEST_RESULTS_2026-10-18.md)
-(in German).
-
 ## Explore the implementation
 
 | Read | Purpose |

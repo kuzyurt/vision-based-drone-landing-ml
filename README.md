@@ -69,7 +69,7 @@ from 122 m away, and from 15 m with the boat behind it.
 | [`AERODOCK_MuJoCo/`](AERODOCK_MuJoCo/README.md) | AERODOCK boat: CAD, water physics, world generator |
 | [`benchmark/`](benchmark/README.md) | 20-mission benchmark, five policies, all flight evidence |
 | [`tidewater-game/`](tidewater-game/README.md) | Browser game with PX4, MuJoCo and the policy running locally |
-| [`training_runs/`](training_runs/search_revision_20261025/README.md) | Search-head datasets and training runs |
+| [`training_runs/`](training_runs/training_data_generation/README.md) | Training-data generation and the search-head training code |
 | [`website/`](website/README.md) | Static project site |
 | [`docs/`](docs/README.md) | Media, figures and background documents |
 | `artifacts/`, `old/` | Frozen experiments and the previous benchmark, kept as evidence |
