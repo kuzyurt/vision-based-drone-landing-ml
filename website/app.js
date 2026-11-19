@@ -143,3 +143,40 @@ const clips = new IntersectionObserver( ( entries ) => {
 
 }, { threshold: 0.35 } );
 document.querySelectorAll( 'video[data-autoplay]' ).forEach( ( video ) => clips.observe( video ) );
+
+// The flight video in "Fly it yourself" starts by itself, muted (browsers allow
+// autoplay only without sound), once 70 % of it is on screen, and pauses when
+// it scrolls away. After the viewer pauses it themselves it stays paused.
+const watchVideo = document.querySelector( '#watch video' );
+if ( watchVideo && ! still ) {
+
+	// The pause event arrives later than the pause() call, so the flag is cleared
+	// by the event itself, not right after the call.
+	let autoPlaying = false, userPaused = false, autoPausing = false;
+	watchVideo.addEventListener( 'pause', () => { if ( autoPausing ) autoPausing = false; else userPaused = true; } );
+	watchVideo.addEventListener( 'play', () => { userPaused = false; } );
+	new IntersectionObserver( ( [ entry ] ) => {
+
+		// A video taller than the window can never be 70 % visible; then filling
+		// 70 % of the window counts instead.
+		const view = entry.rootBounds?.height || innerHeight;
+		if ( entry.intersectionRatio >= 0.7 || entry.intersectionRect.height >= 0.7 * view ) {
+
+			if ( watchVideo.paused && ! userPaused ) {
+
+				if ( ! autoPlaying ) watchVideo.muted = true;
+				autoPlaying = true;
+				watchVideo.play().catch( () => {} );
+
+			}
+
+		} else if ( ! watchVideo.paused ) {
+
+			autoPausing = true;
+			watchVideo.pause();
+
+		}
+
+	}, { threshold: [ 0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ] } ).observe( watchVideo );
+
+}
