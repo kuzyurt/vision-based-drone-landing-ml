@@ -3,8 +3,10 @@
 // phone, software rendering) say "cannot run"; little memory or a slow GPU say
 // "will probably be slow". The game itself measures its real speed later and
 // offers the video again if it runs far below real time.
+// Messages come from i18n.js; tf() fills in the measured values.
 ( () => {
 
+	const { t, tf } = window.AERODOCK_I18N;
 	const PLAY_URL = 'play/';
 	// GPU throughput from the 0.5 s compute test, in GFLOP/s. A laptop with
 	// Intel UHD graphics (gen-9) scores about 120 here (measured 19 Nov 2026)
@@ -20,14 +22,13 @@
 	button.addEventListener( 'click', async () => {
 
 		button.disabled = true;
-		show( 'checking', 'Checking your computer…', [], [] );
+		show( 'checking', t( 'pc.checking' ), [], [] );
 		let verdict;
-		try { verdict = await check(); } catch ( error ) { verdict = { level: 'no', reasons: [ 'The check failed: ' + error.message ] }; }
+		try { verdict = await check(); } catch ( error ) { verdict = { level: 'no', reasons: [ t( 'pc.fail' ) + error.message ] }; }
 		button.disabled = false;
-		if ( verdict.level === 'good' ) show( 'good', 'Your computer looks ready.', verdict.reasons, [ [ 'Start the simulator', PLAY_URL, true ], [ 'Watch the video', '#watch' ] ],
-			'The first start compiles the graphics and can take a minute or two.' );
-		else if ( verdict.level === 'slow' ) show( 'slow', 'It will probably run slowly here.', verdict.reasons, [ [ 'Watch the video', '#watch', true ], [ 'Play anyway', PLAY_URL ] ] );
-		else show( 'no', 'The simulator cannot run here.', verdict.reasons, [ [ 'Watch the video', '#watch', true ] ] );
+		if ( verdict.level === 'good' ) show( 'good', t( 'pc.good' ), verdict.reasons, [ [ t( 'pc.start' ), PLAY_URL, true ], [ t( 'pc.watch' ), '#watch' ] ], t( 'pc.note' ) );
+		else if ( verdict.level === 'slow' ) show( 'slow', t( 'pc.slow' ), verdict.reasons, [ [ t( 'pc.watch' ), '#watch', true ], [ t( 'pc.playAnyway' ), PLAY_URL ] ] );
+		else show( 'no', t( 'pc.no' ), verdict.reasons, [ [ t( 'pc.watch' ), '#watch', true ] ] );
 
 	} );
 
@@ -35,25 +36,25 @@
 
 		const ua = navigator.userAgent;
 		const phone = /Android|iPhone|iPad|iPod|Mobile/i.test( ua ) || ( /Macintosh/.test( ua ) && navigator.maxTouchPoints > 1 );
-		if ( phone ) return { level: 'no', reasons: [ 'Phones and tablets cannot run it yet. Open this page on a computer.' ] };
-		if ( ! navigator.gpu ) return { level: 'no', reasons: [ 'This browser has no WebGPU. Use a current Chrome or Edge.' ] };
+		if ( phone ) return { level: 'no', reasons: [ t( 'pc.phone' ) ] };
+		if ( ! navigator.gpu ) return { level: 'no', reasons: [ t( 'pc.noWebgpu' ) ] };
 		const adapter = await navigator.gpu.requestAdapter( { powerPreference: 'high-performance' } );
-		if ( ! adapter ) return { level: 'no', reasons: [ 'WebGPU is turned off or the graphics driver is blocked.' ] };
+		if ( ! adapter ) return { level: 'no', reasons: [ t( 'pc.noAdapter' ) ] };
 		const info = adapter.info || {};
-		if ( adapter.isFallbackAdapter || info.isFallbackAdapter ) return { level: 'no', reasons: [ 'The browser draws without the graphics card (software rendering).' ] };
+		if ( adapter.isFallbackAdapter || info.isFallbackAdapter ) return { level: 'no', reasons: [ t( 'pc.fallback' ) ] };
 
 		const reasons = [], slow = [];
-		const gpu = [ info.vendor, info.architecture ].filter( Boolean ).join( ' ' ) || 'graphics card';
+		const gpu = [ info.vendor, info.architecture ].filter( Boolean ).join( ' ' ) || t( 'pc.gpuFallback' );
 		const device = await adapter.requestDevice();
 		let gflops;
 		try { gflops = await gpuThroughput( device ); } finally { device.destroy(); }
-		if ( gflops < GOOD_GFLOPS ) slow.push( `The ${ gpu } is too slow for real time (about ${ Math.round( gflops ) } GFLOP/s in a short test).` );
-		else reasons.push( `WebGPU on ${ gpu }, about ${ Math.round( gflops ) } GFLOP/s.` );
+		if ( gflops < GOOD_GFLOPS ) slow.push( tf( 'pc.gpuSlow', { gpu, n: Math.round( gflops ) } ) );
+		else reasons.push( tf( 'pc.gpuOk', { gpu, n: Math.round( gflops ) } ) );
 		const memory = navigator.deviceMemory;
-		if ( memory && memory < MIN_MEMORY_GB ) slow.push( `About ${ memory } GB of memory; it needs 8 GB or more.` );
-		else if ( memory ) reasons.push( `${ memory >= 8 ? '8 GB or more' : memory + ' GB' } of memory.` );
+		if ( memory && memory < MIN_MEMORY_GB ) slow.push( tf( 'pc.memLow', { n: memory } ) );
+		else if ( memory ) reasons.push( tf( memory >= 8 ? 'pc.memOk8' : 'pc.memOkN', { n: memory } ) );
 		const connection = navigator.connection;
-		if ( connection?.saveData ) slow.push( 'Data saver is on; the simulator downloads about 150 MB.' );
+		if ( connection?.saveData ) slow.push( t( 'pc.saveData' ) );
 		return slow.length ? { level: 'slow', reasons: slow.concat( reasons ) } : { level: 'good', reasons };
 
 	}

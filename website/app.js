@@ -1,42 +1,10 @@
-// AERODOCK project site: architecture detail, benchmark chart, media behaviour.
+// AERODOCK project site: architecture detail, media behaviour, language switching.
 // Benchmark numbers are copied from benchmark/benchmark.json and, for the final
 // version, benchmark/evidence/final/summary.json (20-case suite).
+// All text comes from i18n.js; this file only builds it into the page.
 
-const STAGES = {
-	sense: {
-		title: 'Camera and drone sensors',
-		text: 'Everything the policy knows comes from the drone itself: one camera on a pan-tilt mount and the autopilot\'s own estimate of where the drone is and how it moves.',
-		facts: [ [ 'Image', '640 × 360 colour, 25 frames per second' ], [ 'Own state', 'position, velocity, attitude, camera angles' ], [ 'Radio', 'optional: the boat\'s position helps find it, never lands it' ] ],
-	},
-	see: {
-		title: 'See — two networks find the boat and the pad',
-		text: 'Both share one image encoder. The search head marks every boat in the frame and says which one is the target. The main network says whether the pad is in view and where it is in the picture, so the camera can stay on it, and estimates where the pad is relative to the drone and how the deck moves, with a short memory of earlier frames.',
-		facts: [ [ 'Search head', 'about 45,000 parameters: every boat, and which one is the target' ], [ 'Main network', 'about 1.55 million: pad in view, pad position and deck motion, GRU memory' ], [ 'Neither flies', 'they report what they see; control code decides the moves' ] ],
-	},
-	measure: {
-		title: 'Measure — geometry locates the pad',
-		text: 'Close to the boat, the known marking on the landing pad is fitted in the image with the calibrated camera. That gives the pad\'s position in metres — a measurement, not a guess. Tracking it over time gives the deck\'s motion.',
-		facts: [ [ 'Input', 'pad markings and camera calibration' ], [ 'Output', 'pad position, heading and deck motion' ], [ 'Rule', 'a confident network alone cannot start the descent' ] ],
-	},
-	decide: {
-		title: 'Decide — an explicit landing controller',
-		text: 'A controller turns the estimates into a flight: search, approach, match the deck, descend, touch down. It limits every command and backs off when the measurement is lost.',
-		facts: [ [ 'Output', 'three velocities, turn rate, camera pan and tilt' ], [ 'Rate', '25 commands per second' ], [ 'Safety', 'bounded commands, descent only on a measured pad, recovery' ] ],
-	},
-	fly: {
-		title: 'Fly — PX4 turns commands into thrust',
-		text: 'The open-source PX4 autopilot — the same software that flies real drones — stabilises the aircraft and drives the four motors. The policy only tells it where to go.',
-		facts: [ [ 'Autopilot', 'PX4 1.16, unmodified' ], [ 'Loop', 'sensors and motors at 250 Hz' ], [ 'Commands', 'velocity setpoints in PX4 offboard mode' ] ],
-	},
-};
-
-const MODELS = [
-	{ key: 'teacher', name: 'Teacher', note: 'sees simulator truth', score: 99.2, landed: 20 },
-	{ key: 'current', name: 'Final version', note: 'two networks, radio if offered', score: 79.9, landed: 18 },
-	{ key: 'nov', name: '8 November', note: 'with pad finder, no radio', score: 72.8, landed: 18 },
-	{ key: 'r15', name: 'Camera first', note: 'before the search head', score: 47.5, landed: 11 },
-	{ key: 'radio', name: 'Radio-dependent', note: 'landed only with boat radio', score: 44.4, landed: 7 },
-];
+const i18n = window.AERODOCK_I18N;
+const t = i18n.t;
 
 // ---- navigation bar turns solid after the hero
 const nav = document.getElementById( 'nav' );
@@ -66,11 +34,13 @@ if ( heroVideo ) {
 // ---- architecture diagram
 const detail = document.getElementById( 'arch-detail' );
 const nodes = Array.from( document.querySelectorAll( '.arch-svg .node' ) );
+let currentStage = 'see';
 function showStage( key ) {
 
-	const stage = STAGES[ key ];
+	currentStage = key;
 	nodes.forEach( ( node ) => node.classList.toggle( 'on', node.dataset.node === key ) );
-	detail.innerHTML = `<div><h3>${ stage.title }</h3><p>${ stage.text }</p></div><ul>${ stage.facts.map( ( [ k, v ] ) => `<li><b>${ k }</b><span>${ v }</span></li>` ).join( '' ) }</ul>`;
+	const facts = [ 1, 2, 3 ].map( ( n ) => [ t( `stage.${ key }.f${ n }k` ), t( `stage.${ key }.f${ n }v` ) ] );
+	detail.innerHTML = `<div><h3>${ t( `stage.${ key }.title` ) }</h3><p>${ t( `stage.${ key }.text` ) }</p></div><ul>${ facts.map( ( [ k, v ] ) => `<li><b>${ k }</b><span>${ v }</span></li>` ).join( '' ) }</ul>`;
 
 }
 
@@ -89,28 +59,35 @@ nodes.forEach( ( node ) => {
 	} );
 
 } );
-showStage( 'see' );
-
-// ---- benchmark chart
-const chart = document.getElementById( 'chart' );
-chart.innerHTML = MODELS.map( ( m ) => `
-	<div class="bar-row ${ m.key }">
-		<div class="bar-name"><b>${ m.name }</b><span>${ m.note }</span></div>
-		<div class="bar-track"><div class="bar-fill" data-width="${ m.score }"></div></div>
-		<div class="bar-value"><b>${ m.score.toFixed( 1 ) }</b><span>${ m.landed } / 20 landed</span></div>
-	</div>` ).join( '' );
+showStage( currentStage );
 
 // ---- boat: outside / inside
+const swapLabels = [];
 document.querySelectorAll( '[data-swap]' ).forEach( ( box ) => {
 
 	const button = box.querySelector( 'button' );
+	const label = () => {
+
+		button.textContent = box.classList.contains( 'inside' ) ? t( 'veh.boat.showOutside' ) : t( 'veh.boat.showInside' );
+
+	};
+	swapLabels.push( label );
 	button.addEventListener( 'click', () => {
 
 		const inside = box.classList.toggle( 'inside' );
-		button.textContent = inside ? 'Show outside' : 'Show inside';
 		button.setAttribute( 'aria-pressed', String( inside ) );
+		label();
 
 	} );
+	label();
+
+} );
+
+// ---- a new language: rebuild the generated text in place
+i18n.onChange( () => {
+
+	showStage( currentStage );
+	swapLabels.forEach( ( label ) => label() );
 
 } );
 
@@ -178,5 +155,114 @@ if ( watchVideo && ! still ) {
 		}
 
 	}, { threshold: [ 0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ] } ).observe( watchVideo );
+
+}
+
+// ---- custom player controls: seek bar, 1-4x speed, fullscreen
+const player = document.querySelector( '[data-player]' );
+if ( player ) {
+
+	const video = player.querySelector( 'video' );
+	const seek = player.querySelector( '.player-seek' );
+	const clockEl = player.querySelector( '.player-time' );
+	const toggles = Array.from( player.querySelectorAll( '[data-player-play]' ) );
+	const speeds = Array.from( player.querySelectorAll( '[data-speed]' ) );
+	const fsButton = player.querySelector( '[data-player-fs]' );
+	const canHide = matchMedia( '(hover: hover) and (pointer: fine)' ).matches;
+	let quietTimer = 0;
+
+	const clock = ( seconds ) => {
+
+		if ( ! Number.isFinite( seconds ) || seconds < 0 ) return '0:00';
+		const whole = Math.floor( seconds );
+		return `${ Math.floor( whole / 60 ) }:${ String( whole % 60 ).padStart( 2, '0' ) }`;
+
+	};
+
+	const labels = () => {
+
+		const playing = ! video.paused && ! video.ended;
+		const full = document.fullscreenElement === player;
+		toggles.forEach( ( button ) => button.setAttribute( 'aria-label', t( playing ? 'play.player.pause' : 'play.player.play' ) ) );
+		fsButton.setAttribute( 'aria-label', t( full ? 'play.player.exitFullscreen' : 'play.player.fullscreen' ) );
+
+	};
+
+	const paint = () => {
+
+		const duration = video.duration || 0;
+		const progress = duration ? ( video.currentTime / duration ) * 100 : 0;
+		seek.value = String( Math.round( progress * 10 ) );
+		seek.style.setProperty( '--played', `${ progress }%` );
+		clockEl.textContent = `${ clock( video.currentTime ) } / ${ clock( duration ) }`;
+		player.classList.toggle( 'playing', ! video.paused && ! video.ended );
+		labels();
+
+	};
+
+	const wake = () => {
+
+		player.classList.remove( 'quiet' );
+		clearTimeout( quietTimer );
+		if ( canHide && ! video.paused && ! video.ended ) quietTimer = setTimeout( () => player.classList.add( 'quiet' ), 2600 );
+
+	};
+
+	const toggle = () => {
+
+		if ( video.paused || video.ended ) {
+
+			if ( video.ended ) video.currentTime = 0;
+			video.play().catch( () => {} );
+
+		} else video.pause();
+		wake();
+
+	};
+
+	toggles.forEach( ( button ) => button.addEventListener( 'click', toggle ) );
+	video.addEventListener( 'click', toggle );
+
+	seek.addEventListener( 'input', () => {
+
+		if ( video.duration ) video.currentTime = ( Number( seek.value ) / 1000 ) * video.duration;
+		seek.style.setProperty( '--played', `${ Number( seek.value ) / 10 }%` );
+		wake();
+
+	} );
+
+	speeds.forEach( ( button ) => button.addEventListener( 'click', () => {
+
+		video.playbackRate = Number( button.dataset.speed );
+		speeds.forEach( ( other ) => other.setAttribute( 'aria-pressed', String( other === button ) ) );
+		wake();
+
+	} ) );
+
+	fsButton.addEventListener( 'click', () => {
+
+		if ( document.fullscreenElement === player ) document.exitFullscreen?.();
+		else if ( player.requestFullscreen ) player.requestFullscreen().catch( () => {} );
+
+	} );
+
+	document.addEventListener( 'fullscreenchange', () => {
+
+		player.classList.toggle( 'full', document.fullscreenElement === player );
+		labels();
+
+	} );
+
+	video.addEventListener( 'loadedmetadata', paint );
+	video.addEventListener( 'durationchange', paint );
+	video.addEventListener( 'timeupdate', paint );
+	video.addEventListener( 'play', () => { paint(); wake(); } );
+	video.addEventListener( 'pause', () => { paint(); player.classList.remove( 'quiet' ); } );
+	video.addEventListener( 'ended', () => { paint(); player.classList.remove( 'quiet' ); } );
+	player.addEventListener( 'pointermove', wake );
+	player.addEventListener( 'focusin', () => { player.classList.remove( 'quiet' ); clearTimeout( quietTimer ); } );
+	player.addEventListener( 'focusout', wake );
+	i18n.onChange( labels );
+	paint();
 
 }

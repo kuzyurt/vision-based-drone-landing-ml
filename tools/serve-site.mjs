@@ -39,7 +39,23 @@ http.createServer(async (req, res) => {
 		}
 		const body = await fs.readFile(file);
 		for (const rule of rules) if (matches(rule.pattern, url)) for (const [name, value] of rule.headers) res.setHeader(name, value);
-		res.setHeader('Content-Type', types[path.extname(file).toLowerCase()] || 'application/octet-stream');
+		const type = types[path.extname(file).toLowerCase()] || 'application/octet-stream';
+		res.setHeader('Content-Type', type);
+		res.setHeader('Accept-Ranges', 'bytes');
+		// Range requests, as Cloudflare Pages answers them: the video player needs
+		// them to seek and to load a long film in pieces.
+		const range = /^bytes=(\d*)-(\d*)$/.exec(req.headers.range || '');
+		if (range) {
+			let start = range[1] ? Number(range[1]) : 0;
+			let end = range[2] ? Number(range[2]) : body.length - 1;
+			if (!range[1] && range[2]) { start = Math.max(0, body.length - Number(range[2])); end = body.length - 1; }
+			end = Math.min(end, body.length - 1);
+			if (start > end || start >= body.length) { res.writeHead(416, {'Content-Range': `bytes */${body.length}`}).end(); return; }
+			res.writeHead(206, {'Content-Range': `bytes ${start}-${end}/${body.length}`, 'Content-Length': end - start + 1});
+			res.end(body.subarray(start, end + 1));
+			return;
+		}
+		res.setHeader('Content-Length', body.length);
 		res.end(body);
 	} catch {
 		console.log('404', url);

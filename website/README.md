@@ -11,13 +11,20 @@ Open **http://127.0.0.1:8000/** to look at the page alone.
 
 - Benchmark numbers in `app.js` are copied from `benchmark/benchmark.json` and,
   for the final version, `benchmark/evidence/final/summary.json`.
+- The page opens in German for visitors from Austria, Germany and Switzerland
+  and in English everywhere else. The country comes from Cloudflare's
+  `/cdn-cgi/trace`, which Pages answers on the visitor's own origin; on a host
+  that does not answer it the browser language and clock are the fallback.
+  `?lang=en` / `?lang=de` and the EN / DE buttons override the default, and a
+  click is remembered.
 - `playcheck.js` is the "Check my computer and play" button: WebGPU, phone or
   computer, memory and a 0.5 s GPU test decide between "ready", "probably
   slow" and "cannot run". "Watch the video" is always offered. The GPU line
   (`GOOD_GFLOPS`) is set from one laptop with Intel UHD graphics.
-- The video in the Play section plays `assets/gameplay.mp4`. Until that file
-  exists it falls back to the hero film. Any length or size works: the site
-  build makes a 720p copy if it is over the 25 MiB file limit.
+- The video in the Play section plays `assets/gameplay.mp4` with a custom
+  player: scrub bar, 1x / 2x / 3x / 4x speed and fullscreen. The browser's own
+  controls are off. The recording is silent, 1280x720 and about 23 MB; the site
+  build still makes a 720p copy if a replacement is over the 25 MiB file limit.
 - The hero film `assets/hero.mp4` is rendered from the game by
   `tidewater-game/app/tools/hero/`; `assets/tidewater-landing.mp4` is the fallback.
 

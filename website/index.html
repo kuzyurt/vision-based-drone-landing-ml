@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AERODOCK — a drone that lands itself on a moving boat</title>
-<meta name="description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
-<meta property="og:title" content="AERODOCK — a drone that lands itself on a moving boat">
-<meta property="og:description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4.">
+<title data-i18n="meta.title">AERODOCK — a drone that lands itself on a moving boat</title>
+<meta name="description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4." data-i18n-attr="content:meta.description">
+<meta property="og:title" content="AERODOCK — a drone that lands itself on a moving boat" data-i18n-attr="content:meta.title">
+<meta property="og:description" content="A camera-guided drone finds a moving boat, matches its deck and lands on it. Trained only in simulation, flown by PX4." data-i18n-attr="content:meta.description">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://aerodock-b9t.pages.dev/">
 <meta property="og:image" content="https://aerodock-b9t.pages.dev/assets/hero-poster.jpg">
@@ -22,15 +22,19 @@
 
 <header class="nav" id="nav">
 	<a class="brand" href="#top">AERODOCK</a>
-	<nav aria-label="Sections">
-		<a href="#how">How it works</a>
-		<a href="#vehicles">Vehicles</a>
-		<a href="#worlds">Simulation</a>
-		<a href="#play">Play</a>
-		<a href="#results">Results</a>
-		<a href="#story">Development</a>
+	<nav aria-label="Sections" data-i18n-attr="aria-label:nav.sections">
+		<a href="#how" data-i18n="nav.how">How it works</a>
+		<a href="#vehicles" data-i18n="nav.vehicles">Vehicles</a>
+		<a href="#worlds" data-i18n="nav.simulation">Simulation</a>
+		<a href="#play" data-i18n="nav.play">Play</a>
+		<a href="#results" data-i18n="nav.results">Results</a>
+		<a href="#story" data-i18n="nav.development">Development</a>
 	</nav>
 	<a class="button small" href="https://github.com/kuzyurt/vision-based-drone-landing-ml">GitHub</a>
+	<div class="lang-switch" role="group" aria-label="Language" data-i18n-attr="aria-label:nav.language">
+		<button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+		<button type="button" data-set-lang="de" aria-pressed="false">DE</button>
+	</div>
 </header>
 
 <main id="top">
@@ -40,9 +44,9 @@
 	<video class="hero-media" autoplay muted loop playsinline poster="assets/hero-poster.jpg" data-src="assets/hero.mp4" data-fallback="assets/tidewater-landing.mp4"></video>
 	<div class="hero-shade"></div>
 	<dl class="hero-facts">
-		<div><dt>18 of 20</dt><dd>benchmark missions landed</dd></div>
-		<div><dt>Camera lands it</dt><dd>the boat's radio can help find it, never lands it</dd></div>
-		<div><dt>0 images</dt><dd>of the test world used in training</dd></div>
+		<div><dt data-i18n="hero.f1t">18 of 20</dt><dd data-i18n="hero.f1x">benchmark missions landed</dd></div>
+		<div><dt data-i18n="hero.f2t">Camera lands it</dt><dd data-i18n="hero.f2x">the boat's radio can help find it, never lands it</dd></div>
+		<div><dt data-i18n="hero.f3t">0 images</dt><dd data-i18n="hero.f3x">of the test world used in training</dd></div>
 	</dl>
 </section>
 
@@ -50,13 +54,13 @@
 <section class="band" id="problem">
 	<div class="wrap two">
 		<div>
-			<h2>The problem</h2>
-			<p class="lead">A boat does not wait. It moves, turns, and rises and falls with every wave. The drone has to find it, catch up, and set down at the one moment the deck is safe.</p>
+			<h2 data-i18n="problem.h2">The problem</h2>
+			<p class="lead" data-i18n="problem.lead">A boat does not wait. It moves, turns, and rises and falls with every wave. The drone has to find it, catch up, and set down at the one moment the deck is safe.</p>
 		</div>
 		<ul class="points">
-			<li><b>A small, moving target.</b> The landing pad is 60&nbsp;cm wide, on a boat that keeps driving.</li>
-			<li><b>Wind and waves.</b> Crosswind pushes the drone while the deck pitches, rolls and heaves.</li>
-			<li><b>Radio to find, vision to land.</b> The boat's radio gets the drone to the target; nothing from the boat steers the landing itself — the camera and the pad geometry do.</li>
+			<li><b data-i18n="problem.p1t">A small, moving target.</b> <span data-i18n="problem.p1x">The landing pad is 60&nbsp;cm wide, on a boat that keeps driving.</span></li>
+			<li><b data-i18n="problem.p2t">Wind and waves.</b> <span data-i18n="problem.p2x">Crosswind pushes the drone while the deck pitches, rolls and heaves.</span></li>
+			<li><b data-i18n="problem.p3t">Radio to find, vision to land.</b> <span data-i18n="problem.p3x">The boat's radio gets the drone to the target; nothing from the boat steers the landing itself — the camera and the pad geometry do.</span></li>
 		</ul>
 	</div>
 </section>
@@ -64,11 +68,11 @@
 <!-- ---------------------------------------------------------- how it works -->
 <section class="band alt" id="how">
 	<div class="wrap">
-		<h2>How it works</h2>
-		<p class="lead narrow">Two neural networks look at the camera image and report what they see. Control code and the PX4 autopilot do the flying. An earlier network that flew the drone directly landed in none of its test flights.</p>
+		<h2 data-i18n="how.h2">How it works</h2>
+		<p class="lead narrow" data-i18n="how.lead">Two neural networks look at the camera image and report what they see. Control code and the PX4 autopilot do the flying. An earlier network that flew the drone directly landed in none of its test flights.</p>
 
 		<div class="arch" id="arch">
-			<svg class="arch-svg" viewBox="0 0 1180 330" role="img" aria-label="Signal flow: camera and drone sensors feed learned perception, then geometric localization, then the landing controller, then PX4, which drives the motors and the camera gimbal. The camera sees the result and the loop repeats 25 times per second.">
+			<svg class="arch-svg" viewBox="0 0 1180 330" role="img" aria-label="Signal flow: camera and drone sensors feed learned perception, then geometric localization, then the landing controller, then PX4, which drives the motors and the camera gimbal. The camera sees the result and the loop repeats 25 times per second." data-i18n-attr="aria-label:how.archAria">
 				<defs>
 					<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker>
 				</defs>
@@ -79,44 +83,44 @@
 					<path d="M938 105H984" marker-end="url(#ah)"/>
 					<path class="loop" d="M1080 170V262H100V176" marker-end="url(#ah)" stroke-dasharray="7 7"/>
 				</g>
-				<text class="loop-label" x="590" y="296" text-anchor="middle">The drone moves, the camera sees a new image — 25 times per second</text>
-				<g class="node" data-node="sense" tabindex="0" role="button" aria-label="Camera and sensors">
+				<text class="loop-label" x="590" y="296" text-anchor="middle" data-i18n="how.loop">The drone moves, the camera sees a new image — 25 times per second</text>
+				<g class="node" data-node="sense" tabindex="0" role="button" aria-label="Camera and sensors" data-i18n-attr="aria-label:how.ariaCamera">
 					<rect x="0" y="40" width="200" height="130" rx="14"/>
-					<text x="100" y="92" text-anchor="middle" class="t">Camera</text>
-					<text x="100" y="122" text-anchor="middle" class="s">+ drone sensors</text>
+					<text x="100" y="92" text-anchor="middle" class="t" data-i18n="how.camera">Camera</text>
+					<text x="100" y="122" text-anchor="middle" class="s" data-i18n="how.cameraS">+ drone sensors</text>
 				</g>
-				<g class="node" data-node="see" tabindex="0" role="button" aria-label="Learned perception">
+				<g class="node" data-node="see" tabindex="0" role="button" aria-label="Learned perception" data-i18n-attr="aria-label:how.ariaSee">
 					<rect x="246" y="40" width="200" height="130" rx="14"/>
-					<text x="346" y="92" text-anchor="middle" class="t">See</text>
-					<text x="346" y="122" text-anchor="middle" class="s">neural network</text>
+					<text x="346" y="92" text-anchor="middle" class="t" data-i18n="how.see">See</text>
+					<text x="346" y="122" text-anchor="middle" class="s" data-i18n="how.seeS">neural network</text>
 				</g>
-				<g class="node" data-node="measure" tabindex="0" role="button" aria-label="Geometric localization">
+				<g class="node" data-node="measure" tabindex="0" role="button" aria-label="Geometric localization" data-i18n-attr="aria-label:how.ariaMeasure">
 					<rect x="492" y="40" width="200" height="130" rx="14"/>
-					<text x="592" y="92" text-anchor="middle" class="t">Measure</text>
-					<text x="592" y="122" text-anchor="middle" class="s">pad geometry</text>
+					<text x="592" y="92" text-anchor="middle" class="t" data-i18n="how.measure">Measure</text>
+					<text x="592" y="122" text-anchor="middle" class="s" data-i18n="how.measureS">pad geometry</text>
 				</g>
-				<g class="node" data-node="decide" tabindex="0" role="button" aria-label="Landing controller">
+				<g class="node" data-node="decide" tabindex="0" role="button" aria-label="Landing controller" data-i18n-attr="aria-label:how.ariaDecide">
 					<rect x="738" y="40" width="200" height="130" rx="14"/>
-					<text x="838" y="92" text-anchor="middle" class="t">Decide</text>
-					<text x="838" y="122" text-anchor="middle" class="s">landing controller</text>
+					<text x="838" y="92" text-anchor="middle" class="t" data-i18n="how.decide">Decide</text>
+					<text x="838" y="122" text-anchor="middle" class="s" data-i18n="how.decideS">landing controller</text>
 				</g>
-				<g class="node" data-node="fly" tabindex="0" role="button" aria-label="PX4 flight control">
+				<g class="node" data-node="fly" tabindex="0" role="button" aria-label="PX4 flight control" data-i18n-attr="aria-label:how.ariaFly">
 					<rect x="984" y="40" width="196" height="130" rx="14"/>
-					<text x="1082" y="92" text-anchor="middle" class="t">Fly</text>
-					<text x="1082" y="122" text-anchor="middle" class="s">PX4 autopilot</text>
+					<text x="1082" y="92" text-anchor="middle" class="t" data-i18n="how.fly">Fly</text>
+					<text x="1082" y="122" text-anchor="middle" class="s" data-i18n="how.flyS">PX4 autopilot</text>
 				</g>
 			</svg>
 			<div class="arch-detail" id="arch-detail" aria-live="polite"></div>
 		</div>
 
-		<h3>One flight, six steps</h3>
+		<h3 data-i18n="how.h3">One flight, six steps</h3>
 		<ol class="phases">
-			<li><b>Search</b><span>Sweep the camera until a boat appears.</span></li>
-			<li><b>Identify</b><span>Fly closer and confirm it is the right boat.</span></li>
-			<li><b>Approach</b><span>Close the distance and keep the boat in view.</span></li>
-			<li><b>Align</b><span>Match the deck's speed and heading above the pad.</span></li>
-			<li><b>Descend</b><span>Come down only while the pad is measured.</span></li>
-			<li><b>Touch down</b><span>Land, disarm and stay on the pad.</span></li>
+			<li><b data-i18n="how.ph1t">Search</b><span data-i18n="how.ph1x">Sweep the camera until a boat appears.</span></li>
+			<li><b data-i18n="how.ph2t">Identify</b><span data-i18n="how.ph2x">Fly closer and confirm it is the right boat.</span></li>
+			<li><b data-i18n="how.ph3t">Approach</b><span data-i18n="how.ph3x">Close the distance and keep the boat in view.</span></li>
+			<li><b data-i18n="how.ph4t">Align</b><span data-i18n="how.ph4x">Match the deck's speed and heading above the pad.</span></li>
+			<li><b data-i18n="how.ph5t">Descend</b><span data-i18n="how.ph5x">Come down only while the pad is measured.</span></li>
+			<li><b data-i18n="how.ph6t">Touch down</b><span data-i18n="how.ph6x">Land, disarm and stay on the pad.</span></li>
 		</ol>
 	</div>
 </section>
@@ -124,40 +128,40 @@
 <!-- -------------------------------------------------------------- vehicles -->
 <section class="band" id="vehicles">
 	<div class="wrap">
-		<h2>Two vehicles, designed in CAD</h2>
-		<p class="lead narrow">Both were modelled part by part in FreeCAD and brought into the physics simulation with their real mass, joints and collision shapes.</p>
+		<h2 data-i18n="veh.h2">Two vehicles, designed in CAD</h2>
+		<p class="lead narrow" data-i18n="veh.lead">Both were modelled part by part in FreeCAD and brought into the physics simulation with their real mass, joints and collision shapes.</p>
 
 		<div class="cards two">
 			<article class="card">
 				<video class="card-media" muted loop playsinline preload="none" poster="assets/drone-mujoco.jpg" data-autoplay src="assets/gimbal.mp4"></video>
 				<div class="card-body">
-					<h3>The drone</h3>
-					<p>A Holybro X500 V2 quadrotor with a pan-tilt camera, flown by the unmodified PX4 autopilot.</p>
+					<h3 data-i18n="veh.drone.h3">The drone</h3>
+					<p data-i18n="veh.drone.p">A Holybro X500 V2 quadrotor with a pan-tilt camera, flown by the unmodified PX4 autopilot.</p>
 					<dl class="specs">
-						<div><dt>Mass</dt><dd>2.07 kg</dd></div>
-						<div><dt>Camera</dt><dd>640 × 360, 25 Hz</dd></div>
-						<div><dt>Autopilot</dt><dd>PX4 1.16</dd></div>
-						<div><dt>Parts</dt><dd>about €1,760</dd></div>
+						<div><dt data-i18n="veh.massT">Mass</dt><dd data-i18n="veh.massV">2.07 kg</dd></div>
+						<div><dt data-i18n="veh.camT">Camera</dt><dd data-i18n="veh.camV">640 × 360, 25 Hz</dd></div>
+						<div><dt data-i18n="veh.autoT">Autopilot</dt><dd data-i18n="veh.autoV">PX4 1.16</dd></div>
+						<div><dt data-i18n="veh.partsT">Parts</dt><dd data-i18n="veh.partsV">about €1,760</dd></div>
 					</dl>
-					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/px4-mujoco-drone-simulation">Drone simulation</a>
+					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/px4-mujoco-drone-simulation" data-i18n="veh.drone.link">Drone simulation</a>
 				</div>
 			</article>
 			<article class="card">
 				<div class="card-media swap" data-swap>
-					<img src="assets/boat-exterior.jpg" alt="AERODOCK boat, exterior render" loading="lazy">
-					<img src="assets/boat-cutaway.jpg" alt="AERODOCK boat with the hull hidden: landing bay, lift, batteries and electronics" loading="lazy">
-					<button type="button" class="swap-btn" aria-pressed="false">Show inside</button>
+					<img src="assets/boat-exterior.jpg" alt="AERODOCK boat, exterior render" loading="lazy" data-i18n-attr="alt:veh.boat.alt1">
+					<img src="assets/boat-cutaway.jpg" alt="AERODOCK boat with the hull hidden: landing bay, lift, batteries and electronics" loading="lazy" data-i18n-attr="alt:veh.boat.alt2">
+					<button type="button" class="swap-btn" aria-pressed="false" data-i18n="veh.boat.showInside">Show inside</button>
 				</div>
 				<div class="card-body">
-					<h3>The boat — AERODOCK</h3>
-					<p>A drone-carrying boat. Two lids slide open and a platform lifts the landing pad above the deck.</p>
+					<h3 data-i18n="veh.boat.h3">The boat — AERODOCK</h3>
+					<p data-i18n="veh.boat.p">A drone-carrying boat. Two lids slide open and a platform lifts the landing pad above the deck.</p>
 					<dl class="specs">
-						<div><dt>Landing pad</dt><dd>60 × 60 cm</dd></div>
-						<div><dt>Drive</dt><dd>two electric motors</dd></div>
-						<div><dt>Physics</dt><dd>buoyancy, drag, waves</dd></div>
-						<div><dt>Cameras</dt><dd>route and landing bay</dd></div>
+						<div><dt data-i18n="veh.padT">Landing pad</dt><dd data-i18n="veh.padV">60 × 60 cm</dd></div>
+						<div><dt data-i18n="veh.driveT">Drive</dt><dd data-i18n="veh.driveV">two electric motors</dd></div>
+						<div><dt data-i18n="veh.physT">Physics</dt><dd data-i18n="veh.physV">buoyancy, drag, waves</dd></div>
+						<div><dt data-i18n="veh.camsT">Cameras</dt><dd data-i18n="veh.camsV">route and landing bay</dd></div>
 					</dl>
-					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/AERODOCK_MuJoCo">Boat simulation</a>
+					<a class="more" href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/AERODOCK_MuJoCo" data-i18n="veh.boat.link">Boat simulation</a>
 				</div>
 			</article>
 		</div>
@@ -167,32 +171,32 @@
 <!-- ---------------------------------------------------------------- worlds -->
 <section class="band alt" id="worlds">
 	<div class="wrap">
-		<h2>Trained in one world, tested in another</h2>
-		<p class="lead narrow">All training happened in MuJoCo, a physics simulator with simple graphics. The realistic simulator is an open-source ocean game we extended. The policy never saw it during training, and lands there anyway.</p>
+		<h2 data-i18n="worlds.h2">Trained in one world, tested in another</h2>
+		<p class="lead narrow" data-i18n="worlds.lead">All training happened in MuJoCo, a physics simulator with simple graphics. The realistic simulator is an open-source ocean game we extended. The policy never saw it during training, and lands there anyway.</p>
 
 		<div class="cards two worlds">
 			<figure class="card">
 				<video class="card-media" muted loop playsinline preload="none" poster="assets/mujoco-landings.jpg" data-autoplay src="assets/mujoco-landings.mp4"></video>
 				<figcaption class="card-body">
-					<span class="tag">Training</span>
+					<span class="tag" data-i18n="worlds.trainTag">Training</span>
 					<h3>MuJoCo</h3>
-					<p>Accurate physics, plain rendering. Five kinds of coast, random routes, wind, waves and other boats. PX4 runs in step with the physics.</p>
+					<p data-i18n="worlds.mujoco.p">Accurate physics, plain rendering. Five kinds of coast, random routes, wind, waves and other boats. PX4 runs in step with the physics.</p>
 				</figcaption>
 			</figure>
 			<figure class="card">
 				<video class="card-media" muted loop playsinline preload="none" poster="assets/tidewater-boat.jpg" data-autoplay src="assets/tidewater-boat.mp4"></video>
 				<figcaption class="card-body">
-					<span class="tag test">Test only</span>
-					<h3>Realistic simulator</h3>
-					<p>A realistic ocean rendered in the browser. The same physics, autopilot and policy run locally — no server. You can fly it yourself and hand over to the policy with one key.</p>
+					<span class="tag test" data-i18n="worlds.testTag">Test only</span>
+					<h3 data-i18n="worlds.real.h3">Realistic simulator</h3>
+					<p data-i18n="worlds.real.p">A realistic ocean rendered in the browser. The same physics, autopilot and policy run locally — no server. You can fly it yourself and hand over to the policy with one key.</p>
 				</figcaption>
 			</figure>
 		</div>
 
 		<div class="rates">
-			<div><b>1000 Hz</b><span>physics</span></div>
-			<div><b>250 Hz</b><span>autopilot sensors and motors</span></div>
-			<div><b>25 Hz</b><span>camera and policy</span></div>
+			<div><b data-i18n="worlds.r1b">1000 Hz</b><span data-i18n="worlds.r1s">physics</span></div>
+			<div><b data-i18n="worlds.r2b">250 Hz</b><span data-i18n="worlds.r2s">autopilot sensors and motors</span></div>
+			<div><b data-i18n="worlds.r3b">25 Hz</b><span data-i18n="worlds.r3s">camera and policy</span></div>
 		</div>
 	</div>
 </section>
@@ -201,22 +205,44 @@
 <section class="band play" id="play">
 	<div class="wrap two">
 		<div>
-			<h2>Fly it yourself</h2>
-			<p class="lead">The realistic simulator runs in your browser. Fly the drone, then press <b>L</b> and let the policy find the boat and land. It needs a computer with Chrome or Edge, a capable graphics card and about 150&nbsp;MB of download.</p>
+			<h2 data-i18n="play.h2">Fly it yourself</h2>
+			<p class="lead"><span data-i18n="play.lead1">The realistic simulator runs in your browser. Fly the drone, then press</span> <b>L</b> <span data-i18n="play.lead2">and let the policy find the boat and land. It needs a computer with Chrome or Edge, a capable graphics card and about 150&nbsp;MB of download.</span></p>
 			<div class="play-actions">
-				<button class="button primary" id="play-check" type="button">Check my computer and play</button>
-				<a class="button ghost" href="#watch">Watch the video</a>
+				<button class="button primary" id="play-check" type="button" data-i18n="play.check">Check my computer and play</button>
+				<a class="button ghost" href="#watch" data-i18n="play.watch">Watch the video</a>
 			</div>
 			<div class="play-result" id="play-result" aria-live="polite" hidden></div>
 		</div>
 		<figure class="play-video" id="watch">
-			<!-- Gameplay video: drop it in as website/assets/gameplay.mp4 (under 25 MB).
-			     Until that file exists the browser falls back to the hero film. -->
-			<video controls preload="none" playsinline poster="assets/hero-poster.jpg">
-				<source src="assets/gameplay.mp4" type="video/mp4">
-				<source src="assets/hero.mp4" type="video/mp4">
-			</video>
-			<figcaption>A recorded flight in the realistic simulator: launch, handover, landing.</figcaption>
+			<div class="player" data-player>
+				<video preload="metadata" playsinline poster="assets/gameplay-poster.jpg">
+					<source src="assets/gameplay.mp4" type="video/mp4">
+				</video>
+				<button class="player-big" type="button" tabindex="-1" aria-hidden="true" data-player-play>
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+				</button>
+				<div class="player-ui">
+					<input class="player-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek" data-i18n-attr="aria-label:play.player.seek">
+					<div class="player-row">
+						<button class="player-btn player-toggle" type="button" data-player-play aria-label="Play" data-i18n-attr="aria-label:play.player.play">
+							<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+							<svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>
+						</button>
+						<span class="player-time">0:00 / 0:00</span>
+						<div class="player-speeds" role="group" aria-label="Playback speed" data-i18n-attr="aria-label:play.player.speed">
+							<button type="button" data-speed="1" aria-pressed="true">1×</button>
+							<button type="button" data-speed="2" aria-pressed="false">2×</button>
+							<button type="button" data-speed="3" aria-pressed="false">3×</button>
+							<button type="button" data-speed="4" aria-pressed="false">4×</button>
+						</div>
+						<button class="player-btn" type="button" data-player-fs aria-label="Fullscreen" data-i18n-attr="aria-label:play.player.fullscreen">
+							<svg class="i-fs" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M20 15v5h-5M4 15v5h5"/></svg>
+							<svg class="i-fs-exit" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4v5H4M15 4v5h5M15 20v-5h5M9 20v-5H4"/></svg>
+						</button>
+					</div>
+				</div>
+			</div>
+			<figcaption data-i18n="play.caption">A recorded flight in the realistic simulator: launch, handover, landing.</figcaption>
 		</figure>
 	</div>
 </section>
@@ -224,59 +250,85 @@
 <!-- --------------------------------------------------------------- results -->
 <section class="band" id="results">
 	<div class="wrap">
-		<h2>Results</h2>
-		<p class="lead narrow">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
+		<h2 data-i18n="res.h2">Results</h2>
+		<p class="lead narrow" data-i18n="res.lead">Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind, waves, a search from 100&nbsp;m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.</p>
 
-		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings; final version 79.9 with 18 of 20; 8 November version with pad finder, camera only, 72.8 with 18 of 20; camera first, before the search head, 47.5 with 11 of 20; radio-dependent 44.4 with 7 of 20."></div>
+		<div class="chart" id="chart" role="img" aria-label="Benchmark scores: teacher 99.2 with 20 of 20 landings; final version 79.9 with 18 of 20; 8 November version with pad finder, camera only, 72.8 with 18 of 20; camera first, before the search head, 47.5 with 11 of 20; radio-dependent 44.4 with 7 of 20." data-i18n-attr="aria-label:res.chartAria">
+			<div class="bar-row teacher">
+				<div class="bar-name"><div class="bar-title"><b data-i18n="chart.teacher.name">Teacher</b></div><span data-i18n="chart.teacher.note">sees simulator truth</span></div>
+				<div class="bar-track"><div class="bar-fill" data-width="99.2"></div></div>
+				<div class="bar-value"><b data-i18n="chart.teacher.value">99.2</b><span>20 / 20 <span data-i18n="chart.landed">landed</span></span></div>
+			</div>
+			<div class="bar-row current">
+				<div class="bar-name"><div class="bar-title"><b data-i18n="chart.current.name">Final version</b><em class="badge" data-i18n="chart.badge">current</em></div><span data-i18n="chart.current.note">two networks, radio if offered</span></div>
+				<div class="bar-track"><div class="bar-fill" data-width="79.9"></div></div>
+				<div class="bar-value"><b data-i18n="chart.current.value">79.9</b><span>18 / 20 <span data-i18n="chart.landed">landed</span></span></div>
+			</div>
+			<div class="bar-row nov">
+				<div class="bar-name"><div class="bar-title"><b data-i18n="chart.nov.name">8 November</b></div><span data-i18n="chart.nov.note">with pad finder, no radio</span></div>
+				<div class="bar-track"><div class="bar-fill" data-width="72.8"></div></div>
+				<div class="bar-value"><b data-i18n="chart.nov.value">72.8</b><span>18 / 20 <span data-i18n="chart.landed">landed</span></span></div>
+			</div>
+			<div class="bar-row r15">
+				<div class="bar-name"><div class="bar-title"><b data-i18n="chart.r15.name">Camera first</b></div><span data-i18n="chart.r15.note">before the search head</span></div>
+				<div class="bar-track"><div class="bar-fill" data-width="47.5"></div></div>
+				<div class="bar-value"><b data-i18n="chart.r15.value">47.5</b><span>11 / 20 <span data-i18n="chart.landed">landed</span></span></div>
+			</div>
+			<div class="bar-row radio">
+				<div class="bar-name"><div class="bar-title"><b data-i18n="chart.radio.name">Radio-dependent</b></div><span data-i18n="chart.radio.note">landed only with boat radio</span></div>
+				<div class="bar-track"><div class="bar-fill" data-width="44.4"></div></div>
+				<div class="bar-value"><b data-i18n="chart.radio.value">44.4</b><span>7 / 20 <span data-i18n="chart.landed">landed</span></span></div>
+			</div>
+		</div>
 
 		<div class="two results-notes">
 			<div>
-				<h3>What the final version does well</h3>
-				<p>It landed 18 of 20: every landing, wind and search mission, with boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind and the search from 100&nbsp;m with other boats in the scene. The boat's radio only helps it find the boat; the camera lands it.</p>
+				<h3 data-i18n="res.good.h3">What the final version does well</h3>
+				<p data-i18n="res.good.p">It landed 18 of 20: every landing, wind and search mission, with boat speeds up to 1.5&nbsp;m/s, 4&nbsp;m/s crosswind and the search from 100&nbsp;m with other boats in the scene. The boat's radio only helps it find the boat; the camera lands it.</p>
 			</div>
 			<div>
-				<h3>Where it still fails</h3>
-				<p>Two missions with waves. The drone reaches the pad, then hovers just above it waiting for a clean measurement of the pad until its time runs out. Everything so far is simulation; there has been no flight with real hardware.</p>
+				<h3 data-i18n="res.fail.h3">Where it still fails</h3>
+				<p data-i18n="res.fail.p">Two missions with waves. The drone reaches the pad, then hovers just above it waiting for a clean measurement of the pad until its time runs out. Everything so far is simulation; there has been no flight with real hardware.</p>
 			</div>
 		</div>
-		<p class="foot-note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy. <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark">Benchmark data and every flight</a></p>
+		<p class="foot-note"><span data-i18n="res.note">The teacher uses simulator information a real drone would not have. It produces the training examples and marks the upper limit; it is not a deployable policy.</span> <a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark" data-i18n="res.noteLink">Benchmark data and every flight</a></p>
 	</div>
 </section>
 
 <!-- ----------------------------------------------------------------- story -->
 <section class="band alt" id="story">
 	<div class="wrap">
-		<h2>How it got here</h2>
+		<h2 data-i18n="story.h2">How it got here</h2>
 		<ol class="story">
 			<li>
-				<span class="when">Step 1</span>
-				<h3>Build the world</h3>
-				<p>Drone and boat from CAD, water and wind physics, and the real PX4 autopilot in the loop.</p>
+				<span class="when" data-i18n="story.s1when">Step 1</span>
+				<h3 data-i18n="story.s1t">Build the world</h3>
+				<p data-i18n="story.s1p">Drone and boat from CAD, water and wind physics, and the real PX4 autopilot in the loop.</p>
 			</li>
 			<li>
-				<span class="when">Step 2</span>
-				<h3>Let a network fly</h3>
-				<p>A network trained to copy the teacher's commands landed in none of its 12 test flights. Every small mistake changed what it saw next.</p>
+				<span class="when" data-i18n="story.s2when">Step 2</span>
+				<h3 data-i18n="story.s2t">Let a network fly</h3>
+				<p data-i18n="story.s2p">A network trained to copy the teacher's commands landed in none of its 12 test flights. Every small mistake changed what it saw next.</p>
 			</li>
 			<li>
-				<span class="when">Step 3</span>
-				<h3>Split seeing from flying</h3>
-				<p>From here on the networks only estimate where the boat and the pad are, and control code flies. The first version leaned on the boat's radio: 7 of 20, and none of the six missions without it.</p>
+				<span class="when" data-i18n="story.s3when">Step 3</span>
+				<h3 data-i18n="story.s3t">Split seeing from flying</h3>
+				<p data-i18n="story.s3p">From here on the networks only estimate where the boat and the pad are, and control code flies. The first version leaned on the boat's radio: 7 of 20, and none of the six missions without it.</p>
 			</li>
 			<li>
-				<span class="when">Step 4</span>
-				<h3>Camera first</h3>
-				<p>Trust the camera for position. 11 of 20, but it landed only half of the missions that start with a search.</p>
+				<span class="when" data-i18n="story.s4when">Step 4</span>
+				<h3 data-i18n="story.s4t">Camera first</h3>
+				<p data-i18n="story.s4p">Trust the camera for position. 11 of 20, but it landed only half of the missions that start with a search.</p>
 			</li>
 			<li>
-				<span class="when">Step 5</span>
-				<h3>Add a search head</h3>
-				<p>A small network that marks every boat and picks out the target, trained while the main network stayed frozen. 18 of 20, camera only.</p>
+				<span class="when" data-i18n="story.s5when">Step 5</span>
+				<h3 data-i18n="story.s5t">Add a search head</h3>
+				<p data-i18n="story.s5p">A small network that marks every boat and picks out the target, trained while the main network stayed frozen. 18 of 20, camera only.</p>
 			</li>
 			<li>
-				<span class="when">Step 6</span>
-				<h3>One final version</h3>
-				<p>The drone flies to the boat's radio position first and lets the camera confirm it, and the small pad finder from earlier versions is gone. 18 of 20 again, and the same build flies in the realistic simulator.</p>
+				<span class="when" data-i18n="story.s6when">Step 6</span>
+				<h3 data-i18n="story.s6t">One final version</h3>
+				<p data-i18n="story.s6p">The drone flies to the boat's radio position first and lets the camera confirm it, and the small pad finder from earlier versions is gone. 18 of 20 again, and the same build flies in the realistic simulator.</p>
 			</li>
 		</ol>
 	</div>
@@ -285,12 +337,12 @@
 <!-- ------------------------------------------------------------------- end -->
 <section class="band end">
 	<div class="wrap">
-		<h2>Look inside</h2>
+		<h2 data-i18n="end.h2">Look inside</h2>
 		<div class="links-grid">
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml"><b>Repository</b><span>Code, models and data layout</span></a>
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/landing_training"><b>Training and architecture</b><span>Network, teacher and controller in detail</span></a>
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/tidewater-game"><b>Realistic simulator</b><span>Run it locally and fly</span></a>
-			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark"><b>Benchmark</b><span>20 missions, five policies, all evidence</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml"><b data-i18n="end.repo.t">Repository</b><span data-i18n="end.repo.s">Code, models and data layout</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/landing_training"><b data-i18n="end.train.t">Training and architecture</b><span data-i18n="end.train.s">Network, teacher and controller in detail</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/tidewater-game"><b data-i18n="end.sim.t">Realistic simulator</b><span data-i18n="end.sim.s">Run it locally and fly</span></a>
+			<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml/tree/main/benchmark"><b data-i18n="end.bench.t">Benchmark</b><span data-i18n="end.bench.s">20 missions, five policies, all evidence</span></a>
 		</div>
 	</div>
 </section>
@@ -299,11 +351,12 @@
 
 <footer class="footer">
 	<div class="wrap">
-		<span>AERODOCK — vision-based drone landing</span>
+		<span data-i18n="footer.tag">AERODOCK — vision-based drone landing</span>
 		<a href="https://github.com/kuzyurt/vision-based-drone-landing-ml">github.com/kuzyurt/vision-based-drone-landing-ml</a>
 	</div>
 </footer>
 
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 <script src="playcheck.js"></script>
 </body>
