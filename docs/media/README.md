@@ -6,7 +6,6 @@
 | [Boat under way](tidewater-boat-1080p.mp4) | 5 s of the AERODOCK under way, seen from off its port bow, 1920 × 1080, 30 fps. Rendered from a recorded simulation run with the [hero-film tools](../../tidewater-game/app/tools/hero/README.md) (`boatFront` shot) |
 | [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
 | [Poster](tidewater-boat-poster.jpg) | Frame from that clip |
-| [Earlier landing](tidewater-landing-1080p.mp4) | Complete successful third-person landing, 1920 × 1080, 25 fps, real-time playback (see provenance below) |
 | [Landing flow](landing-flow.png) | The flight in five steps, split into the search-head phase and precision landing; [SVG](landing-flow.svg) |
 | [Training story](training-story.png) | Four design steps with their benchmark results; [SVG](training-story.svg) |
 | [Policy flow](policy-flow.png) | Camera, learned perception, pad geometry, controller and PX4; [SVG](policy-flow.svg) |
