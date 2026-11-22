@@ -110,8 +110,6 @@ from 15 m with the boat behind it.
   half metre it waits for a fresh measurement of the pad while the deck is
   nearly steady. In these two missions that moment did not come often enough
   before the time limit.
-- The final version has been flown on the benchmark once. One run is not a
-  success rate.
 - It has only flown in simulation, never on real hardware.
 
 ## Go deeper
