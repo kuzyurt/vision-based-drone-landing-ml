@@ -215,14 +215,16 @@
 		</div>
 		<figure class="play-video" id="watch">
 			<div class="player" data-player>
-				<video preload="metadata" playsinline poster="assets/gameplay-poster.jpg">
-					<source src="assets/gameplay.mp4" type="video/mp4">
-				</video>
+				<video preload="none" playsinline poster="assets/gameplay-poster.jpg" data-src="assets/gameplay.mp4"></video>
 				<button class="player-big" type="button" tabindex="-1" aria-hidden="true" data-player-play>
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
 				</button>
+				<div class="player-loading" data-player-loading hidden>
+					<span class="player-spinner" aria-hidden="true"></span>
+					<span class="player-load-text" data-load-text data-i18n="play.player.loading">Loading film</span>
+				</div>
 				<div class="player-ui">
-					<input class="player-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek" data-i18n-attr="aria-label:play.player.seek">
+					<input class="player-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek" data-i18n-attr="aria-label:play.player.seek" disabled>
 					<div class="player-row">
 						<button class="player-btn player-toggle" type="button" data-player-play aria-label="Play" data-i18n-attr="aria-label:play.player.play">
 							<svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>

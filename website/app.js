@@ -121,55 +121,27 @@ const clips = new IntersectionObserver( ( entries ) => {
 }, { threshold: 0.35 } );
 document.querySelectorAll( 'video[data-autoplay]' ).forEach( ( video ) => clips.observe( video ) );
 
-// The flight video in "Fly it yourself" starts by itself, muted (browsers allow
-// autoplay only without sound), once 70 % of it is on screen, and pauses when
-// it scrolls away. After the viewer pauses it themselves it stays paused.
-const watchVideo = document.querySelector( '#watch video' );
-if ( watchVideo && ! still ) {
 
-	// The pause event arrives later than the pause() call, so the flag is cleared
-	// by the event itself, not right after the call.
-	let autoPlaying = false, userPaused = false, autoPausing = false;
-	watchVideo.addEventListener( 'pause', () => { if ( autoPausing ) autoPausing = false; else userPaused = true; } );
-	watchVideo.addEventListener( 'play', () => { userPaused = false; } );
-	new IntersectionObserver( ( [ entry ] ) => {
 
-		// A video taller than the window can never be 70 % visible; then filling
-		// 70 % of the window counts instead.
-		const view = entry.rootBounds?.height || innerHeight;
-		if ( entry.intersectionRatio >= 0.7 || entry.intersectionRect.height >= 0.7 * view ) {
-
-			if ( watchVideo.paused && ! userPaused ) {
-
-				if ( ! autoPlaying ) watchVideo.muted = true;
-				autoPlaying = true;
-				watchVideo.play().catch( () => {} );
-
-			}
-
-		} else if ( ! watchVideo.paused ) {
-
-			autoPausing = true;
-			watchVideo.pause();
-
-		}
-
-	}, { threshold: [ 0, 0.2, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ] } ).observe( watchVideo );
-
-}
-
-// ---- custom player controls: seek bar, 1-4x speed, fullscreen
+// ---- custom player: load the film once, then seek, 1-4x speed, fullscreen
+// pages.dev answers Range requests with the whole file, so a blob is used;
+// only then can the scrubber jump to any part of the film.
 const player = document.querySelector( '[data-player]' );
 if ( player ) {
 
 	const video = player.querySelector( 'video' );
+	const source = video.dataset.src;
 	const seek = player.querySelector( '.player-seek' );
 	const clockEl = player.querySelector( '.player-time' );
 	const toggles = Array.from( player.querySelectorAll( '[data-player-play]' ) );
 	const speeds = Array.from( player.querySelectorAll( '[data-speed]' ) );
 	const fsButton = player.querySelector( '[data-player-fs]' );
+	const loadingEl = player.querySelector( '[data-player-loading]' );
+	const loadingText = player.querySelector( '[data-load-text]' );
+	const spinner = player.querySelector( '.player-spinner' );
 	const canHide = matchMedia( '(hover: hover) and (pointer: fine)' ).matches;
-	let quietTimer = 0;
+	let objectUrl = '', loading = null, attempt = 0, rate = 1, quietTimer = 0;
+	video.muted = true;
 
 	const clock = ( seconds ) => {
 
@@ -208,8 +180,90 @@ if ( player ) {
 
 	};
 
+	const showLoading = ( on, text, failed = false ) => {
+
+		player.classList.toggle( 'loading', on );
+		loadingEl.hidden = ! on;
+		loadingEl.classList.toggle( 'failed', failed );
+		spinner.hidden = failed;
+		if ( text ) loadingText.textContent = text;
+
+	};
+
+	const load = () => {
+
+		if ( objectUrl ) return Promise.resolve();
+		if ( loading ) return loading;
+		const id = ++attempt;
+		showLoading( true, t( 'play.player.loading' ) );
+		loading = fetch( source )
+			.then( ( response ) => {
+
+				if ( ! response.ok ) throw new Error( `HTTP ${ response.status }` );
+				if ( ! response.body || ! response.body.getReader ) return response.blob();
+				const total = Number( response.headers.get( 'content-length' ) ) || 0;
+				const reader = response.body.getReader();
+				const chunks = [];
+				let received = 0;
+				const pump = () => reader.read().then( ( { done, value } ) => {
+
+					if ( done ) return new Blob( chunks, { type: 'video/mp4' } );
+					chunks.push( value );
+					received += value.length;
+					if ( total && id === attempt ) loadingText.textContent = `${ t( 'play.player.loading' ) } ${ Math.round( received / total * 100 ) }%`;
+					return pump();
+
+				} );
+				return pump();
+
+			} )
+			.then( ( blob ) => {
+
+				objectUrl = URL.createObjectURL( blob );
+				video.src = objectUrl;
+				video.defaultPlaybackRate = rate;
+				video.playbackRate = rate;
+				video.load();
+				return new Promise( ( resolve ) => {
+
+					if ( video.readyState >= 1 ) resolve();
+					else video.addEventListener( 'loadedmetadata', resolve, { once: true } );
+
+				} );
+
+			} )
+			.then( () => {
+
+				seek.disabled = false;
+				showLoading( false );
+				paint();
+
+			} )
+			.catch( () => {
+
+				showLoading( true, t( 'play.player.error' ), true );
+				setTimeout( () => { if ( id === attempt && ! objectUrl ) showLoading( false ); }, 5000 );
+
+			} )
+			.finally( () => { loading = null; } );
+		return loading;
+
+	};
+
 	const toggle = () => {
 
+		if ( ! objectUrl ) {
+
+			load().then( () => {
+
+				if ( ! objectUrl ) return;
+				video.play().catch( () => {} );
+				wake();
+
+			} );
+			return;
+
+		}
 		if ( video.paused || video.ended ) {
 
 			if ( video.ended ) video.currentTime = 0;
@@ -233,7 +287,8 @@ if ( player ) {
 
 	speeds.forEach( ( button ) => button.addEventListener( 'click', () => {
 
-		video.playbackRate = Number( button.dataset.speed );
+		rate = Number( button.dataset.speed );
+		video.playbackRate = rate;
 		speeds.forEach( ( other ) => other.setAttribute( 'aria-pressed', String( other === button ) ) );
 		wake();
 

@@ -130,6 +130,8 @@
 			'play.player.speed': 'Playback speed',
 			'play.player.fullscreen': 'Fullscreen',
 			'play.player.exitFullscreen': 'Exit fullscreen',
+			'play.player.loading': 'Loading film',
+			'play.player.error': 'The film could not be loaded. Press play to try again.',
 
 			'res.h2': 'Results',
 			'res.lead': 'Every policy flies the same 20 missions on five kinds of coast: boat speeds up to 1.5\u00a0m/s, 4\u00a0m/s crosswind, waves, a search from 100\u00a0m away and other boats in the scene. A landing counts only if the drone ends up disarmed and stable on the pad.',
@@ -371,6 +373,8 @@
 			'play.player.speed': 'Geschwindigkeit',
 			'play.player.fullscreen': 'Vollbild',
 			'play.player.exitFullscreen': 'Vollbild verlassen',
+			'play.player.loading': 'Film wird geladen',
+			'play.player.error': 'Der Film konnte nicht geladen werden. Erneut auf Abspielen drücken.',
 
 			'res.h2': 'Ergebnisse',
 			'res.lead': 'Jede Steuerung fliegt dieselben 20 Missionen an fünf Küstenarten: Bootsgeschwindigkeiten bis 1,5\u00a0m/s, 4\u00a0m/s Seitenwind, Wellen, eine Suche aus 100\u00a0m Entfernung und andere Boote in der Szene. Eine Landung zählt nur, wenn die Drohne am Ende entwaffnet und stabil auf der Plattform steht.',

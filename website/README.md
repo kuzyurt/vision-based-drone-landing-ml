@@ -23,8 +23,10 @@ Open **http://127.0.0.1:8000/** to look at the page alone.
   (`GOOD_GFLOPS`) is set from one laptop with Intel UHD graphics.
 - The video in the Play section plays `assets/gameplay.mp4` with a custom
   player: scrub bar, 1x / 2x / 3x / 4x speed and fullscreen. The browser's own
-  controls are off. The recording is silent, 1280x720 and about 23 MB; the site
-  build still makes a 720p copy if a replacement is over the 25 MiB file limit.
+  controls are off. The film is fetched in full and played from a blob, because
+  pages.dev answers Range requests with the whole file; the scrubber then works
+  for the whole length. The recording is silent, 1280x720 and about 23 MB; the
+  site build still makes a 720p copy if a replacement is over the 25 MiB limit.
 - The hero film `assets/hero.mp4` is rendered from the game by
   `tidewater-game/app/tools/hero/`; `assets/tidewater-landing.mp4` is the fallback.
 
