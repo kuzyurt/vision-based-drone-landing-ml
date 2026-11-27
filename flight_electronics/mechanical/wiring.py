@@ -684,7 +684,7 @@ def hardware():
         out += [('M3 nyloc + washer', s, ZINC) for s in _nut(hx, hy, DECK_BOTTOM)]
     sx, sz = CHARGE_SOCKET
     for hx in (sx - 11.5, sx + 11.5):                    # socket flange: M2.5 x 8, nut behind the wall
-        head = cq.Workplane('XZ').circle(2.3).extrude(1.5).translate((hx, CHARGE_WALL_Y - 2.0, sz))
+        head = cq.Workplane('XZ').circle(2.3).extrude(1.5).translate((hx, CHARGE_WALL_Y - 2.1, sz))
         shank = cq.Workplane('XZ').circle(1.25).extrude(-8.0).translate((hx, CHARGE_WALL_Y - 2.0, sz))
         out.append(('M2.5 x 8 (socket)', head.union(shank), STEEL))
         nut = cq.Workplane('XZ').polygon(6, 5.0 / math.cos(math.pi / 6)).extrude(-2.0).translate((hx, CHARGE_WALL_Y + 3.5, sz))
@@ -826,7 +826,7 @@ def cables():
     ties.append(Tie([dis], (11.5, 32.0, 108.8), ('base', (11.5, 32.0, PLATE_BOTTOM), (0, 0, -1.0))))
     ties.append(Tie([dis], (14.5, 34.0, 154.5), ('base', (14.5, 34.0, DECK_TOP), (0, 0, 1.0))))
     sx, sz = CHARGE_SOCKET
-    sock_o, sock_d, sock_up = (sx, CHARGE_WALL_Y, sz), (0, -1, 0), (0, 0, 1)
+    sock_o, sock_d, sock_up = (sx, CHARGE_WALL_Y - 2.05, sz), (0, -1, 0), (0, 0, 1)   # flange on the wall's face, not in it
     add_plug('Power', _place(C.xt60e_panel_socket(), sock_o, sock_d, sock_up))
     s_cups = [End(_local(sock_o, sock_d, sock_up, (-17.0, y, 0.0)), (0, 1, 0), 'cup') for y in (3.6, -3.6)]       # +, -
     chg = Cable('cable-battery-charge', 'Battery charge (16 AWG) -> charge socket', chg_a, s_cups,

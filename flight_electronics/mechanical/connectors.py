@@ -393,9 +393,12 @@ def xt60e_panel_socket(depth=12.0):
     body = _prism_yz(_xt60_outline(-0.3), -depth, -2.0)
     housing = flange.union(nose).union(body)
     for y in (-XT60['pitch'] / 2, XT60['pitch'] / 2):
-        housing = housing.cut(cq.Workplane('YZ').circle(XT60['bore'] / 2).extrude(11.0).translate((-8.6, y, 0)))
-        out.append(('socket', cq.Workplane('YZ').circle(2.15).circle(1.75).extrude(9.5).translate((-7.5, y, 0)), 'gold'))
+        # the socket bores open through the mating face; the gold sleeves sit 1.5 mm down them
+        housing = housing.cut(cq.Workplane('YZ').circle(XT60['bore'] / 2).extrude(11.5).translate((-8.6, y, 0)))
+        out.append(('socket', cq.Workplane('YZ').circle(2.25).circle(1.75).extrude(8.5).translate((-7.5, y, 0)), 'gold'))
         out.append(('solder cup', cq.Workplane('YZ').circle(1.9).extrude(5.0).translate((-depth - 5.0, y, 0)), 'gold'))
+    # the mating opening: a 1.5 mm recess in the polarity shape round the two bores, where the plug goes in
+    housing = housing.cut(_prism_yz(_xt60_outline(-1.1), 1.0, 2.6))
     out.insert(0, ('housing', housing, 'yellow'))
     # dust cap, open: hangs below the socket on its strap, its inside (the plug-shaped cavity) facing out
     cap = _prism_yz(_xt60_outline(1.4), 0.0, 7.0)

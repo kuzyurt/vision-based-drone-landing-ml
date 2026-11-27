@@ -354,12 +354,12 @@
   "cable-battery-charge": {
    "label": "Battery charge (16 AWG) -> charge socket",
    "gauge": "2 x 16 AWG",
-   "length_mm": 57,
+   "length_mm": 58,
    "wires": 2,
-   "drone_gap_mm": 3.21,
+   "drone_gap_mm": 3.59,
    "drone_gap_at": [
-    -14.2,
-    57.2,
+    -13.8,
+    57.0,
     161.6
    ],
    "nearest_drone_part": "drone_BatteryCradle",
@@ -984,7 +984,7 @@
    ]
   },
   "cable-battery-discharge / cable-battery-charge": {
-   "gap_mm": 0.26,
+   "gap_mm": 0.25,
    "at": [
     18.3,
     51.7,
