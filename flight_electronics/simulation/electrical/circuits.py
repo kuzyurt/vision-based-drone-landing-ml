@@ -67,7 +67,7 @@ Cq q 0 2n
 """
 
 
-def boost_switching(vin=12.0, i_low=0.5, i_high=2.0, t_step=2.5e-3, t_end=4.0e-3, p=D.BOOST_17V):
+def boost_switching(vin=12.0, i_low=1.0, i_high=2.5, t_step=2.5e-3, t_end=4.0e-3, p=D.BOOST_17V):
     period = 1 / p['fsw_hz']
     slope_a = 1.2 * 0.5 * (p['vout'] - vin) / p['L'] * period + 0.2
     return f"""
@@ -186,6 +186,6 @@ Vcam_en cam_en 0 dc 0 external
 {boost_lines}{cam_extra}Vcam_w cam_w 0 dc 0 external
 Bcam camin 0 I=V(camin)>{p.CAMERA['input_v'][0]} ? V(cam_w)/max(V(camin),1) : 0
 .options method=gear reltol=1e-4
-.tran 1m 100000 0 5m uic
+.tran 20m 100000 0 20m uic
 .end
 """

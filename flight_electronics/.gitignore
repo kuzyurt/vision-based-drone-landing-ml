@@ -1,3 +1,5 @@
 firmware/esp32_radio_bridge/build_host/
 firmware/esp32_radio_bridge/platform/esp32/build/
 __pycache__/
+circuit/kicad/*.kicad_prl
+circuit/kicad/*-backups/

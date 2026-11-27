@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 520" width="1150" height="520" font-family="Inter, Helvetica, Arial, sans-serif">
+<rect width="1150" height="520" fill="white"/>
+<defs>
+<marker id="adc3c3d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#dc3c3d"/></marker>
+<marker id="a257de0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#257de0"/></marker>
+<marker id="a00a888" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#00a888"/></marker>
+</defs>
+<rect x="30" y="60" width="170" height="70" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="44" y="86" font-size="16" font-weight="700" fill="#191919">Battery 4S Li-ion</text>
+<text x="44" y="108" font-size="13" fill="#666666">12.0-16.8 V, 12 Ah</text>
+<rect x="30" y="200" width="170" height="70" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="44" y="226" font-size="16" font-weight="700" fill="#191919">PM02 + PDB</text>
+<text x="44" y="248" font-size="13" fill="#666666">Pixhawk supply, ESCs</text>
+<rect x="30" y="330" width="170" height="70" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="44" y="356" font-size="16" font-weight="700" fill="#191919">4x ESC + motor</text>
+<text x="44" y="378" font-size="13" fill="#666666">~290 W hover</text>
+<rect x="300" y="40" width="250" height="200" rx="10" fill="#fff6e0" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="314" y="66" font-size="16" font-weight="700" fill="#191919">FE-1 carrier board</text>
+<rect x="650" y="60" width="210" height="90" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="664" y="86" font-size="16" font-weight="700" fill="#191919">Orange Pi 5</text>
+<text x="664" y="108" font-size="13" fill="#666666">RK3588S: NPU + 4x A76</text>
+<rect x="650" y="200" width="210" height="80" rx="10" fill="#fff6e0" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="664" y="226" font-size="16" font-weight="700" fill="#191919">XIAO ESP32S3</text>
+<text x="664" y="248" font-size="13" fill="#666666">+ Wio-SX1262 LoRa</text>
+<rect x="300" y="330" width="250" height="80" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="314" y="356" font-size="16" font-weight="700" fill="#191919">D-80Pro + GCU</text>
+<text x="314" y="378" font-size="13" fill="#666666">gimbal camera, 14-53 V</text>
+<rect x="650" y="330" width="210" height="80" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="664" y="356" font-size="16" font-weight="700" fill="#191919">Pixhawk 6C</text>
+<text x="664" y="378" font-size="13" fill="#666666">PX4 flight controller</text>
+<rect x="960" y="200" width="160" height="80" rx="10" fill="#f7f7f7" stroke="#b8b8b8" stroke-width="1.5"/>
+<text x="974" y="226" font-size="16" font-weight="700" fill="#191919">Boat beacon</text>
+<text x="974" y="248" font-size="13" fill="#666666">LoRa 868 MHz</text>
+<rect x="315" y="80" width="220" height="34" rx="6" fill="white" stroke="#b8b8b8"/>
+<text x="325" y="102" font-size="13" fill="#191919">protection: fuse, reverse FET, TVS</text>
+<rect x="315" y="125" width="220" height="34" rx="6" fill="white" stroke="#b8b8b8"/>
+<text x="325" y="147" font-size="13" fill="#191919">5 V / 5 A buck (TPS54560B)</text>
+<rect x="315" y="170" width="220" height="34" rx="6" fill="white" stroke="#b8b8b8"/>
+<text x="325" y="192" font-size="13" fill="#191919">17 V boost (TPS61288)</text>
+<path d="M 200 95 L 300 95" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<text x="230" y="88" font-size="12" fill="#191919">XT30</text>
+<path d="M 115 130 L 115 200" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<path d="M 115 270 L 115 330" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<path d="M 200 250 L 250 250 L 250 470 L 755 470 L 755 410" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<text x="690" y="463" font-size="12" fill="#191919">5.2 V</text>
+<path d="M 535 142 L 650 100" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<text x="560" y="108" font-size="12" fill="#191919">5 V, 26-pin</text>
+<path d="M 535 142 L 650 240" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<text x="575" y="205" font-size="12" fill="#191919">5 V</text>
+<path d="M 425 204 L 425 330" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
+<text x="432" y="300" font-size="12" fill="#191919">17 V, XT30</text>
+<path d="M 550 350 L 590 350 L 590 125 L 650 125" fill="none" stroke="#257de0" stroke-width="2.2" marker-end="url(#a257de0)"/>
+<text x="472" y="318" font-size="12" fill="#191919">Ethernet video</text>
+<path d="M 550 395 L 625 395 L 625 140 L 650 140" fill="none" stroke="#257de0" stroke-width="2.2" marker-end="url(#a257de0)"/>
+<text x="558" y="418" font-size="12" fill="#191919">UART4 GCU</text>
+<path d="M 860 85 L 950 85 L 950 360 L 860 360" fill="none" stroke="#257de0" stroke-width="2.2" marker-end="url(#a257de0)"/>
+<text x="958" y="330" font-size="12" fill="#191919">UART1 MAVLink</text>
+<path d="M 755 150 L 755 200" fill="none" stroke="#257de0" stroke-width="2.2" marker-end="url(#a257de0)"/>
+<text x="762" y="180" font-size="12" fill="#191919">UART3</text>
+<path d="M 860 240 L 960 240" fill="none" stroke="#00a888" stroke-width="2.2" marker-end="url(#a00a888)"/>
+<text x="893" y="232" font-size="12" fill="#191919">LoRa</text>
+<line x1="30" y1="490" x2="60" y2="490" stroke="#dc3c3d" stroke-width="3"/>
+<text x="68" y="495" font-size="13" fill="#191919">power</text>
+<line x1="180" y1="490" x2="210" y2="490" stroke="#257de0" stroke-width="3"/>
+<text x="218" y="495" font-size="13" fill="#191919">data (wired)</text>
+<line x1="330" y1="490" x2="360" y2="490" stroke="#00a888" stroke-width="3"/>
+<text x="368" y="495" font-size="13" fill="#191919">radio</text>
+<rect x="510" y="481" width="16" height="16" rx="3" fill="#fff6e0" stroke="#b8b8b8"/><text x="534" y="495" font-size="13" fill="#191919">new in flight_electronics</text>
+</svg>

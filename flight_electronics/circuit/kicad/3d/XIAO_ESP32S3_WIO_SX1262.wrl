@@ -1,0 +1,9 @@
+#VRML V2.0 utf8
+Transform { translation 0.0000 0.0000 0.1969 children [ Shape { appearance Appearance { material Material { diffuseColor 0.05 0.25 0.45 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 7.0079 8.2677 0.3937 } } ] }
+Transform { translation 0.0000 0.5906 0.8661 children [ Shape { appearance Appearance { material Material { diffuseColor 0.75 0.75 0.75 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 4.9213 5.5118 0.9449 } } ] }
+Transform { translation 0.0000 -3.5433 1.0236 children [ Shape { appearance Appearance { material Material { diffuseColor 0.6 0.6 0.6 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 3.5433 1.3780 1.2598 } } ] }
+Transform { translation 0.0000 0.0000 2.2441 children [ Shape { appearance Appearance { material Material { diffuseColor 0.05 0.35 0.2 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 7.0079 8.2677 0.3937 } } ] }
+Transform { translation 0.5906 0.3937 2.7953 children [ Shape { appearance Appearance { material Material { diffuseColor 0.8 0.8 0.8 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 3.9370 3.9370 0.7087 } } ] }
+Transform { translation -2.3622 2.7559 2.6772 children [ Shape { appearance Appearance { material Material { diffuseColor 0.85 0.7 0.2 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 1.0236 1.0236 0.4724 } } ] }
+Transform { translation -2.9921 0.0000 1.2205 children [ Shape { appearance Appearance { material Material { diffuseColor 0.1 0.1 0.1 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 0.3937 7.4803 1.6535 } } ] }
+Transform { translation 2.9921 0.0000 1.2205 children [ Shape { appearance Appearance { material Material { diffuseColor 0.1 0.1 0.1 specularColor 0.2 0.2 0.2 shininess 0.3 } } geometry Box { size 0.3937 7.4803 1.6535 } } ] }

@@ -53,8 +53,8 @@ class PowerSystem:
         self.spice.load(circuits.power_system(variant, soc0=state_of_charge))
         self.time = 0.0
         self.history: list[PowerState] = []
-        self._camera_was = None
-        self._soc_was = None
+        self._camera_was = True    # everything is expected to be powered at the start
+        self._soc_was = True
 
     def close(self):
         self.spice.close()
@@ -77,9 +77,9 @@ class PowerSystem:
             camera_v=last[cam_node], state_of_charge=last['soc'], battery_a=last['vbat#branch'],
             soc_powered=last['socin'] >= SOC_BROWNOUT_V, radio_powered=last['radin'] >= RADIO_BROWNOUT_V,
             camera_powered=last[cam_node] >= CAMERA_MIN_V)
-        if self._camera_was is not None and state.camera_powered != self._camera_was:
+        if state.camera_powered != self._camera_was:
             state.events.append('camera_power_on' if state.camera_powered else 'camera_brownout')
-        if self._soc_was is not None and state.soc_powered != self._soc_was:
+        if state.soc_powered != self._soc_was:
             state.events.append('soc_power_on' if state.soc_powered else 'soc_brownout')
         self._camera_was, self._soc_was = state.camera_powered, state.soc_powered
         self.history.append(state)

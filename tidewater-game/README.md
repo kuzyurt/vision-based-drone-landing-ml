@@ -80,6 +80,13 @@ with the radio off, the drone found the boat and landed on the pad from 122 m
 away, and from 15 m with the boat behind it. A few recordings are not a success
 rate, though.
 
+## Fly through simulated hardware
+
+`hardware_runner/` flies benchmark cases natively with the policy behind a
+simulation of the real flight electronics: network-camera latency, MAVLink and
+gimbal-protocol bytes, the radio firmware, the RK3588S compute time and the
+aircraft's power supply. See [Flight electronics](../flight_electronics/README.md).
+
 ## Explore the implementation
 
 | Read | Purpose |
