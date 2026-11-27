@@ -4,7 +4,9 @@
 
 Every part has a group (Case, Orange Pi 5, Cooling, Carrier, Hardware, Cables, Drone),
 a PBR material and a default explode offset in frame coordinates (mm, z towards
-the lid). The drone is decimated from its CAD meshes and grouped by kind.
+the lid). The drone is the realistic game's detailed model (drone_model.py), grouped by kind.
+The viewer's models are compressed with gltfpack (meshopt) when it is installed
+(`npm i gltfpack`, or set GLTFPACK to its path).
 """
 from __future__ import annotations
 
@@ -19,8 +21,10 @@ from . import frame as fr
 
 VIEWER = fr.HERE / 'viewer'
 
-# default explode offsets (mm, frame coordinates) at 100 %
-LIFT = dict(opi=15, pad=27, heatsink=40, lower=55, ribbon=52, carrier=75, upper=100, lid=125, lid_screws=145)
+# default explode offsets (mm, frame coordinates) at 100 %: the Orange Pi rises clear of the frame
+# with its heatsink seated on it, the ribbon only moves straight up between the two boards, and the
+# antenna lead stays with the carrier
+LIFT = dict(opi=45, lower=65, ribbon=62, carrier=80, upper=100, lid=112, lid_screws=128)
 
 
 def _material(mat):
@@ -37,21 +41,58 @@ def _mesh(solid, tol=0.04):
     return trimesh.Trimesh(np.array([(v.x, v.y, v.z) for v in verts]), np.array(faces), process=True)
 
 
+def shaded(mesh, crease_deg=30.0):
+    """A copy with vertex normals: smooth across curved surfaces, sharp at edges over `crease_deg`
+    (meshes that bring their own normals keep them)."""
+    if getattr(mesh, '_own_normals', False):
+        return mesh
+    out = trimesh.graph.smooth_shade(mesh, angle=np.radians(crease_deg), facet_minarea=None)
+    out._own_normals = True
+    return out
+
+
+def _concat(meshes):
+    """Concatenate meshes keeping vertex normals and texture coordinates."""
+    meshes = [shaded(m) for m in meshes]
+    verts, faces, normals, uvs, offset = [], [], [], [], 0
+    for m in meshes:
+        verts.append(m.vertices)
+        faces.append(m.faces + offset)
+        normals.append(m.vertex_normals)
+        uv = getattr(m, '_uv', None)
+        uvs.append(uv if uv is not None else np.zeros((len(m.vertices), 2)))
+        offset += len(m.vertices)
+    out = trimesh.Trimesh(np.vstack(verts), np.vstack(faces), vertex_normals=np.vstack(normals), process=False)
+    out._own_normals = True
+    out._uv = np.vstack(uvs) if any(getattr(m, '_uv', None) is not None for m in meshes) else None
+    return out
+
+
 class Collector:
-    """Parts as {id: dict(label, group, explode, pieces=[(mesh, material)])}, merged per material."""
+    """Parts as {id: dict(label, group, explode, pieces)}, merged per material and texture."""
 
     def __init__(self):
         self.parts = {}
+        self.textures = {}
 
-    def add(self, pid, label, group, mesh, material, explode=(0, 0, 0), note=''):
+    def add(self, pid, label, group, mesh, material, explode=(0, 0, 0), note='', texture=None):
         p = self.parts.setdefault(pid, dict(label=label, group=group, explode=list(map(float, explode)), note=note,
                                             pieces={}))
-        key = json.dumps(_material(material), sort_keys=True)
+        tex_key = None
+        if texture is not None:
+            tex_key = str(id(texture))
+            self.textures[tex_key] = texture
+        key = json.dumps(dict(_material(material), texture=tex_key), sort_keys=True)
         p['pieces'].setdefault(key, []).append(mesh)
 
     def items(self):
+        """(pid, part, [(mesh with normals (+ _uv), material dict, texture image or None)])."""
         for pid, p in self.parts.items():
-            pieces = [(trimesh.util.concatenate(ms), json.loads(k)) for k, ms in p['pieces'].items()]
+            pieces = []
+            for k, ms in p['pieces'].items():
+                mat = json.loads(k)
+                tex = self.textures.get(mat.pop('texture'))
+                pieces.append((_concat(ms), mat, tex))
             yield pid, p, pieces
 
 
@@ -60,6 +101,16 @@ def _slug(text):
 
 
 # --------------------------------------------------------------------------- stack
+BOARD_LAYERS = {   # colour, metallic, roughness, lift (mm)
+    'PCB': ((0.36, 0.33, 0.22), 0.0, 0.8, 0.0),
+    'soldermask': ((0.04, 0.26, 0.13), 0.0, 0.42, 0.02),
+    'copper': ((0.13, 0.43, 0.22), 0.0, 0.38, 0.04),
+    'via': ((0.13, 0.43, 0.22), 0.0, 0.38, 0.045),
+    'pad': ((0.86, 0.69, 0.34), 1.0, 0.28, 0.05),
+    'silkscreen': ((0.95, 0.95, 0.93), 0.0, 0.6, 0.07),
+}
+
+
 def _carrier_glb(col, explode):
     """KiCad's GLB of the carrier (metres, Y up): board layers merged, components grouped by reference."""
     scene = trimesh.load(fr.OUT / 'fe_carrier.glb')
@@ -87,14 +138,16 @@ def _carrier_glb(col, explode):
         metallic = float(getattr(material, 'metallicFactor', 0.0) or 0.0)
         rough = float(getattr(material, 'roughnessFactor', 0.6) or 0.6)
         colour = rgba[:3]
-        if gname.startswith('fe_carrier_soldermask'):
-            colour, metallic, rough = np.array([0.09, 0.36, 0.20]), 0.0, 0.45
-        # KiCad puts mask and silkscreen exactly on the copper / board surface: lift them a hair
-        # so that they do not flicker against it
-        layer_lift = 0.03 if gname.startswith('fe_carrier_soldermask') else 0.06 if gname.startswith('fe_carrier_silkscreen') else 0.0
-        if layer_lift:
-            top = mesh.vertices[:, 2].mean() > fr.CARRIER_Z + fr.CARRIER_T / 2
-            mesh.apply_translation((0, 0, layer_lift if top else -layer_lift))
+        # Board look: solder mask dark green, copper under the mask (tracks, ground pour, tented vias)
+        # a lighter green as on a real board, pads gold. KiCad puts all layers on one surface; each
+        # is lifted a hair so the upper one wins.
+        layer = next((k for k in BOARD_LAYERS if gname.startswith('fe_carrier_' + k)), None)
+        if layer is not None:
+            colour, metallic, rough, lift = BOARD_LAYERS[layer]
+            colour = np.array(colour)
+            if lift:
+                top = mesh.vertices[:, 2].mean() > fr.CARRIER_Z + fr.CARRIER_T / 2
+                mesh.apply_translation((0, 0, lift if top else -lift))
         ref = ref_of(node)
         if ref in ('J1', 'J3', 'U3'):
             continue                          # KiCad has only placeholder boxes; carrier_parts() models them
@@ -131,9 +184,9 @@ def stack_parts():
         else:
             col.add('hw-standoffs-10', 'Standoffs M2.5 x 10', 'Hardware', _mesh(solid), mat, (0, 0, LIFT['upper']))
     for name, group, solid, mat in fr.orange_pi_5():
-        if group == 'heatsink':
+        if group == 'heatsink':                   # rises with the Orange Pi, seated on it
             pid = 'cooling-pad' if 'pad' in name else 'cooling-heatsink'
-            col.add(pid, name, 'Cooling', _mesh(solid), mat, (0, 0, LIFT['pad' if 'pad' in name else 'heatsink']))
+            col.add(pid, name, 'Cooling', _mesh(solid), mat, (0, 0, LIFT['opi']))
             continue
         label = {'board': 'Orange Pi 5 PCB', 'chips': 'Chips and parts'}.get(group, group)
         col.add(f'opi-{_slug(label)}', label, 'Orange Pi 5', _mesh(solid, 0.03), mat, (0, 0, LIFT['opi']))
@@ -143,64 +196,40 @@ def stack_parts():
         col.add(f'carrier-{ref.lower()}', label, 'Carrier', _mesh(solid, 0.03), mat, (0, 0, LIFT['carrier']))
     out_dirs = {'Ethernet cable': (-30, 0, LIFT['opi']), 'J1 cable': (-30, 0, LIFT['carrier']),
                 'J3 cable': (30, 0, LIFT['carrier']), 'J4 cable': (30, 0, LIFT['carrier']),
-                'J5 cable': (0, 30, LIFT['carrier']), 'Ribbon cable': (0, -45, LIFT['ribbon']),
-                'Antenna lead': (0, -30, LIFT['carrier'])}
+                'J5 cable': (0, 30, LIFT['carrier']), 'Ribbon cable': (0, 0, LIFT['ribbon']),
+                'Antenna lead': (0, 0, LIFT['carrier']), 'Antenna': (0, 0, LIFT['carrier']),
+                'SMA bulkhead': (0, 0, LIFT['carrier'])}
     for name, group, solid, mat in fr.cables():
         pid = f'cable-{_slug(group)}'
         if name.startswith('SMA'):
             pid, group = 'cable-sma', 'SMA bulkhead'
-            out_dirs[group] = (0, -30, 0)
-        col.add(pid, group, 'Cables', _mesh(solid, 0.04), mat, out_dirs[group])
+        elif name.startswith('Antenna'):
+            pid, group = 'cable-antenna', 'Antenna'
+        col.add(pid, {'Antenna lead': 'U.FL pigtail', 'Antenna': '868 MHz antenna (86 mm whip)'}.get(group, group),
+                'Cables', _mesh(solid, 0.04), mat, out_dirs[group])
     return col
 
 
 # --------------------------------------------------------------------------- drone
-DRONE_KINDS = [
-    ('Plates', r'PLATE|PLATFORM'),
-    ('Propellers', r'^10x4\.5'),
-    ('Motors', r'^DJ-2216'),
-    ('Arms and motor mounts', r'^JIA-|^HMX5V|^BAN-DJ|^GUAN-CHENG|^JIAO-LIANJIE'),
-    ('Landing gear', r'^MAO-JIAO|^JIAO-EVA|^PYLONS|^ZSLM-M$|^CARBON-FIBER-TUBE(?!30[01])'),
-    ('Payload rails', r'^CARBON-FIBER-TUBE30[01]|^HUAN-GUIJIAO'),
-    ('Gimbal camera', r'^camera|^Compound'),
-    ('Battery', r'^Lumenier'),
-    ('GPS mast', r'GPS'),
-    ('Screws and spacers', r'^GB70|^ZSLM|^M25|^M3-|^LM-M3|^NILONG|^TS-B'),
-]
-
-
-def drone_parts(col, target_faces=150_000):
-    inventory = json.loads((fr.ROOT / 'px4-mujoco-drone-simulation' / 'models' / 'metadata' / 'position_inventory.json')
-                           .read_text(encoding='utf-8'))['parts']
-    from . import render
-    colours = render._materials()
-    meshes = []
-    for part in inventory:
-        bbox, label = part.get('world_bbox_mm'), part['label']
-        path = fr.ROOT / 'px4-mujoco-drone-simulation' / 'models' / 'meshes' / f"{part['part']}.obj"
-        if not bbox or not path.exists() or label.startswith(fr.REMOVED):
-            continue
-        mesh = trimesh.load(path, force='mesh')
-        if np.abs(mesh.bounds.ravel() - np.array(bbox).reshape(2, 3).ravel()).max() > 1.0:
-            continue
-        kind = next((k for k, rx in DRONE_KINDS if re.search(rx, label)), 'Electronics and other')
-        meshes.append((kind, mesh, colours.get(path.name, [0.35, 0.36, 0.38, 1.0])))
-    total = sum(len(m.faces) for _, m, _ in meshes)
-    ratio = min(1.0, target_faces / total)
-    for kind, mesh, rgba in meshes:
-        if ratio < 1.0 and len(mesh.faces) > 200:
-            keep = max(60, int(len(mesh.faces) * ratio))
-            try:
-                mesh = mesh.simplify_quadric_decimation(face_count=keep)
-            except Exception:
-                pass
-        c = np.clip(np.array(rgba[:3]) * 1.1 + 0.03, 0, 1)
-        metal = 0.7 if kind in ('Screws and spacers', 'Motors') else 0.0
-        col.add(f'drone-{_slug(kind)}', kind, 'Drone', mesh, dict(color=c, metallic=metal, roughness=0.5))
-    return total, ratio
+def drone_parts(col):
+    """The game's detailed drone (drone CAD mm), one viewer part per kind of part."""
+    from . import drone_model
+    for name, kind, mesh, mat, tex in drone_model.parts():
+        col.add(f'drone-{_slug(kind)}', kind, 'Drone', mesh, mat, texture=tex)
+    return col
 
 
 # --------------------------------------------------------------------------- export
+def _gltfpack():
+    import os
+    import shutil
+    for candidate in (os.environ.get('GLTFPACK'), shutil.which('gltfpack'),
+                      str(fr.ROOT / 'node_modules' / '.bin' / 'gltfpack')):
+        if candidate and os.path.exists(candidate):
+            return candidate
+    return None
+
+
 def _write_glb(col, path):
     scene = trimesh.Scene()
     meta = []
@@ -208,14 +237,15 @@ def _write_glb(col, path):
         scene.graph.update(frame_to=pid, frame_from=scene.graph.base_frame)
         faces = 0
         lo, hi = np.full(3, np.inf), np.full(3, -np.inf)
-        for i, (mesh, mat) in enumerate(pieces):
-            mesh = mesh.copy()
-            mesh.merge_vertices()
+        for i, (mesh, mat, tex) in enumerate(pieces):
             linear = [((c + 0.055) / 1.055) ** 2.4 if c > 0.04045 else c / 12.92 for c in mat['color']]  # glTF wants linear
             material = trimesh.visual.material.PBRMaterial(
                 name=f'{pid}-{i}', baseColorFactor=[*linear, 1.0], metallicFactor=mat['metallic'],
-                roughnessFactor=mat['roughness'], doubleSided=True)
-            mesh.visual = trimesh.visual.TextureVisuals(material=material)
+                roughnessFactor=mat['roughness'], doubleSided=True, baseColorTexture=tex)
+            uv = mesh._uv if tex is not None else None
+            normals = mesh.vertex_normals
+            mesh = trimesh.Trimesh(mesh.vertices, mesh.faces, vertex_normals=normals, process=False)
+            mesh.visual = trimesh.visual.TextureVisuals(uv=uv, material=material)
             scene.add_geometry(mesh, geom_name=f'{pid}#{i}', node_name=f'{pid}#{i}', parent_node_name=pid)
             faces += len(mesh.faces)
             lo, hi = np.minimum(lo, mesh.bounds[0]), np.maximum(hi, mesh.bounds[1])
@@ -223,8 +253,14 @@ def _write_glb(col, path):
                          file=path.name, triangles=int(faces),
                          bbox_mm=[[round(float(v), 2) for v in lo], [round(float(v), 2) for v in hi]],
                          size_mm=[round(float(v), 1) for v in hi - lo]))
-    glb = scene.export(file_type='glb', include_normals=False)    # the viewer computes creased normals
-    path.write_bytes(glb)
+    path.write_bytes(scene.export(file_type='glb', include_normals=True))
+    packer = _gltfpack()
+    if packer:      # meshopt compression with quantised attributes; names and materials kept
+        import subprocess
+        packed = path.with_name(path.stem + '.packed.glb')
+        subprocess.run([packer, '-i', str(path), '-o', str(packed), '-cc', '-kn', '-km'], check=True, capture_output=True)
+        packed.replace(path)
+    glb = path.read_bytes()
     import base64                       # the artifact host serves no .glb: the viewer reads a base64 copy
     path.with_name(path.name + '.txt').write_text(base64.b64encode(glb).decode('ascii'), encoding='ascii')
     return meta, len(glb)
@@ -236,9 +272,7 @@ def export_viewer(out_dir=VIEWER, with_drone=True):
     meta, size = _write_glb(stack_parts(), out_dir / 'stack.glb')
     info = dict(stack_bytes=size)
     if with_drone:
-        drone = Collector()
-        info['drone_faces_source'], info['drone_ratio'] = drone_parts(drone)
-        dmeta, info['drone_bytes'] = _write_glb(drone, out_dir / 'drone.glb')
+        dmeta, info['drone_bytes'] = _write_glb(drone_parts(Collector()), out_dir / 'drone.glb')
         meta += dmeta
     doc = dict(units='mm', up='+z', frame_to_drone=fr.DRONE_FROM_FRAME,
                groups=['Case', 'Orange Pi 5', 'Cooling', 'Carrier', 'Hardware', 'Cables', 'Drone'],

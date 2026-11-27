@@ -4016,5 +4016,11 @@
    },
    "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
   }
- ]
+ ],
+ "operator_hidden": {
+  "prefixes": [
+   "drone_LinkGroup015"
+  ],
+  "note": "Khadas Edge2 on the top plate: no longer carried (replaced by the Orange Pi 5 in flight_electronics). Operator view only; the drone camera keeps the trained scene."
+ }
 }

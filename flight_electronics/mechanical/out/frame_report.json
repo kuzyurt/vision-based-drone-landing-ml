@@ -103,25 +103,26 @@
   },
   "drone": {
     "min_distance_mm": {
-      "GB70-M3-38": 6.83,
-      "GB70-M3-003": 7.97,
+      "GB70-M3-38": 6.88,
+      "GB70-M3-003": 7.96,
       "ZSLM-M3-FALAN": 6.96,
-      "ZSLM-M3-FALAN001": 5.93,
-      "GB70-M3-001": 6.79,
-      "GB70-M3-002": 7.96,
-      "ZSLM-M3-FALAN002": 5.93,
-      "ZSLM-M3-FALAN003": 6.96,
+      "ZSLM-M3-FALAN001": 5.92,
+      "GB70-M3-001": 6.87,
+      "GB70-M3-002": 7.88,
+      "ZSLM-M3-FALAN002": 5.94,
+      "ZSLM-M3-FALAN003": 6.97,
       "HUAN-GUIJIAO": 2.8
     },
+    "antenna_and_cables_min_distance_mm": {
+      "camera-halte-platte-static-to-drone": 5.8,
+      "camera-x-axis": 41.1
+    },
     "not_checked": {
+      "Khadas Edge2": "removed (no longer carried)",
+      "Intel-camera bracket": "removed (unused)",
       "CARBON-FIBER-TUBE300": "payload rail, held by the clamps",
-      "CARBON-FIBER-TUBE301": "payload rail, held by the clamps",
-      "ZHIJIA-CAMERA-INTEL": "removed (unused Intel-camera bracket)",
-      "GAI-GUANGLIU": "removed (unused Intel-camera bracket)",
-      "M3-16-CHEN-LIU": "removed (unused Intel-camera bracket)",
-      "M3-16-CHEN-LIU001": "removed (unused Intel-camera bracket)",
-      "LM-M3-NILONG": "removed (unused Intel-camera bracket)",
-      "LM-M3-NILONG001": "removed (unused Intel-camera bracket)"
-    }
+      "CARBON-FIBER-TUBE301": "payload rail, held by the clamps"
+    },
+    "drone_model": "tidewater-game/app/public/landing (game drone, detailed meshes)"
   }
 }

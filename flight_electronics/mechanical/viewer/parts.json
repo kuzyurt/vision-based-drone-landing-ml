@@ -72,7 +72,7 @@
    "explode": [
     0.0,
     0.0,
-    125.0
+    112.0
    ],
    "note": "PETG, print plate down",
    "file": "stack.glb",
@@ -372,7 +372,7 @@
    "explode": [
     0.0,
     0.0,
-    55.0
+    65.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -432,7 +432,7 @@
    "explode": [
     0.0,
     0.0,
-    145.0
+    128.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -462,7 +462,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -492,7 +492,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -522,7 +522,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -552,7 +552,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -582,7 +582,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -612,7 +612,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -642,7 +642,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -672,7 +672,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -702,7 +702,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -732,7 +732,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -762,7 +762,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -792,7 +792,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -822,7 +822,7 @@
    "explode": [
     0.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -852,7 +852,7 @@
    "explode": [
     0.0,
     0.0,
-    40.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -882,7 +882,7 @@
    "explode": [
     0.0,
     0.0,
-    27.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -912,21 +912,21 @@
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "100 x 62 mm, 2 layers, KiCad export",
    "file": "stack.glb",
-   "triangles": 86138,
+   "triangles": 86960,
    "bbox_mm": [
     [
      -0.0,
      0.0,
-     29.12
+     29.11
     ],
     [
      100.0,
      62.0,
-     30.84
+     30.85
     ]
    ],
    "size_mm": [
@@ -936,553 +936,13 @@
    ]
   },
   {
-   "id": "carrier-r2",
-   "label": "R2",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     29.7,
-     48.2,
-     30.79
-    ],
-    [
-     31.3,
-     49.0,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r16",
-   "label": "R16",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     72.2,
-     45.6,
-     30.79
-    ],
-    [
-     73.8,
-     46.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r6",
-   "label": "R6",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     39.3,
-     44.6,
-     30.79
-    ],
-    [
-     40.9,
-     45.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-u2",
-   "label": "U2",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 1988,
-   "bbox_mm": [
-    [
-     53.8,
-     33.5,
-     30.79
-    ],
-    [
-     60.2,
-     38.5,
-     32.0
-    ]
-   ],
-   "size_mm": [
-    6.4,
-    5.0,
-    1.2
-   ]
-  },
-  {
-   "id": "carrier-c14",
-   "label": "C14",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     50.6,
-     36.7,
-     30.79
-    ],
-    [
-     51.4,
-     38.3,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    0.8,
-    1.6,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-d6",
-   "label": "D6",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 264,
-   "bbox_mm": [
-    [
-     77.2,
-     43.1,
-     30.79
-    ],
-    [
-     78.8,
-     43.9,
-     31.89
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    1.1
-   ]
-  },
-  {
-   "id": "carrier-r11",
-   "label": "R11",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     60.7,
-     30.6,
-     30.79
-    ],
-    [
-     62.3,
-     31.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-c20",
-   "label": "C20",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     60.7,
-     28.3,
-     30.79
-    ],
-    [
-     62.3,
-     29.1,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-c8",
-   "label": "C8",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     34.5,
-     41.0,
-     30.79
-    ],
-    [
-     36.1,
-     41.8,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-r14",
-   "label": "R14",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     74.1,
-     52.2,
-     30.79
-    ],
-    [
-     74.9,
-     53.8,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    0.8,
-    1.6,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r5",
-   "label": "R5",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     39.3,
-     48.2,
-     30.79
-    ],
-    [
-     40.9,
-     49.0,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-c4",
-   "label": "C4",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     43.7,
-     58.6,
-     30.79
-    ],
-    [
-     45.3,
-     59.4,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-j2",
-   "label": "J2",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 1564,
-   "bbox_mm": [
-    [
-     57.13,
-     10.83,
-     27.79
-    ],
-    [
-     90.15,
-     15.91,
-     39.33
-    ]
-   ],
-   "size_mm": [
-    33.0,
-    5.1,
-    11.5
-   ]
-  },
-  {
-   "id": "carrier-c10",
-   "label": "C10",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 1860,
-   "bbox_mm": [
-    [
-     32.25,
-     17.25,
-     30.79
-    ],
-    [
-     41.75,
-     25.55,
-     40.79
-    ]
-   ],
-   "size_mm": [
-    9.5,
-    8.3,
-    10.0
-   ]
-  },
-  {
-   "id": "carrier-d7",
-   "label": "D7",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 212,
-   "bbox_mm": [
-    [
-     54.5,
-     21.05,
-     30.79
-    ],
-    [
-     62.5,
-     26.95,
-     33.1
-    ]
-   ],
-   "size_mm": [
-    8.0,
-    5.9,
-    2.3
-   ]
-  },
-  {
-   "id": "carrier-c12",
-   "label": "C12",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     44.25,
-     26.9,
-     30.79
-    ],
-    [
-     46.75,
-     30.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
-   "id": "carrier-u1",
-   "label": "U1",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 1196,
-   "bbox_mm": [
-    [
-     35.85,
-     51.55,
-     30.79
-    ],
-    [
-     42.15,
-     56.45,
-     31.89
-    ]
-   ],
-   "size_mm": [
-    6.3,
-    4.9,
-    1.1
-   ]
-  },
-  {
-   "id": "carrier-c15",
-   "label": "C15",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     68.25,
-     28.9,
-     30.79
-    ],
-    [
-     70.75,
-     32.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
    "id": "carrier-r9",
    "label": "R9",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -1506,193 +966,13 @@
    ]
   },
   {
-   "id": "carrier-c13",
-   "label": "C13",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     50.8,
-     28.6,
-     30.79
-    ],
-    [
-     52.4,
-     29.4,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-r8",
-   "label": "R8",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     50.8,
-     31.2,
-     30.79
-    ],
-    [
-     52.4,
-     32.0,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-c17",
-   "label": "C17",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     76.25,
-     28.9,
-     30.79
-    ],
-    [
-     78.75,
-     32.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
-   "id": "carrier-r17",
-   "label": "R17",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     77.2,
-     45.6,
-     30.79
-    ],
-    [
-     78.8,
-     46.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-d1",
-   "label": "D1",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 340,
-   "bbox_mm": [
-    [
-     27.6,
-     27.2,
-     30.79
-    ],
-    [
-     31.4,
-     28.8,
-     32.06
-    ]
-   ],
-   "size_mm": [
-    3.8,
-    1.6,
-    1.3
-   ]
-  },
-  {
-   "id": "carrier-r4",
-   "label": "R4",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     34.5,
-     48.2,
-     30.79
-    ],
-    [
-     36.1,
-     49.0,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
    "id": "carrier-d3",
    "label": "D3",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -1716,266 +996,26 @@
    ]
   },
   {
-   "id": "carrier-c3",
-   "label": "C3",
+   "id": "carrier-r6",
+   "label": "R6",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     28.9,
-     52.7,
-     30.79
-    ],
-    [
-     32.1,
-     54.3,
-     32.39
-    ]
-   ],
-   "size_mm": [
-    3.2,
-    1.6,
-    1.6
-   ]
-  },
-  {
-   "id": "carrier-r10",
-   "label": "R10",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
    "triangles": 244,
    "bbox_mm": [
     [
-     64.2,
-     35.1,
+     39.3,
+     44.6,
      30.79
     ],
     [
-     65.8,
-     35.9,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-c6",
-   "label": "C6",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     63.25,
-     54.9,
-     30.79
-    ],
-    [
-     65.75,
-     58.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
-   "id": "carrier-d4",
-   "label": "D4",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 212,
-   "bbox_mm": [
-    [
-     48.65,
-     14.5,
-     30.79
-    ],
-    [
-     51.35,
-     19.5,
-     33.01
-    ]
-   ],
-   "size_mm": [
-    2.7,
-    5.0,
-    2.2
-   ]
-  },
-  {
-   "id": "carrier-j4",
-   "label": "J4",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 756,
-   "bbox_mm": [
-    [
-     94.13,
-     11.38,
-     30.79
-    ],
-    [
-     99.08,
-     19.62,
-     35.04
-    ]
-   ],
-   "size_mm": [
-    5.0,
-    8.2,
-    4.2
-   ]
-  },
-  {
-   "id": "carrier-c7",
-   "label": "C7",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     67.25,
-     54.9,
-     30.79
-    ],
-    [
-     69.75,
-     58.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
-   "id": "carrier-r15",
-   "label": "R15",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     76.6,
-     52.2,
-     30.79
-    ],
-    [
-     77.4,
-     53.8,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    0.8,
-    1.6,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r12",
-   "label": "R12",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     91.1,
-     22.7,
-     30.79
-    ],
-    [
-     91.9,
-     24.3,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    0.8,
-    1.6,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r1",
-   "label": "R1",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     28.7,
-     30.6,
-     30.79
-    ],
-    [
-     30.3,
-     31.4,
+     40.9,
+     45.4,
      31.24
     ]
    ],
@@ -1992,7 +1032,7 @@
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2016,283 +1056,13 @@
    ]
   },
   {
-   "id": "carrier-c19",
-   "label": "C19",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     64.7,
-     30.6,
-     30.79
-    ],
-    [
-     66.3,
-     31.4,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-r3",
-   "label": "R3",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     29.7,
-     44.6,
-     30.79
-    ],
-    [
-     31.3,
-     45.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-r7",
-   "label": "R7",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     34.5,
-     44.6,
-     30.79
-    ],
-    [
-     36.1,
-     45.4,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-c18",
-   "label": "C18",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     64.75,
-     24.9,
-     30.79
-    ],
-    [
-     67.25,
-     28.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
-   "id": "carrier-r13",
-   "label": "R13",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 244,
-   "bbox_mm": [
-    [
-     93.6,
-     22.7,
-     30.79
-    ],
-    [
-     94.4,
-     24.3,
-     31.24
-    ]
-   ],
-   "size_mm": [
-    0.8,
-    1.6,
-    0.4
-   ]
-  },
-  {
-   "id": "carrier-l1",
-   "label": "L1",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 360,
-   "bbox_mm": [
-    [
-     48.65,
-     51.5,
-     30.79
-    ],
-    [
-     56.35,
-     59.5,
-     37.8
-    ]
-   ],
-   "size_mm": [
-    7.7,
-    8.0,
-    7.0
-   ]
-  },
-  {
-   "id": "carrier-c9",
-   "label": "C9",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 236,
-   "bbox_mm": [
-    [
-     39.3,
-     41.0,
-     30.79
-    ],
-    [
-     40.9,
-     41.8,
-     31.59
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    0.8
-   ]
-  },
-  {
-   "id": "carrier-l3",
-   "label": "L3",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 360,
-   "bbox_mm": [
-    [
-     41.75,
-     32.0,
-     30.79
-    ],
-    [
-     49.45,
-     40.0,
-     37.8
-    ]
-   ],
-   "size_mm": [
-    7.7,
-    8.0,
-    7.0
-   ]
-  },
-  {
-   "id": "carrier-c11",
-   "label": "C11",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     40.25,
-     26.9,
-     30.79
-    ],
-    [
-     42.75,
-     30.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
    "id": "carrier-d2",
    "label": "D2",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2316,73 +1086,13 @@
    ]
   },
   {
-   "id": "carrier-d5",
-   "label": "D5",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 264,
-   "bbox_mm": [
-    [
-     72.2,
-     43.1,
-     30.79
-    ],
-    [
-     73.8,
-     43.9,
-     31.89
-    ]
-   ],
-   "size_mm": [
-    1.6,
-    0.8,
-    1.1
-   ]
-  },
-  {
-   "id": "carrier-c16",
-   "label": "C16",
-   "group": "Carrier",
-   "explode": [
-    0.0,
-    0.0,
-    75.0
-   ],
-   "note": "",
-   "file": "stack.glb",
-   "triangles": 284,
-   "bbox_mm": [
-    [
-     72.25,
-     28.9,
-     30.79
-    ],
-    [
-     74.75,
-     32.1,
-     33.29
-    ]
-   ],
-   "size_mm": [
-    2.5,
-    3.2,
-    2.5
-   ]
-  },
-  {
    "id": "carrier-c5",
    "label": "C5",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2406,33 +1116,243 @@
    ]
   },
   {
-   "id": "carrier-l2",
-   "label": "L2",
+   "id": "carrier-r15",
+   "label": "R15",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 360,
+   "triangles": 244,
    "bbox_mm": [
     [
-     31.26,
-     32.16,
+     76.6,
+     52.2,
      30.79
     ],
     [
-     36.74,
-     37.84,
-     33.9
+     77.4,
+     53.8,
+     31.24
     ]
    ],
    "size_mm": [
-    5.5,
-    5.7,
-    3.1
+    0.8,
+    1.6,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-r5",
+   "label": "R5",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     39.3,
+     48.2,
+     30.79
+    ],
+    [
+     40.9,
+     49.0,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c15",
+   "label": "C15",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     68.25,
+     28.9,
+     30.79
+    ],
+    [
+     70.75,
+     32.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-c8",
+   "label": "C8",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     34.5,
+     41.0,
+     30.79
+    ],
+    [
+     36.1,
+     41.8,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-d7",
+   "label": "D7",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 212,
+   "bbox_mm": [
+    [
+     54.5,
+     21.05,
+     30.79
+    ],
+    [
+     62.5,
+     26.95,
+     33.1
+    ]
+   ],
+   "size_mm": [
+    8.0,
+    5.9,
+    2.3
+   ]
+  },
+  {
+   "id": "carrier-c16",
+   "label": "C16",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     72.25,
+     28.9,
+     30.79
+    ],
+    [
+     74.75,
+     32.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-r13",
+   "label": "R13",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     93.6,
+     22.7,
+     30.79
+    ],
+    [
+     94.4,
+     24.3,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    0.8,
+    1.6,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-r17",
+   "label": "R17",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     77.2,
+     45.6,
+     30.79
+    ],
+    [
+     78.8,
+     46.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
    ]
   },
   {
@@ -2442,7 +1362,7 @@
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2466,13 +1386,523 @@
    ]
   },
   {
+   "id": "carrier-r16",
+   "label": "R16",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     72.2,
+     45.6,
+     30.79
+    ],
+    [
+     73.8,
+     46.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-r8",
+   "label": "R8",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     50.8,
+     31.2,
+     30.79
+    ],
+    [
+     52.4,
+     32.0,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c19",
+   "label": "C19",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     64.7,
+     30.6,
+     30.79
+    ],
+    [
+     66.3,
+     31.4,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-d5",
+   "label": "D5",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 264,
+   "bbox_mm": [
+    [
+     72.2,
+     43.1,
+     30.79
+    ],
+    [
+     73.8,
+     43.9,
+     31.89
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    1.1
+   ]
+  },
+  {
+   "id": "carrier-c12",
+   "label": "C12",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     44.25,
+     26.9,
+     30.79
+    ],
+    [
+     46.75,
+     30.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-c18",
+   "label": "C18",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     64.75,
+     24.9,
+     30.79
+    ],
+    [
+     67.25,
+     28.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-d4",
+   "label": "D4",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 212,
+   "bbox_mm": [
+    [
+     48.65,
+     14.5,
+     30.79
+    ],
+    [
+     51.35,
+     19.5,
+     33.01
+    ]
+   ],
+   "size_mm": [
+    2.7,
+    5.0,
+    2.2
+   ]
+  },
+  {
+   "id": "carrier-r12",
+   "label": "R12",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     91.1,
+     22.7,
+     30.79
+    ],
+    [
+     91.9,
+     24.3,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    0.8,
+    1.6,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-d1",
+   "label": "D1",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 340,
+   "bbox_mm": [
+    [
+     27.6,
+     27.2,
+     30.79
+    ],
+    [
+     31.4,
+     28.8,
+     32.06
+    ]
+   ],
+   "size_mm": [
+    3.8,
+    1.6,
+    1.3
+   ]
+  },
+  {
+   "id": "carrier-l1",
+   "label": "L1",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 360,
+   "bbox_mm": [
+    [
+     48.65,
+     51.5,
+     30.79
+    ],
+    [
+     56.35,
+     59.5,
+     37.8
+    ]
+   ],
+   "size_mm": [
+    7.7,
+    8.0,
+    7.0
+   ]
+  },
+  {
+   "id": "carrier-u1",
+   "label": "U1",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 1196,
+   "bbox_mm": [
+    [
+     35.85,
+     51.55,
+     30.79
+    ],
+    [
+     42.15,
+     56.45,
+     31.89
+    ]
+   ],
+   "size_mm": [
+    6.3,
+    4.9,
+    1.1
+   ]
+  },
+  {
+   "id": "carrier-r10",
+   "label": "R10",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     64.2,
+     35.1,
+     30.79
+    ],
+    [
+     65.8,
+     35.9,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c7",
+   "label": "C7",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     67.25,
+     54.9,
+     30.79
+    ],
+    [
+     69.75,
+     58.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-c17",
+   "label": "C17",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     76.25,
+     28.9,
+     30.79
+    ],
+    [
+     78.75,
+     32.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-c6",
+   "label": "C6",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     63.25,
+     54.9,
+     30.79
+    ],
+    [
+     65.75,
+     58.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-r11",
+   "label": "R11",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     60.7,
+     30.6,
+     30.79
+    ],
+    [
+     62.3,
+     31.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-r7",
+   "label": "R7",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     34.5,
+     44.6,
+     30.79
+    ],
+    [
+     36.1,
+     45.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
    "id": "carrier-r18",
    "label": "R18",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2496,13 +1926,253 @@
    ]
   },
   {
+   "id": "carrier-r4",
+   "label": "R4",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     34.5,
+     48.2,
+     30.79
+    ],
+    [
+     36.1,
+     49.0,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c3",
+   "label": "C3",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     28.9,
+     52.7,
+     30.79
+    ],
+    [
+     32.1,
+     54.3,
+     32.39
+    ]
+   ],
+   "size_mm": [
+    3.2,
+    1.6,
+    1.6
+   ]
+  },
+  {
+   "id": "carrier-c14",
+   "label": "C14",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     50.6,
+     36.7,
+     30.79
+    ],
+    [
+     51.4,
+     38.3,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    0.8,
+    1.6,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-r3",
+   "label": "R3",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     29.7,
+     44.6,
+     30.79
+    ],
+    [
+     31.3,
+     45.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c9",
+   "label": "C9",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     39.3,
+     41.0,
+     30.79
+    ],
+    [
+     40.9,
+     41.8,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-c4",
+   "label": "C4",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     43.7,
+     58.6,
+     30.79
+    ],
+    [
+     45.3,
+     59.4,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-d6",
+   "label": "D6",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 264,
+   "bbox_mm": [
+    [
+     77.2,
+     43.1,
+     30.79
+    ],
+    [
+     78.8,
+     43.9,
+     31.89
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    1.1
+   ]
+  },
+  {
+   "id": "carrier-u2",
+   "label": "U2",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 1988,
+   "bbox_mm": [
+    [
+     53.8,
+     33.5,
+     30.79
+    ],
+    [
+     60.2,
+     38.5,
+     32.0
+    ]
+   ],
+   "size_mm": [
+    6.4,
+    5.0,
+    1.2
+   ]
+  },
+  {
    "id": "carrier-c1",
    "label": "C1",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2526,13 +2196,343 @@
    ]
   },
   {
+   "id": "carrier-j4",
+   "label": "J4",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 756,
+   "bbox_mm": [
+    [
+     94.13,
+     11.38,
+     30.79
+    ],
+    [
+     99.08,
+     19.62,
+     35.04
+    ]
+   ],
+   "size_mm": [
+    5.0,
+    8.2,
+    4.2
+   ]
+  },
+  {
+   "id": "carrier-r1",
+   "label": "R1",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     28.7,
+     30.6,
+     30.79
+    ],
+    [
+     30.3,
+     31.4,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-c10",
+   "label": "C10",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 1860,
+   "bbox_mm": [
+    [
+     32.25,
+     17.25,
+     30.79
+    ],
+    [
+     41.75,
+     25.55,
+     40.79
+    ]
+   ],
+   "size_mm": [
+    9.5,
+    8.3,
+    10.0
+   ]
+  },
+  {
+   "id": "carrier-l3",
+   "label": "L3",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 360,
+   "bbox_mm": [
+    [
+     41.75,
+     32.0,
+     30.79
+    ],
+    [
+     49.45,
+     40.0,
+     37.8
+    ]
+   ],
+   "size_mm": [
+    7.7,
+    8.0,
+    7.0
+   ]
+  },
+  {
+   "id": "carrier-l2",
+   "label": "L2",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 360,
+   "bbox_mm": [
+    [
+     31.26,
+     32.16,
+     30.79
+    ],
+    [
+     36.74,
+     37.84,
+     33.9
+    ]
+   ],
+   "size_mm": [
+    5.5,
+    5.7,
+    3.1
+   ]
+  },
+  {
+   "id": "carrier-c11",
+   "label": "C11",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 284,
+   "bbox_mm": [
+    [
+     40.25,
+     26.9,
+     30.79
+    ],
+    [
+     42.75,
+     30.1,
+     33.29
+    ]
+   ],
+   "size_mm": [
+    2.5,
+    3.2,
+    2.5
+   ]
+  },
+  {
+   "id": "carrier-r2",
+   "label": "R2",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     29.7,
+     48.2,
+     30.79
+    ],
+    [
+     31.3,
+     49.0,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-r14",
+   "label": "R14",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 244,
+   "bbox_mm": [
+    [
+     74.1,
+     52.2,
+     30.79
+    ],
+    [
+     74.9,
+     53.8,
+     31.24
+    ]
+   ],
+   "size_mm": [
+    0.8,
+    1.6,
+    0.4
+   ]
+  },
+  {
+   "id": "carrier-j2",
+   "label": "J2",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 1564,
+   "bbox_mm": [
+    [
+     57.13,
+     10.83,
+     27.79
+    ],
+    [
+     90.15,
+     15.91,
+     39.33
+    ]
+   ],
+   "size_mm": [
+    33.0,
+    5.1,
+    11.5
+   ]
+  },
+  {
+   "id": "carrier-c20",
+   "label": "C20",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     60.7,
+     28.3,
+     30.79
+    ],
+    [
+     62.3,
+     29.1,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
+   "id": "carrier-c13",
+   "label": "C13",
+   "group": "Carrier",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 236,
+   "bbox_mm": [
+    [
+     50.8,
+     28.6,
+     30.79
+    ],
+    [
+     52.4,
+     29.4,
+     31.59
+    ]
+   ],
+   "size_mm": [
+    1.6,
+    0.8,
+    0.8
+   ]
+  },
+  {
    "id": "carrier-j1",
    "label": "J1 battery XT30",
    "group": "Carrier",
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2562,7 +2562,7 @@
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2592,7 +2592,7 @@
    "explode": [
     0.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2622,7 +2622,7 @@
    "explode": [
     -30.0,
     0.0,
-    15.0
+    45.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2652,7 +2652,7 @@
    "explode": [
     -30.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2682,7 +2682,7 @@
    "explode": [
     30.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2712,26 +2712,26 @@
    "explode": [
     30.0,
     0.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 1228,
+   "triangles": 3964,
    "bbox_mm": [
     [
      100.0,
-     10.88,
+     -7.62,
      31.2
     ],
     [
-     129.3,
+     112.88,
      20.12,
      35.4
     ]
    ],
    "size_mm": [
-    29.3,
-    9.2,
+    12.9,
+    27.8,
     4.2
    ]
   },
@@ -2742,26 +2742,26 @@
    "explode": [
     0.0,
     30.0,
-    75.0
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 828,
+   "triangles": 2652,
    "bbox_mm": [
     [
-     79.12,
+     60.62,
      62.0,
      31.2
     ],
     [
      85.88,
-     91.3,
+     73.62,
      35.4
     ]
    ],
    "size_mm": [
-    6.8,
-    29.3,
+    25.2,
+    11.6,
     4.2
    ]
   },
@@ -2771,8 +2771,8 @@
    "group": "Cables",
    "explode": [
     0.0,
-    -45.0,
-    52.0
+    0.0,
+    62.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2801,8 +2801,8 @@
    "group": "Cables",
    "explode": [
     0.0,
-    -30.0,
-    0.0
+    0.0,
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2827,12 +2827,12 @@
   },
   {
    "id": "cable-antenna-lead",
-   "label": "Antenna lead",
+   "label": "U.FL pigtail",
    "group": "Cables",
    "explode": [
     0.0,
-    -30.0,
-    75.0
+    0.0,
+    80.0
    ],
    "note": "",
    "file": "stack.glb",
@@ -2856,6 +2856,36 @@
    ]
   },
   {
+   "id": "cable-antenna",
+   "label": "868 MHz antenna (86 mm whip)",
+   "group": "Cables",
+   "explode": [
+    0.0,
+    0.0,
+    80.0
+   ],
+   "note": "",
+   "file": "stack.glb",
+   "triangles": 2547,
+   "bbox_mm": [
+    [
+     38.38,
+     -18.4,
+     32.8
+    ],
+    [
+     47.62,
+     -5.3,
+     130.2
+    ]
+   ],
+   "size_mm": [
+    9.2,
+    13.1,
+    97.4
+   ]
+  },
+  {
    "id": "drone-plates",
    "label": "Plates",
    "group": "Drone",
@@ -2866,12 +2896,12 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 67196,
+   "triangles": 68982,
    "bbox_mm": [
     [
      -91.36,
      28.14,
-     86.17
+     86.69
     ],
     [
      112.0,
@@ -2882,7 +2912,7 @@
    "size_mm": [
     203.4,
     143.7,
-    60.8
+    60.3
    ]
   },
   {
@@ -2896,17 +2926,17 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 156542,
+   "triangles": 176334,
    "bbox_mm": [
     [
      -219.67,
      -100.17,
-     -97.27
+     -97.28
     ],
     [
      180.67,
      300.17,
-     147.13
+     147.14
     ]
    ],
    "size_mm": [
@@ -2926,23 +2956,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 20280,
+   "triangles": 41632,
    "bbox_mm": [
     [
-     -146.34,
-     -29.45,
-     -100.65
+     -146.5,
+     -29.46,
+     -100.28
     ],
     [
-     107.34,
+     107.5,
      229.45,
      109.33
     ]
    ],
    "size_mm": [
-    253.7,
+    254.0,
     258.9,
-    210.0
+    209.6
    ]
   },
   {
@@ -2956,23 +2986,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 96562,
+   "triangles": 311864,
    "bbox_mm": [
     [
-     -218.48,
-     -98.98,
-     -88.73
+     -218.46,
+     -98.96,
+     -88.71
     ],
     [
-     179.48,
-     298.98,
-     149.7
+     179.46,
+     298.96,
+     149.74
     ]
    ],
    "size_mm": [
-    398.0,
-    398.0,
-    238.4
+    397.9,
+    397.9,
+    238.5
    ]
   },
   {
@@ -2986,7 +3016,7 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 57424,
+   "triangles": 31616,
    "bbox_mm": [
     [
      -211.21,
@@ -3016,23 +3046,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 6680,
+   "triangles": 17944,
    "bbox_mm": [
     [
      -139.5,
-     59.81,
-     91.42
+     60.32,
+     92.24
     ],
     [
      110.5,
-     140.05,
-     112.58
+     139.78,
+     111.76
     ]
    ],
    "size_mm": [
     250.0,
-    80.2,
-    21.2
+    79.5,
+    19.5
    ]
   },
   {
@@ -3046,7 +3076,7 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 10156,
+   "triangles": 11864,
    "bbox_mm": [
     [
      64.62,
@@ -3056,13 +3086,13 @@
     [
      94.38,
      114.88,
-     222.41
+     222.0
     ]
    ],
    "size_mm": [
     29.8,
     29.8,
-    133.4
+    133.0
    ]
   },
   {
@@ -3076,23 +3106,53 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 34801,
+   "triangles": 20605,
    "bbox_mm": [
     [
      -71.81,
-     46.58,
+     46.7,
      90.6
     ],
     [
      19.75,
-     126.72,
-     144.73
+     117.5,
+     127.45
     ]
    ],
    "size_mm": [
     91.6,
-    80.1,
-    54.1
+    70.8,
+    36.8
+   ]
+  },
+  {
+   "id": "drone-battery-and-cradle",
+   "label": "Battery and cradle",
+   "group": "Drone",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 3500,
+   "bbox_mm": [
+    [
+     -75.15,
+     59.5,
+     146.92
+    ],
+    [
+     35.05,
+     140.5,
+     192.77
+    ]
+   ],
+   "size_mm": [
+    110.2,
+    81.0,
+    45.9
    ]
   },
   {
@@ -3106,28 +3166,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 32068,
+   "triangles": 62638,
    "bbox_mm": [
     [
-     -70.0,
+     -69.88,
      45.5,
-     53.3
+     -40.15
     ],
     [
-     30.0,
+     30.12,
      154.5,
-     84.73
+     84.69
     ]
    ],
    "size_mm": [
     100.0,
     109.0,
-    31.4
+    124.8
    ]
   },
   {
-   "id": "drone-battery",
-   "label": "Battery",
+   "id": "drone-propellers",
+   "label": "Propellers",
    "group": "Drone",
    "explode": [
     0.0,
@@ -3136,28 +3196,26 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 12,
+   "triangles": 63882,
    "bbox_mm": [
     [
-     -63.05,
-     64.0,
-     146.92
+     -323.08,
+     -87.08,
+     169.74
     ],
     [
-     22.95,
-     136.0,
-     188.92
+     284.6,
+     286.58,
+     178.35
     ]
    ],
    "size_mm": [
-    86.0,
-    72.0,
-    42.0
+    607.7,
+    373.7,
+    8.6
    ]
   }
  ],
- "stack_bytes": 3132984,
- "drone_faces_source": 4604502,
- "drone_ratio": 0.03257681286705924,
- "drone_bytes": 8344712
+ "stack_bytes": 873648,
+ "drone_bytes": 4247156
 }

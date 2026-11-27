@@ -236,16 +236,27 @@ def xt30_plug(wire_len=30.0, colours=('red', 'black')):
     return out
 
 
-def jst_gh_plug(n, wire_len=25.0):
-    """JST-GH housing (1.25 mm pitch) with n wires, mating along +x from the receptacle face."""
+def jst_gh_plug(n, wire_len=25.0, bend=None):
+    """JST-GH housing (1.25 mm pitch) with n wires, mating along +x from the receptacle face.
+    bend=(straight, side): the wires leave straight for `straight` mm, then turn 90 degrees and
+    run `side` mm along +y (negative: -y), flat against the wall."""
     w = 1.25 * (n - 1) + 3.0
     body = box(0, 4.3, -w / 2, w / 2, 0.4, 4.0)
     body = body.union(box(1.0, 3.0, -1.5, 1.5, 4.0, 4.6))      # latch
     out = [('plug', body, 'white')]
     for i in range(n):
         y = -1.25 * (n - 1) / 2 + i * 1.25
-        out.append(('wire', cq.Workplane('YZ').circle(0.45).extrude(wire_len).translate((4.3, y, 2.0)),
-                    'red' if i == 0 else 'black'))
+        colour = 'red' if i == 0 else 'black'
+        if bend is None:
+            out.append(('wire', cq.Workplane('YZ').circle(0.45).extrude(wire_len).translate((4.3, y, 2.0)), colour))
+            continue
+        straight, side = bend
+        sign = 1 if side > 0 else -1
+        x_turn = 4.3 + straight - sign * y          # outer wires turn later, so the bundle stays flat
+        wire = cq.Workplane('YZ').circle(0.45).extrude(x_turn - 4.3).translate((4.3, y, 2.0))
+        leg = cq.Workplane('XY').add(cq.Solid.makeCylinder(0.45, abs(side), cq.Vector(x_turn, y, 2.0), cq.Vector(0, sign, 0)))
+        joint = cq.Workplane('XY').sphere(0.45).translate((x_turn, y, 2.0))
+        out.append(('wire', wire.union(leg).union(joint), colour))
     return out
 
 
@@ -276,6 +287,26 @@ def sma_bulkhead(panel=2.4):
         out.append(('nut', nut, 'gold'))
     out.append(('insulator', cq.Workplane('YZ').circle(2.1).extrude(8).translate((-panel - 0.5, 0, 0)), 'white'))
     out.append(('pin', cq.Workplane('YZ').circle(0.45).extrude(7.5).translate((-panel, 0, 0)), 'gold'))
+    return out
+
+
+def sma_whip(length=86.4):
+    """868 MHz quarter-wave whip (300 / 868 MHz / 4 = 86.4 mm) on a right-angle SMA plug.
+    Local x points out of the panel (x = 0 its outer face, the bulkhead nut ends at x = 2);
+    the whip runs along -z from the elbow."""
+    out = []
+    nut = cq.Workplane('YZ').polygon(6, 8.0 / math.cos(math.pi / 6)).extrude(5.5).translate((2.3, 0, 0))
+    nut = nut.cut(cq.Workplane('YZ').circle(3.2).extrude(6).translate((2.0, 0, 0)))
+    out.append(('coupling nut', nut, 'gold'))
+    body = cq.Workplane('YZ').circle(3.4).extrude(4.0).translate((7.8, 0, 0))
+    elbow = cq.Workplane('XY').sphere(3.4).translate((12.0, 0, 0))
+    down = cq.Workplane('XY').circle(3.0).extrude(-6.0).translate((12.0, 0, 0))
+    out.append(('elbow', body.union(elbow).union(down), 'black'))
+    sleeve = cq.Workplane('XY').circle(1.6).extrude(-14.0).translate((12.0, 0, -6.0))
+    out.append(('sleeve', sleeve, 'black'))
+    wire = cq.Workplane('XY').circle(0.6).extrude(-length).translate((12.0, 0, -6.0))
+    tip = cq.Workplane('XY').sphere(1.0).translate((12.0, 0, -6.0 - length))
+    out.append(('whip', wire.union(tip), 'shell'))
     return out
 
 

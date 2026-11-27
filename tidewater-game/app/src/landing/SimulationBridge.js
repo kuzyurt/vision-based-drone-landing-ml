@@ -161,6 +161,11 @@ export class SimulationBridge {
 			const response = await fetch( new URL( 'landing/detail/detail.json', base ), { cache: 'force-cache', signal: this.assetAbort.signal } );
 			if ( ! response.ok ) return;
 			const manifest = await response.json();
+			// Parts the operator view leaves out (the Khadas Edge2 the drone no longer carries). They
+			// stay in the trained scene: PolicyCamera shows them again for the drone camera's capture.
+			const hiddenPrefixes = manifest.operator_hidden?.prefixes || [];
+			this.operatorHidden = [ ...this.meshes.values() ].filter( mesh => hiddenPrefixes.some( prefix => mesh.name.startsWith( prefix ) ) );
+			for ( const mesh of this.operatorHidden ) mesh.operatorHidden = true;
 			const detailGeoms = ( manifest.geoms || [] ).filter( part => this.meshes.has( part.name ) );
 			const extras = ( manifest.extras || [] ).filter( part => this.meshes.has( part.anchor ) );
 			const detailBytes = fetchAll( detailGeoms.map( part => new URL( part.url.replace( /^\/+/, '' ), base ) ), this.assetAbort.signal );
@@ -302,6 +307,11 @@ export class SimulationBridge {
 				detail.matrixWorldNeedsUpdate = true;
 				detail.visible = true;
 				mesh.visible = false;
+			}
+			if ( mesh.operatorHidden ) {
+				mesh.operatorPlaced = true;
+				mesh.visible = false;
+				if ( detail ) detail.visible = false;
 			}
 			for ( const extra of mesh.detailExtras || [] ) {
 				if ( extra.parent !== group ) group.add( extra );

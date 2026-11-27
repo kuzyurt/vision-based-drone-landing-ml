@@ -80,9 +80,17 @@ carrier's header J2.
   silkscreen was trimmed where it hung over the board edge.
 - **Router.** `circuit/kicad/router.py` is a small grid router written for this
   board (A* on both layers, 0.1 mm grid, the design-rule clearances built in,
-  power nets 0.8 mm wide, rip-up and narrower retries). The sensitive boost
-  nets (soft start, frequency, feedback, compensation) are routed first and
-  short.
+  rip-up and narrower retries). Every bend costs extra, and each found path is
+  pulled tight into straight runs and 45° pieces, so tracks are few long
+  straight segments (about 250 in all, where an unsmoothed grid route needs over
+  1,300). The boost's input net is routed first, then its sensitive nets (soft
+  start, frequency, feedback, compensation), short.
+- **Power tracks 1.5 mm wide.** Battery, 5 V, 17 V, both switch nodes and the
+  boost input run 1.5 mm wide and only neck down to 0.3 mm for the last
+  fraction of a millimetre onto the TPS55340's fine-pitch pins. (Before, the
+  boost input and its switch node ran 0.3 mm wide over their whole length, far
+  too narrow for about 3 A.) The decoupling capacitors next to both regulators
+  get their ground via first, right at the pad.
 - **Ground.** Both layers carry a ground plane, stitched with vias; every plane
   island is either connected or removed.
 - **Silkscreen.** Every reference and label is placed automatically where it
@@ -98,6 +106,12 @@ carrier's header J2.
 | Exploded | Lid off |
 |---|---|
 | ![Exploded view](media/frame_exploded.png) | ![Lid off](media/frame_open.png) |
+
+The build without the printed parts (frame, lid, rail clamps and their screws):
+
+| Assembled | Exploded |
+|---|---|
+| ![Stack assembled](media/stack_assembled.png) | ![Stack exploded](media/stack_exploded.png) |
 
 A printed box (106 × 68 × 46 mm; 67 g frame and 17 g lid in PETG) holds the
 stack: the Orange Pi 5 on four bosses with heat-set inserts, the carrier 18 mm
@@ -121,6 +135,10 @@ model is in `mechanical/frame.py` (CadQuery); print files are in `mechanical/out
   USB, USB-C power, HDMI, audio, the microSD card and the power key on the
   Orange Pi side; the two XT30s, both JST-GH sockets and the XIAO's USB-C on the
   carrier side, and an SMA bulkhead for the LoRa antenna with a U.FL pigtail.
+- **Antenna.** An 868 MHz quarter-wave whip (86 mm) on a right-angle SMA plug
+  points straight down in flight, vertical like the boat's antenna. Its tip is
+  65 mm above the bottom of the landing skids and clear of the propellers, the
+  legs and the camera.
 - **Checked in CAD** (`mechanical/out/frame_report.json`): no part, plug or
   cable touches the frame or the lid (every port is checked with its plug,
   12 mm in front of the socket); the ribbon and the antenna lead touch no part;
@@ -133,8 +151,20 @@ model is in `mechanical/frame.py` (CadQuery); print files are in `mechanical/out
   halves each and 2 × M3 per clamp. The kit's Intel-camera bracket sits on that
   part of the rails; this build does not use it and it comes off. Checked against
   the drone's CAD meshes: the nearest part (a rail holder) is 2.8 mm away, the
-  arm screws 5.9 mm; the lid is 150 mm above the ground. The rails are 9.4 mm
-  tubes in the CAD; measure yours and set `RAIL_D` before printing the clamps.
+  arm screws 5.9 mm; the lid is 150 mm above the ground. The antenna, the plugs
+  and their cables are checked too: the nearest drone part (the camera mount
+  plate) is 5.8 mm away. The TELEM2 and GCU cables bend at the plug and run
+  along the wall; straight, the TELEM2 cable would hit the gimbal camera 17 mm
+  behind the back wall. The rails are 9.4 mm tubes in the CAD; measure yours and
+  set `RAIL_D` before printing the clamps.
+- **Drone model.** The renders, the viewer and the clearance check use the
+  realistic game's detailed drone model (`tidewater-game/app/public/landing`,
+  with propellers and the battery cradle), placed in the drone CAD frame by
+  `mechanical/drone_model.py`. The Khadas Edge2 that used to sit on the top
+  plate is gone: the Orange Pi 5 replaces it. The realistic game's operator view
+  hides it as well (`detail/detail.json`, `operator_hidden`); the drone camera
+  the policy sees still renders the scene it was trained on, and the physics
+  are unchanged.
 
 | Print | Count | Notes |
 |---|---|---|
@@ -151,8 +181,10 @@ an SMA bulkhead with a 100 mm U.FL pigtail.
 **3D viewer.** `mechanical/viewer/` is a browser page (three.js) of the whole
 assembly: the case on the drone, the case with its parts, or the parts alone;
 every part can be hidden, isolated, cut and exploded with its own factor and
-direction, and views can be saved. `python -m flight_electronics.mechanical.assembly`
-writes its models (`stack.glb`, `drone.glb`, `parts.json`); serve the folder
+direction, edges can be drawn, and views can be saved. The drone is shown at
+full detail. `python -m flight_electronics.mechanical.assembly`
+writes its models (`stack.glb`, `drone.glb`, `parts.json`; meshopt-compressed
+when `gltfpack` is installed); serve the folder
 with `python -m http.server` and open `index.html`.
 
 ## Simulation

@@ -39,6 +39,10 @@ COARSE_RATIO = 0.5        # drone part: trained mesh has < 50% of the CAD triang
 EDGE_M = 0.002            # target edge length for rebuilt drone parts
 MIN_TRIS, MAX_TRIS = 2000, 30000
 MIN_NORMAL_CHANGE = 0.05  # boat: write a detail mesh if > 5% of corners change shading
+# drone parts the operator view leaves out (still drawn for the drone camera)
+OPERATOR_HIDDEN = dict(prefixes=['drone_LinkGroup015'],
+                       note='Khadas Edge2 on the top plate: no longer carried (replaced by the Orange Pi 5 in '
+                            'flight_electronics). Operator view only; the drone camera keeps the trained scene.')
 
 
 def read_bin(part):
@@ -291,7 +295,7 @@ def main():
     entries.sort(key=lambda e: e['id'])
     manifest = dict(schema='tidewater.render_detail.v1',
                     purpose='Operator view only. The drone camera keeps the trained meshes.',
-                    crease_deg=CREASE_DEG, geoms=entries)
+                    crease_deg=CREASE_DEG, geoms=entries, operator_hidden=OPERATOR_HIDDEN)
     # the battery pack's corrected box and the battery cradle (hand-modelled, not derived from CAD)
     import importlib.util
     spec = importlib.util.spec_from_file_location('battery_cradle', Path(__file__).with_name('battery_cradle.py'))

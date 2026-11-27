@@ -375,12 +375,25 @@ def _route(board):
 def _route_builtin(board):
     from flight_electronics.circuit.kicad import router
     power = [n for n in BRD.POWER_NETS if n != 'GND']
-    first = ['SS17', 'EN17', 'FREQ17', 'VBST_IN', 'SW17', 'FB17', 'COMP17', 'CZ17', '+17V', 'VBAT_F', 'UART1_RX', 'UART1_TX']
+    first = ['VBST_IN', 'SS17', 'EN17', 'FREQ17', 'SW17', 'FB17', 'COMP17', 'CZ17', '+17V', 'VBAT_F', 'UART1_RX', 'UART1_TX']
     order = first + [n for n in power if n not in first]
     order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first)
     if os.environ.get('FE_ROUTE_ONLY'):
         order = os.environ['FE_ROUTE_ONLY'].split(',')
-    failed = router.route(board, order, power, keepouts=[NOTCH])
+    # power tracks as wide as the board allows (at most 1.5 mm; the sizes in BRD.POWER_NETS are targets)
+    widths = {n: min(w, 1.5) for n, w in BRD.POWER_NETS.items() if n != 'GND'}
+    # decoupling capacitors next to the regulators get their ground via before anything else is
+    # routed, so that the switch and input tracks cannot box their ground pad in
+    ics = [fp.GetBoundingBox() for fp in board.GetFootprints() if fp.GetReference() in ('U1', 'U2')]
+    pre = []
+    for fp in board.GetFootprints():
+        if not fp.GetReference().startswith('C'):
+            continue
+        for pad in fp.Pads():
+            if pad.GetNetname() == 'GND' and pad.GetAttribute() == pcbnew.PAD_ATTRIB_SMD and \
+                    any(box.Inflate(pcbnew.FromMM(4.0)).Contains(pad.GetPosition()) for box in ics):
+                pre.append(('GND', pad))
+    failed = router.route(board, order, power, keepouts=[NOTCH], net_widths=widths, pre_drop=pre)
     if failed:
         print('builtin router: could not complete', failed)
     _stitch(board)

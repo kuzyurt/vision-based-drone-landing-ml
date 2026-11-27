@@ -311,9 +311,11 @@ def cables():
             moved = [(n, s.rotate((0, 0, 0), (0, 0, 1), 180).translate((bx[0], (bx[2] + bx[3]) / 2, CARRIER_TOP)), m)
                      for n, s, m in plug]
         out += [(f'{ref} plug {n}', f'{ref} cable', s, m) for n, s, m in moved]
-    for ref, n_pins in (('J4', 6), ('J5', 4)):
+    # the JST-GH cables leave the plug, bend and run along the wall (the gimbal camera is 17 mm
+    # behind the back wall in flight, so a straight cable would hit it)
+    for ref, n_pins, bend in (('J4', 6, (5.0, -20.0)), ('J5', 4, (5.0, 20.0))):
         x1, x2, y1, y2, z1, z2, edge, _ = _carrier_edge_parts()[ref]
-        plug = C.jst_gh_plug(n_pins)
+        plug = C.jst_gh_plug(n_pins, bend=bend)
         if edge == 'right':
             moved = [(n, s.translate((W, (y1 + y2) / 2, CARRIER_TOP)), m) for n, s, m in plug]
         else:   # back edge, plug comes from +y
@@ -342,6 +344,9 @@ def cables():
                                       (SMA['x'], 1.2, SMA['z'])], includeCurrent=False)
     wire = cq.Workplane(cq.Plane(origin=(sx, sy, sz), xDir=(1, 0, 0), normal=(0, 0, 1))).circle(0.6).sweep(path)
     out.append(('U.FL pigtail', 'Antenna lead', wire, 'grey'))
+    # the antenna: points along frame +z, which is straight down in flight (vertical, like the boat's)
+    out += [(f'Antenna {n}', 'Antenna lead', s.mirror('XY').rotate((0, 0, 0), (0, 0, 1), -90).translate((SMA['x'], outer, SMA['z'])), m)
+            for n, s, m in C.sma_whip()]
     return out
 
 
@@ -479,49 +484,53 @@ CLAMPED = ('CARBON-FIBER-TUBE300', 'CARBON-FIBER-TUBE301')
 
 
 def drone_clearance(body, lid_body, margin=3.0):
-    """Smallest distance (mm) from every drone part near the frame to the frame and the caps.
+    """Smallest distance (mm) from every drone part near the case to the case (frame, lid, clamps,
+    screws) and to what sticks out of it (antenna, plugs and their cables).
 
-    Drone meshes (px4-mujoco-drone-simulation/models/meshes, world mm) are subdivided to
-    1 mm edges, moved into frame coordinates and measured against the exact solids."""
+    The drone is the realistic game's model (drone_model.py: the detailed meshes, propellers and
+    battery cradle included, Khadas Edge2 and Intel-camera bracket left out). Its triangles near the
+    case are subdivided to 1 mm edges, moved into frame coordinates and measured against the exact solids."""
     import numpy as np
     import trimesh
-    sim = ROOT / 'px4-mujoco-drone-simulation' / 'models'
-    parts = json.loads((sim / 'metadata' / 'position_inventory.json').read_text(encoding='utf-8'))['parts']
+    from . import drone_model
+    inventory = json.loads(drone_model.INVENTORY.read_text(encoding='utf-8'))['parts']
+    label_of = {'drone_' + q['part']: q['label'] for q in inventory}
     rot = np.array(DRONE_FROM_FRAME['rotation'], float)
     shift = np.array(DRONE_FROM_FRAME['translation'], float)
-    solids = [body.val(), lid_body.val()] + [c.val() for _, c, _ in clamps_in_frame() + bolts_in_frame()]
-    boxes = [s.BoundingBox() for s in solids]
-    lo = np.array([min(b.xmin for b in boxes), min(b.ymin for b in boxes), min(b.zmin for b in boxes)]) - margin
-    hi = np.array([max(b.xmax for b in boxes), max(b.ymax for b in boxes), max(b.zmax for b in boxes)]) + margin
-    compound = cq.Compound.makeCompound(solids)
-    near, skipped = {}, {}
-    for part in parts:
-        bbox = part.get('world_bbox_mm')
-        mesh_path = sim / 'meshes' / f"{part['part']}.obj"
-        if not bbox or not mesh_path.exists():
-            continue
-        corners = np.array(bbox).reshape(2, 3)
-        f = (corners - shift) @ rot               # rot is its own inverse
-        if np.any(f.max(0) < lo) or np.any(f.min(0) > hi):
-            continue
-        label = part['label']
-        if label.startswith(REMOVED):
-            skipped[label] = 'removed (unused Intel-camera bracket)'
-            continue
-        if label in CLAMPED:
-            skipped[label] = 'payload rail, held by the clamps'
-            continue
-        mesh = trimesh.load(mesh_path, force='mesh')
-        verts, _ = trimesh.remesh.subdivide_to_size(mesh.vertices, mesh.faces, 1.0)
-        local = (verts - shift) @ rot
-        local = local[np.all((local > lo) & (local < hi), axis=1)]
-        if not len(local):
-            continue
-        cloud = cq.Compound.makeCompound([cq.Vertex.makeVertex(*map(float, v)) for v in np.unique(local.round(2), axis=0)])
-        inside = any(s.isInside(cq.Vector(*map(float, v))) for s in solids for v in local[::max(1, len(local) // 400)])
-        d = 0.0 if inside else compound.distance(cloud)
-        near[label] = min(near.get(label, 1e9), round(d, 2))
-    return dict(min_distance_mm=near, not_checked=skipped)
+    sets = {'case': [body.val(), lid_body.val()] + [c.val() for _, c, _ in clamps_in_frame() + bolts_in_frame()],
+            'antenna and cables': [s.val() for n, g, s, m in cables()
+                                   if g == 'Antenna lead' and n.startswith(('Antenna', 'SMA'))
+                                   or g in ('Ethernet cable', 'J1 cable', 'J3 cable', 'J4 cable', 'J5 cable')]}
+    result = {}
+    skipped = {'Khadas Edge2': 'removed (no longer carried)', 'Intel-camera bracket': 'removed (unused)'}
+    parts = drone_model.parts()
+    for key, solids in sets.items():
+        boxes = [s.BoundingBox() for s in solids]
+        lo = np.array([min(b.xmin for b in boxes), min(b.ymin for b in boxes), min(b.zmin for b in boxes)]) - margin
+        hi = np.array([max(b.xmax for b in boxes), max(b.ymax for b in boxes), max(b.zmax for b in boxes)]) + margin
+        compound = cq.Compound.makeCompound(solids)
+        near = {}
+        for name, kind, mesh, mat, tex in parts:
+            label = label_of.get(name, name)
+            if label in CLAMPED:
+                skipped[label] = 'payload rail, held by the clamps'
+                continue
+            local = (mesh.vertices - shift) @ rot             # rot is its own inverse
+            inbox = np.all((local > lo) & (local < hi), axis=1)
+            faces = mesh.faces[inbox[mesh.faces].any(axis=1)]
+            if not len(faces):
+                continue
+            verts, _ = trimesh.remesh.subdivide_to_size(local, faces, 1.0)
+            verts = verts[np.all((verts > lo) & (verts < hi), axis=1)]
+            if not len(verts):
+                continue
+            cloud = cq.Compound.makeCompound([cq.Vertex.makeVertex(*map(float, v)) for v in np.unique(verts.round(2), axis=0)])
+            inside = any(s.isInside(cq.Vector(*map(float, v))) for s in solids for v in verts[::max(1, len(verts) // 400)])
+            d = 0.0 if inside else compound.distance(cloud)
+            near[label] = min(near.get(label, 1e9), round(d, 2))
+        result[key] = near
+    return dict(min_distance_mm=result['case'], antenna_and_cables_min_distance_mm=result['antenna and cables'],
+                not_checked=skipped, drone_model='tidewater-game/app/public/landing (game drone, detailed meshes)')
 
 
 def build():

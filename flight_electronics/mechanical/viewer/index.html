@@ -144,11 +144,12 @@ select { font: 12px var(--font); background: var(--panel); color: var(--fg); bor
         <input type="range" id="cutPos" min="0" max="1000" value="500" aria-label="Cut position" disabled>
       </div>
       <button class="btn" type="button" id="xray" aria-pressed="false">X-ray case</button>
+      <button class="btn" type="button" id="edges" aria-pressed="true">Edges</button>
       <button class="btn" type="button" id="fit">Fit</button>
     </div>
     <div class="inspector" id="inspector" hidden></div>
     <div class="hint" id="hint">drag: orbit · right drag: pan · wheel: zoom · H hide · I isolate · Esc clear</div>
-    <div class="status" id="status">Loading the stack (3 MB)…</div>
+    <div class="status" id="status">Loading the stack (1 MB)…</div>
     <div class="toast" id="toast" hidden></div>
   </main>
 </div>
@@ -156,6 +157,7 @@ select { font: 12px var(--font); background: var(--panel); color: var(--fg); bor
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meshoptimizer@0.20.0/meshopt_decoder.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/utils/BufferGeometryUtils.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
 <script>
@@ -167,7 +169,7 @@ const CASE_IDS = (id) => id.startsWith('case-') || id.startsWith('clamp-');
 const MODE_GROUPS = { drone: null, case: (p) => p.group !== 'Drone', parts: (p) => p.group !== 'Drone' && p.group !== 'Case' };
 
 let meta = null, parts = {}, nodes = {}, defaults = {};
-const state = { mode: 'case', explode: 0, factors: {}, vectors: {}, hidden: {}, xray: false, cut: { axis: '', pos: 500 }, selected: null };
+const state = { mode: 'case', explode: 0, factors: {}, vectors: {}, hidden: {}, xray: false, edges: true, cut: { axis: '', pos: 500 }, selected: null };
 const collapsed = { Drone: true, Carrier: true };
 
 // ------------------------------------------------------------------ three.js scene
@@ -210,6 +212,17 @@ new ResizeObserver(resize).observe(canvas);
 
 // ------------------------------------------------------------------ loading
 const loader = new THREE.GLTFLoader();
+if (window.MeshoptDecoder) loader.setMeshoptDecoder(MeshoptDecoder);       // the models are meshopt-compressed
+const edgeMaterial = new THREE.LineBasicMaterial({ color: 0x15191d, transparent: true, opacity: 0.55, depthWrite: false });
+function addEdges(node) {
+  // feature lines (creases over 30 degrees and outlines) so light parts do not melt into each other
+  node.traverse((o) => {
+    if (!o.isMesh || o.userData.edges) return;
+    const lines = new THREE.LineSegments(new THREE.EdgesGeometry(o.geometry, 30), edgeMaterial);
+    lines.userData.isEdge = true; lines.raycast = () => {};
+    o.add(lines); o.userData.edges = lines;
+  });
+}
 async function fetchModel(url) {
   // models are stored as base64 text (<name>.glb.txt), the only form the page host serves
   const text = await (await fetch(url + '.txt')).text();
@@ -247,7 +260,7 @@ async function loadGlb(url, parent) {
 let droneLoading = null;
 function ensureDrone() {
   if (!droneLoading) {
-    showStatus('Loading the drone (8 MB)…');
+    showStatus('Loading the drone (6 MB, full detail)…');
     droneLoading = loadGlb('drone.glb', droneGroup).then(() => { hideStatus(); applyAll(); fit(); })
       .catch(() => showStatus('The drone model could not be loaded. Reload the page to try again.'));
   }
@@ -274,7 +287,9 @@ function applyMaterials() {
   for (const [pid, node] of Object.entries(nodes)) {
     const xr = state.xray && CASE_IDS(pid);
     const sel = state.selected === pid;
+    if (state.edges && node.visible) addEdges(node);
     node.traverse((o) => {
+      if (o.userData.isEdge) { o.visible = state.edges && !xr; return; }
       if (!o.isMesh) return;
       const m = o.material;
       m.transparent = xr; m.opacity = xr ? 0.18 : 1; m.depthWrite = !xr;
@@ -283,6 +298,8 @@ function applyMaterials() {
       m.needsUpdate = true;
     });
   }
+  edgeMaterial.clippingPlanes = cutPlane ? [cutPlane] : null;
+  edgeMaterial.needsUpdate = true;
 }
 function applyMount() {
   stackMount.matrixAutoUpdate = false;
@@ -418,6 +435,7 @@ function syncControls() {
   document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
   $('#explode').value = state.explode; $('#explodeOut').textContent = state.explode + ' %';
   $('#xray').setAttribute('aria-pressed', String(state.xray));
+  $('#edges').setAttribute('aria-pressed', String(state.edges));
   $('#cutAxis').value = state.cut.axis; $('#cutPos').value = state.cut.pos;
 }
 function setMode(mode, refit = true) {
@@ -430,6 +448,7 @@ document.querySelectorAll('.seg button').forEach((b) => b.onclick = () => setMod
 $('#explode').oninput = (e) => { state.explode = +e.target.value; applyExplode(); $('#explodeOut').textContent = state.explode + ' %'; remember(); };
 $('#explode').onchange = () => applyAll();
 $('#xray').onclick = () => { state.xray = !state.xray; applyAll(); };
+$('#edges').onclick = () => { state.edges = !state.edges; applyAll(); };
 $('#fit').onclick = fit;
 $('#cutAxis').onchange = (e) => { state.cut.axis = e.target.value; applyAll(); };
 $('#cutPos').oninput = (e) => { state.cut.pos = +e.target.value; applyCut(); applyMaterials(); };
@@ -463,7 +482,7 @@ canvas.addEventListener('pointerup', (e) => {
 function snapshot() {
   return {
     mode: state.mode, explode: state.explode, factors: { ...state.factors }, vectors: JSON.parse(JSON.stringify(state.vectors)),
-    hidden: Object.keys(state.hidden), xray: state.xray, cut: { ...state.cut },
+    hidden: Object.keys(state.hidden), xray: state.xray, edges: state.edges, cut: { ...state.cut },
     camera: { position: camera.position.toArray().map((v) => +v.toFixed(2)), target: controls.target.toArray().map((v) => +v.toFixed(2)) },
   };
 }
@@ -474,6 +493,7 @@ function restore(s, withCamera = true) {
   state.vectors = JSON.parse(JSON.stringify(s.vectors || {}));
   state.hidden = Object.fromEntries((s.hidden || []).filter((id) => parts[id]).map((id) => [id, true]));
   state.xray = !!s.xray;
+  state.edges = s.edges !== false;
   state.cut = { axis: s.cut?.axis || '', pos: s.cut?.pos ?? 500 };
   const cam = () => { if (withCamera && s.camera) { camera.position.fromArray(s.camera.position); controls.target.fromArray(s.camera.target); controls.update(); } };
   state.mode = MODE_GROUPS.hasOwnProperty(s.mode) ? s.mode : 'case';
