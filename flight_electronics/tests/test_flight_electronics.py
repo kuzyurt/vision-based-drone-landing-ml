@@ -237,8 +237,10 @@ class Frame(unittest.TestCase):
         from pathlib import Path
         report = json.loads((Path(__file__).resolve().parents[1] / 'mechanical/out/frame_report.json').read_text())
         fit = dict(report['fit'])
-        gap = fit.pop('gap_opi_top_to_carrier_mm')
-        self.assertGreater(gap, 1.5)
+        gaps = {k: fit.pop(k) for k in list(fit) if k.startswith('gap_')}
+        self.assertGreater(min(gaps.values()), 1.0)                          # board, heatsink, lid, ribbon clearances
+        self.assertEqual(fit.pop('parts touching frame or lid'), {})
+        self.assertEqual(fit.pop('cables touching parts'), {})
         self.assertEqual({k: v for k, v in fit.items() if v > 0}, {})       # no collision volume anywhere
         near = report['drone']['min_distance_mm']
         self.assertTrue(near)

@@ -1,11 +1,11 @@
 {
-  "frame_volume_cm3": 47.16,
-  "frame_mass_g_petg": 59.9,
+  "frame_mass_g_petg": 66.7,
+  "lid_mass_g_petg": 17.4,
   "clamp_halves_mass_g_petg": 15.3,
   "frame_outer_mm": [
     106.0,
     68.0,
-    34.0
+    45.8
   ],
   "clamp_bolts_frame_mm": [
     [
@@ -66,32 +66,40 @@
     ]
   },
   "orange_pi_underside_z": 10.0,
-  "carrier_underside_z": 29.4,
-  "wall_top_z": 34.0,
+  "carrier_underside_z": 29.2,
+  "wall_top_z": 43.8,
   "hardware": [
     "8x M3x18 socket head screw + 8x M3 nut (4 rail clamps of 2 printed halves; remove the Intel-camera bracket first)",
     "4x M2.5 heat-set insert, OD 3.5-4 mm, 4 mm long (in the Orange Pi bosses)",
     "4x M2.5 male-female hex standoff, 18 mm body, 6 mm thread (clamps the Orange Pi, carries the carrier)",
-    "4x M2.5x5 screw (carrier on the standoffs)",
-    "26-pin IDC ribbon cable, about 60 mm, pin 1 to pin 1",
-    "SMA bulkhead (6.5 mm hole) with U.FL pigtail for the LoRa antenna"
+    "4x M2.5 male-female hex standoff, 10 mm body, 6 mm thread (on the carrier, carry the lid)",
+    "4x M2.5x6 button head screw (lid)",
+    "Aluminium heatsink 35 x 35 x 10 mm with 0.5 mm thermal pad (RK3588S and RAM)",
+    "26-way ribbon cable, about 70 mm, with two 2x13 IDC sockets, pin 1 to pin 1",
+    "SMA bulkhead (6.6 mm hole) with 100 mm U.FL pigtail for the LoRa antenna"
   ],
   "fit": {
-    "opi_eth": 0.0,
-    "opi_usb3": 0.0,
-    "opi_usb2": 0.0,
-    "opi_usbc_power": 0.0,
-    "opi_audio": 0.0,
-    "opi_hdmi": 0.0,
-    "opi_usbc3": 0.0,
-    "opi_sd": 0.0,
-    "carrier_J5": 0.0,
-    "carrier_J3": 0.0,
-    "carrier_J1": 0.0,
-    "carrier_J4": 0.0,
-    "opi_board": 0.0,
-    "carrier_board": 0.0,
-    "gap_opi_top_to_carrier_mm": 2.4
+    "opi Ethernet RJ45": 0.0,
+    "opi USB 2.0 x2": 0.0,
+    "opi USB 3.0": 0.0,
+    "opi USB-C power": 0.0,
+    "opi USB-C 3.0 / DP": 0.0,
+    "opi HDMI": 0.0,
+    "opi Audio jack": 0.0,
+    "opi microSD": 0.0,
+    "opi Power key": 0.0,
+    "carrier J5 (TELEM2 JST-GH)": 0.0,
+    "carrier J4 (GCU JST-GH)": 0.0,
+    "carrier J3 (camera XT30)": 0.0,
+    "carrier J1 (battery XT30)": 0.0,
+    "opi board": 0.0,
+    "carrier board": 0.0,
+    "parts touching frame or lid": {},
+    "cables touching parts": {},
+    "gap_opi_top_to_carrier_mm": 2.2,
+    "gap_heatsink_to_carrier_mm": 6.5,
+    "gap_carrier_parts_to_lid_mm": 3.0,
+    "gap_ribbon_to_lid_mm": 1.55
   },
   "drone": {
     "min_distance_mm": {

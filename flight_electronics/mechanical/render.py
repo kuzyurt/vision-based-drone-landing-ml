@@ -1,4 +1,4 @@
-"""Renders of the frame, the stack and the frame on the X500 V2.
+"""Renders of the case, the stack and the case on the X500 V2.
 
     python -m flight_electronics.mechanical.render     (after frame.py; needs trimesh, pyrender, EGL)
 
@@ -34,48 +34,20 @@ def _tess(solid, colour, tol=0.08):
     return mesh
 
 
-def _carrier_meshes():
-    """KiCad GLB (metres, Y up) -> frame space."""
-    scene = trimesh.load(fr.OUT / 'fe_carrier.glb')
-    to_frame = np.array([[1000, 0, 0, 0], [0, 0, -1000, fr.H], [0, 1000, 0, fr.CARRIER_Z], [0, 0, 0, 1]], float)
+def stack_meshes(explode=0.0, groups=None, skip=()):
+    """Every part of the assembly in frame space, coloured; explode in 0..1 of the default offsets.
+    groups: keep only these assembly groups; skip: part ids to leave out."""
+    from . import assembly
     out = []
-    for geom in scene.dump():
-        geom.apply_transform(to_frame)
-        material = getattr(geom.visual, 'material', None)
-        if material is not None and getattr(material, 'alphaMode', None) == 'BLEND':
-            colour = np.array(material.baseColorFactor, dtype=float)
-            if colour[0] < 60:                # solder mask: opaque and a little lighter than KiCad's
-                colour[:3] = (24, 92, 52)
-            material.baseColorFactor = np.r_[colour[:3], 255].astype(np.uint8)
-            material.alphaMode = 'OPAQUE'
-        out.append(geom)
-    return out
-
-
-def stack_meshes(explode=0.0):
-    """Every part of the assembly in frame space; explode > 0 pulls the layers apart (mm)."""
-    lift = dict(frame=0.0, caps=-0.7 * explode, caps_lower=-1.6 * explode, opi=0.8 * explode, standoff=1.4 * explode, carrier=2.2 * explode)
-    parts = []
-    body = trimesh.load(fr.OUT / 'frame.stl')
-    body.visual.face_colors = [235, 235, 238, 255]
-    parts.append(('frame', body))
-    for i, (name, solid, colour) in enumerate(fr.clamps_in_frame()):
-        parts.append(('caps' if i % 2 == 0 else 'caps_lower', _tess(solid, colour)))
-    for name, solid, colour in fr.bolts_in_frame():
-        parts.append(('caps_lower', _tess(solid, colour)))
-    for name, solid, colour in fr.orange_pi_5():
-        parts.append(('opi', _tess(solid, colour)))
-    for name, solid, colour in fr.standoffs():
-        parts.append(('standoff', _tess(solid, colour)))
-    for g in _carrier_meshes():
-        parts.append(('carrier', g))
-    for name, solid, colour in fr.carrier_extras():
-        parts.append(('carrier', _tess(solid, colour)))
-    out = []
-    for group, mesh in parts:
-        m = mesh.copy()
-        m.apply_translation((0, 0, lift[group]))
-        out.append((group, m))
+    for pid, p, pieces in assembly.stack_parts().items():
+        if (groups and p['group'] not in groups) or pid in skip:
+            continue
+        shift = np.array(p['explode']) * explode
+        for mesh, mat in pieces:
+            m = mesh.copy()
+            m.apply_translation(shift)
+            m.visual.face_colors = (np.array(list(mat['color']) + [1.0]) * 255).astype(np.uint8)
+            out.append((p['group'], m))
     return out
 
 
@@ -158,18 +130,21 @@ def render(meshes, eye, target, path, size=(1600, 1000), fov=28.0, up=(0, 0, 1),
 
 def main():
     fr.MEDIA.mkdir(exist_ok=True)
-    centre = (fr.W / 2, fr.H / 2, fr.WALL_TOP / 2)
+    centre = (fr.W / 2, fr.H / 2, (fr.WALL_TOP + fr.LID_T) / 2)
     stack = [m for _, m in stack_meshes()]
-    render(stack, (fr.W / 2 + 120, -150, 150), centre, fr.MEDIA / 'frame_assembled.png')
-    exploded = [m for _, m in stack_meshes(explode=30)]
-    render(exploded, (fr.W / 2 + 240, -290, 170), (fr.W / 2, fr.H / 2, 22), fr.MEDIA / 'frame_exploded.png', fov=31)
-    body = [m for g, m in stack_meshes() if g in ('frame', 'caps', 'caps_lower')]
-    render(body, (-110, 170, 120), centre, fr.MEDIA / 'frame_print.png', shadows=False)   # shadow acne on the big walls
+    render(stack, (fr.W / 2 + 130, -160, 165), centre, fr.MEDIA / 'frame_assembled.png')
+    exploded = [m for _, m in stack_meshes(explode=1.0, groups=('Case', 'Orange Pi 5', 'Cooling', 'Carrier', 'Hardware', 'Cables'),
+                                            skip=('hw-m3-screws',) + tuple(f'clamp-{i}-{h}' for i in range(1, 5) for h in ('upper', 'lower')))]
+    render(exploded, (fr.W / 2 + 330, -330, 260), (fr.W / 2, fr.H / 2, 72), fr.MEDIA / 'frame_exploded.png', size=(1400, 1300), fov=34)
+    inside = [m for g, m in stack_meshes(skip=('case-lid', 'hw-lid-screws'))]
+    render(inside, (fr.W / 2 + 90, -120, 150), (fr.W / 2, fr.H / 2, 25), fr.MEDIA / 'frame_open.png')
+    body = [m for _, m in stack_meshes(groups=('Case',), skip=('hw-m3-screws',))]
+    render(body, (-110, 170, 140), centre, fr.MEDIA / 'frame_print.png', shadows=False)   # shadow acne on the big walls
     drone = drone_meshes()
     mounted = to_drone(stack)
-    target = (-110, 100, 85)
+    target = (-110, 100, 75)
     render(drone + mounted, (-420, -190, -40), target, fr.MEDIA / 'frame_on_drone.png', fov=36)
-    render(drone + mounted, (-170, -60, 20), target, fr.MEDIA / 'frame_on_drone_close.png', fov=40)
+    render(drone + mounted, (-180, -70, 5), target, fr.MEDIA / 'frame_on_drone_close.png', fov=42)
     print('written', sorted(p.name for p in fr.MEDIA.glob('frame_*.png')))
 
 

@@ -1,0 +1,553 @@
+<title>FE-1 Assembly Inspector</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a CAD inspection bench. Viewport fills the screen; parts tree docks left (drawer on phones);
+   toolbar floats top; inspector floats bottom right. */
+:root {
+  --bg: #eef0f2; --panel: #fbfcfc; --panel-2: #f2f4f5; --line: #d5d9dd; --fg: #1d2329; --muted: #5d6871;
+  --accent: #c8581a; --accent-soft: #f6e1d3; --sel: #1d6fd1; --scene-top: #f6f7f8; --scene-bottom: #dfe3e6;
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 6px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15191d; --panel: #1c2126; --panel-2: #232a30; --line: #333c44; --fg: #e4e8eb; --muted: #97a3ad;
+  --accent: #ee8a4c; --accent-soft: #3a281d; --sel: #6aa9f2; --scene-top: #232a31; --scene-bottom: #101316; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15191d; --panel: #1c2126; --panel-2: #232a30; --line: #333c44; --fg: #e4e8eb; --muted: #97a3ad;
+  --accent: #ee8a4c; --accent-soft: #3a281d; --sel: #6aa9f2; --scene-top: #232a31; --scene-bottom: #101316; color-scheme: dark }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font: 13px/1.4 var(--font); overflow: hidden; }
+#app { position: relative; height: 100%; display: grid; grid-template-columns: 300px 1fr; }
+aside { background: var(--panel); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0;
+  padding-left: env(safe-area-inset-left, 0px); }
+.side-head { padding: 14px 14px 10px; border-bottom: 1px solid var(--line); display: grid; gap: 4px; }
+.side-head h1 { font-size: 15px; font-weight: 600; margin: 0; letter-spacing: .01em; text-wrap: balance; }
+.side-head p { margin: 0; color: var(--muted); font-size: 12px; }
+.tree { overflow: auto; flex: 1; min-height: 0; padding: 6px 0 12px; }
+.grp { border-bottom: 1px solid var(--line); }
+.grp-row, .part-row { display: grid; grid-template-columns: 26px 1fr 64px; align-items: center; gap: 6px; padding: 4px 10px 4px 8px; }
+.grp-row { font-weight: 600; cursor: pointer; padding-top: 7px; padding-bottom: 7px; }
+.grp-row .count { color: var(--muted); font-weight: 400; font-family: var(--mono); font-size: 11px; margin-left: 4px; }
+.part-row { padding-left: 22px; cursor: pointer; }
+.part-row:hover, .grp-row:hover { background: var(--panel-2); }
+.part-row.sel { background: var(--accent-soft); }
+.part-row .name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.part-row.off .name, .grp-row.off .gname { color: var(--muted); text-decoration: line-through; }
+.grp.collapsed .parts { display: none; }
+.eye { width: 24px; height: 22px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--fg);
+  display: grid; place-items: center; cursor: pointer; padding: 0; }
+.eye svg { width: 14px; height: 14px; }
+.eye.off { color: var(--muted); background: var(--panel-2); }
+input.fac { width: 64px; font: 12px var(--mono); padding: 2px 4px; border: 1px solid var(--line); border-radius: 4px;
+  background: var(--panel); color: var(--fg); text-align: right; }
+.fac-head { display: grid; grid-template-columns: 26px 1fr 64px; gap: 6px; padding: 6px 10px 2px 8px; color: var(--muted);
+  font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.fac-head span:last-child { text-align: right; }
+main { position: relative; min-width: 0; }
+canvas#view { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+.toolbar { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  pointer-events: none; padding-right: env(safe-area-inset-right, 0px); }
+.toolbar > * { pointer-events: auto; }
+.seg { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.seg button { border: 0; background: transparent; color: var(--fg); padding: 7px 11px; font: 500 12px var(--font); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--panel); }
+.box { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 6px 10px; display: flex; gap: 8px; align-items: center; }
+.box label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.box output { font: 12px var(--mono); min-width: 38px; text-align: right; }
+input[type=range] { accent-color: var(--accent); width: 130px; }
+.btn { border: 1px solid var(--line); background: var(--panel); color: var(--fg); border-radius: var(--r); padding: 6px 10px;
+  font: 500 12px var(--font); cursor: pointer; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn[aria-pressed="true"] { background: var(--fg); color: var(--panel); border-color: var(--fg); }
+button:focus-visible, input:focus-visible, select:focus-visible { outline: 2px solid var(--sel); outline-offset: 1px; }
+select { font: 12px var(--font); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 4px; padding: 2px 4px; }
+.inspector { position: absolute; right: 12px; bottom: 12px; width: 300px; max-width: calc(100% - 24px); background: var(--panel);
+  border: 1px solid var(--line); border-radius: var(--r); padding: 12px; display: grid; gap: 8px;
+  margin-right: env(safe-area-inset-right, 0px); margin-bottom: env(safe-area-inset-bottom, 0px); }
+.inspector h2 { margin: 0; font-size: 14px; font-weight: 600; }
+.inspector .meta { color: var(--muted); font-size: 12px; }
+.inspector dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; font-size: 12px; }
+.inspector dt { color: var(--muted); }
+.inspector dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.vec { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 6px; align-items: center; }
+.vec input { width: 100%; font: 12px var(--mono); padding: 3px 4px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); color: var(--fg); }
+.row { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets { border-top: 1px solid var(--line); padding: 10px 12px 12px; display: grid; gap: 8px; padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)); }
+.presets h3 { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
+.presets form { display: flex; gap: 6px; }
+.presets input[type=text] { flex: 1; min-width: 0; font: 12px var(--font); padding: 5px 7px; border: 1px solid var(--line); border-radius: var(--r); background: var(--panel); color: var(--fg); }
+.plist { display: grid; gap: 4px; max-height: 160px; overflow: auto; }
+.pitem { display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; padding: 4px 6px; border: 1px solid var(--line); border-radius: 4px; }
+.pitem .pn { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pitem small { color: var(--muted); font-family: var(--mono); }
+.note { color: var(--muted); font-size: 12px; }
+.status { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 10px 14px; font: 12px var(--mono); }
+.toast { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); background: var(--fg); color: var(--panel);
+  padding: 7px 12px; border-radius: var(--r); font-size: 12px; margin-bottom: env(safe-area-inset-bottom, 0px); }
+.hint { position: absolute; left: 12px; bottom: 12px; color: var(--muted); font-size: 11px; font-family: var(--mono);
+  margin-bottom: env(safe-area-inset-bottom, 0px); margin-left: env(safe-area-inset-left, 0px); }
+#drawerBtn { display: none; }
+@media (max-width: 760px) {
+  #app { grid-template-columns: 1fr; }
+  aside { position: absolute; z-index: 5; left: 0; top: 0; bottom: 0; width: min(320px, 88vw); transform: translateX(-102%);
+    transition: transform .2s ease; box-shadow: 0 0 24px rgba(0,0,0,.25); }
+  #app.drawer aside { transform: none; }
+  #drawerBtn { display: inline-block; }
+  .inspector { left: 12px; right: 12px; width: auto; bottom: 12px; }
+  .hint { display: none; }
+  input[type=range] { width: 90px; }
+}
+@media (prefers-reduced-motion: reduce) { aside { transition: none; } }
+</style>
+
+<div id="app">
+  <aside id="side" aria-label="Parts">
+    <div class="side-head">
+      <h1>FE-1 stack on the X500</h1>
+      <p>Printed case, Orange Pi 5, FE-1 carrier, cables. Click a part to inspect it.</p>
+    </div>
+    <div class="fac-head"><span></span><span>Part</span><span>Explode ×</span></div>
+    <div class="tree" id="tree"></div>
+    <section class="presets" aria-label="Saved views">
+      <h3>Saved views</h3>
+      <form id="saveForm">
+        <input type="text" id="presetName" placeholder="Name this view" maxlength="60" aria-label="View name">
+        <button class="btn primary" type="submit">Save</button>
+      </form>
+      <div class="plist" id="plist"></div>
+      <div class="row">
+        <button class="btn" type="button" id="copyJson">Copy view as JSON</button>
+        <button class="btn" type="button" id="resetAll">Reset all</button>
+      </div>
+      <p class="note" id="dbNote">Connecting to saved views…</p>
+    </section>
+  </aside>
+  <main>
+    <canvas id="view"></canvas>
+    <div class="toolbar">
+      <button class="btn" type="button" id="drawerBtn" aria-controls="side">Parts</button>
+      <div class="seg" role="group" aria-label="Scene">
+        <button type="button" data-mode="drone">Drone + case</button>
+        <button type="button" data-mode="case">Case + parts</button>
+        <button type="button" data-mode="parts">Parts only</button>
+      </div>
+      <div class="box"><label for="explode">Explode</label><input type="range" id="explode" min="0" max="150" step="1" value="0"><output id="explodeOut">0 %</output></div>
+      <div class="box"><label for="cutAxis">Cut</label>
+        <select id="cutAxis"><option value="">off</option><option value="x">X</option><option value="y">Y</option><option value="z">Z</option></select>
+        <input type="range" id="cutPos" min="0" max="1000" value="500" aria-label="Cut position" disabled>
+      </div>
+      <button class="btn" type="button" id="xray" aria-pressed="false">X-ray case</button>
+      <button class="btn" type="button" id="fit">Fit</button>
+    </div>
+    <div class="inspector" id="inspector" hidden></div>
+    <div class="hint" id="hint">drag: orbit · right drag: pan · wheel: zoom · H hide · I isolate · Esc clear</div>
+    <div class="status" id="status">Loading the stack (3 MB)…</div>
+    <div class="toast" id="toast" hidden></div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/utils/BufferGeometryUtils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+(() => {
+const $ = (s) => document.querySelector(s);
+const EYE = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2.2"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z" opacity=".35"/><path d="M2 14 14 2"/></svg>';
+const CASE_IDS = (id) => id.startsWith('case-') || id.startsWith('clamp-');
+const MODE_GROUPS = { drone: null, case: (p) => p.group !== 'Drone', parts: (p) => p.group !== 'Drone' && p.group !== 'Case' };
+
+let meta = null, parts = {}, nodes = {}, defaults = {};
+const state = { mode: 'case', explode: 0, factors: {}, vectors: {}, hidden: {}, xray: false, cut: { axis: '', pos: 500 }, selected: null };
+const collapsed = { Drone: true, Carrier: true };
+
+// ------------------------------------------------------------------ three.js scene
+const canvas = $('#view');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+renderer.localClippingEnabled = true;
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f96, 0.55));
+const sun = new THREE.DirectionalLight(0xffffff, 0.9); sun.position.set(-300, 600, 400); scene.add(sun);
+const camera = new THREE.PerspectiveCamera(35, 1, 1, 20000);
+camera.position.set(220, 160, 220);
+const controls = new THREE.OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.12; controls.screenSpacePanning = true;
+
+const world = new THREE.Group(); world.rotation.x = -Math.PI / 2; scene.add(world);   // data is z-up
+const droneGroup = new THREE.Group(); world.add(droneGroup);
+const stackMount = new THREE.Group(); world.add(stackMount);                           // frame -> drone when mounted
+const stackCentre = new THREE.Group(); stackMount.add(stackCentre);
+
+function setBackground() {
+  const cs = getComputedStyle(document.documentElement);
+  canvas.style.background = `linear-gradient(${cs.getPropertyValue('--scene-top')}, ${cs.getPropertyValue('--scene-bottom')})`;
+}
+setBackground();
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', setBackground);
+new MutationObserver(setBackground).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+function resize() {
+  const r = canvas.getBoundingClientRect();
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / Math.max(r.height, 1); camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas);
+
+// ------------------------------------------------------------------ loading
+const loader = new THREE.GLTFLoader();
+function loadGlb(url, parent) {
+  return new Promise((resolve, reject) => loader.load(url, (gltf) => {
+    const root = gltf.scene;
+    for (const child of [...root.children]) {
+      const pid = child.name;
+      if (!parts[pid]) continue;
+      child.userData.pid = pid;
+      child.traverse((o) => {
+        if (!o.isMesh) return;
+        o.userData.pid = pid;
+        let g = o.geometry;
+        if (!g.attributes.normal) o.geometry = THREE.BufferGeometryUtils.toCreasedNormals(g, Math.PI / 6);
+        const m = o.material.clone();
+        m.side = THREE.DoubleSide;
+        m.userData.base = { color: m.color.clone(), opacity: 1 };
+        o.material = m;
+      });
+      child.userData.home = child.position.clone();
+      nodes[pid] = child;
+      parent.add(child);
+    }
+    resolve();
+  }, undefined, reject));
+}
+
+let droneLoading = null;
+function ensureDrone() {
+  if (!droneLoading) {
+    showStatus('Loading the drone (8 MB)…');
+    droneLoading = loadGlb('drone.glb', droneGroup).then(() => { hideStatus(); applyAll(); fit(); })
+      .catch(() => showStatus('The drone model could not be loaded. Reload the page to try again.'));
+  }
+  return droneLoading;
+}
+
+// ------------------------------------------------------------------ state application
+const vecOf = (pid) => state.vectors[pid] || defaults[pid];
+const facOf = (pid) => (state.factors[pid] ?? 1);
+function modeVisible(p) { const f = MODE_GROUPS[state.mode]; return f ? f(p) : true; }
+function isVisible(pid) { return modeVisible(parts[pid]) && !state.hidden[pid]; }
+
+function applyExplode() {
+  const k = state.explode / 100;
+  for (const [pid, node] of Object.entries(nodes)) {
+    const v = vecOf(pid), f = facOf(pid);
+    node.position.set(node.userData.home.x + v[0] * f * k, node.userData.home.y + v[1] * f * k, node.userData.home.z + v[2] * f * k);
+  }
+}
+function applyVisibility() {
+  for (const [pid, node] of Object.entries(nodes)) node.visible = isVisible(pid);
+}
+function applyMaterials() {
+  for (const [pid, node] of Object.entries(nodes)) {
+    const xr = state.xray && CASE_IDS(pid);
+    const sel = state.selected === pid;
+    node.traverse((o) => {
+      if (!o.isMesh) return;
+      const m = o.material;
+      m.transparent = xr; m.opacity = xr ? 0.18 : 1; m.depthWrite = !xr;
+      m.emissive.setHex(sel ? 0x1d6fd1 : 0x000000); m.emissiveIntensity = sel ? 0.45 : 0;
+      m.clippingPlanes = cutPlane ? [cutPlane] : null;
+      m.needsUpdate = true;
+    });
+  }
+}
+function applyMount() {
+  stackMount.matrixAutoUpdate = false;
+  if (state.mode === 'drone' && meta) {
+    const r = meta.frame_to_drone.rotation, t = meta.frame_to_drone.translation;
+    stackMount.matrix.set(r[0][0], r[0][1], r[0][2], t[0], r[1][0], r[1][1], r[1][2], t[1], r[2][0], r[2][1], r[2][2], t[2], 0, 0, 0, 1);
+  } else stackMount.matrix.identity();
+  stackMount.updateMatrixWorld(true);
+}
+let cutPlane = null;
+function applyCut() {
+  const { axis, pos } = state.cut;
+  $('#cutPos').disabled = !axis;
+  if (!axis) { cutPlane = null; return; }
+  const box = visibleBox();
+  const i = { x: 0, y: 1, z: 2 }[axis];
+  const lo = box.min.getComponent(i), hi = box.max.getComponent(i);
+  const n = new THREE.Vector3(); n.setComponent(i, -1);
+  cutPlane = new THREE.Plane(n, lo + (hi - lo) * pos / 1000);
+}
+function applyAll() {
+  applyMount(); applyExplode(); applyVisibility(); applyCut(); applyMaterials(); renderTree(); renderInspector(); syncControls(); remember();
+}
+
+function visibleBox() {
+  const box = new THREE.Box3();
+  world.updateMatrixWorld(true);
+  for (const [pid, node] of Object.entries(nodes)) if (node.visible) box.expandByObject(node);
+  if (box.isEmpty()) box.setFromCenterAndSize(new THREE.Vector3(), new THREE.Vector3(100, 100, 100));
+  return box;
+}
+function fit() {
+  const box = visibleBox();
+  const c = box.getCenter(new THREE.Vector3()), s = box.getSize(new THREE.Vector3()).length();
+  const dir = camera.position.clone().sub(controls.target).normalize();
+  if (!isFinite(dir.x) || dir.lengthSq() < 0.5) dir.set(0.8, 0.55, 0.9).normalize();
+  const d = s / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2)) * 0.8;
+  controls.target.copy(c); camera.position.copy(c).addScaledVector(dir, d);
+  camera.near = Math.max(0.5, d / 200); camera.far = d * 20; camera.updateProjectionMatrix();
+}
+
+// ------------------------------------------------------------------ UI: tree
+function renderTree() {
+  if (!meta) return;
+  const tree = $('#tree');
+  const scroll = tree.scrollTop;
+  tree.textContent = '';
+  for (const group of meta.groups) {
+    const list = meta.parts.filter((p) => p.group === group);
+    if (!list.length) continue;
+    const g = document.createElement('div'); g.className = 'grp' + (collapsed[group] ? ' collapsed' : '');
+    const allHidden = list.every((p) => state.hidden[p.id]);
+    const groupOff = !list.some((p) => modeVisible(p));
+    const head = document.createElement('div'); head.className = 'grp-row' + (allHidden || groupOff ? ' off' : '');
+    const eye = document.createElement('button'); eye.className = 'eye' + (allHidden ? ' off' : ''); eye.type = 'button';
+    eye.innerHTML = allHidden ? EYE_OFF : EYE; eye.setAttribute('aria-label', (allHidden ? 'Show ' : 'Hide ') + group);
+    eye.onclick = (e) => { e.stopPropagation(); for (const p of list) { if (allHidden) delete state.hidden[p.id]; else state.hidden[p.id] = true; } applyAll(); };
+    const name = document.createElement('span'); name.className = 'gname';
+    name.textContent = (collapsed[group] ? '▸ ' : '▾ ') + group;
+    const count = document.createElement('span'); count.className = 'count'; count.textContent = list.length; name.append(count);
+    const gf = document.createElement('input'); gf.className = 'fac'; gf.type = 'number'; gf.step = '0.1'; gf.min = '-3'; gf.max = '5';
+    gf.title = 'Explode factor for the whole group'; gf.setAttribute('aria-label', `Explode factor, ${group}`);
+    const fs = list.map((p) => facOf(p.id)); gf.value = fs.every((f) => f === fs[0]) ? fs[0] : '';
+    gf.placeholder = 'mixed';
+    gf.onclick = (e) => e.stopPropagation();
+    gf.onchange = () => { const v = parseFloat(gf.value); if (isFinite(v)) { for (const p of list) state.factors[p.id] = v; applyAll(); } };
+    head.append(eye, name, gf);
+    head.onclick = () => { collapsed[group] = !collapsed[group]; renderTree(); };
+    g.append(head);
+    const box = document.createElement('div'); box.className = 'parts';
+    for (const p of list) {
+      const row = document.createElement('div');
+      row.className = 'part-row' + (state.selected === p.id ? ' sel' : '') + (state.hidden[p.id] ? ' off' : '');
+      const e2 = document.createElement('button'); e2.type = 'button'; e2.className = 'eye' + (state.hidden[p.id] ? ' off' : '');
+      e2.innerHTML = state.hidden[p.id] ? EYE_OFF : EYE; e2.setAttribute('aria-label', (state.hidden[p.id] ? 'Show ' : 'Hide ') + p.label);
+      e2.onclick = (e) => { e.stopPropagation(); toggleHidden(p.id); };
+      const n = document.createElement('span'); n.className = 'name'; n.textContent = p.label; n.title = p.label;
+      const f = document.createElement('input'); f.className = 'fac'; f.type = 'number'; f.step = '0.1'; f.min = '-3'; f.max = '5';
+      f.value = facOf(p.id); f.setAttribute('aria-label', `Explode factor, ${p.label}`);
+      f.onclick = (e) => e.stopPropagation();
+      f.onchange = () => { const v = parseFloat(f.value); if (isFinite(v)) { state.factors[p.id] = v; applyAll(); } };
+      row.append(e2, n, f);
+      row.onclick = () => select(p.id);
+      box.append(row);
+    }
+    g.append(box);
+    tree.append(g);
+  }
+  tree.scrollTop = scroll;
+}
+function toggleHidden(pid) { if (state.hidden[pid]) delete state.hidden[pid]; else state.hidden[pid] = true; applyAll(); }
+function select(pid) { state.selected = state.selected === pid ? null : pid; applyAll(); }
+
+// ------------------------------------------------------------------ UI: inspector
+function fmt(v) { return (Math.round(v * 10) / 10).toFixed(1); }
+function renderInspector() {
+  const el = $('#inspector');
+  const pid = state.selected;
+  if (!pid || !parts[pid]) { el.hidden = true; return; }
+  const p = parts[pid], v = vecOf(pid);
+  el.hidden = false;
+  el.innerHTML = '';
+  const h = document.createElement('h2'); h.textContent = p.label;
+  const m = document.createElement('div'); m.className = 'meta'; m.textContent = p.group + (p.note ? ' · ' + p.note : '');
+  const dl = document.createElement('dl');
+  const rows = [['Size', p.size_mm.map(fmt).join(' × ') + ' mm'], ['Triangles', p.triangles.toLocaleString('en')], ['Part id', p.id]];
+  for (const [k, val] of rows) { const dt = document.createElement('dt'); dt.textContent = k; const dd = document.createElement('dd'); dd.textContent = val; dl.append(dt, dd); }
+  const lab = document.createElement('div'); lab.className = 'meta'; lab.textContent = 'Explode direction at 100 % (mm, case axes; Z points to the lid)';
+  const vec = document.createElement('div'); vec.className = 'vec';
+  ['X', 'Y', 'Z'].forEach((a, i) => {
+    const inp = document.createElement('input'); inp.type = 'number'; inp.step = '1'; inp.value = Math.round(v[i]);
+    inp.setAttribute('aria-label', `Explode ${a} in mm`);
+    inp.onchange = () => { const n = [...vecOf(pid)]; const x = parseFloat(inp.value); if (isFinite(x)) { n[i] = x; state.vectors[pid] = n; applyAll(); } };
+    vec.append(inp);
+  });
+  const rv = document.createElement('button'); rv.className = 'btn'; rv.type = 'button'; rv.textContent = 'Default';
+  rv.onclick = () => { delete state.vectors[pid]; delete state.factors[pid]; applyAll(); };
+  vec.append(rv);
+  const acts = document.createElement('div'); acts.className = 'row';
+  const mk = (t, fn) => { const b = document.createElement('button'); b.className = 'btn'; b.type = 'button'; b.textContent = t; b.onclick = fn; return b; };
+  acts.append(mk(state.hidden[pid] ? 'Show' : 'Hide', () => toggleHidden(pid)), mk('Isolate', () => isolate(pid)),
+              mk('Show all', () => { state.hidden = {}; applyAll(); }), mk('Close', () => { state.selected = null; applyAll(); }));
+  el.append(h, m, dl, lab, vec, acts);
+}
+function isolate(pid) {
+  state.hidden = {};
+  for (const p of meta.parts) if (p.id !== pid && modeVisible(p)) state.hidden[p.id] = true;
+  applyAll(); fit();
+}
+
+// ------------------------------------------------------------------ UI: toolbar
+function syncControls() {
+  document.querySelectorAll('.seg button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode)));
+  $('#explode').value = state.explode; $('#explodeOut').textContent = state.explode + ' %';
+  $('#xray').setAttribute('aria-pressed', String(state.xray));
+  $('#cutAxis').value = state.cut.axis; $('#cutPos').value = state.cut.pos;
+}
+function setMode(mode, refit = true) {
+  state.mode = mode;
+  if (location.hash.slice(1) !== mode) history.replaceState(null, '', '#' + mode);
+  const go = () => { applyAll(); if (refit) fit(); };
+  if (mode === 'drone') ensureDrone().then(go); else go();
+}
+document.querySelectorAll('.seg button').forEach((b) => b.onclick = () => setMode(b.dataset.mode));
+$('#explode').oninput = (e) => { state.explode = +e.target.value; applyExplode(); $('#explodeOut').textContent = state.explode + ' %'; remember(); };
+$('#explode').onchange = () => applyAll();
+$('#xray').onclick = () => { state.xray = !state.xray; applyAll(); };
+$('#fit').onclick = fit;
+$('#cutAxis').onchange = (e) => { state.cut.axis = e.target.value; applyAll(); };
+$('#cutPos').oninput = (e) => { state.cut.pos = +e.target.value; applyCut(); applyMaterials(); };
+$('#drawerBtn').onclick = () => $('#app').classList.toggle('drawer');
+window.addEventListener('hashchange', () => { const m = location.hash.slice(1); if (MODE_GROUPS.hasOwnProperty(m) && m !== state.mode) setMode(m); });
+window.addEventListener('keydown', (e) => {
+  if (e.target.closest('input, select, textarea')) return;
+  if (e.key === 'Escape') { state.selected = null; applyAll(); }
+  else if ((e.key === 'h' || e.key === 'H') && state.selected) toggleHidden(state.selected);
+  else if ((e.key === 'i' || e.key === 'I') && state.selected) isolate(state.selected);
+  else if (e.key === 'f' || e.key === 'F') fit();
+});
+
+// picking: a click without a drag selects the part under the pointer
+const ray = new THREE.Raycaster(); let down = null;
+canvas.addEventListener('pointerdown', (e) => { down = [e.clientX, e.clientY]; });
+canvas.addEventListener('pointerup', (e) => {
+  if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
+  const r = canvas.getBoundingClientRect();
+  ray.setFromCamera({ x: ((e.clientX - r.left) / r.width) * 2 - 1, y: -((e.clientY - r.top) / r.height) * 2 + 1 }, camera);
+  const hits = ray.intersectObjects(Object.values(nodes).filter((n) => n.visible), true)
+    .filter((h) => !cutPlane || cutPlane.distanceToPoint(h.point) >= 0)
+    .filter((h) => !(state.xray && CASE_IDS(h.object.userData.pid)));
+  if (hits.length) { state.selected = hits[0].object.userData.pid; const p = parts[state.selected];
+    if (collapsed[p.group]) collapsed[p.group] = false; applyAll();
+    document.querySelector('.part-row.sel')?.scrollIntoView({ block: 'nearest' }); }
+  else { state.selected = null; applyAll(); }
+});
+
+// ------------------------------------------------------------------ views: snapshot, local memory, saved views
+function snapshot() {
+  return {
+    mode: state.mode, explode: state.explode, factors: { ...state.factors }, vectors: JSON.parse(JSON.stringify(state.vectors)),
+    hidden: Object.keys(state.hidden), xray: state.xray, cut: { ...state.cut },
+    camera: { position: camera.position.toArray().map((v) => +v.toFixed(2)), target: controls.target.toArray().map((v) => +v.toFixed(2)) },
+  };
+}
+function restore(s, withCamera = true) {
+  if (!s) return;
+  state.explode = +s.explode || 0;
+  state.factors = { ...(s.factors || {}) };
+  state.vectors = JSON.parse(JSON.stringify(s.vectors || {}));
+  state.hidden = Object.fromEntries((s.hidden || []).filter((id) => parts[id]).map((id) => [id, true]));
+  state.xray = !!s.xray;
+  state.cut = { axis: s.cut?.axis || '', pos: s.cut?.pos ?? 500 };
+  const cam = () => { if (withCamera && s.camera) { camera.position.fromArray(s.camera.position); controls.target.fromArray(s.camera.target); controls.update(); } };
+  state.mode = MODE_GROUPS.hasOwnProperty(s.mode) ? s.mode : 'case';
+  history.replaceState(null, '', '#' + state.mode);
+  if (state.mode === 'drone') ensureDrone().then(() => { applyAll(); cam(); }); else { applyAll(); cam(); }
+}
+let rememberTimer = null;
+function remember() {
+  clearTimeout(rememberTimer);
+  rememberTimer = setTimeout(() => { try { localStorage.setItem('fe1-view', JSON.stringify(snapshot())); } catch (e) {} }, 400);
+}
+controls.addEventListener('end', remember);
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, 2200); }
+function showStatus(t) { const el = $('#status'); el.textContent = t; el.hidden = false; }
+function hideStatus() { $('#status').hidden = true; }
+
+$('#copyJson').onclick = () => {
+  const text = JSON.stringify(snapshot());
+  navigator.clipboard?.writeText(text).then(() => toast('View copied as JSON'), () => { toast('Copy was blocked; the JSON is in the name field'); $('#presetName').value = text; $('#presetName').select(); });
+};
+$('#resetAll').onclick = () => { state.factors = {}; state.vectors = {}; state.hidden = {}; state.xray = false; state.cut = { axis: '', pos: 500 }; state.explode = 0; applyAll(); fit(); };
+
+// saved views live in the artifact's shared store: whoever opens the page (and Claude) can load them
+let presetsCol = null, presets = [];
+function renderPresets() {
+  const list = $('#plist'); list.textContent = '';
+  if (!presets.length) { const p = document.createElement('p'); p.className = 'note'; p.textContent = presetsCol ? 'No saved views yet. Set up a view and save it.' : ''; list.append(p); return; }
+  for (const d of presets) {
+    const v = d.data();
+    const it = document.createElement('div'); it.className = 'pitem';
+    const n = document.createElement('div'); n.className = 'pn'; n.textContent = v.name || d.id; n.title = v.name || d.id;
+    const sm = document.createElement('small'); sm.textContent = (v.view?.mode || '') + ' · ' + (v.view?.explode ?? 0) + ' %'; n.append(document.createElement('br'), sm);
+    const load = document.createElement('button'); load.className = 'btn'; load.type = 'button'; load.textContent = 'Load';
+    load.onclick = () => { restore(v.view); toast(`Loaded “${v.name}”`); };
+    const del = document.createElement('button'); del.className = 'btn'; del.type = 'button'; del.textContent = 'Delete';
+    del.onclick = async () => {
+      if (del.dataset.armed !== '1') { del.dataset.armed = '1'; del.textContent = 'Confirm'; setTimeout(() => { del.dataset.armed = ''; del.textContent = 'Delete'; }, 3000); return; }
+      try { await presetsCol.doc(d.id).delete(); toast('Deleted'); } catch (e) { toast('Could not delete: ' + (e.code || 'error')); }
+    };
+    it.append(n, load, del); list.append(it);
+  }
+}
+$('#saveForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const name = $('#presetName').value.trim();
+  if (!name) { toast('Give the view a name first'); return; }
+  if (!presetsCol) { toast('Saved views are not available here; use “Copy view as JSON”'); return; }
+  const id = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 48) || 'view';
+  try { await presetsCol.doc(id).set({ name, savedAt: new Date().toISOString(), view: snapshot() }); $('#presetName').value = ''; toast(`Saved “${name}”`); }
+  catch (err) { toast('Could not save: ' + (err.code || 'error')); }
+};
+async function connectStore() {
+  const note = $('#dbNote');
+  let db = null;
+  try { db = await window.claude?.use?.('db'); } catch (e) { db = null; }
+  if (!db) { note.textContent = 'Saved views need a signed-in claude.ai viewer. “Copy view as JSON” works everywhere.'; renderPresets(); return; }
+  presetsCol = db.collection('presets');
+  const timer = setTimeout(() => { note.textContent = 'Saved views cannot be reached yet.'; }, 10000);
+  presetsCol.orderBy('savedAt', 'desc').onSnapshot((snap) => {
+    if (!snap.metadata.fromCache) clearTimeout(timer);
+    presets = snap.docs.filter((d) => d.exists); note.textContent = 'Saved views are shared with everyone who can open this page.'; renderPresets();
+  }, (err) => { clearTimeout(timer); note.textContent = 'Saved views are unavailable (' + (err.code || 'error') + ').'; });
+}
+
+// ------------------------------------------------------------------ boot
+function loop() { controls.update(); renderer.render(scene, camera); requestAnimationFrame(loop); }
+async function boot() {
+  resize(); loop();
+  try {
+    meta = await (await fetch('parts.json')).json();
+  } catch (e) { showStatus('parts.json could not be loaded.'); return; }
+  for (const p of meta.parts) { parts[p.id] = p; defaults[p.id] = p.explode; }
+  try { await loadGlb('stack.glb', stackCentre); } catch (e) { showStatus('The stack model could not be loaded. Reload the page to try again.'); return; }
+  hideStatus();
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem('fe1-view') || 'null'); } catch (e) {}
+  const hashMode = location.hash.slice(1);
+  if (saved) { if (MODE_GROUPS.hasOwnProperty(hashMode)) saved.mode = hashMode; restore(saved); }
+  else { state.explode = 0; setMode(MODE_GROUPS.hasOwnProperty(hashMode) ? hashMode : 'case'); }
+  if (!saved?.camera) fit();
+  connectStore();
+}
+boot();
+})();
+</script>

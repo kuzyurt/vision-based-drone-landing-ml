@@ -14,7 +14,7 @@ from the existing drone model, or is marked as an assumption.
 |---|---|
 | Companion computer | **Orange Pi 5** (Rockchip RK3588S, 46 g), replaces the Khadas Edge2 |
 | Carrier board | **FE-1 rev B**, 100 × 62 mm, 2 layers, fully routed: battery protection, 5 V / 5 A for the computer, 17 V for the camera, the radio and every connector |
-| Frame | 3D-printed (PETG), holds the Orange Pi 5 and the carrier stacked, clamps to the X500's payload rails |
+| Case | 3D-printed (PETG) box with a screwed lid and vents, holds the Orange Pi 5 (with heatsink) and the carrier stacked, clamps to the X500's payload rails |
 | Radio | XIAO ESP32S3 + Wio-SX1262, LoRa 868 MHz, firmware in C++ |
 | Simulation | ngspice circuit models, the real firmware and protocol code, a timing model of the RK3588S |
 | Realistic simulator | `tidewater-game/hardware_runner` puts this hardware between the game and the policy |
@@ -87,50 +87,73 @@ carrier's header J2.
   island is either connected or removed.
 - **Silkscreen.** Every reference and label is placed automatically where it
   touches no pad, no other text, no courtyard and stays inside the board.
-- The XT30s, the TPS55340 and the XIAO stack have no KiCad 3D models, so simple
-  boxes stand in for them in the renders.
+- The XT30s and the XIAO stack have no KiCad 3D models, so boxes stand in for
+  them in the KiCad renders; the case renders and the 3D viewer use detailed
+  models of them (`mechanical/connectors.py`, `mechanical/frame.py`).
 
-## Frame
+## Case
 
-![The frame on the drone](media/frame_on_drone.png)
+![The case on the drone](media/frame_on_drone.png)
 
-| Exploded | Assembled |
+| Exploded | Lid off |
 |---|---|
-| ![Exploded view](media/frame_exploded.png) | ![Assembled](media/frame_assembled.png) |
+| ![Exploded view](media/frame_exploded.png) | ![Lid off](media/frame_open.png) |
 
-A printed open box (106 × 68 × 34 mm, 60 g in PETG) holds the stack: the Orange
-Pi 5 on four bosses with heat-set inserts, the carrier 18 mm above it on M2.5
-standoffs. The model is in `mechanical/frame.py` (CadQuery); print files are in
-`mechanical/out/`.
+A printed box (106 × 68 × 46 mm; 67 g frame and 17 g lid in PETG) holds the
+stack: the Orange Pi 5 on four bosses with heat-set inserts, the carrier 18 mm
+above it on M2.5 standoffs, and a lid on 10 mm standoffs above the carrier. The
+model is in `mechanical/frame.py` (CadQuery); print files are in `mechanical/out/`.
 
-- **Openings** for every connector that must be reached: on the Orange Pi side
-  Ethernet, USB, USB-C power, HDMI, audio, the microSD slot and the power button;
-  on the carrier side the two XT30s and both JST-GH sockets, cut open towards the
-  carrier so plugs can be pushed in with everything assembled. An SMA bulkhead
-  hole for the LoRa antenna, vent slots between the boards.
-- **Checked in CAD**: the frame does not touch either board or any connector body
-  or its plug (12 mm in front of every socket), and the tallest part of the Orange
-  Pi is 2.4 mm below the carrier.
-- **Mounting.** The stack is taller (44 mm) than the gap between the X500's
+- **Orange Pi 5 model.** The board outline, holes and connector positions come
+  from a supplied STEP model (`mechanical/models/orange_pi_5.step`). Its ports
+  are boxes there; `mechanical/connectors.py` replaces them with detailed models
+  in the same places (RJ45 with contacts and LEDs, stacked and vertical USB-A,
+  USB-C, HDMI, audio jack, microSD with a card, pin headers).
+- **Cooling.** A 35 × 35 × 10 mm aluminium heatsink with a 0.5 mm thermal pad
+  sits on the RK3588S and both RAM chips, 6.5 mm below the carrier. Its fins
+  run across the case, in line with vent slots in both long walls; the base
+  (the top side in flight) and the lid have vents too.
+- **Lid.** Four M2.5 × 6 screws into the upper standoffs. A lip locates it, and
+  tongues close the connector notches down to 1 mm above each plug. It leaves
+  1.5 mm above the ribbon cable, which folds over the carrier's header J2
+  through the notch to the Orange Pi's header.
+- **Openings** for every connector that must be reached: Ethernet (the camera),
+  USB, USB-C power, HDMI, audio, the microSD card and the power key on the
+  Orange Pi side; the two XT30s, both JST-GH sockets and the XIAO's USB-C on the
+  carrier side, and an SMA bulkhead for the LoRa antenna with a U.FL pigtail.
+- **Checked in CAD** (`mechanical/out/frame_report.json`): no part, plug or
+  cable touches the frame or the lid (every port is checked with its plug,
+  12 mm in front of the socket); the ribbon and the antenna lead touch no part;
+  the tallest Orange Pi part is 2.2 mm below the carrier, the tallest carrier
+  part 3.0 mm below the lid.
+- **Mounting.** The stack is taller (46 mm) than the gap between the X500's
   plates (28 mm), and the space under the centre of the bottom plate is taken by
-  the gimbal camera and the landing gear. The frame therefore hangs from the
+  the gimbal camera and the landing gear. The case therefore hangs from the
   X500's two payload rails behind the camera, with four clamps of two printed
   halves each and 2 × M3 per clamp. The kit's Intel-camera bracket sits on that
   part of the rails; this build does not use it and it comes off. Checked against
   the drone's CAD meshes: the nearest part (a rail holder) is 2.8 mm away, the
-  arm screws 5.9 mm. The rails are 9.4 mm tubes in the CAD; measure yours and set
-  `RAIL_D` before printing the clamps.
-- **No free 3D model of the bare Orange Pi 5 was found**, so a simplified one is
-  built from measured connector positions (an open-source case project).
+  arm screws 5.9 mm; the lid is 150 mm above the ground. The rails are 9.4 mm
+  tubes in the CAD; measure yours and set `RAIL_D` before printing the clamps.
 
 | Print | Count | Notes |
 |---|---|---|
 | `mechanical/out/frame.stl` | 1 | base down, no supports; PETG or ASA, 4 walls |
+| `mechanical/out/lid.stl` | 1 | plate down, no supports |
 | `mechanical/out/rail_clamp_half.stl` | 8 | flat side down |
 
-Hardware: 4 × M2.5 heat-set insert, 4 × M2.5 standoff 18 mm (male-female),
-4 × M2.5 × 5 screw, 8 × M3 × 18 socket head screw and nut, a 26-pin IDC ribbon
-cable of about 60 mm, an SMA bulkhead with a U.FL pigtail.
+Hardware: 4 × M2.5 heat-set insert, 4 × M2.5 male-female standoff 18 mm,
+4 × M2.5 male-female standoff 10 mm, 4 × M2.5 × 6 button head screw,
+8 × M3 × 18 socket head screw and nut, the 35 × 35 × 10 mm heatsink with a
+thermal pad, a 26-way ribbon cable of about 70 mm with two 2 × 13 IDC sockets,
+an SMA bulkhead with a 100 mm U.FL pigtail.
+
+**3D viewer.** `mechanical/viewer/` is a browser page (three.js) of the whole
+assembly: the case on the drone, the case with its parts, or the parts alone;
+every part can be hidden, isolated, cut and exploded with its own factor and
+direction, and views can be saved. `python -m flight_electronics.mechanical.assembly`
+writes its models (`stack.glb`, `drone.glb`, `parts.json`); serve the folder
+with `python -m http.server` and open `index.html`.
 
 ## Simulation
 
@@ -188,19 +211,42 @@ All numbers: [`media/simulation_results.json`](media/simulation_results.json).
 ## Benchmark with camera latency
 
 The final policy, flown through the simulated hardware with **0.2 s camera
-latency**, against the same flight without the hardware. These runs were made
-on Linux (the benchmark adapter is pinned to Windows; `tidewater-game/hardware_runner/linux_compat.py`
+latency** (images arrive 240 ms old on average), over all 20 benchmark cases,
+scored like the final benchmark run. These runs were made on Linux (the
+benchmark adapter is pinned to Windows; `tidewater-game/hardware_runner/linux_compat.py`
 replaces only the Windows-specific parts and records every deviation), so they
-are working data, not benchmark evidence.
+are working data, not benchmark evidence. Every case is in
+[`media/benchmark_camera_latency.json`](media/benchmark_camera_latency.json).
 
-| Case | Without hardware | Through the hardware, 0.2 s latency |
+| | Final run, fresh images | Through the hardware, 0.2 s latency |
 |---|---|---|
-| landing-landing-cruise-island-r0 | landed, 54.5 s, 3.2 cm off centre | **collision**, 139.9 s |
-| acquisition-near-radio-clear-island-r0 | landed, 59.6 s (Windows final run) | landed, 88.0 s, 0.7 cm off centre |
+| **Score** | **79.9** | **45.2** |
+| Landed | 18 / 20 | 11 / 20 |
+| Landing | 100 | 50 |
+| Wind | 100 | 100 |
+| Waves | 50 | 50 |
+| Acquisition | 100 | 70 |
+| Combined | 50 | 0 |
+| Speed | 73.9 | 27.2 |
 
-In the failed case the policy found the pad and descended to 0.5 m, then lost
-it at the bottom of the image again and again: with old frames the correction
-comes too late close to the deck.
+What the episode digests show:
+
+- **Moving boat (1.5 m/s), both cases:** the pad stayed in the image the whole
+  time, but the policy never locked on; the mission fell back after 69 s. At
+  that speed the boat moves 0.36 m between a picture and its use.
+- **Far visual search, 4 cases:** three ended without finding the pad (it was in
+  the image about half the time at 45–100 m, never confirmed), one found it at
+  82 s and ran out of time.
+- **Near the deck:** in one far-radio case the drone came within 0.3 m of the pad
+  and hovered there with the lock flickering until the time ran out.
+- **Landings take longer:** in the 10 cases that landed both times, the median
+  time grew from 58 s to 137 s, which costs most of the speed score.
+- **Not repeatable at the edge:** an earlier single run of
+  landing-landing-cruise-island-r0 with the same settings ended in a collision
+  at 139.9 s; in this run it landed.
+
+The policy was trained with fresh images. It needs latency in training (or a
+latency-compensated controller) before this hardware can fly it.
 
 ## Run it
 
@@ -214,8 +260,9 @@ python -m unittest flight_electronics.tests -v          # protocols, firmware, c
 python -m flight_electronics.firmware.build_host        # firmware for the PC + its unit tests
 python -m flight_electronics.tools.make_figures         # all simulations and figures
 python3.12 -m flight_electronics.circuit.kicad.generate # schematic, PCB, ERC/DRC, renders (KiCad 9)
-python -m flight_electronics.mechanical.frame            # frame, clamps, fit and clearance report (CadQuery)
-python -m flight_electronics.mechanical.render           # frame renders (trimesh, pyrender)
+python -m flight_electronics.mechanical.frame            # case, lid, clamps, fit and clearance report (CadQuery)
+python -m flight_electronics.mechanical.render           # case renders (trimesh, pyrender)
+python -m flight_electronics.mechanical.assembly         # models for the 3D viewer (mechanical/viewer/)
 ```
 
 Fly the realistic simulator through the simulated hardware (Windows, the same
@@ -243,7 +290,7 @@ It has not been compiled for the ESP32 in this repository's environment.
 | `hardware/design.py` | Every value, its source or its assumption |
 | `hardware/board.py` | Every part, footprint and connection of the carrier board |
 | `circuit/kicad/` | Generated KiCad 9 project, BOM, ERC/DRC reports, the generator and router |
-| `mechanical/` | Printed frame and rail clamps, fit checks, renders |
+| `mechanical/` | Printed case, lid and rail clamps, Orange Pi 5 and connector models, fit checks, renders, 3D viewer |
 | `firmware/esp32_radio_bridge/` | Radio bridge firmware: SX1262 driver, protocol, application, ESP-IDF entry, PC build |
 | `companion/` | Orange Pi 5 code: camera pipeline, MAVLink, GCU protocol, radio link, timing |
 | `simulation/` | ngspice binding and circuits, device models, `hil.py` (the hardware simulation) |
@@ -260,8 +307,12 @@ It has not been compiled for the ESP32 in this repository's environment.
    of the gimbal yaw, the camera's real latency on the sub-stream, the Orange Pi
    5 power draw, the payload-rail diameter.
 4. **Camera latency.** The policy was trained and benchmarked with fresh frames.
-   With 0.2 s of latency it can lose the pad close to the deck (see
+   With 0.2 s of latency the score drops from 79.9 to 45.2 (see
    [benchmark](#benchmark-with-camera-latency)); train or tune with latency.
+5. **Heat.** The heatsink is estimated, not measured: with air through the case
+   in flight the RK3588S should stay near 65–70 °C at 8 W; standing still at
+   8 W (natural convection, about 17 K/W) it would throttle. Measure the SoC
+   temperature in the closed case.
 
 ## Sources
 
@@ -271,4 +322,5 @@ It has not been compiled for the ESP32 in this repository's environment.
 - [Seeed XIAO ESP32S3 + Wio-SX1262](https://wiki.seeedstudio.com/wio_sx1262_with_xiao_esp32s3_kit/), Semtech SX1261/2 data sheet
 - [rk-bench RK3588 NPU measurements](https://github.com/anguoyang/rk-bench), [ncnn on small boards](https://github.com/nihui/ncnn-small-board)
 - Drone, battery and motor data, CAD meshes: [`px4-mujoco-drone-simulation`](../px4-mujoco-drone-simulation/README.md)
-- Orange Pi 5 connector positions: [orange-pi-5-case](https://codeberg.org/combolek/orange-pi-5-case) (measurements only)
+- Orange Pi 5 board and connector positions: the supplied STEP model `mechanical/models/orange_pi_5.step` ("orange pi5 v3", exported from Autodesk; its author is not recorded in the file)
+- 3D viewer: [three.js](https://threejs.org) r147

@@ -1,0 +1,312 @@
+{
+ "note": "Linux working data (tidewater-game/hardware_runner/linux_compat.py), not benchmark evidence. final = benchmark/evidence/final; delay_0_2s = the same policy through the simulated hardware with 0.2 s camera latency.",
+ "score": {
+  "final": {
+   "total": 79.9,
+   "landed": 18,
+   "categories": {
+    "landing": 100.0,
+    "wind": 100.0,
+    "waves": 50.0,
+    "acquisition": 100.0,
+    "combined": 50.0,
+    "speed": 73.9
+   }
+  },
+  "delay_0_2s": {
+   "total": 45.2,
+   "landed": 11,
+   "categories": {
+    "landing": 50.0,
+    "wind": 100.0,
+    "waves": 50.0,
+    "acquisition": 70.0,
+    "combined": 0.0,
+    "speed": 27.2
+   }
+  }
+ },
+ "image_age_ms_median": 240,
+ "cases": [
+  {
+   "case": "acquisition-far-radio-clear-city-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 93.12,
+    "lateral_m": 0.031
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 129.96,
+    "lateral_m": 0.066,
+    "acquisition_s": 70.56
+   }
+  },
+  {
+   "case": "acquisition-far-radio-clear-rock-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 89.72,
+    "lateral_m": 0.024
+   },
+   "delay_0_2s": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 2.414,
+    "acquisition_s": 65.36
+   }
+  },
+  {
+   "case": "acquisition-far-radio-traffic-city-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 94.4,
+    "lateral_m": 0.024
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 127.84,
+    "lateral_m": 0.035,
+    "acquisition_s": 69.04
+   }
+  },
+  {
+   "case": "acquisition-far-radio-traffic-rock-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 90.56,
+    "lateral_m": 0.028
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 121.76,
+    "lateral_m": 0.003,
+    "acquisition_s": 66.32
+   }
+  },
+  {
+   "case": "acquisition-far-visual-clear-city-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 102.76,
+    "lateral_m": 0.024
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 111.8,
+    "lateral_m": 45.423,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "acquisition-far-visual-clear-rock-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 102.52,
+    "lateral_m": 0.022
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 107.2,
+    "lateral_m": 54.825,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "acquisition-far-visual-traffic-city-r0-bounded-v1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 96.2,
+    "lateral_m": 0.013
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 92.76,
+    "lateral_m": 16.735,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "acquisition-far-visual-traffic-rock-r1-bounded-v1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 87.48,
+    "lateral_m": 0.027
+   },
+   "delay_0_2s": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 0.07,
+    "acquisition_s": 81.56
+   }
+  },
+  {
+   "case": "acquisition-near-radio-clear-beach-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 57.88,
+    "lateral_m": 0.027
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 144.2,
+    "lateral_m": 0.031,
+    "acquisition_s": 33.8
+   }
+  },
+  {
+   "case": "acquisition-near-radio-clear-island-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 59.64,
+    "lateral_m": 0.03
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 136.92,
+    "lateral_m": 0.005,
+    "acquisition_s": 35.28
+   }
+  },
+  {
+   "case": "combined-stress-visual-traffic-island-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 141.8,
+    "lateral_m": 0.019
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 112.96,
+    "lateral_m": 80.453,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "combined-stress-visual-traffic-rock-r0-bounded-v1",
+   "final": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 0.068
+   },
+   "delay_0_2s": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 0.252,
+    "acquisition_s": 114.08
+   }
+  },
+  {
+   "case": "landing-landing-cruise-beach-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 55.0,
+    "lateral_m": 0.031
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 154.64,
+    "lateral_m": 0.04,
+    "acquisition_s": 34.68
+   }
+  },
+  {
+   "case": "landing-landing-cruise-island-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 57.56,
+    "lateral_m": 0.028
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 136.84,
+    "lateral_m": 0.016,
+    "acquisition_s": 33.24
+   }
+  },
+  {
+   "case": "landing-landing-fast-boat-beach-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 104.72,
+    "lateral_m": 0.024
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 69.12,
+    "lateral_m": 23.658,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "landing-landing-fast-boat-city-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 101.84,
+    "lateral_m": 0.027
+   },
+   "delay_0_2s": {
+    "outcome": "mission_fallback",
+    "time_s": 69.16,
+    "lateral_m": 24.697,
+    "acquisition_s": null
+   }
+  },
+  {
+   "case": "waves-waves-moderate-gravel-r0",
+   "final": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 0.045
+   },
+   "delay_0_2s": {
+    "outcome": "timeout",
+    "time_s": 240.0,
+    "lateral_m": 0.081,
+    "acquisition_s": 33.0
+   }
+  },
+  {
+   "case": "waves-waves-moderate-rock-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 55.2,
+    "lateral_m": 0.023
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 86.64,
+    "lateral_m": 0.01,
+    "acquisition_s": 33.24
+   }
+  },
+  {
+   "case": "wind-wind-crosswind-city-r0",
+   "final": {
+    "outcome": "landed",
+    "time_s": 57.8,
+    "lateral_m": 0.023
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 216.2,
+    "lateral_m": 0.017,
+    "acquisition_s": 34.28
+   }
+  },
+  {
+   "case": "wind-wind-crosswind-gravel-r1",
+   "final": {
+    "outcome": "landed",
+    "time_s": 57.16,
+    "lateral_m": 0.014
+   },
+   "delay_0_2s": {
+    "outcome": "landed",
+    "time_s": 141.48,
+    "lateral_m": 0.003,
+    "acquisition_s": 33.0
+   }
+  }
+ ]
+}
