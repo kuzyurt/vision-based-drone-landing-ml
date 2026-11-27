@@ -903,15 +903,28 @@ def parts():
 
 
 def _drone_points(step=1.5):
+    """Surface points of the drone (no propellers) every `step` mm and the part name of each.
+    FE_DRONE_POINTS_CACHE=<file.npz> keeps them between runs (they take a minute)."""
+    import os
+    cache = os.environ.get('FE_DRONE_POINTS_CACHE')
+    if cache and os.path.exists(cache):
+        z = np.load(cache, allow_pickle=False)
+        return z['points'], z['codes'], z['names']
     from . import drone_model
-    pts, labels = [], []
+    pts, codes, names = [], [], []
     for name, kind, mesh, mat, tex in drone_model.parts():
         if kind == 'Propellers':
             continue
         v, _ = trimesh.remesh.subdivide_to_size(mesh.vertices, mesh.faces, step)
         pts.append(v)
-        labels += [name] * len(v)
-    return np.vstack(pts), np.array(labels)
+        codes.append(np.full(len(v), len(names), np.int32))
+        names.append(name)
+    points, codes, names = np.vstack(pts), np.concatenate(codes), np.array(names)
+    _, keep = np.unique(np.round(points / 0.05).astype(np.int64), axis=0, return_index=True)   # shared edges
+    points, codes = points[keep], codes[keep]
+    if cache:
+        np.savez(cache, points=points, codes=codes, names=names)
+    return points, codes, names
 
 
 SUPPORT = {   # parts that rest on a drone part: that part is left out of their clearance check
@@ -931,8 +944,9 @@ def check():
     """Clearances and terminals of everything wiring.py adds."""
     from scipy.spatial import cKDTree
     from . import render
-    drone, labels = _drone_points()
+    drone, codes, names = _drone_points()
     tree_d = cKDTree(drone)
+    BOUND = 25.0                                          # gaps beyond this are reported as this
     case = np.vstack([trimesh.remesh.subdivide_to_size(m.vertices, m.faces, 1.5)[0]
                       for m, rgb, tex in render.to_drone(render.stack_meshes(stubs=False))])
     tree_c = cKDTree(case)
@@ -965,7 +979,9 @@ def check():
         r = c.radius
         res = dict(label=c.label, gauge=c.gauge, length_mm=round(c.length()), wires=len(c.paths))
         if len(pts):
-            dd, idx = tree_d.query(pts)
+            dd, idx = tree_d.query(pts, distance_upper_bound=BOUND)
+            idx = np.minimum(idx, len(drone) - 1)
+            dd = np.minimum(dd, BOUND)
             # a cable held against a rod by a tie may touch it
             free = np.ones(len(pts), bool)
             for t in tie_rods:
@@ -979,13 +995,14 @@ def check():
             dd_free = dd[free] if free.any() else dd
             k = int(np.argmin(dd_free))
             res['drone_gap_mm'] = round(float(dd_free[k]) - r, 2)
-            res['nearest_drone_part'] = labels[idx[free][k]] if free.any() else labels[idx[k]]
-            dc, _ = tree_c.query(pts)
+            res['nearest_drone_part'] = str(names[codes[idx[free][k] if free.any() else idx[k]]])
+            dc, _ = tree_c.query(pts, distance_upper_bound=BOUND)
+            dc = np.minimum(dc, BOUND)
             res['case_gap_mm'] = round(float(dc.min()) - r, 2)
             gaps = {}
             for pid, tree in part_trees.items():
-                d2, _ = tree.query(pts)
-                g = float(d2.min()) - r
+                d2, _ = tree.query(pts, distance_upper_bound=5.0)
+                g = float(np.minimum(d2, 5.0).min()) - r
                 if g < 3.0:
                     gaps[pid] = round(g, 2)
             res['part_gaps_mm'] = gaps
@@ -1010,29 +1027,33 @@ def check():
         report[c.name] = res
     # cable against cable (wires of one cable may touch: they are twisted or laid together)
     pair_gaps = {}
-    names = list(samples)
-    for i, a in enumerate(names):
-        for b in names[i + 1:]:
+    cable_names = list(samples)
+    for i, a in enumerate(cable_names):
+        for b in cable_names[i + 1:]:
             if not len(samples[a]) or not len(samples[b]):
                 continue
             ra = next(c.radius for c in cbl if c.name == a)
             rb = next(c.radius for c in cbl if c.name == b)
-            d, _ = cKDTree(samples[b]).query(samples[a])
+            d, _ = cKDTree(samples[b]).query(samples[a], distance_upper_bound=5.0)
+            d = np.minimum(d, 5.0)
             g = float(d.min()) - ra - rb
             if g < 2.0:
                 pair_gaps[f'{a} / {b}'] = round(g, 2)
     part_gaps = {}
+    masked = {}                                           # one tree per set of supporting parts
     for pid, m in solid:
         if pid.startswith('plugs-'):
             continue
-        support = SUPPORT.get(pid.split('-')[0] if pid.startswith('esc-') and not pid.startswith('esc-tray') else pid, ())
-        if pid.startswith('esc-') and not pid.startswith('esc-tray'):
-            support = ()
-        mask = ~np.isin(labels, support)
-        tree = cKDTree(drone[mask])
+        support = SUPPORT.get(pid, ())
+        if support not in masked:
+            keep = ~np.isin(codes, np.flatnonzero(np.isin(names, support)))
+            masked[support] = (cKDTree(drone[keep]), codes[keep]) if support else (tree_d, codes)
+        tree, lab = masked[support]
         v = np.vstack(part_pts[pid])
-        dd, idx = tree.query(v)
-        part_gaps[pid] = dict(drone_gap_mm=round(float(dd.min()), 2), nearest_drone_part=labels[mask][idx[int(np.argmin(dd))]],
+        dd, idx = tree.query(v, distance_upper_bound=BOUND)
+        k = int(np.argmin(dd))
+        part_gaps[pid] = dict(drone_gap_mm=round(float(min(dd[k], BOUND)), 2),
+                              nearest_drone_part=str(names[lab[idx[k]]]) if np.isfinite(dd[k]) else '',
                               resting_on=list(support))
     return dict(cables=report, cable_pairs_closer_than_2mm=pair_gaps, parts=part_gaps)
 
