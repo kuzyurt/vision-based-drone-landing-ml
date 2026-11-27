@@ -71,12 +71,14 @@ bottom half, the radio in the middle and the Orange Pi 5 header on the right
 edge. The board is the Orange Pi 5's size so the two can be stacked on standoffs.
 Both copper layers carry a ground plane.
 
-KiCad's checks pass: the schematic has no ERC errors, the PCB has no DRC
-violations and matches the schematic. **The tracks are not routed yet.** The
-73 connections are placed with their ratsnest; routing them (Freerouting or by
-hand in KiCad) is the next step before ordering. The XT30 connectors, the
-TPS61288 and the XIAO stack have no KiCad 3D models, so simple boxes stand in
-for them in the renders.
+The schematic has no ERC errors and the PCB matches it. A small grid router in
+`circuit/kicad/router.py` (A* on both layers, power nets first and 0.8 mm wide,
+design-rule clearances built in) laid **62 of the 73 connections**; GND is the
+plane on both layers, stitched with vias. **Still to route by hand** before
+ordering: the pins of the TPS61288 (U2, 0.5 mm pitch: SW, BST, EN, COMP) and the
+fuse-to-MOSFET link (F1 to Q1). DRC reports one clearance error, at U2 pin 6, from
+the router's 0.2 mm grid. The XT30 connectors, the TPS61288 and the XIAO stack
+have no KiCad 3D models, so simple boxes stand in for them in the renders.
 
 ## Simulation
 
@@ -184,7 +186,7 @@ It has not been compiled for the ESP32 in this repository's environment.
    revision B, use a 60 V boost controller (for example TI LM5122 with external
    MOSFETs) or put a surge stopper in front of the boost. Measure the real spikes
    on the drone's power bus first.
-2. **Route the PCB** and repeat DRC.
+2. **Finish routing** around U2 and F1/Q1 in KiCad, then repeat DRC.
 3. **Measure on the board**: network on the NPU (RKNN, FP16) and the control
    code with the C++ marker kernel, then replace the timing model's numbers.
 4. **Check on the bench**: the GCU control-port pinout and logic level, the sign

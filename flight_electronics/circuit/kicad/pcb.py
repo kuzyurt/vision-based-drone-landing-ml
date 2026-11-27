@@ -189,7 +189,7 @@ def _net_classes(board):
     netsettings = settings.m_NetSettings
     power = pcbnew.NETCLASS('Power')
     power.SetTrackWidth(pcbnew.FromMM(0.8))
-    power.SetClearance(pcbnew.FromMM(0.25))
+    power.SetClearance(pcbnew.FromMM(0.2))
     power.SetViaDiameter(pcbnew.FromMM(0.9))
     power.SetViaDrill(pcbnew.FromMM(0.45))
     netsettings.SetNetclass('Power', power)
@@ -210,8 +210,7 @@ def _net_classes(board):
 def _route(board):
     jar = FREEROUTING
     if not jar or not Path(jar).exists():
-        print('Freerouting jar not set (FREEROUTING_JAR); board left unrouted')
-        return board
+        return _route_builtin(board)
     dsn, ses = HERE / f'{NAME}.dsn', HERE / f'{NAME}.ses'
     pcbnew.ExportSpecctraDSN(board, str(dsn))
     subprocess.run(['java', '-jar', jar, '-de', str(dsn), '-do', str(ses), '-mp', '30', '-host', 'KiCad',
@@ -220,6 +219,53 @@ def _route(board):
     dsn.unlink(missing_ok=True)
     ses.unlink(missing_ok=True)
     return board
+
+
+def _route_builtin(board):
+    from flight_electronics.circuit.kicad import router
+    power = [n for n in BRD.POWER_NETS if n != 'GND']
+    first = ['BST17', 'EN17', 'VCC17', 'COMP17', 'CZ17', 'FB17', 'SW17', 'VBST_IN', '+17V', 'VBAT_F']
+    order = first + [n for n in power if n not in first]
+    order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first)
+    failed = router.route(board, order, power)
+    if failed:
+        print('builtin router: could not complete', failed)
+    _stitch(board)
+    return board
+
+
+def _stitch(board, pitch=4.0):
+    """GND vias on a grid wherever they keep clearance, tying the two ground planes together."""
+    gnd = board.FindNet('GND')
+    keep = []
+    for fp in board.GetFootprints():
+        for pad in fp.Pads():
+            keep.append(pad.GetBoundingBox())
+        keep.append(fp.GetCourtyard(pcbnew.F_CrtYd).BBox())
+    tracks = [t for t in board.GetTracks() if not isinstance(t, pcbnew.PCB_VIA)]
+    keep += [pcbnew.BOX2I(v.GetPosition() - pcbnew.VECTOR2I_MM(0.3, 0.3), pcbnew.VECTOR2I_MM(0.6, 0.6))
+             for v in board.GetTracks() if isinstance(v, pcbnew.PCB_VIA)]
+    y = 3.0
+    while y < H - 2:
+        x = 3.0
+        while x < W - 2:
+            point = pcbnew.VECTOR2I_MM(x, y)
+            clear = pcbnew.FromMM(0.3 + 0.3)
+            ok = all(not b.Inflate(clear).Contains(point) for b in keep)
+            if ok:
+                for t in tracks:
+                    if t.HitTest(point, clear + t.GetWidth() // 2):
+                        ok = False
+                        break
+            if ok:
+                v = pcbnew.PCB_VIA(board)
+                v.SetPosition(point)
+                v.SetWidth(pcbnew.FromMM(0.6))
+                v.SetDrill(pcbnew.FromMM(0.3))
+                v.SetNet(gnd)
+                board.Add(v)
+            x += pitch
+        y += pitch
 
 
 def _zones(board):

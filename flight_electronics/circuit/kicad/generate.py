@@ -203,7 +203,7 @@ def write_project(directory: Path):
                                                 'min_via_diameter': 0.5, 'min_through_hole_diameter': 0.25}}},
         'net_settings': {'classes': [
             {'name': 'Default', 'clearance': 0.15, 'track_width': 0.25, 'via_diameter': 0.6, 'via_drill': 0.3},
-            {'name': 'Power', 'clearance': 0.25, 'track_width': 1.0, 'via_diameter': 0.9, 'via_drill': 0.45}],
+            {'name': 'Power', 'clearance': 0.2, 'track_width': 1.0, 'via_diameter': 0.9, 'via_drill': 0.45}],
             'netclass_patterns': [{'netclass': 'Power', 'pattern': n} for n in BRD.POWER_NETS]},
         'sheets': [[uid(), 'Root']],
     }, indent=2), encoding='utf-8')
