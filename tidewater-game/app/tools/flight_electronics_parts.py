@@ -8,7 +8,10 @@ physics are unchanged: none of these parts has mass in the simulation):
 * the Pixhawk 6C on its printed tray, the four ESCs, the battery's cable gland, XT60 plug and
   charge socket with its bracket, the camera's GCU, and every cable (wiring.py);
 * the gimbal camera in colour: its five trained grey meshes are hidden in the operator view and
-  replaced by coloured pieces that follow the same bodies (they pan and tilt with the camera).
+  replaced by coloured pieces that follow the same bodies (they pan and tilt with the camera);
+* smooth propellers: the trained propeller meshes have straight-edged blade strips; they are hidden
+  in the operator view and replaced by smooth blades fitted to them (drone_model.smooth_propeller),
+  anchored to the same spinning bodies.
 
 It also hides, in the operator view, the parts this build no longer carries: the Khadas Edge2,
 the old XIAO ESP32S3 + SX1262 and the Intel-camera bracket.
@@ -39,7 +42,8 @@ def _hidden_prefixes():
     from flight_electronics.mechanical import drone_model, frame as fr
     inventory = json.loads(drone_model.INVENTORY.read_text(encoding='utf-8'))['parts']
     bracket = sorted('drone_' + q['part'] for q in inventory if q['label'].startswith(fr.REMOVED))
-    return list(drone_model.HIDDEN) + bracket + sorted(drone_model.CAMERA_COLOURS)
+    props = sorted({name.split('#')[0] for name, kind, mesh, mat, tex in drone_model.parts() if name.endswith('#smooth')})
+    return list(drone_model.HIDDEN) + bracket + sorted(drone_model.CAMERA_COLOURS) + props
 
 
 def collect():
@@ -63,7 +67,8 @@ def collect():
         out.append((BASE_ANCHOR, group, assembly.shaded(mesh), assembly._material(mat)))
     for name, kind, mesh, mat, tex in drone_model.parts():
         if '#' in name:
-            out.append((name.split('#')[0], 'Gimbal camera in colour', mesh, assembly._material(mat)))
+            label = 'Smooth propeller' if name.endswith('#smooth') else 'Gimbal camera in colour'
+            out.append((name.split('#')[0], label, mesh, assembly._material(mat)))
     return out
 
 
@@ -123,7 +128,8 @@ def merge(manifest, rebuild=True):
     hidden['prefixes'] = list(dict.fromkeys(hidden.get('prefixes', []) + prefixes))
     hidden['note'] = ('Operator view only; the drone camera keeps the trained scene. Hidden: the Khadas Edge2 and the old '
                       'XIAO ESP32S3 + SX1262 (replaced by the FE-1 carrier and the Orange Pi 5), the Intel-camera bracket '
-                      '(removed for the case), and the grey gimbal meshes (shown as coloured pieces).')
+                      '(removed for the case), the grey gimbal meshes (shown as coloured pieces) and the faceted propellers '
+                      '(shown as smooth blades fitted to them).')
     return manifest
 
 

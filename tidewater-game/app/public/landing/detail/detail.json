@@ -5035,15 +5035,99 @@
    "material": {
     "name": "fe_048",
     "rgba": [
-     0.86,
-     0.87,
-     0.88,
+     0.7,
+     0.71,
+     0.73,
      1.0
     ],
-    "roughness": 0.35,
-    "metalness": 0.0
+    "roughness": 0.4,
+    "metalness": 0.1
    },
    "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_049",
+   "anchor": "drone_Solid051",
+   "url": "/landing/detail/fe_049.bin",
+   "vertex_count": 7268,
+   "index_count": 48963,
+   "sha256": "f51909a54bb85ee8a4a8a6e664b3e10d9d063368218cb4b9dcb72e1f67869658",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_049",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.6399999856948853,
+    "metalness": 0.0
+   },
+   "note": "Smooth propeller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_050",
+   "anchor": "drone_Solid052",
+   "url": "/landing/detail/fe_050.bin",
+   "vertex_count": 7265,
+   "index_count": 48948,
+   "sha256": "e4c8814390f5358612684fe977786c77ff1d3cc5d02860bd33a9f1b9bb12f3f1",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_050",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.6399999856948853,
+    "metalness": 0.0
+   },
+   "note": "Smooth propeller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_051",
+   "anchor": "drone_Solid053",
+   "url": "/landing/detail/fe_051.bin",
+   "vertex_count": 7272,
+   "index_count": 48996,
+   "sha256": "0526e4aa191aa9c377f11ccdf540b8845f0f5fa4bf0e410b30efdfd8d0d41212",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_051",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.6399999856948853,
+    "metalness": 0.0
+   },
+   "note": "Smooth propeller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_052",
+   "anchor": "drone_Solid054",
+   "url": "/landing/detail/fe_052.bin",
+   "vertex_count": 7273,
+   "index_count": 48975,
+   "sha256": "9c2daf9cfc895f53abb30b63a6cd92444a66311406e79cdd9da4c295249d5cd9",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_052",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.6399999856948853,
+    "metalness": 0.0
+   },
+   "note": "Smooth propeller (flight_electronics/mechanical; operator view only)"
   }
  ],
  "operator_hidden": {
@@ -5060,8 +5144,12 @@
    "drone_Body004",
    "drone_CombinedShell",
    "drone_LinkGroup006__Compound001",
-   "drone_Shell003"
+   "drone_Shell003",
+   "drone_Solid051",
+   "drone_Solid052",
+   "drone_Solid053",
+   "drone_Solid054"
   ],
-  "note": "Operator view only; the drone camera keeps the trained scene. Hidden: the Khadas Edge2 and the old XIAO ESP32S3 + SX1262 (replaced by the FE-1 carrier and the Orange Pi 5), the Intel-camera bracket (removed for the case), and the grey gimbal meshes (shown as coloured pieces)."
+  "note": "Operator view only; the drone camera keeps the trained scene. Hidden: the Khadas Edge2 and the old XIAO ESP32S3 + SX1262 (replaced by the FE-1 carrier and the Orange Pi 5), the Intel-camera bracket (removed for the case), the grey gimbal meshes (shown as coloured pieces) and the faceted propellers (shown as smooth blades fitted to them)."
  }
 }
