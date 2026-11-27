@@ -4043,7 +4043,7 @@
    "url": "/landing/detail/fe_001.bin",
    "vertex_count": 943,
    "index_count": 5646,
-   "sha256": "c9071c332e14cd56a12a72b81fafa82521b9af7e3ef201c429fde7cb2a44bec4",
+   "sha256": "3c780a582aa3d57e2e7b323e17f7637f681633402ccd44e2dc5e2b5346baf46d",
    "source": "flight_electronics",
    "material": {
     "name": "fe_001",
