@@ -31,6 +31,17 @@
     62.0
   ],
   "parts": {
+    "U3": {
+      "label": "U3",
+      "courtyard": [
+        9.455,
+        38.355,
+        31.545,
+        61.445
+      ],
+      "edge": "front",
+      "height": 7.5
+    },
     "J2": {
       "label": "J2",
       "courtyard": [
@@ -53,16 +64,16 @@
       "edge": "back",
       "height": 4.3
     },
-    "U3": {
-      "label": "U3",
+    "J4": {
+      "label": "GCU JST-GH",
       "courtyard": [
-        9.455,
-        38.355,
-        31.545,
-        61.445
+        93.355,
+        41.725,
+        99.845,
+        51.275
       ],
-      "edge": "front",
-      "height": 7.5
+      "edge": "right",
+      "height": 4.3
     },
     "J3": {
       "label": "camera XT30",
@@ -85,17 +96,6 @@
       ],
       "edge": "left",
       "height": 8.6
-    },
-    "J4": {
-      "label": "GCU JST-GH",
-      "courtyard": [
-        93.355,
-        41.725,
-        99.845,
-        51.275
-      ],
-      "edge": "right",
-      "height": 4.3
     }
   }
 }

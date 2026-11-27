@@ -120,7 +120,7 @@ def _rot(x, y, angle):
     return x * math.cos(r) - y * math.sin(r), x * math.sin(r) + y * math.cos(r)
 
 
-CHAR_W = 0.85      # width of one 1.27 mm schematic character (KiCad default font), mm
+CHAR_W = 1.2       # width of one 1.27 mm schematic character (KiCad default font, upper case), mm
 TEXT_H = 1.6
 STUB = 2.54
 
@@ -157,31 +157,39 @@ def part_geometry(part, rot=0):
         else:
             boxes.append((ax - 1.4, min(ay, ey), ax + 1.4, max(ay, ey)))
         labels.append((number, (ax, ay), (bx, by), out, net))
-    ref_at, val_at = _text_props([(x, y) for x, y, _ in pins_rot.values()], part.ref, part.value)
-    if len(pins_rot) > 3 and boxes:      # keep IC/connector texts clear of every pin label
-        top = min(b[1] for b in boxes)
-        bottom = max(b[3] for b in boxes)
-        left = min(b[0] for b in boxes)
-        ref_at = (left + 1, top - 1.2)
-        val_at = (left + 1, bottom + 1.4)
-    elif len(pins_rot) == 1:             # test points: text to the right of the symbol
-        ref_at, val_at = (2.2, -4.2), (2.2, -2.2)
-    for (tx, ty), text in ((ref_at, part.ref), (val_at, part.value)):
-        boxes.append((tx, ty - TEXT_H / 2, tx + len(text) * CHAR_W, ty + TEXT_H / 2))
     pts = [(x, -y) for x, y, _ in pins_rot.values()] or [(0, 0)]
     text = CUSTOM.get(part.symbol) or library_symbol(part.symbol)
-    for m in re.finditer(r'\(rectangle\s*\(start ([-\d.]+) ([-\d.]+)\)\s*\(end ([-\d.]+) ([-\d.]+)\)', text):
+    rects = list(re.finditer(r'\(rectangle\s*\(start ([-\d.]+) ([-\d.]+)\)\s*\(end ([-\d.]+) ([-\d.]+)\)', text))
+    for m in rects:
         x1, y1, x2, y2 = (float(v) for v in m.groups())
-        pts += [_rot(x1, y1, rot), _rot(x2, y2, rot)]
-        pts[-2] = (pts[-2][0], -pts[-2][1])
-        pts[-1] = (pts[-1][0], -pts[-1][1])
+        for vx, vy in (_rot(x1, y1, rot), _rot(x2, y2, rot)):
+            pts.append((vx, -vy))
     body = (min(p[0] for p in pts) - 1.0, min(p[1] for p in pts) - 1.0, max(p[0] for p in pts) + 1.0,
             max(p[1] for p in pts) + 1.0)
     if part.symbol.startswith('Mechanical'):
         body = (-3, -3, 3, 3)
-    boxes.append(body)
+    label_boxes = list(boxes)
+    ref_at, val_at = _text_props([(x, y) for x, y, _ in pins_rot.values()], part.ref, part.value)
+    around = label_boxes + [body]
+    top = min(b[1] for b in around)
+    bottom = max(b[3] for b in around)
+    left = min(b[0] for b in around)
+    if part.symbol.startswith('Mechanical'):         # holes: text to the right of the pad
+        ref_at, val_at = (body[2] + 0.6, -1.0), (body[2] + 0.6, 1.0)
+    elif len(pins_rot) > 3:                         # ICs, connectors: above and below everything
+        ref_at = (left + 1, top - 1.2)
+        val_at = (left + 1, bottom + 1.2)
+    elif rects:                                     # small parts with a body (MOSFET): both above
+        ref_at = (body[0], top - 3.0)
+        val_at = (body[0], top - 1.2)
+    elif len(pins_rot) == 1:                        # test points: text to the right of the symbol
+        ref_at, val_at = (2.2, -4.2), (2.2, -2.2)
+    text_boxes = [(tx, ty - TEXT_H / 2, tx + len(t) * CHAR_W, ty + TEXT_H / 2)
+                  for (tx, ty), t in ((ref_at, part.ref), (val_at, part.value))]
+    boxes = label_boxes + text_boxes + [body]
     bbox = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
-    return dict(pins=pins_rot, labels=labels, ref_at=ref_at, val_at=val_at, bbox=bbox, boxes=boxes)
+    return dict(pins=pins_rot, labels=labels, ref_at=ref_at, val_at=val_at, bbox=bbox, boxes=boxes,
+                text_boxes=text_boxes, label_boxes=label_boxes, body=body)
 
 
 GRID = 1.27
@@ -191,8 +199,10 @@ def _snap(v):
     return round(v / GRID) * GRID
 
 
-def layout_schematic(max_row_width=150.0, gap=5.0, margin=4.0, title_h=6.0):
-    """Shelf-pack every block, then place the blocks on the sheet. Returns positions and frames."""
+PAPERS = (('A3', 420, 297), ('A2', 594, 420), ('A1', 841, 594))
+
+
+def _pack_blocks(max_row_width, gap, margin, title_h):
     parts = {p.ref: p for p in BRD.PARTS}
     blocks = []
     for title, refs in BRD.SCHEMATIC_BLOCKS:
@@ -210,15 +220,45 @@ def layout_schematic(max_row_width=150.0, gap=5.0, margin=4.0, title_h=6.0):
         extra = 22.0 if title.startswith('Indicators') else 0.0     # strip for the ERC power flags
         blocks.append(dict(title=title, refs=refs, geoms=geoms, placed=placed, w=max(width, 70.0 if extra else 0) + 2 * margin,
                            h=y + row_h + 2 * margin + title_h + extra))
-    # two columns of blocks, tallest first per column
-    columns, heights = [[], []], [0.0, 0.0]
-    for block in blocks:
-        c = 0 if heights[0] <= heights[1] else 1
+    return blocks
+
+
+def _columns(blocks, n, gap):
+    columns, heights = [[] for _ in range(n)], [0.0] * n
+    for block in sorted(blocks, key=lambda b: -b['h']):
+        c = heights.index(min(heights))
         columns[c].append(block)
         heights[c] += block['h'] + gap
+    order = [b['title'] for b in blocks]          # keep the board's block order inside a column
+    for col in columns:
+        col.sort(key=lambda b: order.index(b['title']))
     col_w = [max((b['w'] for b in col), default=0) for col in columns]
-    page_w, page_h = 20 + col_w[0] + gap * 2 + col_w[1] + 10, 20 + max(heights) + 10
-    paper = 'A3' if page_w <= 410 and page_h <= 287 else 'A2' if page_w <= 584 and page_h <= 410 else 'A1'
+    page_w = 20 + sum(col_w) + gap * 2 * (n - 1) + 10
+    page_h = 20 + max(heights) + 10
+    return columns, col_w, page_w, page_h
+
+
+def layout_schematic(max_row_width=None, columns_n=None, gap=5.0, margin=4.0, title_h=6.0):
+    """Shelf-pack every block, then place the blocks in columns on the sheet.
+
+    Without arguments the row width and the number of columns are chosen so the drawing
+    fills the smallest paper it fits on as fully as possible. Returns positions, frames, paper."""
+    if max_row_width is None or columns_n is None:
+        best = None
+        for mrw in range(80, 260, 10):
+            blocks = _pack_blocks(mrw, gap, margin, title_h)
+            for n in (2, 3):
+                _, _, w, h = _columns(blocks, n, gap)
+                for rank, (name, pw, ph) in enumerate(PAPERS):
+                    if w <= pw - 10 and h <= ph - 10:
+                        key = (rank, -min((pw - 10) / w, (ph - 10) / h))
+                        if best is None or key < best[0]:
+                            best = (key, mrw, n)
+                        break
+        max_row_width, columns_n = best[1], best[2]
+    blocks = _pack_blocks(max_row_width, gap, margin, title_h)
+    columns, col_w, page_w, page_h = _columns(blocks, columns_n, gap)
+    paper = next(name for name, pw, ph in PAPERS if page_w <= pw - 10 and page_h <= ph - 10)
     positions, frames = {}, []
     x0 = 20.0
     for c, col in enumerate(columns):
@@ -250,6 +290,15 @@ def layout_report():
                        for q in boxes[b]):
                     overlaps.append((a, b))
                     break
+    def hit(p, q):
+        return p[0] < q[2] - 0.05 and q[0] < p[2] - 0.05 and p[1] < q[3] - 0.05 and q[1] < p[3] - 0.05
+    for r in positions:                 # a part's own reference/value over its body or its labels
+        g = part_geometry(parts[r])
+        own = g['label_boxes'] + [g['body']]
+        if parts[r].symbol.startswith('power:'):
+            continue
+        if any(hit(t, q) for t in g['text_boxes'] for q in own) or hit(*g['text_boxes']):
+            overlaps.append((r, r))
     outside = []
     for title, refs_in in BRD.SCHEMATIC_BLOCKS:
         frame = next(f for f in frames if f[0] == title)
@@ -376,6 +425,9 @@ def schematic(directory: Path = HERE):
     svg = next(out.glob('*.svg'))
     MEDIA.mkdir(exist_ok=True)
     shutil.copy(svg, MEDIA / 'schematic.svg')
+    if shutil.which('rsvg-convert'):
+        subprocess.run(['rsvg-convert', '-b', 'white', '-w', '3200', str(MEDIA / 'schematic.svg'),
+                        '-o', str(MEDIA / 'schematic.png')], check=True)
     kicad_cli('sch', 'export', 'pdf', '-o', str(directory / f'{NAME}_schematic.pdf'), str(sch))
     return erc.stdout + erc.stderr
 
