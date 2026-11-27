@@ -2,7 +2,8 @@
 
 | Asset | What it shows |
 |---|---|
-| [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded flight in the realistic simulator: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
+| [Hero film](../../website/assets/hero.mp4) | 45 s from one recorded flight in the realistic simulator: launch from the moving AERODOCK, manual approach, handover with **L**, policy landing. The drone carries the planned flight electronics. Rendered headlessly; see [how it is made](../../tidewater-game/app/tools/hero/README.md) |
+| [Hero film poster](hero-film-poster.jpg) | Last frame of that film: the drone on the pad after the policy landed it, seen from the boat's dock camera |
 | [Boat under way](tidewater-boat-1080p.mp4) | 5 s of the AERODOCK under way, seen from off its port bow, 1920 × 1080, 30 fps. Rendered from a recorded simulation run with the [hero-film tools](../../tidewater-game/app/tools/hero/README.md) (`boatFront` shot) |
 | [Animated preview](tidewater-boat-preview.gif) | The same 5 s, 640 × 360 at 12 fps |
 | [Poster](tidewater-boat-poster.jpg) | Frame from that clip |

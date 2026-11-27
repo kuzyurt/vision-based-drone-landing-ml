@@ -28,18 +28,23 @@ On an LF checkout the policy bundle's checksums (taken from CRLF files) do not
 match. `policy-worker.mjs` therefore loads it in report-only mode; the game
 itself still enforces the checksums.
 
-## The flights in the film
+## The flight in the film
 
-The film is 1920 × 1080 (`HERO_W=1920 HERO_H=1080`, HUD with `HERO_HUD_SCALE=1.5`).
-It is cut from two recorded flights of the same scripted mission:
+The film is 1920 × 1080 (`HERO_W=1920 HERO_H=1080`, HUD with `HERO_HUD_SCALE=1.5`,
+final cut with `HERO_CRF=27`). All seven shots come from one recorded flight of
+the scripted mission, recorded and rendered on Linux with Mesa lavapipe:
 
-- Launch and landing shots: the flight that landed. Take-off from the deck at
-  1.44 m/s, touchdown at 165 s, disarmed and stable on the pad at 168 s, about
-  2 cm from the pad centre.
-- Handover shot: a later flight with the soft handover. That flight reached
-  1.2 m above the pad, backed off and lost the boat; it did not land.
+- Take-off from the deck at 1.44 m/s at 50.8 s, handover to the policy with **L**
+  at 84.5 s, 7.7 m above and 21.5 m from the pad.
+- The policy flew alone from there: radio approach, visual acquisition, then
+  straight down over the pad; touchdown at 157.6 s, disarmed on the pad.
+- It landed on the first attempt. The earlier film needed three attempts for one
+  landing (and took its handover shot from a flight that did not land).
 
-Of three complete recorded attempts on the 1.44 m/s deck, one landed.
+The drone in this film carries the planned flight electronics from
+[`flight_electronics/`](../../../../flight_electronics/README.md) (case, flight
+controller, GPS, wiring) in the operator view; the drone's own camera, which the
+policy sees, draws the meshes it was trained on.
 
 ## Boat-only shot
 

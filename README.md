@@ -1,4 +1,4 @@
-[![AERODOCK launches the drone; the policy lands it on the moving deck](docs/media/hero-film-poster.jpg)](website/assets/hero.mp4)
+[![The drone on the moving deck after the policy landed it](docs/media/hero-film-poster.jpg)](website/assets/hero.mp4)
 
 **[Project website and playable simulator](https://aerodock-b9t.pages.dev/)** · [Watch the film (45 s)](website/assets/hero.mp4)
 
