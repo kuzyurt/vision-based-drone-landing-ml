@@ -195,46 +195,68 @@ with `python -m http.server` and open `index.html`.
 | ![Flight controller, battery and charge socket](media/drone_wiring_top.png) | ![Case, GCU and camera](media/drone_wiring_below.png) |
 
 The drone model had no flight controller, no ESCs and no wiring; the green
-board between the plates is the Holybro PM06 power board. `mechanical/wiring.py`
-adds them, in the drone's CAD frame:
+board between the plates is the Holybro PM06 power board (35 × 35 mm).
+`mechanical/wiring.py` adds them, in the drone's CAD frame:
 
 - **Flight controller.** A Holybro Pixhawk 6C (84.8 × 44 × 12.4 mm, arrow
-  forward) on a printed tray over the four free M3 holes on the top deck's
-  right side (x = −33 / −6 mm, y = 143 / 168 mm). The tray stands on 4 mm bosses,
-  so a hook-and-loop strap passes under it; the board sits on four
-  anti-vibration foam pads between locating corners. The tray keeps 0.5 mm off
-  the battery cradle's rail and has reliefs for the arm-clamp screw heads below
-  it. The 6C's port positions are approximate.
-- **ESCs and motors.** Four 20 A ESCs lie on the bottom plate in two pairs
-  beside the PM06, which feeds them (power and signal). Their phase wires run
-  inside the carbon arm tubes to the motors.
-- **Battery.** The pack keeps its BMS inside. A cable gland in the window of
-  the cradle's side rail carries four leads: discharge (2 × 12 AWG) to an XT60
-  plug on the frame's XT60 under the bottom plate, and charge (2 × 16 AWG) to an
-  XT60 panel socket with a dust cap in a printed bracket on the deck's four free
-  left-side holes, facing outwards. The pack charges in place.
-- **Camera interface.** The D-80Pro's GCU (a separate box in the set; its size
-  is assumed) sits on the rear face of the camera pylon, held by a
-  hook-and-loop strap through the pylon's two windows. Ethernet, 17 V (XT30) and
-  the control cable come from the FE-1 case; the gimbal lead goes over the
-  pylon to the damper head.
-- **Data.** TELEM2 from the carrier to the 6C, the GPS mast cable (tied to the
-  mast) to GPS1, the 6C's power from the PM06 and its PWM outputs to the PM06's
-  PWM input. The carrier's battery input comes from the PM06.
-- **Checked** (`mechanical/out/wiring_report.json`): every cable clears the
-  drone, the case and the spinning propeller discs, apart from the last
-  millimetres where it enters a connector, an arm tube or a motor mount; every
-  new part clears the drone except where it rests on it. Cable ties hold the
-  runs at the rails, the plates and the mast.
-- **Weight.** About 71 g of cable, 16.5 g tray and 7.4 g bracket in PETG.
+  forward) is clamped between two printed parts over the four free M3 holes on
+  the top deck's right side (x = −33 / −6 mm, y = 143 / 168 mm). The tray stands
+  on 4 mm bosses, screwed to the deck with four M3 × 12 screws, washers and
+  nyloc nuts under the deck, and has four corner posts with M3 heat-set inserts.
+  The lid, a 3 mm frame with a window over the board and open ends over the
+  connectors, is held by four M3 × 8 screws in those inserts. The board sits
+  between foam pads (below) and foam strips (under the lid), so it is held
+  without being hard-mounted. The 6C's port positions are approximate.
+- **GPS / compass.** The black puck on the mast is a GPS receiver with a
+  compass (a Holybro M10-type module, 50 mm). It sits on the mast's tray, high
+  above the frame, so the compass is away from the magnetic fields of the
+  battery and motor currents. Its 10-wire cable leaves the module's underside,
+  runs down the mast (three cable ties) and plugs into GPS1.
+- **Power.** The battery leads go from a cable gland in the cradle's side rail.
+  The discharge leads (2 × 12 AWG) run down the front edge, held by two
+  adhesive tie bases, to an XT60 plug on the frame's XT60 under the bottom
+  plate. The frame's XT60 is wired with 14 AWG leads to the PM06's battery pads.
+  The charge leads (2 × 16 AWG) go to an XT60 panel socket in a printed bracket
+  on the deck's four free left-side holes. The socket faces outwards, is held
+  by two M2.5 screws with nuts, and its dust cap hangs open on its strap. The
+  pack charges in place; its BMS is inside it.
+- **ESCs and motors.** Four 20 A ESCs lie in pairs on two printed trays. The
+  trays are screwed with countersunk screws into the bottom plate's free holes,
+  with nuts underneath, and each ESC is held by two cable ties through slots in
+  its tray. Each ESC's power leads and signal wire are soldered to its pads on
+  the PM06, in the same order as on the ESC, so the leads do not cross. The
+  phase wires run inside the carbon arm tubes to the motors.
+- **Camera interface.** The D-80Pro's GCU (a separate box in the set; its
+  size is assumed) sits on the rear face of the camera pylon, strapped through
+  the pylon's two windows. Ethernet (tied under the rail holder), 17 V (XT30)
+  and the control cable come from the FE-1 case. The gimbal lead goes round the
+  end of the pylon to a connector on the damper head.
+- **Data and power for the electronics.** TELEM2 runs from the carrier up the
+  rear corner to the 6C. The 6C's power comes from the PM06's power connector,
+  and its PWM outputs go to the PM06's PWM input. The two cables run together
+  under the deck and up past its rear edge. The carrier's battery input is
+  soldered to the PM06's battery pads.
+- **Fasteners.** Every screw goes through its part and ends in a nut or an
+  insert: the tray, bracket and battery-cradle screws in nyloc nuts under the
+  deck, the ESC-tray screws in nuts under the bottom plate.
+- **Checked** (`mechanical/out/wiring_report.json`, tested): every wire ends on
+  its terminal (plug back, solder pad, solder cup, cable gland or motor) and
+  leaves it in the terminal's direction. No cable touches the drone, the case,
+  a new part or another cable, apart from the last millimetres at a connector or
+  inside an arm tube. Every cable keeps out of the propeller discs, and no bend
+  is tighter than the cable's own diameter. Every new part clears the drone,
+  except where it rests on it.
+- **Weight.** About {mass} g of cable and {printed} g of printed PETG parts.
 
 | Print | Count | Notes |
 |---|---|---|
-| `mechanical/out/fc_tray.stl` | 1 | plate down |
+| `mechanical/out/fc_tray.stl` | 1 | plate down; four M3 heat-set inserts in the posts |
+| `mechanical/out/fc_lid.stl` | 1 | top face down |
 | `mechanical/out/charge_bracket.stl` | 1 | base down |
+| `mechanical/out/esc_tray_rear.stl`, `esc_tray_front.stl` | 1 each | base down |
 
 The realistic game's operator view shows all of this too: the case, the flight
-controller, the power parts, the cables and the camera in colour
+controller, the GPS module, the power parts, the cables and the camera in colour
 (`tidewater-game/app/tools/flight_electronics_parts.py` writes them into
 `detail/detail.json`), and it hides the Khadas Edge2, the old XIAO, the
 Intel-camera bracket and the grey camera meshes. The drone camera the policy
@@ -401,6 +423,9 @@ It has not been compiled for the ESP32 in this repository's environment.
    in flight the RK3588S should stay near 65–70 °C at 8 W; standing still at
    8 W (natural convection, about 17 K/W) it would throttle. Measure the SoC
    temperature in the closed case.
+6. **Check the wiring on the real parts.** The PM06's pad layout, the 6C's
+   port positions and the GCU's size are approximations; adapt the cable
+   lengths and the tray, lid and bracket to the parts before printing.
 
 ## Sources
 

@@ -392,12 +392,12 @@ ARMS = {   # motor centre, arm tube inner end, arm tube outer end (axis at z = 1
 ARM_Z, ARM_R = 131.0, 8.0
 MOTOR_LEAD_Z = 139.5
 PROP_R, PROP_Z = 127.0, (170.0, 178.0)
-GCU = dict(x=(-73.5, -61.5), y=(87.0, 113.0), z=(76.0, 94.0))
-GCU_XT30_Z = 88.0
+GCU = dict(x=(-73.5, -61.5), y=(87.0, 113.0), z=(76.6, 94.6))
+GCU_XT30_Z = 88.6
 GCU_PORTS = {   # GH receptacles: opening centre, direction, pins, plug 'up'
-    'Ethernet': ((-70.4, 87.0, 88.5), (0, -1, 0), 4, (1, 0, 0)),
-    'gimbal': ((-64.6, 87.0, 85.0), (0, -1, 0), 8, (1, 0, 0)),
-    'control': ((-67.5, 113.0, 79.5), (0, 1, 0), 6, (0, 0, 1)),
+    'Ethernet': ((-70.4, 87.0, 89.1), (0, -1, 0), 4, (1, 0, 0)),
+    'gimbal': ((-64.6, 87.0, 85.6), (0, -1, 0), 8, (1, 0, 0)),
+    'control': ((-67.5, 113.0, 80.1), (0, 1, 0), 6, (0, 0, 1)),
 }
 GLAND = dict(x=(13.0, 21.5), y=(59.0, 64.0), z=(160.5, 169.5))
 GPS = dict(centre=(79.5, 100.0), z=222.0, d=50.0, h=14.0, rod=(79.5, 100.0, 2.0), plug_r=19.0)
@@ -610,7 +610,8 @@ def esc_ends(key):
     away = -1.0 if key.startswith('rear') else 1.0          # the signal lead is on the side away from the PM06
     power = [End((x + away * 0.4, pe, zc), dp, 'pad esc'), End((x - away * 3.2, pe, zc), dp, 'pad esc'),
              End((x + away * 3.6, pe, zc), dp, 'pad esc')]
-    phase = [End((x + dx, he, zc), -dp, 'pad esc') for dx in (-3.6, 0.0, 3.6)]
+    rise = _unit(-dp * 0.8 + np.array([0, 0, 0.6]))          # phase leads leave upwards, over the frame's XT60 holder
+    phase = [End((x + dx, he, zc), rise, 'pad esc') for dx in (-3.6, 0.0, 3.6)]
     return power, phase
 
 
@@ -853,8 +854,8 @@ def cables():
     ties.append(Tie([aux], (-54.0, 25.0, 110.5), ('base', (-54.0, 30.5, PLATE_BOTTOM), (0, 0, -1.0))))
     # ---------------------------------------------------------------- ESCs: power and signal from the PM06, phases to the motors
     routes = {   # waypoints of the power/signal lead from the ESC to its pads
-        'rear-left': [(-44.0, 90.5, 129.5), (-36.0, 89.3, 132.5), (-31.0, 88.8, 130.5)],
-        'rear-right': [(-44.0, 109.5, 129.5), (-36.0, 110.7, 132.5), (-31.0, 111.2, 130.5)],
+        'rear-left': [(-44.0, 89.4, 131.0), (-36.0, 89.3, 132.5), (-31.0, 88.8, 130.5)],
+        'rear-right': [(-44.0, 110.6, 131.0), (-36.0, 110.7, 132.5), (-31.0, 111.2, 130.5)],
         'front-left': [(8.0, 92.5, 124.5), (-1.0, 91.5, 126.5), (-7.0, 90.0, 127.0)],
         'front-right': [(8.0, 108.0, 124.5), (-1.0, 108.5, 126.5), (-7.0, 110.0, 127.0)],
     }
@@ -960,7 +961,7 @@ SUPPORT = {   # parts that rest on a drone part: that part is left out of their 
     'gcu': ('drone_LinkGroup005__Link052',), 'battery-gland': ('drone_Body005',),
     'pm06-pads': ('drone_LinkGroup005__LinkGroup004__Solid043',),
     'camera-connector': ('drone_LinkGroup006__Compound001',),
-    'gps-module': ('drone_LinkGroup005__LinkGroup003__Solid035', 'drone_LinkGroup005__LinkGroup003__Solid034'),
+    'gps-module': ('drone_LinkGroup005__LinkGroup003__Solid036',),   # the mast's tray, which it sits on
 }
 TOUCHING = {   # cable -> drone parts it is fixed to (ties) or ends at (connectors, pads, tubes)
     'cable-ethernet': ('drone_LinkGroup005__CARBON',), 'cable-gcu-control': ('drone_LinkGroup005__CARBON',),
