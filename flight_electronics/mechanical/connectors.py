@@ -414,7 +414,17 @@ def gh_receptacle(pins, depth=4.5):
     w = 1.25 * (pins - 1) + 3.0
     shell = box(-depth, 0.0, -w / 2, w / 2, 0.0, 4.25)
     shell = shell.cut(box(-depth + 1.0, 0.1, -w / 2 + 0.6, w / 2 - 0.6, 0.5, 3.8))
-    return [('receptacle', shell, 'white')]
+    shell = shell.union(box(-depth + 1.0, -depth + 1.6, -w / 2 + 0.6, w / 2 - 0.6, 0.5, 3.8))   # back wall
+    shell = shell.union(box(-depth + 1.0, -1.2, -w / 2 + 0.6, w / 2 - 0.6, 0.5, 1.3))           # pin bed
+    shell = shell.cut(box(-1.2, 0.2, -1.2, 1.2, 3.3, 4.4))                                        # latch window
+    out = [('receptacle', shell, 'white')]
+    contacts = None
+    for i in range(pins):
+        y = -1.25 * (pins - 1) / 2 + i * 1.25
+        pin = box(-depth + 1.6, -0.8, y - 0.16, y + 0.16, 1.85, 2.15)
+        contacts = pin if contacts is None else contacts.union(pin)
+    out.append(('contacts', contacts, 'gold'))
+    return out
 
 
 def C_box(x0, x1, y0, y1, z0, z1):

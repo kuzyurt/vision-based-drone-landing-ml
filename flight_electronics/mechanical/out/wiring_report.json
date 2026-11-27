@@ -40,27 +40,27 @@
   "cable-gimbal": {
    "label": "Gimbal lead: GCU -> camera head",
    "gauge": "gimbal cable, 4 mm",
-   "length_mm": 81,
+   "length_mm": 57,
    "wires": 1,
-   "drone_gap_mm": 3.11,
+   "drone_gap_mm": 2.09,
    "drone_gap_at": [
-    -28.5,
-    100.0,
-    88.0
+    -42.0,
+    87.3,
+    85.6
    ],
    "nearest_drone_part": "drone_LinkGroup006__Compound001#plate",
    "case_gap_mm": 11.35,
    "part_gaps_mm": {
     "gcu": 0.57,
-    "camera-connector": 1.5,
+    "camera-connector": 1.47,
     "plugs-camera-interface": 2.62
    },
    "propeller_disc_gap_mm": null,
-   "min_bend_radius_mm": 8.5,
+   "min_bend_radius_mm": 7.3,
    "min_bend_at": [
-    -39.7,
-    95.2,
-    88.0
+    -55.6,
+    63.8,
+    86.4
    ],
    "allowed_bend_radius_mm": 4.0,
    "terminals": [
@@ -72,7 +72,7 @@
     {
      "what": "plug camera",
      "offset_mm": 0.0,
-     "angle_deg": 0.0
+     "angle_deg": 0.2
     }
    ]
   },
@@ -562,7 +562,7 @@
    "nearest_drone_part": "drone_LinkGroup005__Solid",
    "case_gap_mm": 24.1,
    "part_gaps_mm": {
-    "esc-tray-rear": 2.16,
+    "esc-tray-rear": 2.17,
     "esc-rear-left": 0.84
    },
    "propeller_disc_gap_mm": null,
@@ -797,7 +797,7 @@
    "nearest_drone_part": "drone_LinkGroup005__Solid042",
    "case_gap_mm": 24.1,
    "part_gaps_mm": {
-    "esc-tray-front": 2.66,
+    "esc-tray-front": 2.67,
     "esc-front-left": 0.84
    },
    "propeller_disc_gap_mm": null,
@@ -855,7 +855,7 @@
    "nearest_drone_part": "drone_LinkGroup005__Link077",
    "case_gap_mm": 24.1,
    "part_gaps_mm": {
-    "esc-tray-front": 0.67,
+    "esc-tray-front": 0.68,
     "esc-front-right": 1.11,
     "pm06-pads": 1.25
    },
@@ -1080,14 +1080,14 @@
    ]
   },
   "camera-connector": {
-   "drone_gap_mm": 0.32,
-   "nearest_drone_part": "drone_LinkGroup006__Compound001#plate",
+   "drone_gap_mm": 0.41,
+   "nearest_drone_part": "drone_LinkGroup006__Compound001#small",
    "resting_on": [
     "drone_LinkGroup006__Compound001"
    ]
   }
  },
- "cable_mass_g": 73.3,
+ "cable_mass_g": 72.7,
  "cable_ties": 16,
  "printed_mass_g_petg": {
   "fc_tray": 21.0,

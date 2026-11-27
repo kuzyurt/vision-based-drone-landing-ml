@@ -402,7 +402,7 @@ GCU_PORTS = {   # GH receptacles: opening centre, direction, pins, plug 'up'
 GLAND = dict(x=(13.0, 21.5), y=(59.0, 64.0), z=(160.5, 169.5))
 GPS = dict(centre=(79.5, 100.0), z=222.0, d=50.0, h=14.0, rod=(79.5, 100.0, 2.0), plug_r=19.0)
 RAILS = {'y70': ((0.0, 70.0, 102.0), (1.0, 0, 0), 4.7), 'y130': ((0.0, 130.0, 102.0), (1.0, 0, 0), 4.7)}
-CAMERA_CONNECTOR = (-21.0, 100.0, 85.0)                  # on the damper head, under the pylons
+CAMERA_CONNECTOR = (-42.0, 100.3, 83.1)                  # the camera's own connector block on the damper plate (top face)
 
 
 def fc_box():
@@ -527,7 +527,7 @@ def esc_tray(side):
     tray = C.box(x_lo, x_hi, y_lo, y_hi, PLATE_TOP, ESC_TRAY_TOP).edges('|Z').fillet(2.0)
     for k in (ESC_SIDE_KEYS[side]):                      # low walls along each ESC
         ex, ey = ESCS[k]
-        for wx in (ex - sx / 2 - 1.6, ex + sx / 2):
+        for wx in (ex - sx / 2 - 1.9, ex + sx / 2 + 0.3):    # 0.3 mm clear of the ESC: no shared faces
             tray = tray.union(C.box(wx, wx + 1.6, ey - sy / 2, ey + sy / 2, ESC_TRAY_TOP, ESC_TRAY_TOP + 2.0))
         for ty in (ey - 6.0, ey + 6.0):                  # tie slots either side of the ESC
             for wx in (ex - sx / 2 - 3.4, ex + sx / 2 + 1.8):
@@ -637,8 +637,11 @@ def gcu():
 
 def camera_connector():
     x, y, z = CAMERA_CONNECTOR
-    body = C.box(x - 4.0, x + 4.0, y - 6.0, y + 6.0, z, z + 6.0).edges('|Z').fillet(1.0)
-    return [('Camera connector', body, 'black')]
+    # the gimbal lead's plug, pushed onto the connector block's top; its cable leaves towards -y
+    body = C.box(x - 4.0, x + 4.0, y - 6.5, y + 6.5, z, z + 5.0).edges('|Z').fillet(1.0)
+    latch = C.box(x - 1.5, x + 1.5, y + 3.0, y + 6.5, z + 5.0, z + 5.8)
+    boot = cq.Workplane('XZ').circle(2.6).extrude(3.0).translate((x, y - 6.5, z + 2.5))
+    return [('Gimbal plug', body.union(latch).union(boot), 'black')]
 
 
 # --------------------------------------------------------------------------- mounting hardware
@@ -748,8 +751,8 @@ def cables():
     cx, cy, cz = CAMERA_CONNECTOR
     gim = Cable('cable-gimbal', 'Gimbal lead: GCU -> camera head',
                 [gh_end(gp['gimbal'][0], gp['gimbal'][1], 8, 'Camera interface', gp['gimbal'][3])],
-                [End((cx - 4.0, cy, cz + 3.0), (-1, 0, 0), 'plug camera')],
-                [(-63.0, 68.0, 85.5), (-57.0, 61.5, 86.5), (-47.0, 63.0, 87.5), (-39.5, 76.0, 88.0), (-42.0, 90.0, 88.0), (-40.0, 99.0, 88.0)],
+                [End((cx, cy - 9.5, cz + 2.5), (0, -1, 0), 'plug camera')],
+                [(-63.0, 68.0, 85.5), (-57.0, 61.5, 86.5), (-48.0, 64.0, 86.8), (-43.0, 74.0, 86.0)],
                 2.0, ['black'], kind='sheathed', gauge='gimbal cable, 4 mm', exempt=(4.0, 3.0))
     out.append(gim)
     p, d, w = starts['J4']
@@ -916,7 +919,7 @@ def parts():
         pads.append((name, C.box(x - w / 2, x + w / 2, y - h / 2, y + h / 2, PM06['top'], PM06['top'] + 0.1), PAD))
     add('pm06-pads', 'PM06 pads (battery, ESCs, power out)', 'Power', pads)
     add('gcu', 'D-80Pro GCU (size assumed) and strap', 'Camera interface', gcu())
-    add('camera-connector', 'Camera connector (on the damper head)', 'Camera interface', camera_connector())
+    add('camera-connector', 'Gimbal plug (on the camera connector)', 'Camera interface', camera_connector())
     add('hardware', 'Screws, nuts, washers, inserts', 'Flight controller', hardware())
     plug_parts, cbl, ties = cables()
     for group, name, m, mat in plug_parts:
@@ -960,7 +963,7 @@ SUPPORT = {   # parts that rest on a drone part: that part is left out of their 
     'esc-tray-rear': ('drone_LinkGroup005__Solid',), 'esc-tray-front': ('drone_LinkGroup005__Solid',),
     'gcu': ('drone_LinkGroup005__Link052',), 'battery-gland': ('drone_Body005',),
     'pm06-pads': ('drone_LinkGroup005__LinkGroup004__Solid043',),
-    'camera-connector': ('drone_LinkGroup006__Compound001',),
+    'camera-connector': ('drone_LinkGroup006__Compound001',),   # sits on the camera's connector block
     'gps-module': ('drone_LinkGroup005__LinkGroup003__Solid036',),   # the mast's tray, which it sits on
 }
 TOUCHING = {   # cable -> drone parts it is fixed to (ties) or ends at (connectors, pads, tubes)
