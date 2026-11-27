@@ -1,6 +1,6 @@
 """The whole assembly as named meshes: for the renders and for the 3D viewer.
 
-    python -m flight_electronics.mechanical.assembly      (after frame.py; writes viewer/stack.glb, drone.glb, parts.json)
+    python -m flight_electronics.mechanical.assembly      (after frame.py; writes viewer/stack.glb, drone.glb (+ base64 .txt copies), parts.json)
 
 Every part has a group (Case, Orange Pi 5, Cooling, Carrier, Hardware, Cables, Drone),
 a PBR material and a default explode offset in frame coordinates (mm, z towards
@@ -225,6 +225,8 @@ def _write_glb(col, path):
                          size_mm=[round(float(v), 1) for v in hi - lo]))
     glb = scene.export(file_type='glb', include_normals=False)    # the viewer computes creased normals
     path.write_bytes(glb)
+    import base64                       # the artifact host serves no .glb: the viewer reads a base64 copy
+    path.with_name(path.name + '.txt').write_text(base64.b64encode(glb).decode('ascii'), encoding='ascii')
     return meta, len(glb)
 
 

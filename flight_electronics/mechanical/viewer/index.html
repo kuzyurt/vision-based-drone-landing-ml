@@ -210,8 +210,17 @@ new ResizeObserver(resize).observe(canvas);
 
 // ------------------------------------------------------------------ loading
 const loader = new THREE.GLTFLoader();
-function loadGlb(url, parent) {
-  return new Promise((resolve, reject) => loader.load(url, (gltf) => {
+async function fetchModel(url) {
+  // models are stored as base64 text (<name>.glb.txt), the only form the page host serves
+  const text = await (await fetch(url + '.txt')).text();
+  const bin = atob(text.trim());
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes.buffer;
+}
+async function loadGlb(url, parent) {
+  const buffer = await fetchModel(url);
+  return new Promise((resolve, reject) => loader.parse(buffer, '', (gltf) => {
     const root = gltf.scene;
     for (const child of [...root.children]) {
       const pid = child.name;
@@ -232,7 +241,7 @@ function loadGlb(url, parent) {
       parent.add(child);
     }
     resolve();
-  }, undefined, reject));
+  }, reject));
 }
 
 let droneLoading = null;
