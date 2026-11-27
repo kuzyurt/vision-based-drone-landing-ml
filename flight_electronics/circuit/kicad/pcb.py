@@ -226,7 +226,7 @@ def _route_builtin(board):
     power = [n for n in BRD.POWER_NETS if n != 'GND']
     first = ['FB17', 'EN17', 'COMP17', 'CZ17', 'VCC17', 'BST17', 'SW17', 'VBST_IN', '+17V', 'VBAT_F']
     order = first + [n for n in power if n not in first]
-    order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first) + ['GND']
+    order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first)
     if os.environ.get('FE_ROUTE_ONLY'):
         order = os.environ['FE_ROUTE_ONLY'].split(',')
     failed = router.route(board, order, power)
