@@ -246,7 +246,7 @@ board between the plates is the Holybro PM06 power board (35 × 35 mm).
   inside an arm tube. Every cable keeps out of the propeller discs, and no bend
   is tighter than the cable's own diameter. Every new part clears the drone,
   except where it rests on it.
-- **Weight.** About {mass} g of cable and {printed} g of printed PETG parts.
+- **Weight.** About 73 g of cable, 16 cable ties and 46 g of printed PETG parts.
 
 | Print | Count | Notes |
 |---|---|---|

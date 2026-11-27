@@ -2,194 +2,1019 @@
  "cables": {
   "cable-ethernet": {
    "label": "Ethernet: Orange Pi 5 -> GCU",
-   "length_mm": 143,
-   "gauge": "Ethernet, 4 x 26 AWG",
-   "drone_gap_mm": 3.7,
-   "nearest_drone_part": "drone_LinkGroup005__Link043__Solid025",
-   "case_gap_mm": 0.7,
-   "propeller_disc_gap_mm": null
-  },
-  "cable-camera-power": {
-   "label": "17 V: carrier J3 -> GCU",
-   "length_mm": 89,
-   "gauge": "2 x 16 AWG",
-   "drone_gap_mm": 4.6,
-   "nearest_drone_part": "drone_LinkGroup005__Link044__Solid024",
-   "case_gap_mm": 3.2,
-   "propeller_disc_gap_mm": null
-  },
-  "cable-gcu-control": {
-   "label": "Control: carrier J4 -> GCU",
-   "length_mm": 116,
-   "gauge": "6 x 28 AWG",
-   "drone_gap_mm": 4.4,
-   "nearest_drone_part": "drone_LinkGroup005__Link044__Solid025",
-   "case_gap_mm": 0.7,
-   "propeller_disc_gap_mm": null
+   "gauge": "Ethernet, 4 x 26 AWG, 3.6 mm",
+   "length_mm": 92,
+   "wires": 1,
+   "drone_gap_mm": 1.95,
+   "drone_gap_at": [
+    -70.5,
+    74.8,
+    88.9
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Link043__Solid024",
+   "case_gap_mm": 2.86,
+   "part_gaps_mm": {
+    "plugs-camera-interface": 2.85
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.7,
+   "min_bend_at": [
+    -108.6,
+    31.0,
+    78.3
+   ],
+   "allowed_bend_radius_mm": 3.6,
+   "terminals": [
+    {
+     "what": "plug RJ45",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    }
+   ]
   },
   "cable-gimbal": {
    "label": "Gimbal lead: GCU -> camera head",
-   "length_mm": 57,
-   "gauge": "gimbal cable, 4.4 mm",
-   "drone_gap_mm": 1.1,
-   "nearest_drone_part": "drone_LinkGroup005__Solid",
-   "case_gap_mm": 16.2,
-   "propeller_disc_gap_mm": null
+   "gauge": "gimbal cable, 4 mm",
+   "length_mm": 81,
+   "wires": 1,
+   "drone_gap_mm": 3.11,
+   "drone_gap_at": [
+    -28.5,
+    100.0,
+    88.0
+   ],
+   "nearest_drone_part": "drone_LinkGroup006__Compound001#plate",
+   "case_gap_mm": 11.35,
+   "part_gaps_mm": {
+    "gcu": 0.57,
+    "camera-connector": 1.5,
+    "plugs-camera-interface": 2.62
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 8.5,
+   "min_bend_at": [
+    -39.7,
+    95.2,
+    88.0
+   ],
+   "allowed_bend_radius_mm": 4.0,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug camera",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    }
+   ]
+  },
+  "cable-gcu-control": {
+   "label": "Control: carrier J4 -> GCU",
+   "gauge": "6 x 28 AWG, 3.2 mm",
+   "length_mm": 149,
+   "wires": 1,
+   "drone_gap_mm": 6.75,
+   "drone_gap_at": [
+    -67.5,
+    121.9,
+    80.1
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Link052",
+   "case_gap_mm": 2.99,
+   "part_gaps_mm": {
+    "plugs-camera-interface": 2.96
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 17.5,
+   "min_bend_at": [
+    -127.5,
+    161.3,
+    62.5
+   ],
+   "allowed_bend_radius_mm": 3.2,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.1
+    }
+   ]
+  },
+  "cable-camera-power": {
+   "label": "17 V: carrier J3 -> GCU",
+   "gauge": "2 x 16 AWG",
+   "length_mm": 97,
+   "wires": 2,
+   "drone_gap_mm": 2.52,
+   "drone_gap_at": [
+    -69.5,
+    135.6,
+    88.9
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Link044__Solid024",
+   "case_gap_mm": 3.21,
+   "part_gaps_mm": {},
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 4.0,
+   "min_bend_at": [
+    -106.8,
+    176.8,
+    60.9
+   ],
+   "allowed_bend_radius_mm": 2.9,
+   "terminals": [
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 2.7
+    },
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 2.7
+    },
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 4.6
+    },
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 4.6
+    }
+   ]
   },
   "cable-telem2": {
    "label": "TELEM2: carrier J5 -> Pixhawk 6C",
-   "length_mm": 132,
-   "gauge": "4 x 28 AWG",
-   "drone_gap_mm": 7.1,
-   "nearest_drone_part": "drone_LinkGroup005__Solid001",
-   "case_gap_mm": 4.1,
-   "propeller_disc_gap_mm": null
+   "gauge": "4 x 28 AWG, 3 mm",
+   "length_mm": 155,
+   "wires": 1,
+   "drone_gap_mm": 3.28,
+   "drone_gap_at": [
+    -64.2,
+    144.8,
+    64.0
+   ],
+   "nearest_drone_part": "drone_Body002#all",
+   "case_gap_mm": 2.5,
+   "part_gaps_mm": {},
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.6,
+   "min_bend_at": [
+    -73.2,
+    168.5,
+    161.0
+   ],
+   "allowed_bend_radius_mm": 3.0,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.1
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 1.1
+    }
+   ]
   },
-  "cable-carrier-power": {
-   "label": "Battery: PM06 -> carrier J1",
-   "length_mm": 205,
-   "gauge": "2 x 16 AWG",
-   "drone_gap_mm": 2.8,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup004__Solid044",
-   "case_gap_mm": 3.2,
-   "propeller_disc_gap_mm": null
+  "cable-gps": {
+   "label": "GPS: module -> Pixhawk GPS1",
+   "gauge": "10 x 28 AWG, 3.6 mm",
+   "length_mm": 141,
+   "wires": 1,
+   "drone_gap_mm": 2.59,
+   "drone_gap_at": [
+    73.2,
+    100.0,
+    195.6
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__LinkGroup003__Solid034",
+   "case_gap_mm": 23.2,
+   "part_gaps_mm": {
+    "plugs-flight-controller": 2.82
+   },
+   "propeller_disc_gap_mm": 66.1,
+   "min_bend_radius_mm": 4.5,
+   "min_bend_at": [
+    60.5,
+    100.0,
+    210.7
+   ],
+   "allowed_bend_radius_mm": 3.6,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    }
+   ]
   },
   "cable-fc-power": {
    "label": "Power: PM06 -> Pixhawk POWER1",
-   "length_mm": 135,
-   "gauge": "6 x 26 AWG",
-   "drone_gap_mm": 7.6,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup004__Solid044",
-   "case_gap_mm": 43.6,
-   "propeller_disc_gap_mm": null
+   "gauge": "6 x 26 AWG, 3.2 mm",
+   "length_mm": 142,
+   "wires": 1,
+   "drone_gap_mm": 5.83,
+   "drone_gap_at": [
+    -51.1,
+    117.5,
+    137.6
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid001",
+   "case_gap_mm": 23.4,
+   "part_gaps_mm": {},
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 4.1,
+   "min_bend_at": [
+    -45.3,
+    94.5,
+    125.3
+   ],
+   "allowed_bend_radius_mm": 3.2,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    }
+   ]
   },
   "cable-fc-pwm": {
-   "label": "PWM: Pixhawk I/O PWM OUT -> PM06",
-   "length_mm": 114,
-   "gauge": "10 x 28 AWG",
-   "drone_gap_mm": 9.4,
+   "label": "PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN",
+   "gauge": "10 x 28 AWG, 3.4 mm",
+   "length_mm": 137,
+   "wires": 1,
+   "drone_gap_mm": 5.81,
+   "drone_gap_at": [
+    -44.0,
+    172.2,
+    137.5
+   ],
    "nearest_drone_part": "drone_LinkGroup005__Solid001",
-   "case_gap_mm": 68.8,
-   "propeller_disc_gap_mm": null
-  },
-  "cable-gps": {
-   "label": "GPS: mast -> Pixhawk GPS1",
-   "length_mm": 138,
-   "gauge": "10 x 28 AWG",
-   "drone_gap_mm": 0.6,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup003__Solid034",
-   "case_gap_mm": 127.6,
-   "propeller_disc_gap_mm": 60.8
+   "case_gap_mm": 23.3,
+   "part_gaps_mm": {
+    "plugs-flight-controller": 2.96,
+    "plugs-power": 2.31
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.5,
+   "min_bend_at": [
+    -47.3,
+    105.0,
+    125.3
+   ],
+   "allowed_bend_radius_mm": 3.4,
+   "terminals": [
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    },
+    {
+     "what": "plug GH",
+     "offset_mm": 0.0,
+     "angle_deg": 0.0
+    }
+   ]
   },
   "cable-battery-discharge": {
    "label": "Battery discharge (12 AWG) -> XT60",
-   "length_mm": 145,
    "gauge": "2 x 12 AWG",
-   "drone_gap_mm": 1.9,
+   "length_mm": 166,
+   "wires": 2,
+   "drone_gap_mm": 0.39,
+   "drone_gap_at": [
+    12.9,
+    26.6,
+    148.6
+   ],
    "nearest_drone_part": "drone_LinkGroup005__Solid001",
-   "case_gap_mm": 84.3,
-   "propeller_disc_gap_mm": null
+   "case_gap_mm": 23.2,
+   "part_gaps_mm": {
+    "battery-gland": 2.91,
+    "plugs-power": 2.21
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.9,
+   "min_bend_at": [
+    9.4,
+    53.9,
+    61.8
+   ],
+   "allowed_bend_radius_mm": 3.6,
+   "terminals": [
+    {
+     "what": "gland",
+     "offset_mm": 0.0,
+     "angle_deg": 1.4
+    },
+    {
+     "what": "gland",
+     "offset_mm": 0.0,
+     "angle_deg": 1.4
+    },
+    {
+     "what": "cup",
+     "offset_mm": 0.0,
+     "angle_deg": 4.2
+    },
+    {
+     "what": "cup",
+     "offset_mm": 0.0,
+     "angle_deg": 4.1
+    }
+   ]
   },
   "cable-battery-charge": {
    "label": "Battery charge (16 AWG) -> charge socket",
-   "length_mm": 46,
    "gauge": "2 x 16 AWG",
-   "drone_gap_mm": 1.3,
-   "nearest_drone_part": "drone_BatteryStraps",
-   "case_gap_mm": 81.5,
-   "propeller_disc_gap_mm": null
+   "length_mm": 57,
+   "wires": 2,
+   "drone_gap_mm": 3.21,
+   "drone_gap_at": [
+    -14.2,
+    57.2,
+    161.6
+   ],
+   "nearest_drone_part": "drone_BatteryCradle",
+   "case_gap_mm": 23.75,
+   "part_gaps_mm": {},
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 2.8,
+   "min_bend_at": [
+    15.6,
+    52.4,
+    166.6
+   ],
+   "allowed_bend_radius_mm": 2.5,
+   "terminals": [
+    {
+     "what": "gland",
+     "offset_mm": 0.0,
+     "angle_deg": 0.8
+    },
+    {
+     "what": "gland",
+     "offset_mm": 0.0,
+     "angle_deg": 0.8
+    },
+    {
+     "what": "cup",
+     "offset_mm": 0.0,
+     "angle_deg": 5.1
+    },
+    {
+     "what": "cup",
+     "offset_mm": 0.0,
+     "angle_deg": 5.1
+    }
+   ]
+  },
+  "cable-xt60-pm06": {
+   "label": "Frame XT60 -> PM06 battery pads (14 AWG)",
+   "gauge": "2 x 14 AWG",
+   "length_mm": 75,
+   "wires": 2,
+   "drone_gap_mm": 1.91,
+   "drone_gap_at": [
+    6.8,
+    53.1,
+    128.6
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid042",
+   "case_gap_mm": 23.2,
+   "part_gaps_mm": {
+    "pm06-pads": 2.79
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.8,
+   "min_bend_at": [
+    -8.4,
+    102.9,
+    131.0
+   ],
+   "allowed_bend_radius_mm": 3.6,
+   "terminals": [
+    {
+     "what": "stub XT60",
+     "offset_mm": 0.0,
+     "angle_deg": 5.2
+    },
+    {
+     "what": "stub XT60",
+     "offset_mm": 0.0,
+     "angle_deg": 5.2
+    },
+    {
+     "what": "pad BAT+",
+     "offset_mm": 0.0,
+     "angle_deg": 2.0
+    },
+    {
+     "what": "pad BAT-",
+     "offset_mm": 0.0,
+     "angle_deg": 2.0
+    }
+   ]
+  },
+  "cable-carrier-power": {
+   "label": "Battery: PM06 battery pads -> carrier J1",
+   "gauge": "2 x 16 AWG",
+   "length_mm": 199,
+   "wires": 2,
+   "drone_gap_mm": 0.86,
+   "drone_gap_at": [
+    -52.7,
+    26.3,
+    117.6
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "case_gap_mm": 3.63,
+   "part_gaps_mm": {},
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.3,
+   "min_bend_at": [
+    -109.6,
+    26.3,
+    60.0
+   ],
+   "allowed_bend_radius_mm": 2.3,
+   "terminals": [
+    {
+     "what": "pad BAT+",
+     "offset_mm": 0.0,
+     "angle_deg": 3.2
+    },
+    {
+     "what": "pad BAT-",
+     "offset_mm": 0.0,
+     "angle_deg": 3.2
+    },
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 5.6
+    },
+    {
+     "what": "plug XT30",
+     "offset_mm": 0.0,
+     "angle_deg": 5.7
+    }
+   ]
   },
   "cable-esc-rear-left": {
-   "label": "ESC rear-left: power and signal from PM06",
-   "length_mm": 34,
+   "label": "ESC rear-left: power and signal from the PM06",
    "gauge": "2 x 18 AWG + signal",
-   "drone_gap_mm": 1.3,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup004__Solid043",
-   "case_gap_mm": 34.9,
-   "propeller_disc_gap_mm": null
+   "length_mm": 38,
+   "wires": 3,
+   "drone_gap_mm": 0.9,
+   "drone_gap_at": [
+    -32.5,
+    88.9,
+    129.2
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__LinkGroup004__Solid044",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-rear": 0.7,
+    "esc-rear-left": 1.11,
+    "pm06-pads": 1.7,
+    "plugs-power": 0.62
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 2.1,
+   "min_bend_at": [
+    -49.2,
+    90.0,
+    121.5
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 2.8
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 9.5
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 12.0
+    },
+    {
+     "what": "pad RL+",
+     "offset_mm": 0.0,
+     "angle_deg": 4.0
+    },
+    {
+     "what": "pad RL-",
+     "offset_mm": 0.0,
+     "angle_deg": 11.6
+    },
+    {
+     "what": "pad RLs",
+     "offset_mm": 0.0,
+     "angle_deg": 14.9
+    }
+   ]
   },
   "cable-motor-rear-left": {
    "label": "Motor rear-left: phase wires through the arm",
-   "length_mm": 217,
    "gauge": "3 x 18 AWG",
-   "drone_gap_mm": 1.2,
+   "length_mm": 207,
+   "wires": 3,
+   "drone_gap_mm": 4.66,
+   "drone_gap_at": [
+    -48.4,
+    58.4,
+    122.5
+   ],
    "nearest_drone_part": "drone_LinkGroup005__Solid",
-   "case_gap_mm": 31.6,
-   "propeller_disc_gap_mm": null
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-rear": 2.16,
+    "esc-rear-left": 0.84
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 2.7,
+   "min_bend_at": [
+    -51.1,
+    56.7,
+    123.6
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 7.8
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 3.2
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 10.5
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 6.4
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 4.5
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 5.8
+    }
+   ]
   },
   "cable-esc-rear-right": {
-   "label": "ESC rear-right: power and signal from PM06",
-   "length_mm": 34,
+   "label": "ESC rear-right: power and signal from the PM06",
    "gauge": "2 x 18 AWG + signal",
-   "drone_gap_mm": 2.0,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup004__Solid043",
-   "case_gap_mm": 34.9,
-   "propeller_disc_gap_mm": null
+   "length_mm": 38,
+   "wires": 3,
+   "drone_gap_mm": 1.55,
+   "drone_gap_at": [
+    -32.5,
+    112.7,
+    130.1
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Link074",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-rear": 0.7,
+    "esc-rear-right": 1.11,
+    "pm06-pads": 1.7,
+    "plugs-power": 0.86
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 2.1,
+   "min_bend_at": [
+    -49.2,
+    110.0,
+    121.5
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 2.8
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 9.5
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 12.0
+    },
+    {
+     "what": "pad RR+",
+     "offset_mm": 0.0,
+     "angle_deg": 4.0
+    },
+    {
+     "what": "pad RR-",
+     "offset_mm": 0.0,
+     "angle_deg": 11.6
+    },
+    {
+     "what": "pad RRs",
+     "offset_mm": 0.0,
+     "angle_deg": 14.9
+    }
+   ]
   },
   "cable-motor-rear-right": {
    "label": "Motor rear-right: phase wires through the arm",
-   "length_mm": 217,
    "gauge": "3 x 18 AWG",
-   "drone_gap_mm": 1.2,
+   "length_mm": 209,
+   "wires": 3,
+   "drone_gap_mm": 4.7,
+   "drone_gap_at": [
+    -48.3,
+    141.9,
+    122.6
+   ],
    "nearest_drone_part": "drone_LinkGroup005__Solid",
-   "case_gap_mm": 31.6,
-   "propeller_disc_gap_mm": null
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-rear": 2.2,
+    "esc-rear-right": 1.05
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 2.5,
+   "min_bend_at": [
+    -48.5,
+    143.5,
+    123.5
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 13.1
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 7.2
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 4.3
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 7.5
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 7.0
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 9.3
+    }
+   ]
   },
   "cable-esc-front-left": {
-   "label": "ESC front-left: power and signal from PM06",
-   "length_mm": 42,
+   "label": "ESC front-left: power and signal from the PM06",
    "gauge": "2 x 18 AWG + signal",
-   "drone_gap_mm": 2.3,
-   "nearest_drone_part": "drone_LinkGroup005__Solid",
-   "case_gap_mm": 94.6,
-   "propeller_disc_gap_mm": null
+   "length_mm": 37,
+   "wires": 3,
+   "drone_gap_mm": 0.51,
+   "drone_gap_at": [
+    -5.5,
+    88.5,
+    127.2
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid047",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-front": 0.67,
+    "esc-front-left": 1.11,
+    "pm06-pads": 1.25
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 1.9,
+   "min_bend_at": [
+    12.5,
+    92.1,
+    121.0
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 2.8
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 9.6
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 12.0
+    },
+    {
+     "what": "pad FL+",
+     "offset_mm": 0.0,
+     "angle_deg": 13.0
+    },
+    {
+     "what": "pad FL-",
+     "offset_mm": 0.0,
+     "angle_deg": 21.5
+    },
+    {
+     "what": "pad FLs",
+     "offset_mm": 0.0,
+     "angle_deg": 13.6
+    }
+   ]
   },
   "cable-motor-front-left": {
    "label": "Motor front-left: phase wires through the arm",
-   "length_mm": 230,
    "gauge": "3 x 18 AWG",
-   "drone_gap_mm": 0.3,
-   "nearest_drone_part": "drone_LinkGroup005__Link038__Solid014",
-   "case_gap_mm": 101.3,
-   "propeller_disc_gap_mm": null
+   "length_mm": 204,
+   "wires": 3,
+   "drone_gap_mm": 1.52,
+   "drone_gap_at": [
+    15.5,
+    56.7,
+    125.5
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid042",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-front": 2.66,
+    "esc-front-left": 0.84
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.0,
+   "min_bend_at": [
+    150.2,
+    -67.5,
+    139.3
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 7.7
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 3.2
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 10.3
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 6.7
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 4.5
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 5.5
+    }
+   ]
   },
   "cable-esc-front-right": {
-   "label": "ESC front-right: power and signal from PM06",
-   "length_mm": 42,
+   "label": "ESC front-right: power and signal from the PM06",
    "gauge": "2 x 18 AWG + signal",
-   "drone_gap_mm": 2.3,
-   "nearest_drone_part": "drone_LinkGroup005__Solid",
-   "case_gap_mm": 94.6,
-   "propeller_disc_gap_mm": null
+   "length_mm": 37,
+   "wires": 3,
+   "drone_gap_mm": 0.47,
+   "drone_gap_at": [
+    -5.5,
+    111.5,
+    127.2
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Link077",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-tray-front": 0.67,
+    "esc-front-right": 1.11,
+    "pm06-pads": 1.25
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 1.8,
+   "min_bend_at": [
+    12.5,
+    107.9,
+    121.0
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 2.8
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 9.6
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 12.0
+    },
+    {
+     "what": "pad FR+",
+     "offset_mm": 0.0,
+     "angle_deg": 13.0
+    },
+    {
+     "what": "pad FR-",
+     "offset_mm": 0.0,
+     "angle_deg": 21.5
+    },
+    {
+     "what": "pad FRs",
+     "offset_mm": 0.0,
+     "angle_deg": 13.6
+    }
+   ]
   },
   "cable-motor-front-right": {
    "label": "Motor front-right: phase wires through the arm",
-   "length_mm": 230,
    "gauge": "3 x 18 AWG",
-   "drone_gap_mm": 0.3,
-   "nearest_drone_part": "drone_LinkGroup005__Link039__Solid014",
-   "case_gap_mm": 101.3,
-   "propeller_disc_gap_mm": null
+   "length_mm": 204,
+   "wires": 3,
+   "drone_gap_mm": 5.03,
+   "drone_gap_at": [
+    14.4,
+    140.4,
+    122.9
+   ],
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "case_gap_mm": 24.1,
+   "part_gaps_mm": {
+    "esc-front-right": 1.65
+   },
+   "propeller_disc_gap_mm": null,
+   "min_bend_radius_mm": 3.6,
+   "min_bend_at": [
+    17.2,
+    141.4,
+    124.3
+   ],
+   "allowed_bend_radius_mm": 1.8,
+   "terminals": [
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 7.3
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 5.9
+    },
+    {
+     "what": "pad esc",
+     "offset_mm": 0.0,
+     "angle_deg": 13.8
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 8.0
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 7.6
+    },
+    {
+     "what": "motor",
+     "offset_mm": 0.0,
+     "angle_deg": 8.3
+    }
+   ]
+  }
+ },
+ "cable_pairs_closer_than_2mm": {
+  "cable-fc-power / cable-fc-pwm": {
+   "gap_mm": 0.29,
+   "at": [
+    -50.6,
+    122.7,
+    137.5
+   ]
+  },
+  "cable-fc-power / cable-esc-rear-left": {
+   "gap_mm": 1.58,
+   "at": [
+    -46.6,
+    94.9,
+    126.5
+   ]
+  },
+  "cable-fc-pwm / cable-esc-rear-right": {
+   "gap_mm": 1.51,
+   "at": [
+    -45.3,
+    105.0,
+    125.3
+   ]
+  },
+  "cable-battery-discharge / cable-battery-charge": {
+   "gap_mm": 0.26,
+   "at": [
+    18.3,
+    51.7,
+    163.3
+   ]
   }
  },
  "parts": {
   "fc-tray": {
-   "drone_gap_mm": 0.5,
+   "drone_gap_mm": 0.64,
    "nearest_drone_part": "drone_BatteryCradle",
    "resting_on": [
     "drone_LinkGroup005__Solid001"
    ]
   },
-  "fc-pixhawk": {
-   "drone_gap_mm": 7.0,
-   "nearest_drone_part": "drone_LinkGroup005__Solid001",
+  "fc-lid": {
+   "drone_gap_mm": 2.2,
+   "nearest_drone_part": "drone_BatteryStraps",
    "resting_on": []
   },
-  "mount-screws": {
-   "drone_gap_mm": 1.2,
-   "nearest_drone_part": "drone_BatteryCradle",
+  "fc-pixhawk": {
+   "drone_gap_mm": 3.2,
+   "nearest_drone_part": "drone_BatteryStraps",
+   "resting_on": []
+  },
+  "gps-module": {
+   "drone_gap_mm": 1.5,
+   "nearest_drone_part": "drone_LinkGroup005__LinkGroup003__Solid034",
    "resting_on": [
-    "drone_LinkGroup005__Solid001"
+    "drone_LinkGroup005__LinkGroup003__Solid036"
    ]
   },
   "charge-bracket": {
@@ -199,52 +1024,76 @@
     "drone_LinkGroup005__Solid001"
    ]
   },
-  "battery-connectors": {
-   "drone_gap_mm": 12.1,
-   "nearest_drone_part": "drone_LinkGroup005__Solid001",
-   "resting_on": [
-    "drone_LinkGroup005__LinkGroup004__Solid043"
-   ]
-  },
-  "esc-rear-left": {
-   "drone_gap_mm": 7.1,
-   "nearest_drone_part": "drone_LinkGroup005__Link072",
-   "resting_on": [
-    "drone_LinkGroup005__Solid"
-   ]
-  },
-  "esc-rear-right": {
-   "drone_gap_mm": 7.1,
+  "esc-tray-rear": {
+   "drone_gap_mm": 0.64,
    "nearest_drone_part": "drone_LinkGroup005__Link071",
    "resting_on": [
     "drone_LinkGroup005__Solid"
    ]
   },
-  "esc-front-left": {
-   "drone_gap_mm": 3.8,
-   "nearest_drone_part": "drone_LinkGroup005__LinkGroup001__Link041",
+  "esc-tray-front": {
+   "drone_gap_mm": 0.64,
+   "nearest_drone_part": "drone_LinkGroup005__Link073",
    "resting_on": [
     "drone_LinkGroup005__Solid"
    ]
   },
+  "esc-rear-left": {
+   "drone_gap_mm": 2.5,
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "resting_on": []
+  },
+  "esc-rear-right": {
+   "drone_gap_mm": 2.5,
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "resting_on": []
+  },
+  "esc-front-left": {
+   "drone_gap_mm": 2.5,
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "resting_on": []
+  },
   "esc-front-right": {
-   "drone_gap_mm": 3.8,
-   "nearest_drone_part": "drone_LinkGroup005__Link042__Link040",
+   "drone_gap_mm": 2.5,
+   "nearest_drone_part": "drone_LinkGroup005__Solid",
+   "resting_on": []
+  },
+  "battery-gland": {
+   "drone_gap_mm": 1.5,
+   "nearest_drone_part": "drone_BatteryStraps",
    "resting_on": [
-    "drone_LinkGroup005__Solid"
+    "drone_Body005"
+   ]
+  },
+  "pm06-pads": {
+   "drone_gap_mm": 0.5,
+   "nearest_drone_part": "drone_LinkGroup005__Link077",
+   "resting_on": [
+    "drone_LinkGroup005__LinkGroup004__Solid043"
    ]
   },
   "gcu": {
-   "drone_gap_mm": 2.3,
-   "nearest_drone_part": "drone_LinkGroup005__Link043__Solid024",
+   "drone_gap_mm": 4.0,
+   "nearest_drone_part": "drone_LinkGroup005__Link043__Solid025",
    "resting_on": [
     "drone_LinkGroup005__Link052"
    ]
+  },
+  "camera-connector": {
+   "drone_gap_mm": 0.32,
+   "nearest_drone_part": "drone_LinkGroup006__Compound001#plate",
+   "resting_on": [
+    "drone_LinkGroup006__Compound001"
+   ]
   }
  },
- "cable_mass_g": 71.5,
+ "cable_mass_g": 73.3,
+ "cable_ties": 16,
  "printed_mass_g_petg": {
-  "fc_tray": 16.5,
-  "charge_bracket": 7.4
+  "fc_tray": 21.0,
+  "fc_lid": 7.1,
+  "charge_bracket": 7.4,
+  "esc_tray_rear": 5.1,
+  "esc_tray_front": 5.8
  }
 }

@@ -629,7 +629,7 @@ def gcu():
     for (xa, ya), (xb, yb) in zip(loop, loop[1:]):
         seg_len = math.hypot(xb - xa, yb - ya)
         ang = math.degrees(math.atan2(yb - ya, xb - xa))
-        seg = C.box(0, seg_len, -0.6, 0.6, 80.0, 90.0).rotate((0, 0, 0), (0, 0, 1), ang).translate((xa, ya, 0))
+        seg = C.box(0, seg_len, -0.6, 0.6, 85.0, 94.0).rotate((0, 0, 0), (0, 0, 1), ang).translate((xa, ya, 0))
         strap = seg if strap is None else strap.union(seg)
     out.append(('GCU strap', strap, 'black'))
     return out

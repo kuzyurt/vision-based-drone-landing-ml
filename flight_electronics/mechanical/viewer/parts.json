@@ -920,7 +920,7 @@
    ],
    "note": "100 x 62 mm, 2 layers, KiCad export",
    "file": "stack.glb",
-   "triangles": 86912,
+   "triangles": 86948,
    "bbox_mm": [
     [
      -0.0,
@@ -4600,6 +4600,6 @@
    ]
   }
  ],
- "stack_bytes": 886500,
- "drone_bytes": 5053768
+ "stack_bytes": 886876,
+ "drone_bytes": 5053752
 }
