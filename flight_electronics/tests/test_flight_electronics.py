@@ -249,16 +249,39 @@ class Frame(unittest.TestCase):
 class Wiring(unittest.TestCase):
     """Reads the report that flight_electronics.mechanical.wiring writes (CadQuery is not needed here)."""
 
-    def test_cables_and_parts_clear_the_drone_and_the_case(self):
+    @classmethod
+    def setUpClass(cls):
         import json
         from pathlib import Path
-        report = json.loads((Path(__file__).resolve().parents[1] / 'mechanical/out/wiring_report.json').read_text())
-        for name, c in report['cables'].items():
+        cls.report = json.loads((Path(__file__).resolve().parents[1] / 'mechanical/out/wiring_report.json').read_text())
+
+    def test_cables_clear_the_drone_the_case_and_the_propellers(self):
+        for name, c in self.report['cables'].items():
             self.assertGreaterEqual(c['drone_gap_mm'], 0.0, name)
             self.assertGreaterEqual(c['case_gap_mm'], 0.0, name)
             if c['propeller_disc_gap_mm'] is not None:
                 self.assertGreater(c['propeller_disc_gap_mm'], 10.0, name)
-        for name, p in report['parts'].items():
+
+    def test_cables_clear_the_new_parts_and_each_other(self):
+        for name, c in self.report['cables'].items():
+            for part, gap in c['part_gaps_mm'].items():
+                self.assertGreaterEqual(gap, 0.0, f'{name} / {part}')
+        for pair, v in self.report['cable_pairs_closer_than_2mm'].items():
+            self.assertGreaterEqual(v['gap_mm'], 0.0, pair)
+
+    def test_every_wire_ends_on_its_terminal(self):
+        for name, c in self.report['cables'].items():
+            self.assertTrue(c['terminals'], name)
+            for t in c['terminals']:
+                self.assertLessEqual(t['offset_mm'], 0.05, f"{name} {t['what']}")
+                self.assertLessEqual(t['angle_deg'], 25.0, f"{name} {t['what']}")
+
+    def test_bends_are_not_tighter_than_allowed(self):
+        for name, c in self.report['cables'].items():
+            self.assertGreaterEqual(c['min_bend_radius_mm'], c['allowed_bend_radius_mm'], name)
+
+    def test_parts_clear_the_drone(self):
+        for name, p in self.report['parts'].items():
             self.assertGreaterEqual(p['drone_gap_mm'], 0.3, name)
 
 

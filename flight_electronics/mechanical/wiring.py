@@ -123,6 +123,24 @@ def _spline(points, step=1.0):
     return np.array(out)
 
 
+def _smooth(path, keep=1.5, iterations=80):
+    """Laplacian smoothing of a 1 mm polyline; the first and last `keep` mm stay put, so the ends keep
+    their position and direction. Rounds the corners the waypoints leave (cables bend in arcs)."""
+    p = path.copy()
+    L = np.r_[0, np.cumsum(np.linalg.norm(np.diff(p, axis=0), axis=1))]
+    e = np.minimum(L, L[-1] - L)
+    weight = np.clip((e - keep) / (3.0 * keep + 1e-9), 0, 1)     # eases in, so the ends stay straight and smooth
+    weight = weight * weight * (3 - 2 * weight)
+    weight[0] = weight[-1] = 0.0
+    idx = np.flatnonzero(weight > 0)
+    if not len(idx):
+        return p
+    w = (0.5 * weight[idx])[:, None]
+    for _ in range(iterations):
+        p[idx] += w * (0.5 * (p[idx - 1] + p[idx + 1]) - p[idx])
+    return _spline(p[::2], 1.0) if len(p) > 6 else p
+
+
 def _hermite(p0, t0, p1, t1, n):
     s = np.linspace(0, 1, n)[:, None]
     h00, h10, h01, h11 = 2 * s ** 3 - 3 * s ** 2 + 1, s ** 3 - 2 * s ** 2 + s, -2 * s ** 3 + 3 * s ** 2, s ** 3 - s ** 2
@@ -171,16 +189,22 @@ def _tube(path, radius, sides=10, flat=None, closed=False):
     return trimesh.Trimesh(verts, np.array(faces), process=False)
 
 
-def _curvature_radius(path):
-    """Smallest bend radius (mm) along a polyline, from three-point circles over 3 mm spans."""
-    best = 1e9
-    for i in range(3, len(path) - 3):
-        a, b, c = path[i - 3], path[i], path[i + 3]
+def _curvature_radius(path, where=False):
+    """Smallest bend radius (mm) along a polyline, from circles through points about 3 mm apart
+    (and where it is)."""
+    L = np.r_[0, np.cumsum(np.linalg.norm(np.diff(path, axis=0), axis=1))]
+    best, at = 1e9, path[0]
+    for i in range(len(path)):
+        j0 = int(np.searchsorted(L, L[i] - 3.0))
+        j1 = int(np.searchsorted(L, L[i] + 3.0))
+        if j0 >= i or j1 >= len(path) or j1 <= i:
+            continue
+        a, b, c = path[j0], path[i], path[j1]
         ab, bc, ca = np.linalg.norm(b - a), np.linalg.norm(c - b), np.linalg.norm(a - c)
         area = np.linalg.norm(np.cross(b - a, c - a)) / 2
-        if area > 1e-9:
-            best = min(best, ab * bc * ca / (4 * area))
-    return best
+        if area > 1e-9 and ab * bc * ca / (4 * area) < best:
+            best, at = ab * bc * ca / (4 * area), b
+    return (best, at) if where else best
 
 
 # --------------------------------------------------------------------------- terminals and cables
@@ -198,65 +222,72 @@ class Cable:
     together between their two lead-out zones (pitch `twist`, 0 = laid side by side)."""
 
     def __init__(self, name, label, a, b, waypoints, radius, colours, kind='wires', twist=28.0, lead=7.0,
-                 gauge='', ties=(), exempt=(4.0, 4.0), min_bend=None, group='Wiring'):
+                 gauge='', ties=(), exempt=(4.0, 4.0), min_bend=None, group='Wiring', radii=None):
         self.name, self.label, self.a, self.b = name, label, a, b
+        self.radii = radii or [radius] * len(colours)
         self.waypoints = [np.asarray(w, float) for w in waypoints]
         self.radius, self.colours, self.kind, self.twist, self.lead = radius, colours, kind, twist, lead
         self.gauge, self.ties, self.exempt, self.group = gauge, ties, exempt, group
-        self.min_bend = min_bend if min_bend is not None else 3.0 * 2 * radius
+        # smallest bend radius allowed: twice the diameter of a sheathed cable, 1.5 times that of a
+        # silicone-insulated stranded wire (fixed installation; the wiring is tied and does not flex)
+        self.min_bend = min_bend if min_bend is not None else (2.0 if kind == 'sheathed' else 1.5) * 2 * radius
         self.paths = self._build()
 
     def _build(self):
+        """Wire centre lines. A sheathed cable is one spline through its ends' lead-out points and the
+        waypoints. Separate wires follow a common centre spline: each starts at its own terminal, blends
+        into the twisted (or side-by-side) bundle over the first lead + 6 mm and out of it over the last."""
+        a_c = np.mean([e.p for e in self.a], axis=0)
+        b_c = np.mean([e.p for e in self.b], axis=0)
+        a_d = _unit(np.mean([e.d for e in self.a], axis=0))
+        b_d = _unit(np.mean([e.d for e in self.b], axis=0))
+        la, lb = (self.lead, self.lead) if np.isscalar(self.lead) else self.lead
+        centre = _spline([a_c, a_c + a_d * la * 0.5, a_c + a_d * la] + self.waypoints + [b_c + b_d * lb, b_c + b_d * lb * 0.5, b_c])
+        centre = _smooth(centre, keep=min(la, lb) * 0.5)
         if self.kind == 'sheathed' or len(self.a) == 1:
-            a, b = self.a[0], self.b[0]
-            pts = [a.p, a.p + a.d * self.lead] + self.waypoints + [b.p + b.d * self.lead, b.p]
-            return [_spline(pts)]
+            return [centre]
         n = len(self.a)
-        r = self.radius
-        bundle_r = 0.0 if n == 1 else (r if n == 2 else r / math.sin(math.pi / n))
-        c0 = np.mean([e.p + e.d * self.lead for e in self.a], axis=0)
-        c1 = np.mean([e.p + e.d * self.lead for e in self.b], axis=0)
-        centre = _spline([c0] + self.waypoints + [c1])
+        r = self.radius * 1.02
+        bundle_r = r if n == 2 else r / math.sin(math.pi / n)
         t, nn, bb = _frames(centre)
         L = np.r_[0, np.cumsum(np.linalg.norm(np.diff(centre, axis=0), axis=1))]
+        blend = max(la, lb) + 6.0
+        w = np.clip(np.minimum(L, L[-1] - L) / blend, 0, 1)
+        w = w * w * (3 - 2 * w)                         # smoothstep: 0 at the terminals, 1 in the bundle
+        wa = (L < L[-1] / 2)                            # which end's fixed offsets apply
 
-        def angle(v, k):
+        def ang(v, k):
             return math.atan2(np.dot(v, bb[k]), np.dot(v, nn[k]))
-        a0 = [angle(e.p + e.d * self.lead - c0, 0) for e in self.a]
-        a1 = [angle(e.p + e.d * self.lead - c1, -1) for e in self.b]
-        turns = 0 if not self.twist else max(0, round(L[-1] / self.twist))
+        a0 = [ang(e.p - a_c, 0) for e in self.a]
+        a1 = [ang(e.p - b_c, -1) for e in self.b]
+        turns = round(L[-1] / self.twist) if self.twist else 0
         delta = (a1[0] - a0[0] + math.pi) % (2 * math.pi) - math.pi + 2 * math.pi * turns
+        sense = 1 if ((a0[1] - a0[0]) % (2 * math.pi)) < math.pi else -1
         paths = []
         for i in range(n):
-            phi = a0[0] + 2 * math.pi * i / n * (1 if self._same_sense(a0) else -1)
-            phase = phi + delta * L / max(L[-1], 1e-9)
-            off = bundle_r * (np.cos(phase)[:, None] * nn + np.sin(phase)[:, None] * bb)
-            body = centre + off
-            ea, eb = self.a[i], self.b[i]
-            head = _hermite(ea.p, ea.d * self.lead * 1.2, body[0], t[0] * self.lead * 1.2, 12)
-            tail = _hermite(body[-1], t[-1] * self.lead * 1.2, eb.p, -eb.d * self.lead * 1.2, 12)
-            paths.append(np.vstack([head[:-1], body, tail[1:]]))
+            phase = a0[0] + sense * 2 * math.pi * i / n + delta * L / max(L[-1], 1e-9)
+            bundle = bundle_r * (np.cos(phase)[:, None] * nn + np.sin(phase)[:, None] * bb)
+            fa = self.a[i].p - a_c
+            fb = self.b[i].p - b_c
+            fixed = np.where(wa[:, None], fa[None, :], fb[None, :])
+            off = (1 - w)[:, None] * fixed + w[:, None] * bundle
+            paths.append(centre + off)
         return paths
-
-    def _same_sense(self, angles):
-        if len(angles) < 2:
-            return True
-        return ((angles[1] - angles[0]) % (2 * math.pi)) < math.pi
 
     def meshes(self):
         out = []
         sides = 12 if self.kind == 'sheathed' else 8
-        for path, colour in zip(self.paths, self.colours):
-            out.append((colour, _tube(path, self.radius, sides)))
+        for path, colour, r in zip(self.paths, self.colours, self.radii):
+            out.append((colour, _tube(path, r, sides)))
         if self.kind == 'sheathed':                    # strain-relief boots where the cable meets a plug
             for e in (self.a[0], self.b[0]):
                 if 'plug' in e.what:
                     seg = np.array([e.p, e.p + e.d * 5.0])
                     out.append(('black', _tube(_spline(seg, 0.5), self.radius + 0.45, 12)))
-        for e in self.a + self.b:                        # solder joints on pads and cups
+        for e, r in list(zip(self.a, self.radii)) + list(zip(self.b, self.radii)):   # solder joints on pads and cups
             if 'pad' in e.what or 'cup' in e.what:
                 blob = trimesh.creation.icosphere(2, radius=1.0)
-                blob.apply_scale([self.radius * 1.5, self.radius * 1.5, self.radius * 1.0])
+                blob.apply_scale([r * 1.5, r * 1.5, r * 1.0])
                 blob.apply_translation(e.p)
                 out.append((SOLDER, blob))
         return out
@@ -333,20 +364,22 @@ FC_POSTS = [(-67.5, 146.5), (-67.5, 185.0), (26.9, 146.5), (26.9, 185.0)]
 CHARGE_HOLES = [(-33.0, 32.0), (-6.0, 32.0), (-33.0, 57.0), (-6.0, 57.0)]
 CHARGE_WALL_Y = 26.5                                     # outer face of the bracket's wall
 CHARGE_SOCKET = (-19.5, 161.0)                           # x, z of the socket's axis
-PM06 = dict(x=(-37.0, 18.0), y=(82.5, 117.5), top=123.2)
-# PM06 pads (centre x, y, width, depth): -y edge strip at y = 86, +y edge strip at y = 114
-PADS = {'RL+': (-28.5, 86.0, 3.0, 3.0), 'RL-': (-25.0, 86.0, 3.0, 3.0), 'RLs': (-22.0, 86.0, 1.6, 1.6),
-        'AUX+': (-16.5, 86.0, 3.0, 3.0), 'AUX-': (-13.0, 86.0, 3.0, 3.0),
-        'BAT-': (5.5, 86.0, 5.0, 3.4), 'BAT+': (12.5, 86.0, 5.0, 3.4), 'FLs': (16.6, 86.0, 1.4, 1.6),
-        'RR+': (-28.5, 114.0, 3.0, 3.0), 'RR-': (-25.0, 114.0, 3.0, 3.0), 'RRs': (-22.6, 114.0, 1.4, 1.6),
-        'FR+': (1.5, 114.0, 3.0, 3.0), 'FR-': (5.0, 114.0, 3.0, 3.0), 'FRs': (8.0, 114.0, 1.6, 1.6),
-        'FL+': (11.5, 114.0, 3.0, 3.0), 'FL-': (15.0, 114.0, 3.0, 3.0)}
-PM06_PWM_IN = (-16.0, 117.5)                             # 6-pin GH receptacle on the +y edge, opening +y
+PM06 = dict(x=(-37.0, -2.0), y=(82.5, 117.5), top=123.2)    # the 35 x 35 mm board; its nylon standoffs fill the corners
+# PM06 pads (centre x, y, width along x, depth along y) on its two free edge strips, between the corner
+# standoffs; the battery pads in the free middle. Each ESC's pads lie in the order of its leads (signal,
+# +, -, from the ESC's side), so the leads run side by side without crossing.
+PADS = {'RLs': (-30.3, 85.0, 1.4, 1.6), 'RL+': (-27.6, 85.0, 3.0, 3.0), 'RL-': (-24.2, 85.0, 3.0, 3.0),
+        'FL-': (-14.4, 85.0, 3.0, 3.0), 'FL+': (-11.0, 85.0, 3.0, 3.0), 'FLs': (-8.4, 85.0, 1.4, 1.6),
+        'RRs': (-30.3, 115.0, 1.4, 1.6), 'RR+': (-27.6, 115.0, 3.0, 3.0), 'RR-': (-24.2, 115.0, 3.0, 3.0),
+        'FR-': (-14.4, 115.0, 3.0, 3.0), 'FR+': (-11.0, 115.0, 3.0, 3.0), 'FRs': (-8.4, 115.0, 1.4, 1.6),
+        'BAT-': (-14.0, 98.4, 8.0, 3.6), 'BAT+': (-14.0, 103.2, 8.0, 3.6)}
+PM06_PWM_IN = (-37.0, 106.6)                             # 6-pin GH receptacle on the rear edge, opening -x
 BM06B = (-37.0, 94.5, 125.3)                             # the PM06's 6-pin power connector (opening -x)
-XT60_DRONE = dict(minus=(6.5, 53.0, 124.9), plus=(13.5, 53.0, 124.9), mating=(10.0, 53.0, 99.0))
+XT60_DRONE = dict(minus=(6.5, 53.0, 124.9), plus=(13.5, 53.0, 124.9), mating=(10.0, 53.0, 90.4))
 ESC_SIZE = (13.0, 26.0, 4.5)
 ESC_TRAY_TOP = PLATE_TOP + 2.5
-ESCS = {'rear-left': (-48.5, 79.0), 'rear-right': (-48.5, 121.0), 'front-left': (27.5, 79.0), 'front-right': (27.5, 121.0)}
+ESCS = {'rear-left': (-48.5, 73.0), 'rear-right': (-48.5, 127.0), 'front-left': (14.5, 75.0), 'front-right': (14.5, 125.0)}
+ESC_TRAY_SPAN = {'rear': (-57.0, -38.5, 58.0, 142.0), 'front': (-0.5, 23.0, 62.2, 137.8)}   # x0, x1, y0, y1
 ESC_TRAY_HOLES = {'rear': [(-42.0, 77.5, 1.7), (-42.0, 122.5, 1.7), (-48.5, 78.5, 1.15), (-48.5, 121.5, 1.15)],
                   'front': [(3.0, 77.5, 1.7), (3.0, 122.5, 1.7), (9.5, 78.5, 1.15), (9.5, 121.5, 1.15)]}
 RAIL_HOLDER_HEADS = [(30.5, y) for y in (63.0, 77.0, 123.0, 137.0)]    # M2.5 heads on the plate, z 117.8-119.3
@@ -359,8 +392,13 @@ ARMS = {   # motor centre, arm tube inner end, arm tube outer end (axis at z = 1
 ARM_Z, ARM_R = 131.0, 8.0
 MOTOR_LEAD_Z = 139.5
 PROP_R, PROP_Z = 127.0, (170.0, 178.0)
-GCU = dict(x=(-73.5, -61.5), y=(87.0, 113.0), z=(82.0, 100.0))
-GCU_XT30_Z = 86.0
+GCU = dict(x=(-73.5, -61.5), y=(87.0, 113.0), z=(76.0, 94.0))
+GCU_XT30_Z = 88.0
+GCU_PORTS = {   # GH receptacles: opening centre, direction, pins, plug 'up'
+    'Ethernet': ((-70.4, 87.0, 88.5), (0, -1, 0), 4, (1, 0, 0)),
+    'gimbal': ((-64.6, 87.0, 85.0), (0, -1, 0), 8, (1, 0, 0)),
+    'control': ((-67.5, 113.0, 79.5), (0, 1, 0), 6, (0, 0, 1)),
+}
 GLAND = dict(x=(13.0, 21.5), y=(59.0, 64.0), z=(160.5, 169.5))
 GPS = dict(centre=(79.5, 100.0), z=222.0, d=50.0, h=14.0, rod=(79.5, 100.0, 2.0), plug_r=19.0)
 RAILS = {'y70': ((0.0, 70.0, 102.0), (1.0, 0, 0), 4.7), 'y130': ((0.0, 130.0, 102.0), (1.0, 0, 0), 4.7)}
@@ -386,12 +424,24 @@ def fc_ports():
 
 
 def gh_plug_start(p, d, pins):
-    """The back of a JST-GH plug mated at a receptacle face p (outward d): where its cable starts."""
+    """The back of a JST-GH plug mated at a receptacle whose opening is centred on p (outward d):
+    where its cable starts (the plug's wires leave its back at mid-height)."""
     return np.asarray(p, float) + 4.3 * _unit(d)
 
 
+def _gh_origin(p, d, up):
+    m = _orient(d, up)
+    return np.asarray(p, float) - 2.1 * m[:, 2]
+
+
 def gh_plug(p, d, pins, up=(0, 0, 1)):
-    return _place(C.jst_gh_plug(pins, wire_len=0.01)[:1], np.asarray(p, float), d, up)
+    """A JST-GH plug mated at the receptacle opening centred on p, facing d."""
+    return _place(C.jst_gh_plug(pins, wire_len=0.01)[:1], _gh_origin(p, d, up), d, up)
+
+
+def gh_receptacle(p, d, pins, up=(0, 0, 1)):
+    """A JST-GH receptacle whose opening is centred on p and faces d."""
+    return _place(C.gh_receptacle(pins), _gh_origin(p, d, up), d, up)
 
 
 # --------------------------------------------------------------------------- printed parts
@@ -473,9 +523,8 @@ def esc_tray(side):
     xc = xs[0]
     sx, sy, sz = ESC_SIZE
     holes = ESC_TRAY_HOLES[side]
-    x_lo = min(xc - sx / 2 - 2.0, min(h[0] for h in holes) - 4.0)
-    x_hi = max(xc + sx / 2 + 2.0, max(h[0] for h in holes) + 4.0)
-    tray = C.box(x_lo, x_hi, 64.0, 136.0, PLATE_TOP, ESC_TRAY_TOP).edges('|Z').fillet(2.0)
+    x_lo, x_hi, y_lo, y_hi = ESC_TRAY_SPAN[side]      # clear of the arm clamps and the PM06 standoffs
+    tray = C.box(x_lo, x_hi, y_lo, y_hi, PLATE_TOP, ESC_TRAY_TOP).edges('|Z').fillet(2.0)
     for k in (ESC_SIDE_KEYS[side]):                      # low walls along each ESC
         ex, ey = ESCS[k]
         for wx in (ex - sx / 2 - 1.6, ex + sx / 2):
@@ -514,10 +563,7 @@ def pixhawk():
             out += [(f'6C {n}', s, m) for n, s, m in [(n, s, m) for n, s, m in C.place_box(C.usb_c(L=6.0), '-x',
                     (p[0], p[0] + 6.0, p[1] - 4.5, p[1] + 4.5, p[2] - 1.6, p[2] + 1.7), 6.0)]]
             continue
-        rec = C.gh_receptacle(pins)
-        for n, s, m in rec:
-            out.append((f'6C {name}', s.rotate((0, 0, 0), (0, 0, 1), math.degrees(math.atan2(d[1], d[0])))
-                        .translate((p[0], p[1], p[2] - 2.1)), m))
+        out += [(f'6C {name}', m, mat) for n, m, mat in gh_receptacle(p, d, pins)]
     for fx in (x0 + 10, x1 - 10):                        # foam pads under the board
         for fy in (y0 + 10, y1 - 10):
             out.append(('Foam pad', C.box(fx - 7, fx + 7, fy - 7, fy + 7, z0 - FC['foam'], z0), FOAM))
@@ -539,8 +585,7 @@ def gps_module():
     out.append(('GPS safety switch', cq.Workplane('XY').circle(4.0).extrude(1.2).translate((gx - 14, gy, z0 + GPS['h'] - 1.5)),
                 'red'))
     px = gx - GPS['plug_r']
-    rec = C.gh_receptacle(10)
-    out += [('GPS connector', s.rotate((0, 0, 0), (0, 1, 0), 90).translate((px - 2.1, gy, z0)), m) for n, s, m in rec]
+    out += [('GPS connector', m, mat) for n, m, mat in gh_receptacle((px, gy, z0), (0, 0, -1), 10, up=(1, 0, 0))]
     return out
 
 
@@ -562,7 +607,9 @@ def esc_ends(key):
     low = y < 100
     pe, he = (y + sy / 2, y - sy / 2) if low else (y - sy / 2, y + sy / 2)
     dp = np.array([0, 1.0 if low else -1.0, 0])
-    power = [End((x - 3.6, pe, zc), dp, 'pad esc'), End((x - 0.6, pe, zc), dp, 'pad esc'), End((x + 3.2, pe, zc), dp, 'pad esc')]
+    away = -1.0 if key.startswith('rear') else 1.0          # the signal lead is on the side away from the PM06
+    power = [End((x + away * 0.4, pe, zc), dp, 'pad esc'), End((x - away * 3.2, pe, zc), dp, 'pad esc'),
+             End((x + away * 3.6, pe, zc), dp, 'pad esc')]
     phase = [End((x + dx, he, zc), -dp, 'pad esc') for dx in (-3.6, 0.0, 3.6)]
     return power, phase
 
@@ -572,20 +619,16 @@ def gcu():
     y0, y1 = GCU['y']
     z0, z1 = GCU['z']
     out = [('GCU', C.box(x0, x1, y0, y1, z0, z1).edges('|Z').fillet(1.5), dict(color=(0.12, 0.12, 0.13), metallic=0.6, roughness=0.4))]
-    for name, y, pins in (('GCU Ethernet', 96.0, 4), ('GCU control', 105.0, 6)):
-        rec = C.gh_receptacle(pins)
-        out += [(name, s.rotate((0, 0, 0), (0, 1, 0), -90).translate((x0 + 4.75 - 2.1, y, z1)), m) for n, s, m in rec]
+    for name, (p, d, pins, up) in GCU_PORTS.items():
+        out += [(f'GCU {name}', m, mat) for n, m, mat in gh_receptacle(p, d, pins, up)]
     xc = (x0 + x1) / 2
     out.append(('GCU power', C.box(xc - 5.1, xc + 5.1, y1 - 3.0, y1 + 2.0, GCU_XT30_Z - 2.6, GCU_XT30_Z + 2.6), 'yellow'))
-    rec = C.gh_receptacle(8)
-    out += [('GCU gimbal port', s.rotate((0, 0, 0), (0, 1, 0), -90).translate((x1 - 4.0 - 2.1, 100.0, z1)), m)
-            for n, s, m in rec]
     loop = [(-74.4, 86.0), (-74.4, 114.0), (-59.0, 121.0), (-49.2, 121.0), (-49.2, 79.0), (-59.0, 79.0), (-74.4, 86.0)]
     strap = None
     for (xa, ya), (xb, yb) in zip(loop, loop[1:]):
         seg_len = math.hypot(xb - xa, yb - ya)
         ang = math.degrees(math.atan2(yb - ya, xb - xa))
-        seg = C.box(0, seg_len, -0.6, 0.6, 87.0, 97.0).rotate((0, 0, 0), (0, 0, 1), ang).translate((xa, ya, 0))
+        seg = C.box(0, seg_len, -0.6, 0.6, 80.0, 90.0).rotate((0, 0, 0), (0, 0, 1), ang).translate((xa, ya, 0))
         strap = seg if strap is None else strap.union(seg)
     out.append(('GCU strap', strap, 'black'))
     return out
@@ -672,9 +715,9 @@ def esc_ties():
 
 
 # --------------------------------------------------------------------------- the cables
-def _pad_end(name, d, r):
+def _pad_end(name, d, r, dx=0.0):
     x, y, w, h = PADS[name]
-    return End((x, y, PM06['top'] + 0.1 + r * 0.8), d, 'pad ' + name)
+    return End((x + dx, y, PM06['top'] + 0.1 + r * 0.8), d, 'pad ' + name)
 
 
 def cables():
@@ -687,165 +730,147 @@ def cables():
     def add_plug(group, items):
         parts.extend((group, n, m, mat) for n, m, mat in items)
 
-    # ---------------------------------------------------------------- case -> GCU
-    gx0, gx1 = GCU['x']
-    gz1 = GCU['z'][1]
-    eth_face = np.array([gx0 + 4.75, 96.0, gz1 + 4.25 - 4.25])
-    add_plug('Camera interface', gh_plug((gx0 + 4.75, 96.0, gz1), (0, 0, 1), 4, up=(1, 0, 0)))
-    ctl_face = np.array([gx0 + 4.75, 105.0, gz1])
-    add_plug('Camera interface', gh_plug(ctl_face, (0, 0, 1), 6, up=(1, 0, 0)))
-    xt_face = np.array([(gx0 + gx1) / 2, GCU['y'][1] + 2.0, GCU_XT30_Z - 4.3])
-    add_plug('Camera interface', _place([(n, s, m) for n, s, m in C.xt30_plug(wire_len=0.01) if n == 'plug'],
-                                        xt_face, (0, 1, 0)))
-    xt_wires = [End(_local(xt_face, (0, 1, 0), (0, 0, 1), (16.0, y, 4.3)), (0, 1, 0), 'plug') for y in (-2.5, 2.5)]
+    def gh_end(p, d, pins, group, up=(0, 0, 1)):
+        add_plug(group, gh_plug(p, d, pins, up))
+        return End(gh_plug_start(p, d, pins), d, 'plug GH')
+
+    # ---------------------------------------------------------------- FE-1 case -> GCU (below the bottom plate)
+    gp = GCU_PORTS
     p, d, w = starts['Ethernet']
     eth = Cable('cable-ethernet', 'Ethernet: Orange Pi 5 -> GCU', [End(p, d, 'plug RJ45')],
-                [End(gh_plug_start((gx0 + 4.75, 96.0, gz1), (0, 0, 1), 4), (0, 0, 1), 'plug GH')],
-                [(-108.6, 26.0, 80.0), (-100.0, 31.0, 83.0), (-82.0, 40.0, 87.0), (-77.5, 62.0, 94.0),
-                 (-77.5, 70.0, 95.5), (-77.5, 80.0, 94.0), (-77.0, 92.0, 104.0), (-71.5, 96.0, 111.0)],
-                1.8, ['blue'], kind='sheathed', gauge='Ethernet, 4 x 26 AWG, 3.6 mm', min_bend=7.0)
+                [gh_end(gp['Ethernet'][0], gp['Ethernet'][1], 4, 'Camera interface', gp['Ethernet'][3])],
+                [(-104.0, 27.0, 80.0), (-88.0, 26.5, 84.0), (-75.5, 33.0, 86.5), (-72.8, 46.0, 87.0),
+                 (-71.5, 62.0, 87.2), (-71.0, 70.0, 87.3)],
+                1.8, ['blue'], kind='sheathed', gauge='Ethernet, 4 x 26 AWG, 3.6 mm')
     out.append(eth)
-    ties.append(Tie([eth], (-77.5, 70.0, 95.5), ('rod', RAILS['y70'][0], RAILS['y70'][1], RAILS['y70'][2]),
-                    plane_normal=(1, 0, 0)))
-    p, d, w = starts['J3']
-    cam = Cable('cable-camera-power', '17 V: carrier J3 -> GCU', [End(q, d, 'plug XT30') for q, r, m in w], xt_wires[::-1],
-                [(-105.5, 186.0, 63.0), (-96.0, 182.0, 74.0), (-80.0, 168.0, 86.0), (-74.0, 148.0, 90.0),
-                 (-69.5, 134.0, 91.5), (-67.5, 128.0, 90.0)], 1.15, [m for q, r, m in w], gauge='2 x 16 AWG')
-    out.append(cam)
+    ties.append(Tie([eth], (-71.2, 66.0, 87.3), ('base', (-71.2, 66.0, 92.2), (0, 0, -1.0))))
+    cx, cy, cz = CAMERA_CONNECTOR
+    gim = Cable('cable-gimbal', 'Gimbal lead: GCU -> camera head',
+                [gh_end(gp['gimbal'][0], gp['gimbal'][1], 8, 'Camera interface', gp['gimbal'][3])],
+                [End((cx - 4.0, cy, cz + 3.0), (-1, 0, 0), 'plug camera')],
+                [(-63.0, 68.0, 85.5), (-57.0, 61.5, 86.5), (-47.0, 63.0, 87.5), (-39.0, 76.0, 88.0), (-35.5, 92.0, 88.0)],
+                2.0, ['black'], kind='sheathed', gauge='gimbal cable, 4 mm', exempt=(4.0, 3.0))
+    out.append(gim)
     p, d, w = starts['J4']
     ctl = Cable('cable-gcu-control', 'Control: carrier J4 -> GCU', [End(p, d, 'plug GH')],
-                [End(gh_plug_start(ctl_face, (0, 0, 1), 6), (0, 0, 1), 'plug GH')],
-                [(-100.0, 161.0, 68.0), (-84.0, 160.0, 80.0), (-76.5, 150.0, 90.0), (-76.5, 135.0, 95.5),
-                 (-76.5, 124.0, 98.0), (-75.5, 112.0, 106.0), (-71.0, 105.0, 111.5)],
+                [gh_end(gp['control'][0], gp['control'][1], 6, 'Camera interface', gp['control'][3])],
+                [(-125.0, 174.0, 64.0), (-113.0, 189.0, 63.5), (-96.0, 193.0, 66.0), (-80.0, 184.0, 72.0),
+                 (-72.5, 166.0, 77.0), (-69.0, 146.0, 79.0)],
                 1.6, ['black'], kind='sheathed', gauge='6 x 28 AWG, 3.2 mm')
     out.append(ctl)
-    ties.append(Tie([ctl], (-76.5, 130.0, 95.5), ('rod', RAILS['y130'][0], RAILS['y130'][1], RAILS['y130'][2]),
-                    plane_normal=(1, 0, 0)))
-    # GCU -> camera head connector
-    gim_face = np.array([gx1 - 4.0, 100.0, gz1])
-    add_plug('Camera interface', gh_plug(gim_face, (0, 0, 1), 8, up=(-1, 0, 0)))
-    cx, cy, cz = CAMERA_CONNECTOR
-    gim = Cable('cable-gimbal', 'Gimbal lead: GCU -> camera head', [End(gh_plug_start(gim_face, (0, 0, 1), 8), (0, 0, 1), 'plug GH')],
-                [End((cx - 4.0, cy, cz + 3.0), (-1, 0, 0), 'plug camera')],
-                [(-63.0, 100.0, 108.0), (-57.0, 100.0, 111.0), (-50.0, 100.0, 111.0), (-41.0, 100.0, 101.0),
-                 (-34.0, 100.0, 90.0)], 2.0, ['black'], kind='sheathed', gauge='gimbal cable, 4 mm', exempt=(4.0, 3.0))
-    out.append(gim)
-    # ---------------------------------------------------------------- carrier J5 (TELEM2) -> Pixhawk TELEM2
+    xt_face = np.array([(GCU['x'][0] + GCU['x'][1]) / 2, GCU['y'][1] + 2.0, GCU_XT30_Z - 4.3])
+    add_plug('Camera interface', _place([(n, s_, m) for n, s_, m in C.xt30_plug(wire_len=0.01) if n == 'plug'],
+                                        xt_face, (0, 1, 0)))
+    xt_wires = [End(_local(xt_face, (0, 1, 0), (0, 0, 1), (16.0, y, 4.3)), (0, 1, 0), 'plug XT30') for y in (-2.5, 2.5)]
+    p, d, w = starts['J3']
+    cam_a = [End(q, d, 'plug XT30') for q, r, m in w]
+    by_colour = {m: e for (q, r, m), e in zip(w, cam_a)}
+    cam = Cable('cable-camera-power', '17 V: carrier J3 -> GCU', [by_colour['red'], by_colour['black']],
+                sorted(xt_wires, key=lambda e: e.p[0])[::-1],
+                [(-99.0, 185.0, 68.0), (-86.0, 182.0, 79.0), (-74.0, 166.0, 86.0), (-68.5, 150.0, 87.8)],
+                1.45, ['red', 'black'], gauge='2 x 16 AWG')
+    out.append(cam)
+    # ---------------------------------------------------------------- carrier J5 (TELEM2) -> Pixhawk TELEM2, up the rear corner
     p5, d5, w5 = starts['J5']
     tp, td, tpins = ports['TELEM2']
-    add_plug('Flight controller', gh_plug(tp, td, tpins))
-    arm_rr = ARMS['rear-right']
-    a_in = np.array([*arm_rr[1], ARM_Z])
-    a_out = np.array([*arm_rr[2], ARM_Z])
-    a_dir = _unit(a_out - a_in)
-    tie_pt = a_in + a_dir * 48.0 + np.array([0, 0, ARM_R + 1.5])
     tel = Cable('cable-telem2', 'TELEM2: carrier J5 -> Pixhawk 6C', [End(p5, d5, 'plug GH')],
-                [End(gh_plug_start(tp, td, tpins), td, 'plug GH')],
-                [(-76.5, 140.0, 66.0), (-80.0, 152.0, 76.0), (-86.0, 166.0, 100.0), (-94.0, 176.0, 122.0),
-                 tie_pt - a_dir * 10.0, tie_pt, tie_pt + a_dir * 6.0 + np.array([0, 0, 4.0]),
-                 (-88.0, 180.0, 152.0), (-76.0, 174.0, 159.0)],
+                [gh_end(tp, td, tpins, 'Flight controller')],
+                [(-72.6, 142.0, 64.0), (-72.8, 160.0, 70.0), (-73.5, 177.0, 95.0), (-75.0, 178.5, 125.0), (-76.5, 174.0, 148.0)],
                 1.5, ['black'], kind='sheathed', gauge='4 x 28 AWG, 3 mm')
     out.append(tel)
-    ties.append(Tie([tel], tie_pt, ('rod', a_in, a_dir, ARM_R)))
-    # ---------------------------------------------------------------- PM06 -> carrier J1 (battery power for the FE-1)
-    p1, d1, w1 = starts['J1']
-    aux = Cable('cable-carrier-power', 'Battery: PM06 -> carrier J1', [_pad_end('AUX+', (0, -0.55, 0.84), 1.15),
-                                                                      _pad_end('AUX-', (0, -0.55, 0.84), 1.15)],
-                [End(q, d1, 'plug XT30') for q, r, m in w1][::-1],
-                [(-15.0, 74.0, 131.0), (-30.0, 50.0, 131.0), (-48.0, 30.0, 131.0), (-52.0, 23.5, 126.0),
-                 (-54.0, 23.5, 112.0), (-62.0, 23.5, 98.0), (-86.0, 23.5, 80.0), (-104.0, 25.0, 66.0)],
-                1.15, ['red', 'black'], gauge='2 x 16 AWG')
-    out.append(aux)
-    ties.append(Tie([aux], (-54.0, 23.5, 112.0), ('base', (-54.0, 29.0, PLATE_BOTTOM), (0, 0, -1.0))))
-    # ---------------------------------------------------------------- PM06 <-> Pixhawk: POWER1 and PWM
-    bx, by, bz = BM06B
-    bm_face = np.array([bx, by, bz])
-    add_plug('Power', gh_plug(bm_face, (-1, 0, 0), 6))
-    pp, pd, ppins = ports['POWER1']
-    add_plug('Flight controller', gh_plug(pp, pd, ppins))
-    pwr = Cable('cable-fc-power', 'Power: PM06 -> Pixhawk POWER1', [End(gh_plug_start(bm_face, (-1, 0, 0), 6), (-1, 0, 0), 'plug GH')],
-                [End(gh_plug_start(pp, pd, ppins), pd, 'plug GH')],
-                [(-49.0, 96.0, 130.0), (-49.0, 104.0, 134.0), (-44.0, 140.0, 136.0), (-44.0, 176.0, 136.0),
-                 (-44.0, 197.0, 142.0), (-44.0, 198.0, 156.0)], 1.6, ['black'], kind='sheathed', gauge='6 x 26 AWG, 3.2 mm')
-    out.append(pwr)
-    qp, qd, qpins = ports['I/O PWM OUT']
-    add_plug('Flight controller', gh_plug(qp, qd, qpins))
-    pwm_face = np.array([PM06_PWM_IN[0], PM06_PWM_IN[1], PM06['top']])
-    add_plug('Power', gh_plug(pwm_face, (0, 1, 0), 6))
-    pwm = Cable('cable-fc-pwm', 'PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN', [End(gh_plug_start(qp, qd, qpins), qd, 'plug GH')],
-                [End(gh_plug_start(pwm_face, (0, 1, 0), 6), (0, 1, 0), 'plug GH')],
-                [(-25.0, 197.0, 156.0), (-38.0, 199.5, 146.0), (-40.0, 196.0, 136.0), (-28.0, 176.0, 134.0),
-                 (-17.0, 140.0, 131.0)], 1.7, ['black'], kind='sheathed', gauge='10 x 28 AWG, 3.4 mm')
-    out.append(pwm)
-    ties.append(Tie([pwr, pwm], (-40.0, 197.0, 146.0)))
     # ---------------------------------------------------------------- GPS mast -> GPS1
     gx, gy = GPS['centre']
     g_face = np.array([gx - GPS['plug_r'], gy, GPS['z']])
-    add_plug('Flight controller', gh_plug(g_face, (0, 0, -1), 10, up=(1, 0, 0)))
-    sp, sd, spins = ports['GPS1']
-    add_plug('Flight controller', gh_plug(sp, sd, spins))
     rx, ry, rr = GPS['rod']
     rod_x = rx - rr - 1.8
-    gps = Cable('cable-gps', 'GPS: module -> Pixhawk GPS1', [End(gh_plug_start(g_face, (0, 0, -1), 10), (0, 0, -1), 'plug GH')],
-                [End(gh_plug_start(sp, sd, spins), sd, 'plug GH')],
+    sp, sd, spins = ports['GPS1']
+    gps = Cable('cable-gps', 'GPS: module -> Pixhawk GPS1', [gh_end(g_face, (0, 0, -1), 10, 'Flight controller', (1, 0, 0))],
+                [gh_end(sp, sd, spins, 'Flight controller')],
                 [(rod_x, ry, 205.0), (rod_x, ry, 190.0), (rod_x, ry, 172.0), (rod_x - 3.0, ry + 4.0, 161.0),
                  (60.0, 124.0, 157.0), (40.0, 152.0, 157.0)], 1.8, ['black'], kind='sheathed', gauge='10 x 28 AWG, 3.6 mm')
     out.append(gps)
     for z in (200.0, 186.0, 174.0):
         ties.append(Tie([gps], (rod_x, ry, z), ('rod', (rx, ry, 0.0), (0, 0, 1.0), rr)))
-    # ---------------------------------------------------------------- battery
+    # ---------------------------------------------------------------- PM06 <-> Pixhawk: POWER1 and PWM, round the rear edge
+    bm = End(gh_plug_start(BM06B, (-1, 0, 0), 6), (-1, 0, 0), 'plug GH')
+    add_plug('Power', gh_plug(BM06B, (-1, 0, 0), 6))
+    pp, pd, ppins = ports['POWER1']
+    pwr = Cable('cable-fc-power', 'Power: PM06 -> Pixhawk POWER1', [bm], [gh_end(pp, pd, ppins, 'Flight controller')],
+                [(-49.0, 97.0, 132.0), (-50.5, 106.0, 137.0), (-49.5, 130.0, 137.3), (-49.0, 150.0, 137.0),
+                 (-49.0, 166.0, 137.0), (-48.0, 184.0, 139.0), (-46.0, 203.0, 147.0), (-45.5, 205.0, 156.0)],
+                1.6, ['black'], kind='sheathed', gauge='6 x 26 AWG, 3.2 mm', lead=(4.0, 7.0))
+    out.append(pwr)
+    pwm_face = (PM06_PWM_IN[0], PM06_PWM_IN[1], BM06B[2])
+    qp, qd, qpins = ports['I/O PWM OUT']
+    pwm = Cable('cable-fc-pwm', 'PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN', [gh_end(pwm_face, (-1, 0, 0), 6, 'Power')],
+                [gh_end(qp, qd, qpins, 'Flight controller')],
+                [(-48.0, 108.0, 133.0), (-46.3, 118.0, 137.0), (-45.7, 140.0, 137.0), (-45.7, 166.0, 137.0),
+                 (-40.0, 184.0, 139.0), (-27.0, 203.0, 147.0), (-25.5, 205.0, 156.0)],
+                1.7, ['black'], kind='sheathed', gauge='10 x 28 AWG, 3.4 mm', lead=(4.0, 7.0))
+    out.append(pwm)
+    ties.append(Tie([pwr, pwm], (-47.4, 158.0, 137.0)))
+    # ---------------------------------------------------------------- battery: gland -> frame XT60 and -> charge socket
     gl = GLAND
-    dis_a = [End((14.8, gl['y'][0], 166.6), (0, -1, 0), 'gland'), End((19.4, gl['y'][0], 166.6), (0, -1, 0), 'gland')]
-    chg_a = [End((15.2, gl['y'][0], 162.6), (0, -1, 0), 'gland'), End((18.8, gl['y'][0], 162.6), (0, -1, 0), 'gland')]
+    dis_a = [End((19.1, gl['y'][0], 162.6), (0, -1, 0), 'gland'), End((14.9, gl['y'][0], 162.6), (0, -1, 0), 'gland')]   # +, -
+    chg_a = [End((18.8, gl['y'][0], 166.6), (0, -1, 0), 'gland'), End((15.2, gl['y'][0], 166.6), (0, -1, 0), 'gland')]  # +, -
     mx, my, mz = XT60_DRONE['mating']
     plug_dir, plug_up = (0, 0, -1), (0, -1, 0)
     add_plug('Power', _place(C.xt60_female_plug(), (mx, my, mz), plug_dir, plug_up))
     cups = [End(_local((mx, my, mz), plug_dir, plug_up, (18.0, y, 0.0)), plug_dir, 'cup') for y in (3.6, -3.6)]   # +, -
-    dis = Cable('cable-battery-discharge', 'Battery discharge (12 AWG) -> XT60', [dis_a[1], dis_a[0]], cups,
-                [(17.0, 46.0, 166.0), (14.0, 31.0, 160.0), (12.0, 23.5, 147.0), (12.0, 22.0, 120.0),
-                 (12.0, 22.5, 96.0), (11.0, 30.0, 76.0), (10.0, 44.0, 72.0)], 1.8, ['red', 'black'], gauge='2 x 12 AWG',
-                min_bend=10.0)
+    dis = Cable('cable-battery-discharge', 'Battery discharge (12 AWG) -> XT60', dis_a, cups,
+                [(16.5, 46.0, 157.0), (14.5, 34.0, 154.5), (13.0, 25.5, 148.0), (12.5, 22.5, 128.0), (12.0, 24.0, 113.0),
+                 (11.5, 32.0, 108.8), (11.0, 40.0, 102.0), (10.5, 41.0, 80.0), (10.0, 44.0, 62.0)],
+                1.8, ['red', 'black'], gauge='2 x 12 AWG')
     out.append(dis)
-    ties.append(Tie([dis], (12.0, 22.0, 120.0), ('base', (12.0, 30.0, PLATE_BOTTOM), (0, 0, -1.0))))
-    ties.append(Tie([dis], (14.0, 31.0, 160.0), ('base', (14.0, 33.0, DECK_TOP), (0, 0, 1.0))))
+    ties.append(Tie([dis], (11.5, 32.0, 108.8), ('base', (11.5, 32.0, PLATE_BOTTOM), (0, 0, -1.0))))
+    ties.append(Tie([dis], (14.5, 34.0, 154.5), ('base', (14.5, 34.0, DECK_TOP), (0, 0, 1.0))))
     sx, sz = CHARGE_SOCKET
     sock_o, sock_d, sock_up = (sx, CHARGE_WALL_Y, sz), (0, -1, 0), (0, 0, 1)
     add_plug('Power', _place(C.xt60e_panel_socket(), sock_o, sock_d, sock_up))
-    s_cups = [End(_local(sock_o, sock_d, sock_up, (-17.0, y, 0.0)), (0, 1, 0), 'cup') for y in (-3.6, 3.6)]
-    chg = Cable('cable-battery-charge', 'Battery charge (16 AWG) -> charge socket', [chg_a[0], chg_a[1]], s_cups,
-                [(14.0, 52.0, 162.5), (2.0, 50.0, 162.0)], 1.25, ['red', 'black'], twist=0.0, gauge='2 x 16 AWG')
+    s_cups = [End(_local(sock_o, sock_d, sock_up, (-17.0, y, 0.0)), (0, 1, 0), 'cup') for y in (3.6, -3.6)]       # +, -
+    chg = Cable('cable-battery-charge', 'Battery charge (16 AWG) -> charge socket', chg_a, s_cups,
+                [(10.0, 49.5, 166.0), (-2.0, 51.5, 163.5)], 1.25, ['red', 'black'], twist=0.0, gauge='2 x 16 AWG')
     out.append(chg)
-    # the frame's XT60 -> PM06 battery pads
+    # the frame's XT60 -> PM06 battery pads, and the FE-1's battery feed from the same pads
     xt_m = [End(XT60_DRONE['plus'], (0, 0, 1), 'stub XT60'), End(XT60_DRONE['minus'], (0, 0, 1), 'stub XT60')]
+    to_pad = _unit((0.45, 0, 0.89))
     bat = Cable('cable-xt60-pm06', 'Frame XT60 -> PM06 battery pads (14 AWG)', xt_m,
-                [_pad_end('BAT+', (0, -0.6, 0.8), 1.8), _pad_end('BAT-', (0, -0.6, 0.8), 1.8)],
-                [(10.0, 60.0, 131.0), (9.5, 74.0, 132.0)], 1.8, ['red', 'black'], twist=0.0, gauge='2 x 14 AWG',
-                exempt=(1.0, 3.0), min_bend=7.0)
+                [_pad_end('BAT+', to_pad, 1.8, dx=2.5), _pad_end('BAT-', to_pad, 1.8, dx=2.5)],
+                [(10.0, 62.0, 134.0), (9.0, 86.0, 134.0), (3.0, 100.8, 134.0)], 1.8, ['red', 'black'], twist=0.0,
+                gauge='2 x 14 AWG', exempt=(1.0, 3.0))
     out.append(bat)
-    # ---------------------------------------------------------------- ESCs: power from the PM06, phases to the motors
+    p1, d1, w1 = starts['J1']
+    j1 = {m: End(q, d1, 'plug XT30') for q, r, m in w1}
+    away = _unit((-0.45, 0, 0.89))
+    aux = Cable('cable-carrier-power', 'Battery: PM06 battery pads -> carrier J1',
+                [_pad_end('BAT+', away, 1.15, dx=-2.5), _pad_end('BAT-', away, 1.15, dx=-2.5)], [j1['red'], j1['black']],
+                [(-22.0, 96.0, 134.0), (-25.0, 84.0, 137.0), (-32.0, 68.0, 137.5), (-44.0, 46.0, 137.0), (-50.0, 32.0, 133.0),
+                 (-53.0, 25.5, 124.0), (-54.0, 25.0, 110.5), (-62.0, 25.0, 98.0), (-86.0, 25.0, 80.0), (-102.0, 26.0, 67.0)],
+                1.15, ['red', 'black'], gauge='2 x 16 AWG')
+    out.append(aux)
+    ties.append(Tie([aux], (-54.0, 25.0, 110.5), ('base', (-54.0, 30.5, PLATE_BOTTOM), (0, 0, -1.0))))
+    # ---------------------------------------------------------------- ESCs: power and signal from the PM06, phases to the motors
+    routes = {   # waypoints of the power/signal lead from the ESC to its pads
+        'rear-left': [(-44.0, 91.5, 127.0), (-36.0, 90.5, 132.0), (-31.0, 89.0, 130.5)],
+        'rear-right': [(-44.0, 108.5, 127.0), (-36.0, 109.5, 132.0), (-31.0, 111.0, 130.5)],
+        'front-left': [(8.0, 92.5, 124.5), (-1.0, 91.5, 126.5), (-7.0, 90.0, 127.0)],
+        'front-right': [(8.0, 108.0, 124.5), (-1.0, 108.5, 126.5), (-7.0, 110.0, 127.0)],
+    }
+    phase_routes = {
+        'rear-left': [(-52.0, 55.5, 125.0), (-58.0, 56.0, 129.5), (-63.5, 56.5, 131.0)],
+        'rear-right': [(-52.0, 144.5, 125.0), (-58.0, 144.0, 129.5), (-63.5, 143.5, 131.0)],
+        'front-left': [(15.0, 56.5, 125.0), (20.0, 56.0, 129.5), (24.5, 56.5, 131.0)],
+        'front-right': [(15.0, 143.5, 125.0), (20.0, 144.0, 129.5), (24.5, 143.5, 131.0)],
+    }
     for key in ESCS:
-        side = 'R' if key.startswith('rear') else 'F'
-        lr = 'L' if key.endswith('left') else 'R'
-        tag = side + lr
+        tag = ('R' if key.startswith('rear') else 'F') + ('L' if key.endswith('left') else 'R')
         power, phase = esc_ends(key)
-        ex, ey = ESCS[key]
-        low = ey < 100
-        pad_y = PADS[tag + '+'][1]
-        rise = 0.84 if abs(pad_y - (ey + (13 if low else -13))) < 20 else 0.95
-        dpad = (0, -0.55 if pad_y < 100 else 0.55, rise)
-        sig_d = (0, -0.55 if PADS[tag + 's'][1] < 100 else 0.55, 0.84)
-        mid_y = 100.0 + (-5.0 if low else 5.0)
-        to_pad = np.array([PADS[tag + '+'][0] + 2, pad_y, 133.0])
-        wp = [(ex, mid_y, 130.0), ((ex + to_pad[0]) / 2, (mid_y + pad_y) / 2, 133.0)]
-        out.append(Cable(f'cable-esc-{key}', f'ESC {key}: power from PM06', power[:2],
-                         [_pad_end(tag + '+', dpad, 0.9), _pad_end(tag + '-', dpad, 0.9)], wp, 0.9, ['red', 'black'],
-                         twist=0.0, gauge='2 x 18 AWG', exempt=(2.0, 2.0)))
-        sp_ = PADS[tag + 's']
-        out.append(Cable(f'cable-esc-signal-{key}', f'ESC {key}: signal from PM06', power[2:],
-                         [_pad_end(tag + 's', sig_d, 0.4)],
-                         [(power[2].p[0], mid_y + (2.0 if low else -2.0), 129.0),
-                          ((power[2].p[0] + sp_[0]) / 2, (mid_y + sp_[1]) / 2, 135.5)], 0.4, ['white'],
-                         gauge='signal 26 AWG', exempt=(2.0, 2.0)))
+        side = 1.0 if PADS[tag + '+'][1] < 100 else -1.0           # pads on the -y strip leave towards +y
+        dpad = _unit((0, 0.45 * side, 0.89))
+        out.append(Cable(f'cable-esc-{key}', f'ESC {key}: power and signal from the PM06', power,
+                         [_pad_end(tag + '+', dpad, 0.9), _pad_end(tag + '-', dpad, 0.9), _pad_end(tag + 's', dpad, 0.45)],
+                         routes[key], 0.9, ['red', 'black', 'white'], twist=0.0, lead=4.0, radii=[0.9, 0.9, 0.45],
+                         gauge='2 x 18 AWG + signal', exempt=(2.0, 2.0)))
         motor, inner, outer = ARMS[key]
         motor = np.array([*motor])
         inner, outer = np.array([*inner, ARM_Z]), np.array([*outer, ARM_Z])
@@ -853,10 +878,10 @@ def cables():
         hub_dir = _unit(np.r_[-axis[:2], 0])
         m_end = [End(np.r_[motor + hub_dir[:2] * 8.0 + np.array([-hub_dir[1], hub_dir[0]]) * k, MOTOR_LEAD_Z], hub_dir,
                      'motor') for k in (-2.0, 0.0, 2.0)]
-        approach = inner - axis * 14.0 + np.array([0, 0, -2.0])
         mot = Cable(f'cable-motor-{key}', f'Motor {key}: phase wires through the arm', phase, m_end,
-                    [approach, inner, inner + axis * 30.0, outer - axis * 20.0, outer, outer + axis * 6.0 + np.array([0, 0, 2.5])],
-                    0.9, ['black', 'black', 'black'], twist=40.0, gauge='3 x 18 AWG', exempt=(2.0, 1e9))
+                    phase_routes[key] + [inner, inner + axis * 30.0, outer - axis * 20.0, outer,
+                                         outer + axis * 6.0 + np.array([0, 0, 2.5])],
+                    0.9, ['black', 'black', 'black'], twist=40.0, lead=4.0, gauge='3 x 18 AWG', exempt=(2.0, 1e9))
         mot.arm = (inner, outer)
         out.append(mot)
     return parts, out, ties
@@ -1013,7 +1038,10 @@ def check():
                 if inside.any():
                     prop = min(prop, float((h[inside] - PROP_R).min()))
             res['propeller_disc_gap_mm'] = None if prop > 1e8 else round(prop - r, 1)
-        res['min_bend_radius_mm'] = round(min(_curvature_radius(p) for p in c.paths), 1)
+        bends = [_curvature_radius(p, where=True) for p in c.paths]
+        rad, at = min(bends, key=lambda t: t[0])
+        res['min_bend_radius_mm'] = round(rad, 1)
+        res['min_bend_at'] = [round(float(v), 1) for v in at]
         res['allowed_bend_radius_mm'] = round(c.min_bend, 1)
         # terminals: the wire must end exactly at its terminal, leaving along its direction
         term = []
@@ -1032,13 +1060,15 @@ def check():
         for b in cable_names[i + 1:]:
             if not len(samples[a]) or not len(samples[b]):
                 continue
-            ra = next(c.radius for c in cbl if c.name == a)
-            rb = next(c.radius for c in cbl if c.name == b)
-            d, _ = cKDTree(samples[b]).query(samples[a], distance_upper_bound=5.0)
-            d = np.minimum(d, 5.0)
-            g = float(d.min()) - ra - rb
+            ra = max(next(c.radii for c in cbl if c.name == a))
+            rb = max(next(c.radii for c in cbl if c.name == b))
+            d, k = cKDTree(samples[b]).query(samples[a], distance_upper_bound=6.0)
+            if not np.isfinite(d).any():
+                continue
+            i_min = int(np.argmin(d))
+            g = float(d[i_min]) - ra - rb
             if g < 2.0:
-                pair_gaps[f'{a} / {b}'] = round(g, 2)
+                pair_gaps[f'{a} / {b}'] = dict(gap_mm=round(g, 2), at=[round(float(v), 1) for v in samples[a][i_min]])
     part_gaps = {}
     masked = {}                                           # one tree per set of supporting parts
     for pid, m in solid:
