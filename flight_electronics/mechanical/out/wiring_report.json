@@ -3,12 +3,12 @@
   "cable-ethernet": {
    "label": "Ethernet: Orange Pi 5 -> GCU",
    "gauge": "Ethernet, 4 x 26 AWG, 3.6 mm",
-   "length_mm": 92,
+   "length_mm": 91,
    "wires": 1,
-   "drone_gap_mm": 1.95,
+   "drone_gap_mm": 1.83,
    "drone_gap_at": [
     -70.5,
-    74.8,
+    74.2,
     88.9
    ],
    "nearest_drone_part": "drone_LinkGroup005__Link043__Solid024",
@@ -33,33 +33,33 @@
     {
      "what": "plug GH",
      "offset_mm": 0.0,
-     "angle_deg": 0.0
+     "angle_deg": 0.5
     }
    ]
   },
   "cable-gimbal": {
    "label": "Gimbal lead: GCU -> camera head",
    "gauge": "gimbal cable, 4 mm",
-   "length_mm": 57,
+   "length_mm": 56,
    "wires": 1,
-   "drone_gap_mm": 2.09,
+   "drone_gap_mm": 2.23,
    "drone_gap_at": [
-    -42.0,
+    -45.4,
     87.3,
-    85.6
+    80.2
    ],
-   "nearest_drone_part": "drone_LinkGroup006__Compound001#plate",
+   "nearest_drone_part": "drone_LinkGroup006__Compound001#small",
    "case_gap_mm": 11.35,
    "part_gaps_mm": {
-    "gcu": 0.57,
-    "camera-connector": 1.47,
+    "gcu": 1.03,
+    "camera-connector": 1.48,
     "plugs-camera-interface": 2.62
    },
    "propeller_disc_gap_mm": null,
-   "min_bend_radius_mm": 7.3,
+   "min_bend_radius_mm": 6.7,
    "min_bend_at": [
-    -55.6,
-    63.8,
+    -54.0,
+    63.6,
     86.4
    ],
    "allowed_bend_radius_mm": 4.0,
@@ -72,7 +72,7 @@
     {
      "what": "plug camera",
      "offset_mm": 0.0,
-     "angle_deg": 0.2
+     "angle_deg": 0.7
     }
    ]
   },
@@ -81,10 +81,10 @@
    "gauge": "6 x 28 AWG, 3.2 mm",
    "length_mm": 149,
    "wires": 1,
-   "drone_gap_mm": 6.75,
+   "drone_gap_mm": 6.82,
    "drone_gap_at": [
     -67.5,
-    121.9,
+    122.4,
     80.1
    ],
    "nearest_drone_part": "drone_LinkGroup005__Link052",
@@ -173,9 +173,9 @@
    "case_gap_mm": 2.5,
    "part_gaps_mm": {},
    "propeller_disc_gap_mm": null,
-   "min_bend_radius_mm": 3.6,
+   "min_bend_radius_mm": 3.4,
    "min_bend_at": [
-    -73.2,
+    -73.7,
     168.5,
     161.0
    ],
@@ -196,9 +196,9 @@
   "cable-gps": {
    "label": "GPS: module -> Pixhawk GPS1",
    "gauge": "10 x 28 AWG, 3.6 mm",
-   "length_mm": 141,
+   "length_mm": 140,
    "wires": 1,
-   "drone_gap_mm": 2.59,
+   "drone_gap_mm": 2.58,
    "drone_gap_at": [
     73.2,
     100.0,
@@ -210,11 +210,11 @@
     "plugs-flight-controller": 2.82
    },
    "propeller_disc_gap_mm": 66.1,
-   "min_bend_radius_mm": 4.5,
+   "min_bend_radius_mm": 4.3,
    "min_bend_at": [
     60.5,
     100.0,
-    210.7
+    210.2
    ],
    "allowed_bend_radius_mm": 3.6,
    "terminals": [
@@ -245,11 +245,11 @@
    "case_gap_mm": 23.4,
    "part_gaps_mm": {},
    "propeller_disc_gap_mm": null,
-   "min_bend_radius_mm": 4.1,
+   "min_bend_radius_mm": 3.9,
    "min_bend_at": [
-    -45.3,
-    94.5,
-    125.3
+    -45.1,
+    200.1,
+    160.4
    ],
    "allowed_bend_radius_mm": 3.2,
    "terminals": [
@@ -268,7 +268,7 @@
   "cable-fc-pwm": {
    "label": "PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN",
    "gauge": "10 x 28 AWG, 3.4 mm",
-   "length_mm": 137,
+   "length_mm": 136,
    "wires": 1,
    "drone_gap_mm": 5.81,
    "drone_gap_at": [
@@ -279,7 +279,7 @@
    "nearest_drone_part": "drone_LinkGroup005__Solid001",
    "case_gap_mm": 23.3,
    "part_gaps_mm": {
-    "plugs-flight-controller": 2.96,
+    "plugs-flight-controller": 2.97,
     "plugs-power": 2.31
    },
    "propeller_disc_gap_mm": null,
@@ -287,7 +287,7 @@
    "min_bend_at": [
     -47.3,
     105.0,
-    125.3
+    125.4
    ],
    "allowed_bend_radius_mm": 3.4,
    "terminals": [
@@ -623,7 +623,7 @@
     "esc-tray-rear": 0.7,
     "esc-rear-right": 1.11,
     "pm06-pads": 1.7,
-    "plugs-power": 0.86
+    "plugs-power": 0.81
    },
    "propeller_disc_gap_mm": null,
    "min_bend_radius_mm": 2.1,
@@ -980,7 +980,7 @@
    "at": [
     -45.3,
     105.0,
-    125.3
+    125.4
    ]
   },
   "cable-battery-discharge / cable-battery-charge": {
@@ -1080,8 +1080,8 @@
    ]
   },
   "camera-connector": {
-   "drone_gap_mm": 0.41,
-   "nearest_drone_part": "drone_LinkGroup006__Compound001#small",
+   "drone_gap_mm": 1.99,
+   "nearest_drone_part": "drone_LinkGroup005__Link052",
    "resting_on": [
     "drone_LinkGroup006__Compound001"
    ]

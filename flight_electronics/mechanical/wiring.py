@@ -395,14 +395,15 @@ PROP_R, PROP_Z = 127.0, (170.0, 178.0)
 GCU = dict(x=(-73.5, -61.5), y=(87.0, 113.0), z=(76.6, 94.6))
 GCU_XT30_Z = 88.6
 GCU_PORTS = {   # GH receptacles: opening centre, direction, pins, plug 'up'
-    'Ethernet': ((-70.4, 87.0, 89.1), (0, -1, 0), 4, (1, 0, 0)),
-    'gimbal': ((-64.6, 87.0, 85.6), (0, -1, 0), 8, (1, 0, 0)),
-    'control': ((-67.5, 113.0, 80.1), (0, 1, 0), 6, (0, 0, 1)),
+    'Ethernet': ((-70.4, 86.5, 89.1), (0, -1, 0), 4, (1, 0, 0)),
+    'gimbal': ((-64.6, 86.5, 85.6), (0, -1, 0), 8, (1, 0, 0)),
+    'control': ((-67.5, 113.5, 80.1), (0, 1, 0), 6, (0, 0, 1)),
 }
 GLAND = dict(x=(13.0, 21.5), y=(59.0, 64.0), z=(160.5, 169.5))
 GPS = dict(centre=(79.5, 100.0), z=222.0, d=50.0, h=14.0, rod=(79.5, 100.0, 2.0), plug_r=19.0)
 RAILS = {'y70': ((0.0, 70.0, 102.0), (1.0, 0, 0), 4.7), 'y130': ((0.0, 130.0, 102.0), (1.0, 0, 0), 4.7)}
-CAMERA_CONNECTOR = (-42.0, 100.3, 83.1)                  # the camera's own connector block on the damper plate (top face)
+CAMERA_CONNECTOR = (-45.4, 100.3, 77.7)                  # the plug's base: pushed into the camera's connector block (top 83),
+                                                          # 1 mm past its rear edge, short of the pylon
 
 
 def fc_box():
@@ -415,6 +416,7 @@ def fc_box():
 def fc_ports():
     """{port: (mating face centre, outward direction, pins)} of the Pixhawk 6C (positions approximate)."""
     x0, x1, y0, y1, z0, z1 = fc_box()
+    x0, x1, y1 = x0 - PROUD, x1 + PROUD, y1 + PROUD           # the receptacles stand out of the case
     zc = z0 + 4.0
     return {'TELEM1': ((x0, 158.5, zc), (-1, 0, 0), 6), 'TELEM2': ((x0, 168.5, zc), (-1, 0, 0), 6),
             'USB-C': ((x0, 178.0, zc), (-1, 0, 0), 0),
@@ -432,6 +434,20 @@ def gh_plug_start(p, d, pins):
 def _gh_origin(p, d, up):
     m = _orient(d, up)
     return np.asarray(p, float) - 2.1 * m[:, 2]
+
+
+PROUD = 0.5     # a receptacle's opening stands this far out of the face it is mounted in (no shared faces)
+
+
+def port_pocket(p, d, pins, up=(0, 0, 1)):
+    """Axis-aligned pocket, cut into the part a receptacle (opening centred on p, facing d) is
+    mounted in, so the receptacle shows as a real opening instead of a frame on a solid face."""
+    w = 1.25 * (pins - 1) + 3.0 if pins else 9.0
+    m = _orient(d, up)
+    o = _gh_origin(p, d, up)
+    corners = [o + m @ np.array([x, y, z]) for x in (-5.2, 0.2) for y in (-w / 2 - 0.15, w / 2 + 0.15) for z in (-0.15, 4.4)]
+    lo, hi = np.min(corners, axis=0), np.max(corners, axis=0)
+    return C.box(lo[0], hi[0], lo[1], hi[1], lo[2], hi[2])
 
 
 def gh_plug(p, d, pins, up=(0, 0, 1)):
@@ -548,10 +564,13 @@ ESC_SIDE_KEYS = {'rear': ('rear-left', 'rear-right'), 'front': ('front-left', 'f
 # --------------------------------------------------------------------------- bought parts
 def pixhawk():
     x0, x1, y0, y1, z0, z1 = fc_box()
-    out = [('Pixhawk 6C housing', C.box(x0, x1, y0, y1, z0, z0 + 5.0).edges('|Z').fillet(3.0),
-            dict(color=(0.08, 0.08, 0.09), metallic=0.0, roughness=0.6)),
-           ('Pixhawk 6C cover', C.box(x0, x1, y0, y1, z0 + 5.0, z1).edges('|Z').fillet(3.0).edges('>Z').fillet(1.2),
-            dict(color=(0.30, 0.31, 0.34), metallic=0.85, roughness=0.35))]
+    housing = C.box(x0, x1, y0, y1, z0, z0 + 5.0).edges('|Z').fillet(3.0)
+    cover = C.box(x0, x1, y0, y1, z0 + 5.0, z1).edges('|Z').fillet(3.0).edges('>Z').fillet(1.2)
+    for name, (p, d, pins) in fc_ports().items():        # a pocket for every port
+        pocket = port_pocket(p, d, pins)
+        housing, cover = housing.cut(pocket), cover.cut(pocket)
+    out = [('Pixhawk 6C housing', housing, dict(color=(0.08, 0.08, 0.09), metallic=0.0, roughness=0.6)),
+           ('Pixhawk 6C cover', cover, dict(color=(0.30, 0.31, 0.34), metallic=0.85, roughness=0.35))]
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
     arrow = (cq.Workplane('XY').polyline([(cx + 14, cy), (cx + 2, cy + 7), (cx + 2, cy + 3), (cx - 12, cy + 3),
                                           (cx - 12, cy - 3), (cx + 2, cy - 3), (cx + 2, cy - 7)]).close().extrude(0.2)
@@ -562,6 +581,8 @@ def pixhawk():
         if pins == 0:                                      # USB-C
             out += [(f'6C {n}', s, m) for n, s, m in [(n, s, m) for n, s, m in C.place_box(C.usb_c(L=6.0), '-x',
                     (p[0], p[0] + 6.0, p[1] - 4.5, p[1] + 4.5, p[2] - 1.6, p[2] + 1.7), 6.0)]]
+            out.append(('6C USB-C pocket floor', C.box(p[0] + 5.2, p[0] + 5.7, p[1] - 4.6, p[1] + 4.6, p[2] - 2.2, p[2] + 2.3),
+                        dict(color=(0.08, 0.08, 0.09), metallic=0.0, roughness=0.6)))
             continue
         out += [(f'6C {name}', m, mat) for n, m, mat in gh_receptacle(p, d, pins)]
     for fx in (x0 + 10, x1 - 10):                        # foam pads under the board
@@ -577,6 +598,7 @@ def gps_module():
     z0 = GPS['z']
     shell = cq.Workplane('XY').circle(GPS['d'] / 2).extrude(GPS['h']).translate((gx, gy, z0))
     shell = shell.edges('>Z').fillet(6.0)
+    shell = shell.cut(port_pocket((gx - GPS['plug_r'], gy, z0 - PROUD), (0, 0, -1), 10, up=(1, 0, 0)))
     out = [('GPS module', shell, dict(color=(0.12, 0.12, 0.13), metallic=0.0, roughness=0.5))]
     arrow = (cq.Workplane('XY').polyline([(gx + 12, gy), (gx + 2, gy + 6), (gx + 2, gy + 2.5), (gx - 10, gy + 2.5),
                                           (gx - 10, gy - 2.5), (gx + 2, gy - 2.5), (gx + 2, gy - 6)]).close()
@@ -585,7 +607,7 @@ def gps_module():
     out.append(('GPS safety switch', cq.Workplane('XY').circle(4.0).extrude(1.2).translate((gx - 14, gy, z0 + GPS['h'] - 1.5)),
                 'red'))
     px = gx - GPS['plug_r']
-    out += [('GPS connector', m, mat) for n, m, mat in gh_receptacle((px, gy, z0), (0, 0, -1), 10, up=(1, 0, 0))]
+    out += [('GPS connector', m, mat) for n, m, mat in gh_receptacle((px, gy, z0 - PROUD), (0, 0, -1), 10, up=(1, 0, 0))]
     return out
 
 
@@ -619,7 +641,10 @@ def gcu():
     x0, x1 = GCU['x']
     y0, y1 = GCU['y']
     z0, z1 = GCU['z']
-    out = [('GCU', C.box(x0, x1, y0, y1, z0, z1).edges('|Z').fillet(1.5), dict(color=(0.12, 0.12, 0.13), metallic=0.6, roughness=0.4))]
+    body = C.box(x0, x1, y0, y1, z0, z1).edges('|Z').fillet(1.5)
+    for name, (p, d, pins, up) in GCU_PORTS.items():
+        body = body.cut(port_pocket(p, d, pins, up))
+    out = [('GCU', body, dict(color=(0.12, 0.12, 0.13), metallic=0.6, roughness=0.4))]
     for name, (p, d, pins, up) in GCU_PORTS.items():
         out += [(f'GCU {name}', m, mat) for n, m, mat in gh_receptacle(p, d, pins, up)]
     xc = (x0 + x1) / 2
@@ -639,7 +664,7 @@ def camera_connector():
     x, y, z = CAMERA_CONNECTOR
     # the gimbal lead's plug, pushed onto the connector block's top; its cable leaves towards -y
     body = C.box(x - 4.0, x + 4.0, y - 6.5, y + 6.5, z, z + 5.0).edges('|Z').fillet(1.0)
-    latch = C.box(x - 1.5, x + 1.5, y + 3.0, y + 6.5, z + 5.0, z + 5.8)
+    latch = C.box(x - 1.5, x + 1.5, y + 6.5, y + 7.3, z + 1.0, z + 4.0)      # on the plug's end, below the block's top
     boot = cq.Workplane('XZ').circle(2.6).extrude(3.0).translate((x, y - 6.5, z + 2.5))
     return [('Gimbal plug', body.union(latch).union(boot), 'black')]
 
@@ -752,7 +777,7 @@ def cables():
     gim = Cable('cable-gimbal', 'Gimbal lead: GCU -> camera head',
                 [gh_end(gp['gimbal'][0], gp['gimbal'][1], 8, 'Camera interface', gp['gimbal'][3])],
                 [End((cx, cy - 9.5, cz + 2.5), (0, -1, 0), 'plug camera')],
-                [(-63.0, 68.0, 85.5), (-57.0, 61.5, 86.5), (-48.0, 64.0, 86.8), (-43.0, 74.0, 86.0)],
+                [(-63.0, 68.0, 85.5), (-57.0, 61.5, 86.5), (-48.0, 64.0, 86.8), (-45.0, 75.0, 84.5)],
                 2.0, ['black'], kind='sheathed', gauge='gimbal cable, 4 mm', exempt=(4.0, 3.0))
     out.append(gim)
     p, d, w = starts['J4']
@@ -784,7 +809,7 @@ def cables():
     out.append(tel)
     # ---------------------------------------------------------------- GPS mast -> GPS1
     gx, gy = GPS['centre']
-    g_face = np.array([gx - GPS['plug_r'], gy, GPS['z']])
+    g_face = np.array([gx - GPS['plug_r'], gy, GPS['z'] - PROUD])
     rx, ry, rr = GPS['rod']
     rod_x = rx - rr - 1.8
     sp, sd, spins = ports['GPS1']
@@ -804,7 +829,7 @@ def cables():
                  (-49.5, 166.0, 137.0), (-48.0, 184.0, 139.0), (-46.0, 203.0, 147.0), (-45.5, 205.0, 156.0)],
                 1.6, ['black'], kind='sheathed', gauge='6 x 26 AWG, 3.2 mm', lead=(4.0, 7.0))
     out.append(pwr)
-    pwm_face = (PM06_PWM_IN[0], PM06_PWM_IN[1], BM06B[2])
+    pwm_face = (PM06_PWM_IN[0], PM06_PWM_IN[1], BM06B[2] + 0.1)   # receptacle 0.1 mm above the board, not in its face
     qp, qd, qpins = ports['I/O PWM OUT']
     pwm = Cable('cable-fc-pwm', 'PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN', [gh_end(pwm_face, (-1, 0, 0), 6, 'Power')],
                 [gh_end(qp, qd, qpins, 'Flight controller')],
@@ -1085,7 +1110,8 @@ def check():
             continue
         support = SUPPORT.get(pid, ())
         if support not in masked:
-            keep = ~np.isin(codes, np.flatnonzero(np.isin(names, support)))
+            resting = [i for i, n in enumerate(names) if any(n == s_ or n.startswith(s_ + '#') for s_ in support)]   # incl. its pieces
+            keep = ~np.isin(codes, resting)
             masked[support] = (cKDTree(drone[keep]), codes[keep]) if support else (tree_d, codes)
         tree, lab = masked[support]
         v = np.vstack(part_pts[pid])
