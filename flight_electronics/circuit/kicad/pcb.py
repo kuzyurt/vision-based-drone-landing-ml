@@ -224,9 +224,11 @@ def _route(board):
 def _route_builtin(board):
     from flight_electronics.circuit.kicad import router
     power = [n for n in BRD.POWER_NETS if n != 'GND']
-    first = ['BST17', 'EN17', 'VCC17', 'COMP17', 'CZ17', 'FB17', 'SW17', 'VBST_IN', '+17V', 'VBAT_F']
+    first = ['FB17', 'EN17', 'COMP17', 'CZ17', 'VCC17', 'BST17', 'SW17', 'VBST_IN', '+17V', 'VBAT_F']
     order = first + [n for n in power if n not in first]
-    order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first)
+    order += sorted(n for n in BRD.nets() if n not in BRD.POWER_NETS and n not in first) + ['GND']
+    if os.environ.get('FE_ROUTE_ONLY'):
+        order = os.environ['FE_ROUTE_ONLY'].split(',')
     failed = router.route(board, order, power)
     if failed:
         print('builtin router: could not complete', failed)

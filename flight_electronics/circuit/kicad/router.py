@@ -10,12 +10,13 @@ review of the power loops.
 from __future__ import annotations
 
 import heapq
+import os
 import math
 
 import numpy as np
 import pcbnew
 
-GRID = 0.2          # mm
+GRID = 0.1          # mm
 VIA_D, VIA_DRILL = 0.6, 0.3
 VIA_COST = 12.0
 MOVES = [(1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0),
@@ -48,6 +49,8 @@ class Router:
                     layers.append(1)
                 if pad.GetAttribute() == pcbnew.PAD_ATTRIB_NPTH:
                     layers = [0, 1]
+                if not layers:
+                    continue   # paste-only apertures carry no copper
                 self.copper.append((pad.GetNetCode() if pad.GetAttribute() != pcbnew.PAD_ATTRIB_NPTH else -2,
                                     layers, (pcbnew.ToMM(bb.GetX()), pcbnew.ToMM(bb.GetY()),
                                              pcbnew.ToMM(bb.GetRight()), pcbnew.ToMM(bb.GetBottom())), pad))
@@ -127,6 +130,9 @@ class Router:
                     targets[cell] = index
                     blocked[cell[0], cell[1], cell[2]] = False
             path = self._astar(tree, targets, blocked, via_ok)
+            if path is None and os.environ.get('FE_ROUTE_DEBUG'):
+                print('no path', net_name, width, 'sources', len(tree), 'targets', len(targets),
+                      'free sources', sum(not blocked[c] for c in tree), 'free targets', sum(not blocked[c] for c in targets))
             if path is None:
                 ok = False
                 remaining.pop(0)
