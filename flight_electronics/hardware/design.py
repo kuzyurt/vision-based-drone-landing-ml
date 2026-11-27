@@ -17,7 +17,7 @@ SOURCES = {
     'd80pro_manual': 'ALLXF D-80Pro user manual V1.4 (RTSP URLs, MAVLink appendix)',
     'gcu_protocol': 'ALLXF GCU Private Protocol V2.0.6 (2024-10)',
     'tps54560b': 'TI TPS54560B datasheet SLVSF00 (Figure 32 5 V design example)',
-    'tps61288': 'TI TPS61288 datasheet SLVSFP3C',
+    'tps55340': 'TI TPS55340 datasheet SLVSBD4E (pin functions, equations 1, 25, compensation)',
     'wio_sx1262': 'Seeed Wio-SX1262 datasheet; XIAO ESP32S3 & Wio-SX1262 kit wiki',
     'sx1262': 'Semtech SX1261/2 datasheet rev 2.1 (time-on-air, commands)',
     'pixhawk6c': 'Holybro Pixhawk 6C pinout (TELEM2 JST-GH 6-pin)',
@@ -122,16 +122,17 @@ BUCK_5V = dict(
 )
 
 BOOST_17V = dict(
-    part='TPS61288RQQR', source='tps61288', vref=0.6, fsw_hz=500e3, ron_ls=0.0065, ron_hs=0.0085,
-    L=4.7e-6, L_dcr=0.010, cout=70e-6, cout_esr=0.001, cin=2 * 22e-6,
-    r_top=274e3, r_bottom=10e3, c_ff=27e-12, vin_max=18.0, vin_abs_max=20.0, vout=17.04,
-    switch_limit_a=15.0, efficiency=0.95,
-    # Not published in the data sheet; used only by the switching model.
-    gm_ea=200e-6, ea_ro=10e6, gcs=10.0, rc=88.7e3, cc=3.3e-9, cp=22e-12,
-    note=('17 V: above a full 4S pack (16.8 V) so the converter always regulates, 3 V above the '
-          'camera minimum (14 V), below the 18 V output limit. Error-amplifier gain and current-sense '
-          'gain are not published; the switching model uses assumed values and a compensation '
-          'designed for them. Confirm with TI WEBENCH before ordering.'),
+    part='TPS55340PWPR', source='tps55340', vref=1.229, fsw_hz=577e3, ron_ls=0.06,
+    L=6.8e-6, L_dcr=0.012, cout=50e-6, cout_esr=0.002, cin=2 * 22e-6,
+    r_top=130e3, r_bottom=10e3, r_freq=80.6e3, c_ss=47e-9, vin_max=32.0, vin_abs_max=34.0, vout=17.21,
+    switch_limit_a=5.25, efficiency=0.90, diode='B560C',
+    gm_ea=360e-6, ea_ro=10e6, ea_current_a=42e-6, gcs=1 / 0.015, comp_offset=1.0,
+    rc=2.32e3, cc=82e-9, cp=100e-12,
+    note=('TPS55340: 2.9-32 V input (34 V absolute), 5.25 A switch, non-synchronous with a B560C. '
+          '17.2 V output: above a full 4S pack so the converter always regulates and 3 V above the camera '
+          'minimum. Compensation from the data sheet equations for a 10 kHz crossover (current-mode, '
+          '15 mOhm equivalent sense resistance, 360 uS error amplifier). Replaces the TPS61288 of rev A, '
+          'whose 20 V absolute maximum a battery-line spike exceeded in simulation.'),
 )
 
 INPUT_PROTECTION = dict(

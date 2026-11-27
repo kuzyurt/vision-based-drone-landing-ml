@@ -19,6 +19,19 @@ from __future__ import annotations
 from ...hardware import design as D
 
 SCHOTTKY = '.model DSCH d(is=1e-5 rs=0.02 n=1.1 cjo=300p bv=60)'
+
+
+def scope_ripple(time, values, start, stop, dt=5e-9, average=10):
+    """Peak-to-peak ripple as a 20 MHz oscilloscope sees it.
+
+    The ideal switches make nanosecond spikes at every edge that a real probe
+    and real parasitics would not show; a uniform resample and a 50 ns moving
+    average remove them, as the bandwidth limit of a scope does.
+    """
+    import numpy as np
+    grid = np.arange(start, stop, dt)
+    trace = np.convolve(np.interp(grid, time, values), np.ones(average) / average, 'valid')
+    return float(np.ptp(trace))
 BODY = '.model DBODY d(is=1e-9 rs=0.005 n=1.3 bv=40)'
 
 
@@ -67,11 +80,13 @@ Cq q 0 2n
 """
 
 
-def boost_switching(vin=12.0, i_low=1.0, i_high=2.5, t_step=2.5e-3, t_end=4.0e-3, p=D.BOOST_17V):
+def boost_switching(vin=12.0, i_low=1.0, i_high=2.0, t_step=7.0e-3, t_end=10.0e-3, p=D.BOOST_17V):
+    """TPS55340 non-synchronous boost: internal low-side switch, B560C rectifier, current mode."""
     period = 1 / p['fsw_hz']
     slope_a = 1.2 * 0.5 * (p['vout'] - vin) / p['L'] * period + 0.2
+    ea_limit = p['ea_current_a'] / p['gm_ea']
     return f"""
-* TPS61288 17 V synchronous boost, cycle-by-cycle (peak current mode)
+* TPS55340 17 V boost, cycle-by-cycle (peak current mode)
 Vin vin 0 {vin}
 Rsrc vin vinc 0.01
 Cin vinc 0 {p['cin']}
@@ -80,31 +95,27 @@ Rdcr lx sw {p['L_dcr']}
 S1 sw swl q 0 SWL
 .model SWL sw vt=0.5 vh=0.01 ron={p['ron_ls']} roff=1e6
 Vsense swl 0 0
-S2 sw out qb 0 SWH
-.model SWH sw vt=0.5 vh=0.01 ron={p['ron_hs']} roff=1e6
-D2 sw out DBODY
-{BODY}
+D1 sw out DSCH
+{SCHOTTKY}
 Cout out no {p['cout']}
 Resr no 0 {p['cout_esr']}
 Rmin out 0 2k
 Iload out 0 PWL(0 0 0.8m 0 0.9m {i_low} {t_step} {i_low} {t_step + 2e-6} {i_high})
 Rtop out fb {p['r_top']}
 Rbot fb 0 {p['r_bottom']}
-Cff fb 0 {p['c_ff']}
 Vss ref 0 PWL(0 0 0.1m {p['vref'] * vin / p['vout']} 1.0m {p['vref']})
-Bea 0 comp I={p['gm_ea']}*max(min(V(ref)-V(fb),0.2),-0.2)
+Bea 0 comp I={p['gm_ea']}*max(min(V(ref)-V(fb),{ea_limit}),-{ea_limit})
 Rea comp 0 {p['ea_ro']}
 Rc comp cz {p['rc']}
 Cc cz 0 {p['cc']}
 Cp comp 0 {p['cp']}
 Vclk clk 0 PULSE(0 1 0 1n 1n 25n {period})
 Vramp ramp 0 PULSE(0 1 0 {period - 2e-9} 1n 1n {period})
-Br r 0 V=((i(Vsense)+{slope_a}*V(ramp) > {p['gcs']}*(V(comp)-0.5)) || (V(ramp)>0.9)) ? 1 : 0
+Br r 0 V=((i(Vsense)+{slope_a}*V(ramp) > {p['gcs']}*(V(comp)-{p['comp_offset']})) || (V(ramp)>0.92) || (i(Vsense)>{p['switch_limit_a']})) ? 1 : 0
 Bq qr 0 V=(V(clk)>0.5) ? 1 : ((V(r)>0.5) ? 0 : ((V(q)>0.5) ? 1 : 0))
 Rq qr q 1
 Cq q 0 2n
-Bqb qb 0 V=(V(q)<0.5 && V(out)>V(vinc)) ? 1 : 0
-.ic V(q)=0 V(out)={vin * 0.95} V(comp)=0
+.ic V(q)=0 V(out)={vin * 0.95} V(comp)={p['comp_offset']}
 .options method=gear reltol=1e-3 abstol=1e-6 vntol=1e-5
 .tran 20n {t_end} 0 20n uic
 .end

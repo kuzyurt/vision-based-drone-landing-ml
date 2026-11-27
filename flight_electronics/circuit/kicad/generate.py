@@ -83,12 +83,14 @@ def _custom(name, ref, value, body, pins, datasheet='', description=''):
 
 
 CUSTOM = {
-    'fe:TPS61288': _custom('fe:TPS61288', 'U', 'TPS61288', ((-10.16, 12.7), (10.16, -12.7)), [
-        _pin(7, 'VIN', -15.24, 7.62, 0), _pin(6, 'EN', -15.24, 2.54, 0), _pin(11, 'VCC', -15.24, -2.54, 0),
-        _pin(10, 'AGND', -15.24, -7.62, 0), _pin(4, 'SW', 15.24, 10.16, 180), _pin(9, 'SW', 15.24, 7.62, 180),
-        _pin(8, 'BST', 15.24, 2.54, 180), _pin(5, 'VOUT', 15.24, -2.54, 180), _pin(1, 'FB', 15.24, -7.62, 180),
-        _pin(2, 'COMP', 15.24, -10.16, 180), _pin(3, 'PGND', 0, -17.78, 90)],
-        'https://www.ti.com/lit/ds/symlink/tps61288.pdf', '18 V 15 A synchronous boost'),
+    'fe:TPS55340': _custom('fe:TPS55340', 'U', 'TPS55340', ((-10.16, 10.16), (10.16, -12.7)), [
+        _pin(3, 'VIN', -15.24, 7.62, 0), _pin(4, 'EN', -15.24, 5.08, 0), _pin(5, 'SS', -15.24, 0, 0),
+        _pin(6, 'SYNC', -15.24, -2.54, 0), _pin(10, 'FREQ', -15.24, -5.08, 0),
+        _pin(1, 'SW', 15.24, 7.62, 180), _pin(2, 'SW', 15.24, 5.08, 180), _pin(9, 'FB', 15.24, 0, 180),
+        _pin(8, 'COMP', 15.24, -2.54, 180),
+        _pin(7, 'AGND', -5.08, -17.78, 90), _pin(11, 'NC', -2.54, -17.78, 90), _pin(12, 'PGND', 0, -17.78, 90),
+        _pin(13, 'PGND', 2.54, -17.78, 90), _pin(14, 'PGND', 5.08, -17.78, 90), _pin(15, 'EP', 7.62, -17.78, 90)],
+        'https://www.ti.com/lit/ds/symlink/tps55340.pdf', '32 V input, 5 A switch boost converter'),
     'fe:XIAO_ESP32S3_SX1262': _custom('fe:XIAO_ESP32S3_SX1262', 'U', 'XIAO', ((-10.16, 10.16), (10.16, -10.16)), [
         *[_pin(i + 1, n, -15.24, 7.62 - 2.54 * i, 0) for i, n in enumerate(
             ['D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6/TX'])],
@@ -118,81 +120,213 @@ def _rot(x, y, angle):
     return x * math.cos(r) - y * math.sin(r), x * math.sin(r) + y * math.cos(r)
 
 
+CHAR_W = 0.85      # width of one 1.27 mm schematic character (KiCad default font), mm
+TEXT_H = 1.6
+STUB = 2.54
+
+
+def _text_props(pins_rot, ref, value):
+    """Where the reference and value go, relative to the symbol origin (schematic y down)."""
+    xs = [x for x, _ in pins_rot] or [0]
+    ys = [-y for _, y in pins_rot] or [0]
+    if len(pins_rot) > 3:      # ICs and connectors: reference above, value below the pins
+        return (min(xs) + 3, min(ys) - 2.0), (min(xs) + 3, max(ys) + 3.2)
+    if max(ys) - min(ys) > max(xs) - min(xs):   # vertical two-pin part: text on the right
+        return (2.2, -0.8), (2.2, 2.0)
+    return (-3, -4.2), (-3, -2.2)
+
+
+def part_geometry(part, rot=0):
+    """Pins, labels, texts and the bounding box of a placed part, relative to its origin."""
+    pins = symbol_pins(part.symbol)
+    pins_rot = {n: (*_rot(px, py, rot), (a + 180 + rot) % 360) for n, (px, py, a, _) in pins.items()}
+    boxes = []
+    labels = []
+    for number, (rx, ry, out) in pins_rot.items():
+        ax, ay = rx, -ry
+        dx, dy = round(math.cos(math.radians(out))), round(-math.sin(math.radians(out)))
+        net = part.pins.get(number)
+        if net is None:
+            boxes.append((ax - 1, ay - 1, ax + 1, ay + 1))
+            continue
+        bx, by = ax + STUB * dx, ay + STUB * dy
+        length = len(net) * CHAR_W + 2.6        # global-label flag around the text
+        ex, ey = bx + length * dx, by + length * dy
+        if dx:      # horizontal global label, centred on the wire
+            boxes.append((min(ax, ex), ay - 1.4, max(ax, ex), ay + 1.4))
+        else:
+            boxes.append((ax - 1.4, min(ay, ey), ax + 1.4, max(ay, ey)))
+        labels.append((number, (ax, ay), (bx, by), out, net))
+    ref_at, val_at = _text_props([(x, y) for x, y, _ in pins_rot.values()], part.ref, part.value)
+    if len(pins_rot) > 3 and boxes:      # keep IC/connector texts clear of every pin label
+        top = min(b[1] for b in boxes)
+        bottom = max(b[3] for b in boxes)
+        left = min(b[0] for b in boxes)
+        ref_at = (left + 1, top - 1.2)
+        val_at = (left + 1, bottom + 1.4)
+    elif len(pins_rot) == 1:             # test points: text to the right of the symbol
+        ref_at, val_at = (2.2, -4.2), (2.2, -2.2)
+    for (tx, ty), text in ((ref_at, part.ref), (val_at, part.value)):
+        boxes.append((tx, ty - TEXT_H / 2, tx + len(text) * CHAR_W, ty + TEXT_H / 2))
+    pts = [(x, -y) for x, y, _ in pins_rot.values()] or [(0, 0)]
+    text = CUSTOM.get(part.symbol) or library_symbol(part.symbol)
+    for m in re.finditer(r'\(rectangle\s*\(start ([-\d.]+) ([-\d.]+)\)\s*\(end ([-\d.]+) ([-\d.]+)\)', text):
+        x1, y1, x2, y2 = (float(v) for v in m.groups())
+        pts += [_rot(x1, y1, rot), _rot(x2, y2, rot)]
+        pts[-2] = (pts[-2][0], -pts[-2][1])
+        pts[-1] = (pts[-1][0], -pts[-1][1])
+    body = (min(p[0] for p in pts) - 1.0, min(p[1] for p in pts) - 1.0, max(p[0] for p in pts) + 1.0,
+            max(p[1] for p in pts) + 1.0)
+    if part.symbol.startswith('Mechanical'):
+        body = (-3, -3, 3, 3)
+    boxes.append(body)
+    bbox = (min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes))
+    return dict(pins=pins_rot, labels=labels, ref_at=ref_at, val_at=val_at, bbox=bbox, boxes=boxes)
+
+
+GRID = 1.27
+
+
+def _snap(v):
+    return round(v / GRID) * GRID
+
+
+def layout_schematic(max_row_width=150.0, gap=5.0, margin=4.0, title_h=6.0):
+    """Shelf-pack every block, then place the blocks on the sheet. Returns positions and frames."""
+    parts = {p.ref: p for p in BRD.PARTS}
+    blocks = []
+    for title, refs in BRD.SCHEMATIC_BLOCKS:
+        geoms = {r: part_geometry(parts[r]) for r in refs}
+        placed, x, y, row_h, width = {}, 0.0, 0.0, 0.0, 0.0
+        for r in refs:
+            x1, y1, x2, y2 = geoms[r]['bbox']
+            w, h = x2 - x1, y2 - y1
+            if x > 0 and x + w > max_row_width:
+                x, y, row_h = 0.0, y + row_h + gap, 0.0
+            placed[r] = (x - x1, y - y1)
+            x += w + gap
+            row_h = max(row_h, h)
+            width = max(width, x - gap)
+        extra = 22.0 if title.startswith('Indicators') else 0.0     # strip for the ERC power flags
+        blocks.append(dict(title=title, refs=refs, geoms=geoms, placed=placed, w=max(width, 70.0 if extra else 0) + 2 * margin,
+                           h=y + row_h + 2 * margin + title_h + extra))
+    # two columns of blocks, tallest first per column
+    columns, heights = [[], []], [0.0, 0.0]
+    for block in blocks:
+        c = 0 if heights[0] <= heights[1] else 1
+        columns[c].append(block)
+        heights[c] += block['h'] + gap
+    col_w = [max((b['w'] for b in col), default=0) for col in columns]
+    page_w, page_h = 20 + col_w[0] + gap * 2 + col_w[1] + 10, 20 + max(heights) + 10
+    paper = 'A3' if page_w <= 410 and page_h <= 287 else 'A2' if page_w <= 584 and page_h <= 410 else 'A1'
+    positions, frames = {}, []
+    x0 = 20.0
+    for c, col in enumerate(columns):
+        y0 = 20.0
+        for block in col:
+            fx1, fy1 = _snap(x0), _snap(y0 + title_h)
+            frames.append((block['title'], fx1, fy1, _snap(fx1 + block['w']), _snap(fy1 + block['h'] - title_h)))
+            for r, (dx, dy) in block['placed'].items():
+                positions[r] = (_snap(fx1 + margin + dx), _snap(fy1 + margin + dy))
+            y0 += block['h'] + gap
+        x0 += col_w[c] + gap * 2
+    return positions, frames, paper
+
+
+def layout_report():
+    """Overlaps between parts and parts outside their frame (both must be empty)."""
+    positions, frames, _ = layout_schematic()
+    parts = {p.ref: p for p in BRD.PARTS}
+    boxes = {}
+    for r, (x, y) in positions.items():
+        g = part_geometry(parts[r])
+        boxes[r] = [(x + b[0], y + b[1], x + b[2], y + b[3]) for b in g['boxes']]
+    overlaps = []
+    refs = list(boxes)
+    for i, a in enumerate(refs):
+        for b in refs[i + 1:]:
+            for p in boxes[a]:
+                if any(p[0] < q[2] - 0.05 and q[0] < p[2] - 0.05 and p[1] < q[3] - 0.05 and q[1] < p[3] - 0.05
+                       for q in boxes[b]):
+                    overlaps.append((a, b))
+                    break
+    outside = []
+    for title, refs_in in BRD.SCHEMATIC_BLOCKS:
+        frame = next(f for f in frames if f[0] == title)
+        for r in refs_in:
+            for p in boxes[r]:
+                if p[0] < frame[1] or p[1] < frame[2] or p[2] > frame[3] or p[3] > frame[4]:
+                    outside.append((r, title))
+                    break
+    frame_overlaps = [(a[0], b[0]) for i, a in enumerate(frames) for b in frames[i + 1:]
+                      if a[1] < b[3] and b[1] < a[3] and a[2] - 6 < b[4] and b[2] - 6 < a[4]]
+    return dict(overlaps=overlaps, outside=outside, frame_overlaps=frame_overlaps)
+
+
+def _global_label(net, x, y, angle):
+    """Global label: the net keeps its plain name (no sheet prefix), matching the PCB."""
+    justify = 'left' if angle in (0, 90) else 'right'
+    return (f'(global_label "{net}" (shape passive) (at {x} {y} {angle}) (fields_autoplaced yes) '
+            f'(effects (font (size 1.27 1.27)) (justify {justify})) (uuid "{uid()}") '
+            f'(property "Intersheetrefs" "${{INTERSHEET_REFS}}" (at {x} {y} 0) '
+            f'(effects (font (size 1.27 1.27)) (hide yes))))')
+
+
 def write_schematic(path: Path):
     root = uid()
     lib_ids = sorted({p.symbol for p in BRD.PARTS} | {'power:PWR_FLAG'})
     lib_blocks = [CUSTOM[i] if CUSTOM.get(i) else library_symbol(i) for i in lib_ids]
+    positions, frames, paper = layout_schematic()
     items = []
     for part in BRD.PARTS:
-        x0, y0, rot = part.sch
-        pins = symbol_pins(part.symbol)
-        xs = [_rot(px, py, rot)[0] for px, py, _, _ in pins.values()] or [0]
-        ys = [_rot(px, py, rot)[1] for px, py, _, _ in pins.values()] or [0]
-        if len(pins) > 3:      # ICs and connectors: reference above, value below the body
-            ref_at = (x0 + min(xs) + 3, y0 - max(ys) - (1.5 if max(ys) > 8 else 3.5))
-            val_at = (x0 + min(xs) + 3, y0 - min(ys) + 3.5)
-        elif max(ys) - min(ys) > max(xs) - min(xs):   # vertical two-pin part: text on the right
-            ref_at, val_at = (x0 + 2.2, y0 - 0.8), (x0 + 2.2, y0 + 2.0)
-        else:                                          # horizontal: text above
-            ref_at, val_at = (x0 - 3, y0 - 4.2), (x0 - 3, y0 - 2.2)
-        props = [('Reference', part.ref, ref_at, False), ('Value', part.value, val_at, False),
+        x0, y0 = positions[part.ref]
+        rot = 0
+        g = part_geometry(part, rot)
+        (rx, ry), (vx, vy) = g['ref_at'], g['val_at']
+        props = [('Reference', part.ref, (x0 + rx, y0 + ry), False), ('Value', part.value, (x0 + vx, y0 + vy), False),
                  ('Footprint', part.footprint, (x0, y0), True), ('Datasheet', '', (x0, y0), True),
                  ('MPN', part.mpn, (x0, y0), True), ('Note', part.note, (x0, y0), True)]
         prop_text = []
         for name, value, (px_, py_), hidden in props:
-            prop_text.append(f'(property "{name}" "{value}" (at {round(px_, 2)} {round(py_, 2)} {rot % 180}) '
+            prop_text.append(f'(property "{name}" "{value}" (at {round(px_, 2)} {round(py_, 2)} 0) '
                              f'{HIDE if hidden else "(effects (font (size 1.27 1.27)) (justify left))"})')
-        pin_text = ' '.join(f'(pin "{n}" (uuid "{uid()}"))' for n in pins)
+        pin_text = ' '.join(f'(pin "{n}" (uuid "{uid()}"))' for n in g['pins'])
+        in_bom = 'no' if part.symbol.startswith('Mechanical') or part.symbol.endswith('TestPoint') else 'yes'
         items.append(f'(symbol (lib_id "{part.symbol}") (at {x0} {y0} {rot}) (unit 1) (exclude_from_sim no) '
-                     f'(in_bom yes) (on_board yes) (dnp no) (uuid "{uid()}") {" ".join(prop_text)} {pin_text} '
+                     f'(in_bom {in_bom}) (on_board yes) (dnp no) (uuid "{uid()}") {" ".join(prop_text)} {pin_text} '
                      f'(instances (project "{NAME}" (path "/{root}" (reference "{part.ref}") (unit 1)))))')
-        for number, (px, py, pangle, _) in pins.items():
-            rx, ry = _rot(px, py, rot)
-            ax, ay = round(x0 + rx, 3), round(y0 - ry, 3)
-            out_angle = (pangle + 180 + rot) % 360
-            dx, dy = round(math.cos(math.radians(out_angle)), 3), round(-math.sin(math.radians(out_angle)), 3)
-            net = part.pins.get(number)
-            if net is None:
-                items.append(f'(no_connect (at {ax} {ay}) (uuid "{uid()}"))')
-                continue
-            bx, by = round(ax + 2.54 * dx, 3), round(ay + 2.54 * dy, 3)
+        for number, (px, py, out) in g['pins'].items():
+            if part.pins.get(number) is None:
+                items.append(f'(no_connect (at {round(x0 + px, 3)} {round(y0 - py, 3)}) (uuid "{uid()}"))')
+        for number, (ax, ay), (bx, by), out, net in g['labels']:
+            ax, ay, bx, by = (round(v, 3) for v in (x0 + ax, y0 + ay, x0 + bx, y0 + by))
             items.append(f'(wire (pts (xy {ax} {ay}) (xy {bx} {by})) (stroke (width 0) (type default)) (uuid "{uid()}"))')
-            label_angle = {0: 0, 90: 90, 180: 180, 270: 270}[out_angle]
-            justify = 'left' if label_angle in (0, 90) else 'right'
-            items.append(f'(label "{net}" (at {bx} {by} {label_angle}) (effects (font (size 1.27 1.27)) '
-                         f'(justify {justify} bottom)) (uuid "{uid()}"))')
-    # power flags on the nets driven only by connectors
+            justify = 'left' if out in (0, 90) else 'right'
+            items.append(_global_label(net, bx, by, out))
+    # ERC power flags, inside the indicators frame (bottom right corner)
+    title, fx1, fy1, fx2, fy2 = next(f for f in frames if f[0].startswith('Indicators'))
     for i, net in enumerate(('VBUS', 'GND', '+5V', 'VBST_IN', '+17V')):
-        x, y = 30 + 18 * i, 280
+        x, y = _snap(fx1 + 8 + 14 * i), _snap(fy2 - 19)
         items.append(f'(symbol (lib_id "power:PWR_FLAG") (at {x} {y} 0) (unit 1) (exclude_from_sim no) (in_bom no) '
                      f'(on_board no) (dnp no) (uuid "{uid()}") (property "Reference" "#FLG0{i + 1}" (at {x} {y - 4} 0) {HIDE}) '
                      f'(property "Value" "PWR_FLAG" (at {x} {y - 5} 0) {HIDE}) (property "Footprint" "" (at {x} {y} 0) {HIDE}) '
                      f'(property "Datasheet" "" (at {x} {y} 0) {HIDE}) (pin "1" (uuid "{uid()}")) '
                      f'(instances (project "{NAME}" (path "/{root}" (reference "#FLG0{i + 1}") (unit 1)))))')
         items.append(f'(wire (pts (xy {x} {y}) (xy {x} {y + 2.54})) (stroke (width 0) (type default)) (uuid "{uid()}"))')
-        items.append(f'(label "{net}" (at {x} {y + 2.54} 270) (effects (font (size 1.27 1.27)) (justify right bottom)) '
-                     f'(uuid "{uid()}"))')
-    for text, x, y in BLOCK_TITLES:
-        items.append(f'(text "{text}" (exclude_from_sim no) (at {x} {y} 0) (effects (font (size 2.2 2.2) (bold yes)) '
+        items.append(_global_label(net, x, y + 2.54, 270))
+    for title, x1, y1, x2, y2 in frames:
+        items.append(f'(text "{title}" (exclude_from_sim no) (at {x1} {y1 - 1.5} 0) (effects (font (size 2.2 2.2) (bold yes)) '
                      f'(justify left bottom)) (uuid "{uid()}"))')
-    for (x1, y1, x2, y2) in BLOCK_FRAMES:
         items.append(f'(rectangle (start {x1} {y1}) (end {x2} {y2}) (stroke (width 0.2) (type dash)) (fill (type none)) '
                      f'(uuid "{uid()}"))')
     content = (f'(kicad_sch (version 20250114) (generator "eeschema") (generator_version "9.0") (uuid "{root}") '
-               f'(paper "A3")\n(title_block (title "FE-1 flight electronics carrier board") (date "2026-11-27") '
-               f'(rev "A") (company "vision-based-drone-landing-ml") (comment 1 "Generated from flight_electronics/hardware/board.py") '
+               f'(paper "{paper}")\n(title_block (title "FE-1 flight electronics carrier board") (date "2026-11-27") '
+               f'(rev "B") (company "vision-based-drone-landing-ml") (comment 1 "Generated from flight_electronics/hardware/board.py") '
                f'(comment 2 "Not built or flight-tested. Verify against the data sheets before ordering."))\n'
                f'(lib_symbols\n' + '\n'.join(lib_blocks) + ')\n' + '\n'.join(items) +
                f'\n(sheet_instances (path "/" (page "1")))\n(embedded_fonts no))\n')
     path.write_text(content, encoding='utf-8')
     return path
-
-
-BLOCK_TITLES = [('Battery input + protection', 22, 42), ('5 V / 5 A buck  (TPS54560B, TI 5 V example)', 122, 42),
-                ('17 V boost for the camera  (TPS61288)', 122, 135), ('Orange Pi 5, Pixhawk, GCU', 282, 22),
-                ('Radio bridge  (XIAO ESP32S3 + Wio-SX1262)', 22, 150), ('Indicators, test points, holes', 22, 228)]
-BLOCK_FRAMES = [(20, 44, 112, 90), (120, 44, 275, 128), (120, 137, 285, 228), (280, 24, 360, 250),
-                (20, 152, 112, 220), (20, 230, 160, 268)]
 
 
 # --------------------------------------------------------------------------- project + libs

@@ -44,9 +44,9 @@ def converter(kind):
         steady = (2.2e-3, 2.9e-3)
         after = (3.9e-3, 4.4e-3)
     else:
-        net, out, t_step, target = circuits.boost_switching(), D.BOOST_17V['vout'], 2.5e-3, D.BOOST_17V
-        steady = (1.9e-3, 2.45e-3)
-        after = (3.4e-3, 3.95e-3)
+        net, out, t_step, target = circuits.boost_switching(), D.BOOST_17V['vout'], 7.0e-3, D.BOOST_17V
+        steady = (6.0e-3, 6.9e-3)
+        after = (9.0e-3, 9.9e-3)
     with Spice() as spice:
         v = spice.run(net)
     t, vout = v['time'], v['out']
@@ -58,8 +58,8 @@ def converter(kind):
 
     pre, post = window(*steady), window(*after)
     step = window(t_step, t_step + 0.6e-3)
-    result = dict(mean_v_before=float(pre.mean()), ripple_mv_before=float(np.ptp(pre) * 1000),
-                  mean_v_after=float(post.mean()), ripple_mv_after=float(np.ptp(post) * 1000),
+    result = dict(mean_v_before=float(pre.mean()), ripple_mv_before=circuits.scope_ripple(t, vout, *steady) * 1000,
+                  mean_v_after=float(post.mean()), ripple_mv_after=circuits.scope_ripple(t, vout, *after) * 1000,
                   step_dip_mv=float((pre.mean() - step.min()) * 1000),
                   step_dip_percent=float((pre.mean() - step.min()) / out * 100))
     fig, (a1, a2) = plt.subplots(2, 1, figsize=(8, 5), sharex=True, gridspec_kw=dict(height_ratios=[3, 2]))
@@ -67,7 +67,7 @@ def converter(kind):
     a1.axhline(out, color=MUTED, lw=0.8, ls='--')
     a1.set_ylabel('Output (V)')
     title = ('5 V buck (TPS54560B): start-up and load step 1.25 → 3.75 A' if kind == 'buck'
-             else '17 V camera boost (TPS61288) at 12 V input: start-up and load step 1 → 2.5 A')
+             else '17 V camera boost (TPS55340) at 12 V input: start-up and load step 1 → 2 A')
     a1.set_title(title)
     a1.set_ylim(out * 0.6 if kind == 'buck' else 10, out * 1.08)
     a2.plot(t * 1e3, il, color=ORANGE, lw=0.8)
@@ -87,7 +87,9 @@ def surge():
         out[label] = float(vin.max())
         ax.plot(t * 1e6, vin, color=color, label=f'boost input, {label}')
     ax.axhline(D.BOOST_17V['vin_abs_max'], color=RED, lw=1, ls='--')
-    ax.text(5, D.BOOST_17V['vin_abs_max'] + 0.25, 'TPS61288 absolute maximum 20 V', color=TEXT, fontsize=9)
+    ax.text(5, D.BOOST_17V['vin_abs_max'] + 0.25, 'TPS55340 absolute maximum 34 V', color=TEXT, fontsize=9)
+    ax.axhline(20.0, color=MUTED, lw=0.8, ls=':')
+    ax.text(5, 20.25, 'rev A boost (TPS61288) absolute maximum 20 V', color=MUTED, fontsize=9)
     ax.set_title('8 V / 50 µs spike on a full 4S battery line (ESC braking)')
     ax.set_xlabel('Time (µs)')
     ax.set_ylabel('Volts')

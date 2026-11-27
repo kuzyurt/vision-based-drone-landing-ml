@@ -24,7 +24,8 @@ MOVES = [(1, 0, 1.0), (-1, 0, 1.0), (0, 1, 1.0), (0, -1, 1.0),
 
 
 class Router:
-    def __init__(self, board, width_mm, clearance=0.2, power_width=0.8, power_nets=()):
+    def __init__(self, board, width_mm, clearance=0.2, power_width=0.8, power_nets=(), keepouts=()):
+        self.keepouts = list(keepouts)       # (x1, y1, x2, y2) mm: board cut-outs, kept 0.5 mm clear
         self.board = board
         box = board.GetBoardEdgesBoundingBox()
         self.x0, self.y0 = pcbnew.ToMM(box.GetX()), pcbnew.ToMM(box.GetY())
@@ -39,6 +40,7 @@ class Router:
         self.copper = []    # (net, layer or None for both, polygon-ish bbox in mm, kind)
         self.tracks = []    # (net, layer, x1, y1, x2, y2, width)
         self.vias = []      # (net, x, y)
+        self.existing_tracks, self.existing_vias = [], []
         for fp in board.GetFootprints():
             for pad in fp.Pads():
                 bb = pad.GetBoundingBox()
@@ -77,17 +79,19 @@ class Router:
             for layer in layers:
                 blocked[layer, max(i1, 0):max(i2 + 1, 0), max(j1, 0):max(j2 + 1, 0)] = True
 
+        for kx1, ky1, kx2, ky2 in self.keepouts:
+            mark([0, 1], kx1, ky1, kx2, ky2, 0.5 + width / 2)
         for code, layers, (x1, y1, x2, y2), _ in self.copper:
             if code != net:
                 mark(layers, x1, y1, x2, y2, (0.3 if code == -2 else self._gap(code, net)) + width / 2)
-        for code, layer, x1, y1, x2, y2, w in self.tracks:
+        for code, layer, x1, y1, x2, y2, w in self.tracks + self.existing_tracks:
             if code != net:
                 grow = self._gap(code, net) + width / 2 + w / 2
                 steps = max(1, int(math.hypot(x2 - x1, y2 - y1) / (GRID / 2)))
                 for k in range(steps + 1):
                     x, y = x1 + (x2 - x1) * k / steps, y1 + (y2 - y1) * k / steps
                     mark([layer], x, y, x, y, grow)
-        for code, x, y in self.vias:
+        for code, x, y in self.vias + self.existing_vias:
             if code != net:
                 mark([0, 1], x, y, x, y, self._gap(code, net) + width / 2 + VIA_D / 2)
         return blocked
@@ -104,7 +108,7 @@ class Router:
         via_blocked = self._blocked(code, VIA_D)
         via_ok = ~(via_blocked[0] | via_blocked[1])
 
-        def pad_cells(layers, bb):
+        def pad_cells(layers, bb, pad=None):
             """Grid cells inside the pad where a track end of this width stays on the pad."""
             x1, y1, x2, y2 = bb
             m = min(width / 2, (x2 - x1) / 2 - 0.01, (y2 - y1) / 2 - 0.01)
@@ -113,20 +117,22 @@ class Router:
             cells = {(layer, i, j) for layer in layers for i in range(i1, i2 + 1) for j in range(j1, j2 + 1)
                      if self.x0 + i * GRID >= x1 + m - 1e-6 and self.x0 + i * GRID <= x2 - m + 1e-6
                      and self.y0 + j * GRID >= y1 + m - 1e-6 and self.y0 + j * GRID <= y2 - m + 1e-6}
+            if pad is not None:     # round and rotated pads: the cell centre must lie on the copper
+                cells = {c for c in cells if pad.HitTest(pcbnew.VECTOR2I_MM(*self._xy(c[1], c[2])), 0)}
             if not cells:
                 i, j = self._cell((x1 + x2) / 2, (y1 + y2) / 2)
                 cells = {(layer, i, j) for layer in layers}
             return cells
 
-        tree = set(pad_cells(*pads[0][:2]))
+        tree = set(pad_cells(*pads[0][:3]))
         for layer, i, j in tree:
             blocked[layer, i, j] = False
         remaining = pads[1:]
         ok = True
         while remaining:
             targets = {}
-            for index, (layers, bb, _) in enumerate(remaining):
-                for cell in pad_cells(layers, bb):
+            for index, (layers, bb, pad) in enumerate(remaining):
+                for cell in pad_cells(layers, bb, pad):
                     targets[cell] = index
                     blocked[cell[0], cell[1], cell[2]] = False
             path = self._astar(tree, targets, blocked, via_ok)
@@ -150,11 +156,12 @@ class Router:
             return min(math.hypot(i - ti, j - tj) for _, ti, tj in tlist)
 
         frontier, came, cost = [], {}, {}
+        weight = 1.3      # mildly greedy A*: much faster on long runs, paths stay near-shortest
         for s in sources:
             cost[s] = 0.0
-            heapq.heappush(frontier, (h(*s), 0.0, s))
+            heapq.heappush(frontier, (weight * h(*s), 0.0, s))
             came[s] = None
-        limit = 400000
+        limit = 2_000_000
         while frontier and limit:
             limit -= 1
             _, g, cell = heapq.heappop(frontier)
@@ -176,13 +183,13 @@ class Router:
                 ng = g + step + (0.3 if layer == 1 else 0.0)
                 if ng < cost.get(nxt, 1e18):
                     cost[nxt], came[nxt] = ng, cell
-                    heapq.heappush(frontier, (ng + h(*nxt), ng, nxt))
+                    heapq.heappush(frontier, (ng + weight * h(*nxt), ng, nxt))
             other = (1 - layer, i, j)
             if via_ok[i, j] and not blocked[other]:
                 ng = g + VIA_COST
                 if ng < cost.get(other, 1e18):
                     cost[other], came[other] = ng, cell
-                    heapq.heappush(frontier, (ng + h(*other), ng, other))
+                    heapq.heappush(frontier, (ng + weight * h(*other), ng, other))
         return None
 
     def _commit(self, code, path, width):
@@ -209,6 +216,47 @@ class Router:
             x2, y2 = self._xy(i2, j2)
             self.tracks.append((code, layer, x1, y1, x2, y2, width))
 
+    def load_existing(self):
+        """Treat the tracks and vias already on the board as obstacles (not re-added by apply())."""
+        for t in self.board.GetTracks():
+            if isinstance(t, pcbnew.PCB_VIA):
+                self.existing_vias.append((t.GetNetCode(), pcbnew.ToMM(t.GetPosition().x), pcbnew.ToMM(t.GetPosition().y)))
+            else:
+                layer = 0 if t.GetLayer() == pcbnew.F_Cu else 1
+                self.existing_tracks.append((t.GetNetCode(), layer, pcbnew.ToMM(t.GetStart().x), pcbnew.ToMM(t.GetStart().y),
+                                             pcbnew.ToMM(t.GetEnd().x), pcbnew.ToMM(t.GetEnd().y), pcbnew.ToMM(t.GetWidth())))
+
+    def drop_to_plane(self, net_name, pad, width=0.3):
+        """Short top-layer track from an SMD pad to the nearest spot where a via fits; the via
+        joins the bottom ground plane."""
+        code = self.board.FindNet(net_name).GetNetCode()
+        blocked = self._blocked(code, width)
+        via_blocked = self._blocked(code, VIA_D)
+        bb = pad.GetBoundingBox()
+        i, j = self._cell(pcbnew.ToMM(bb.Centre().x), pcbnew.ToMM(bb.Centre().y))
+        start = (0, i, j)
+        frontier, came, seen = [(0.0, start)], {start: None}, {start}
+        while frontier:
+            g, cell = heapq.heappop(frontier)
+            layer, ci, cj = cell
+            far = math.hypot(ci - i, cj - j) * GRID
+            if far > 0.9 and not via_blocked[0, ci, cj] and not via_blocked[1, ci, cj]:
+                path = [cell]
+                while came[path[-1]] is not None:
+                    path.append(came[path[-1]])
+                path = path[::-1]
+                self._commit(code, path, width)
+                self.vias.append((code, *self._xy(ci, cj)))
+                return True
+            for di, dj, step in MOVES:
+                ni, nj = ci + di, cj + dj
+                nxt = (0, ni, nj)
+                if 0 <= ni < self.nx and 0 <= nj < self.ny and nxt not in seen and not blocked[0, ni, nj]:
+                    seen.add(nxt)
+                    came[nxt] = cell
+                    heapq.heappush(frontier, (g + step, nxt))
+        return False
+
     def apply(self):
         for code, layer, x1, y1, x2, y2, w in self.tracks:
             t = pcbnew.PCB_TRACK(self.board)
@@ -227,9 +275,9 @@ class Router:
             self.board.Add(v)
 
 
-def route(board, nets_in_order, power_nets, width=0.25, power_width=0.8, fallback=(0.5, 0.3, 0.2)):
+def route(board, nets_in_order, power_nets, width=0.25, power_width=0.8, fallback=(0.5, 0.3, 0.2), keepouts=()):
     """Route each net; when a net cannot be completed, rip it up and retry narrower."""
-    router = Router(board, width, clearance=0.16, power_width=power_width, power_nets=power_nets)
+    router = Router(board, width, clearance=0.16, power_width=power_width, power_nets=power_nets, keepouts=keepouts)
     failed = []
     for name in nets_in_order:
         code = board.FindNet(name).GetNetCode()

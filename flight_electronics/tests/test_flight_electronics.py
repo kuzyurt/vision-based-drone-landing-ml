@@ -141,7 +141,7 @@ class Electrical(unittest.TestCase):
         t, out = v['time'], v['out']
         steady = out[(t > 2.2e-3) & (t < 2.9e-3)]
         self.assertAlmostEqual(float(steady.mean()), 5.0, delta=0.05)
-        self.assertLess(float(np.ptp(steady)), D.BUCK_5V['target_ripple'] * 5.0)      # < 25 mV
+        self.assertLess(circuits.scope_ripple(t, out, 2.2e-3, 2.9e-3), D.BUCK_5V['target_ripple'] * 5.0)  # < 25 mV
         dip = steady.mean() - out[(t > 3.0e-3) & (t < 3.6e-3)].min()
         self.assertLess(float(dip), D.BUCK_5V['target_step_dv'] * 5.0)                 # < 200 mV
 
@@ -150,9 +150,16 @@ class Electrical(unittest.TestCase):
         with Spice() as spice:
             v = spice.run(circuits.boost_switching(vin=12.0))
         t, out = v['time'], v['out']
-        late = out[(t > 3.4e-3) & (t < 3.95e-3)]
-        self.assertAlmostEqual(float(late.mean()), 17.0, delta=0.2)
-        self.assertGreater(float(out[t > 2.5e-3].min()), D.CAMERA['input_v'][0] + 2)
+        steady = out[(t > 6.0e-3) & (t < 6.9e-3)]
+        self.assertAlmostEqual(float(steady.mean()), D.BOOST_17V['vout'], delta=0.1)
+        self.assertLess(circuits.scope_ripple(t, out, 6.0e-3, 6.9e-3), 0.1)
+        self.assertGreater(float(out[t > 7.0e-3].min()), D.CAMERA['input_v'][0] + 2)
+
+    def test_boost_survives_battery_spike(self):
+        from flight_electronics.simulation.electrical import circuits
+        with Spice() as spice:
+            v = spice.run(circuits.input_surge(with_filter=True))
+        self.assertLess(float(v['boostin2'].max()), D.BOOST_17V['vin_max'])
 
     def test_camera_on_battery_browns_out_but_boost_does_not(self):
         from flight_electronics.simulation.electrical.power_system import PowerDemand, PowerSystem, propulsion_power_w
@@ -180,10 +187,12 @@ class BoardDefinition(unittest.TestCase):
         parts = {p.ref: p for p in board.PARTS}
         vout5 = D.BUCK_5V['vref'] * (1 + D.BUCK_5V['r_top'] / D.BUCK_5V['r_bottom'])
         vout17 = D.BOOST_17V['vref'] * (1 + D.BOOST_17V['r_top'] / D.BOOST_17V['r_bottom'])
+        self.assertGreater(vout17, D.BATTERY['full_v'] + 0.2)          # always above a full pack
         self.assertAlmostEqual(vout5, 5.0, delta=0.03)
         self.assertAlmostEqual(vout17, D.BOOST_17V['vout'], delta=0.05)
         self.assertEqual(parts['R5'].value, '53.6k')
-        self.assertEqual(parts['R9'].value, '274k')
+        self.assertEqual(parts['R9'].value, '130k')
+        self.assertEqual(parts['U2'].value, 'TPS55340')
 
     def test_header_matches_orange_pi_manual(self):
         j2 = next(p for p in board.PARTS if p.ref == 'J2').pins
@@ -201,6 +210,15 @@ class BoardDefinition(unittest.TestCase):
         self.assertIn(('J5', '3'), nets['FC_RXD'])       # Pixhawk TELEM2 pin 3 = RX
         self.assertIn(('U3', '8'), nets['UART3_TX'])      # XIAO D7 = RX
         self.assertIn(('U3', '7'), nets['UART3_RX'])      # XIAO D6 = TX
+
+
+class SchematicLayout(unittest.TestCase):
+    def test_no_overlaps_and_everything_inside_its_frame(self):
+        from flight_electronics.circuit.kicad import generate
+        report = generate.layout_report()
+        self.assertEqual(report['overlaps'], [])
+        self.assertEqual(report['outside'], [])
+        self.assertEqual(report['frame_overlaps'], [])
 
 
 class Timing(unittest.TestCase):

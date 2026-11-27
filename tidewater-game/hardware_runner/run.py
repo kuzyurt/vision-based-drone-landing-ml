@@ -29,12 +29,15 @@ def _config(args) -> HilConfig:
                      camera_latency_s=args.camera_latency, native_marker_kernel=not args.python_marker)
 
 
-def trial(job_path, config: HilConfig):
+def trial(job_path, config: HilConfig | None):
+    """One episode. config=None flies without the simulated hardware (baseline)."""
+    import linux_compat
     from benchmark.harness import student_tidewater, tidewater_run
     from adapter import HardwareInTheLoopActor
 
     job = json.loads(Path(job_path).read_text(encoding='utf-8'))
     output = Path(job['output'])
+    linux_compat.install(output.parent / (output.name + '_platform'))
     original = student_tidewater.TidewaterActor
     wrappers = []
 
@@ -43,7 +46,8 @@ def trial(job_path, config: HilConfig):
         wrappers.append(wrapper)
         return wrapper
 
-    student_tidewater.TidewaterActor = factory
+    if config is not None:
+        student_tidewater.TidewaterActor = factory
     try:
         tidewater_run.trial(job_path)
     finally:
@@ -60,7 +64,8 @@ def run(args):
 
     cases = args.case or [c['id'] for c in bench.canonical_plan()['cases']]
     run_dir, jobs = tidewater_run.build(args.name, cases, args.device, args.workers)
-    (run_dir / 'hardware_config.json').write_text(json.dumps(vars(_config(args)), indent=2), encoding='utf-8')
+    config = None if args.no_hardware else vars(_config(args))
+    (run_dir / 'hardware_config.json').write_text(json.dumps(config, indent=2), encoding='utf-8')
     code = 0
     for job in jobs:
         with open(job['log'], 'wb') as log:
@@ -83,6 +88,7 @@ def main(argv=None):
     r.add_argument('--case', nargs='+')
     r.add_argument('--device', choices=['cpu', 'cuda'], default='cpu')
     r.add_argument('--workers', type=int, default=1)
+    r.add_argument('--no-hardware', action='store_true', help='baseline: same flight path without the simulated hardware')
     for p in (r, sub.add_parser('smoke')):
         p.add_argument('--seed', type=int, default=0)
         p.add_argument('--variant', choices=['carrier', 'camera_on_battery'], default='carrier')
@@ -94,7 +100,8 @@ def main(argv=None):
     t.add_argument('--config', required=True)
     args = parser.parse_args(argv)
     if args.command == '_trial':
-        trial(args.job, HilConfig(**json.loads(Path(args.config).read_text(encoding='utf-8'))))
+        stored = json.loads(Path(args.config).read_text(encoding='utf-8'))
+        trial(args.job, None if stored is None else HilConfig(**stored))
         return 0
     if args.command == 'smoke':
         from smoke import smoke
