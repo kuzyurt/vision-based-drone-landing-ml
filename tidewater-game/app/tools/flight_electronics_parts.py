@@ -48,7 +48,7 @@ def collect():
     from flight_electronics.mechanical import assembly, drone_model, render, wiring
     out = []
     stack = []
-    for pid, p, pieces in assembly.stack_parts(fine_copper=False).items():
+    for pid, p, pieces in assembly.stack_parts(fine_copper=False, stubs=False).items():
         for mesh, mat, tex in pieces:
             stack.append((mesh, mat))
     placed = render.to_drone([(m, mat['color'], None) for m, mat in stack])

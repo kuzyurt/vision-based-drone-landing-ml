@@ -29,11 +29,11 @@ CASE_ONLY = ('case-frame', 'case-lid', 'hw-m3-screws') + tuple(
     f'clamp-{i}-{h}' for i in range(1, 5) for h in ('upper', 'lower'))
 
 
-def stack_meshes(explode=0.0, groups=None, skip=()):
+def stack_meshes(explode=0.0, groups=None, skip=(), stubs=True):
     """[(mesh with normals, colour rgb, texture or None)] of the assembly in frame space;
     explode in 0..1 of the default offsets. groups: keep only these; skip: part ids to leave out."""
     out = []
-    for pid, p, pieces in assembly.stack_parts().items():
+    for pid, p, pieces in assembly.stack_parts(stubs=stubs).items():
         if (groups and p['group'] not in groups) or pid in skip:
             continue
         shift = np.array(p['explode']) * explode
@@ -179,7 +179,7 @@ def main():
     body = stack_meshes(groups=('Case',), skip=('hw-m3-screws',))
     render(body, (-110, 170, 140), centre, fr.MEDIA / 'frame_print.png')
     drone = drone_meshes()
-    mounted = to_drone(stack)
+    mounted = to_drone(stack_meshes(stubs=False))       # on the drone the cables are drawn whole
     target = (-110, 100, 60)
     render(drone + mounted, (-470, -230, -40), target, fr.MEDIA / 'frame_on_drone.png', fov=38, crop=False)
     render(drone + mounted, (-200, -80, -10), (-110, 100, 55), fr.MEDIA / 'frame_on_drone_close.png', fov=44, crop=False)

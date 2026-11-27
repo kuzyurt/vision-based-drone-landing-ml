@@ -3957,66 +3957,6 @@
  ],
  "extras": [
   {
-   "name": "drone_BatteryCradle",
-   "anchor": "drone_Body005",
-   "url": "/landing/detail/battery_cradle.bin",
-   "vertex_count": 1272,
-   "index_count": 1272,
-   "sha256": "19ed3066625d629d74ff0422b97322f2f32f733085b1877a864646622205dc51",
-   "material": {
-    "name": "battery_cradle_nylon",
-    "rgba": [
-     0.6,
-     0.62,
-     0.65,
-     1.0
-    ],
-    "roughness": 0.72,
-    "metalness": 0.0
-   },
-   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
-  },
-  {
-   "name": "drone_BatteryStraps",
-   "anchor": "drone_Body005",
-   "url": "/landing/detail/battery_straps.bin",
-   "vertex_count": 552,
-   "index_count": 552,
-   "sha256": "32587421fefd280abbafe4878fa4c9255865ed8d2c9cd0a9f096be7d0dfbeb90",
-   "material": {
-    "name": "battery_strap_webbing",
-    "rgba": [
-     0.045,
-     0.047,
-     0.052,
-     1.0
-    ],
-    "roughness": 0.92,
-    "metalness": 0.0
-   },
-   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
-  },
-  {
-   "name": "drone_BatteryScrews",
-   "anchor": "drone_Body005",
-   "url": "/landing/detail/battery_screws.bin",
-   "vertex_count": 8544,
-   "index_count": 8544,
-   "sha256": "d3994701f58872c7ad5e2c9a2ebb4072700a133ec636824bf046611e3f2a146b",
-   "material": {
-    "name": "battery_cradle_steel",
-    "rgba": [
-     0.74,
-     0.75,
-     0.77,
-     1.0
-    ],
-    "roughness": 0.34,
-    "metalness": 0.9
-   },
-   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
-  },
-  {
    "name": "fe_000",
    "anchor": "drone_Body002",
    "url": "/landing/detail/fe_000.bin",
@@ -4960,6 +4900,66 @@
     "metalness": 0.0
    },
    "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "drone_BatteryCradle",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/battery_cradle.bin",
+   "vertex_count": 1272,
+   "index_count": 1272,
+   "sha256": "19ed3066625d629d74ff0422b97322f2f32f733085b1877a864646622205dc51",
+   "material": {
+    "name": "battery_cradle_nylon",
+    "rgba": [
+     0.6,
+     0.62,
+     0.65,
+     1.0
+    ],
+    "roughness": 0.72,
+    "metalness": 0.0
+   },
+   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
+  },
+  {
+   "name": "drone_BatteryStraps",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/battery_straps.bin",
+   "vertex_count": 552,
+   "index_count": 552,
+   "sha256": "32587421fefd280abbafe4878fa4c9255865ed8d2c9cd0a9f096be7d0dfbeb90",
+   "material": {
+    "name": "battery_strap_webbing",
+    "rgba": [
+     0.045,
+     0.047,
+     0.052,
+     1.0
+    ],
+    "roughness": 0.92,
+    "metalness": 0.0
+   },
+   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
+  },
+  {
+   "name": "drone_BatteryScrews",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/battery_screws.bin",
+   "vertex_count": 14112,
+   "index_count": 14112,
+   "sha256": "d014bdc7bfceae07ef346e9d4a673ee1c7b45f6cdaa0047b068329c5792f1bda",
+   "material": {
+    "name": "battery_cradle_steel",
+    "rgba": [
+     0.74,
+     0.75,
+     0.77,
+     1.0
+    ],
+    "roughness": 0.34,
+    "metalness": 0.9
+   },
+   "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
   }
  ],
  "operator_hidden": {

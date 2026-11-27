@@ -167,7 +167,8 @@ const EYE = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-w
 const EYE_OFF = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z" opacity=".35"/><path d="M2 14 14 2"/></svg>';
 const CASE_IDS = (id) => id.startsWith('case-') || id.startsWith('clamp-');
 // everything in drone.glb (the drone, the flight controller, the power parts, the wiring) is placed on the drone
-const MODE_GROUPS = { drone: null, case: (p) => p.file !== 'drone.glb', parts: (p) => p.file !== 'drone.glb' && p.group !== 'Case' };
+// cable stubs end the case's cables off the drone; on the drone the whole cables are drawn instead
+const MODE_GROUPS = { drone: (p) => p.note !== 'stub', case: (p) => p.file !== 'drone.glb', parts: (p) => p.file !== 'drone.glb' && p.group !== 'Case' };
 
 let meta = null, parts = {}, nodes = {}, defaults = {};
 const state = { mode: 'case', explode: 0, factors: {}, vectors: {}, hidden: {}, xray: false, edges: true, cut: { axis: '', pos: 500 }, selected: null };

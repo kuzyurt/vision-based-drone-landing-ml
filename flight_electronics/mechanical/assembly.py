@@ -161,7 +161,7 @@ def _carrier_glb(col, explode, fine_copper=True):
                     explode)
 
 
-def stack_parts(fine_copper=True):
+def stack_parts(fine_copper=True, stubs=True):
     """Everything of the case, the boards, the hardware and the cables, in frame coordinates."""
     col = Collector()
     body = trimesh.load(fr.OUT / 'frame.stl')
@@ -202,13 +202,16 @@ def stack_parts(fine_copper=True):
                 'Antenna lead': (0, 0, LIFT['carrier']), 'Antenna': (0, 0, LIFT['carrier']),
                 'SMA bulkhead': (0, 0, LIFT['carrier'])}
     for name, group, solid, mat in fr.cables():
+        if group.endswith(' stub') and not stubs:
+            continue
         pid = f'cable-{_slug(group)}'
         if name.startswith('SMA'):
             pid, group = 'cable-sma', 'SMA bulkhead'
         elif name.startswith('Antenna'):
             pid, group = 'cable-antenna', 'Antenna'
         col.add(pid, {'Antenna lead': 'U.FL pigtail', 'Antenna': '868 MHz antenna (86 mm whip)'}.get(group, group),
-                'Cables', _mesh(solid, 0.04), mat, out_dirs[group])
+                'Cables', _mesh(solid, 0.04), mat, out_dirs[group.replace(' stub', '')],
+                note='stub' if group.endswith(' stub') else '')
     return col
 
 

@@ -351,3 +351,68 @@ def place_box(parts, face, bbox, L, flip=False):
         s = s.rotate((0, 0, 0), (0, 0, 1), rot).translate((t[0], t[1], zt))
         out.append((name, s, mat))
     return out
+
+
+# --------------------------------------------------------------------------- power connectors (detailed)
+XT60 = dict(w=15.6, h=8.2, chamfer=2.2, pitch=7.2, bore=4.6)
+
+
+def _xt60_outline(grow=0.0):
+    """XT60 housing cross-section (y, z) centred on 0: a rectangle with two chamfered corners
+    on one long side (the polarity shape)."""
+    w, h, c = XT60['w'] / 2 + grow, XT60['h'] / 2 + grow, XT60['chamfer']
+    return [(-w, -h), (w, -h), (w, h - c), (w - c, h), (-w + c, h), (-w, h - c)]
+
+
+def xt60_female_plug(length=16.0):
+    """XT60 female cable plug. Local x: mating face at x = 0, the cable leaves along +x from the
+    solder cups at x = length (wire centres at y = -/+3.6, z = 0)."""
+    body = _prism_yz(_xt60_outline(), 0, length - 4.0)
+    rear = _prism_yz(_xt60_outline(-0.6), length - 4.0, length - 1.0)
+    housing = body.union(rear)
+    out = []
+    for y in (-XT60['pitch'] / 2, XT60['pitch'] / 2):
+        housing = housing.cut(cq.Workplane('YZ').circle(XT60['bore'] / 2).extrude(9.5).translate((-0.1, y, 0)))
+        sleeve = cq.Workplane('YZ').circle(2.15).circle(1.75).extrude(8.8).translate((0.6, y, 0))
+        out.append(('socket', sleeve, 'gold'))
+        cup = cq.Workplane('YZ').circle(1.9).extrude(3.0).translate((length - 1.0, y, 0))
+        out.append(('solder cup', cup, 'gold'))
+    out.insert(0, ('housing', housing, 'yellow'))
+    return out
+
+
+def xt60e_panel_socket(depth=12.0):
+    """XT60E-F panel socket (female) with its flange and a tethered silicone dust cap, open.
+    Local x points out of the panel: the flange's front is at x = 0, the mating face at x = +2.5,
+    the solder cups end at x = -depth - 5 (wire centres at y = -/+3.6, z = 0)."""
+    out = []
+    flange = C_box(-2.0, 0.0, -14.0, 14.0, -5.0, 5.0).edges('|X').fillet(1.5)
+    for y in (-11.5, 11.5):
+        flange = flange.cut(cq.Workplane('YZ').circle(1.4).extrude(3).translate((-2.5, y, 0)))
+    nose = _prism_yz(_xt60_outline(), 0.0, 2.5)
+    body = _prism_yz(_xt60_outline(-0.3), -depth, -2.0)
+    housing = flange.union(nose).union(body)
+    for y in (-XT60['pitch'] / 2, XT60['pitch'] / 2):
+        housing = housing.cut(cq.Workplane('YZ').circle(XT60['bore'] / 2).extrude(11.0).translate((-8.6, y, 0)))
+        out.append(('socket', cq.Workplane('YZ').circle(2.15).circle(1.75).extrude(9.5).translate((-7.5, y, 0)), 'gold'))
+        out.append(('solder cup', cq.Workplane('YZ').circle(1.9).extrude(5.0).translate((-depth - 5.0, y, 0)), 'gold'))
+    out.insert(0, ('housing', housing, 'yellow'))
+    # dust cap, open: hangs below the socket on its strap, its inside (the plug-shaped cavity) facing out
+    cap = _prism_yz(_xt60_outline(1.4), 0.0, 7.0)
+    cap = cap.cut(_prism_yz(_xt60_outline(0.1), 1.2, 7.5))
+    cap = cap.rotate((0, 0, 0), (0, 1, 0), -90).translate((4.5, 0, -14.0))
+    strap = C_box(0.2, 1.4, -1.6, 1.6, -9.0, -4.8)
+    out += [('dust cap', cap, 'red'), ('cap strap', strap, 'red')]
+    return out
+
+
+def gh_receptacle(pins, depth=4.5):
+    """JST-GH receptacle (right angle) for the plug of jst_gh_plug: opening at x = 0 facing +x."""
+    w = 1.25 * (pins - 1) + 3.0
+    shell = box(-depth, 0.0, -w / 2, w / 2, 0.0, 4.25)
+    shell = shell.cut(box(-depth + 1.0, 0.1, -w / 2 + 0.6, w / 2 - 0.6, 0.5, 3.8))
+    return [('receptacle', shell, 'white')]
+
+
+def C_box(x0, x1, y0, y1, z0, z1):
+    return box(x0, x1, y0, y1, z0, z1)

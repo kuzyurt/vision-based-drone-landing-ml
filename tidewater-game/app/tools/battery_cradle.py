@@ -19,7 +19,7 @@ Two things live here, both for the normal game view only; the drone camera
    The cradle is one printed part: two end walls, a low and a high rail along
    each side with an open window between them (the pack stays visible), and a
    foot at each end that lies on the top plate over those holes. Eight M3
-   button-head screws with washers go through the feet into the plate. Two
+   button-head screws with washers go through the feet and the plate into nyloc nuts. Two
    hook-and-loop straps with buckles run over the pack and around the upper
    rails, so the pack can still be taken out.
 
@@ -62,6 +62,7 @@ ANCHOR_T = np.array([-0.0005544590000000008, 0.0, 0.05292381299999999])
 PACK_LO = np.array([-43.554, -36.0, 31.924])
 PACK_HI = np.array([42.446, 36.0, 73.924])
 PLATE_TOP = 32.0
+PLATE_T = 2.0      # top plate thickness
 HOLES = [(sx * 50.0, sy * y) for sx in (-1, 1) for sy in (-1, 1) for y in (23.0, 37.0)]
 
 # ---- cradle dimensions (mm)
@@ -257,6 +258,15 @@ def screws():
         mesh.lathe(hole, [(0.0, z), (3.5, z), (3.5, z + 0.5), (0.0, z + 0.5)])                     # washer
         mesh.lathe(hole, [(2.85, z + 0.5), (2.85, z + 1.3), (2.2, z + 2.0), (1.35, z + 2.15),     # button head
                           (1.35, z + 1.25), (0.0, z + 1.25)])                                      # with its socket
+        # the screw goes on through the foot and the plate: M3 x 10 shank, washer and nyloc nut
+        # under the plate (the space under these holes is free down to the arm clamps, 8 mm lower)
+        under = PLATE_TOP - PLATE_T
+        mesh.lathe(hole, [(0.0, under - 4.4), (1.45, under - 4.4), (1.45, z), (0.0, z)], segments=12)   # shank
+        mesh.lathe(hole, [(0.0, under - 0.5), (3.5, under - 0.5), (3.5, under), (0.0, under)])          # washer
+        mesh.lathe(hole, [(0.0, under - 2.9), (3.175, under - 2.9), (3.175, under - 0.5), (0.0, under - 0.5)],
+                   segments=6)                                                                       # hex nut
+        mesh.lathe(hole, [(0.0, under - 4.0), (2.7, under - 4.0), (2.7, under - 2.9), (0.0, under - 2.9)],
+                   segments=16)                                                                      # nylon collar
     top = PACK_HI[2] + 0.15 + STRAP_T
     for xc in STRAP_X:                                                                             # strap buckles
         for ya, yb in ((14.0, 16.2), (25.8, 28.0)):

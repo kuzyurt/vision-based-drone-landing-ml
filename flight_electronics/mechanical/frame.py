@@ -297,8 +297,13 @@ def ufl_start():
     return (cx - 6.0, cy + 7.0, CARRIER_TOP + 7.45)
 
 
+STUB_PIECES = ('cable', 'wire')     # pieces of the case's plugs that are the short cable stubs
+
+
 def cables():
-    """Mating plugs and cables, for the fit check and the pictures: (name, group, solid, material)."""
+    """Mating plugs and cables, for the fit check and the pictures: (name, group, solid, material).
+    The short cable stubs behind the case's plugs are in groups ending in ' stub': on the drone,
+    wiring.py draws each cable whole, from the plug, and the stubs are left out."""
     out = []
     boxes = opi_boxes()
     x1, x2, y1, y2, z1, z2, _ = boxes['Ethernet RJ45']
@@ -324,6 +329,7 @@ def cables():
         else:   # back edge, plug comes from +y
             moved = [(n, s.rotate((0, 0, 0), (0, 0, 1), 90).translate(((x1 + x2) / 2, H, CARRIER_TOP)), m) for n, s, m in plug]
         out += [(f'{ref} plug {n}', f'{ref} cable', s, m) for n, s, m in moved]
+    out = [(n, g + ' stub' if g.endswith('cable') and n.split()[-1] in STUB_PIECES else g, s, m) for n, g, s, m in out]
     # 26-way ribbon: IDC socket on J2 (carrier), fold through the notch, IDC socket on the Orange Pi header
     hx1, hx2, hy1, hy2 = W - 43.0, W - 10.0, OPI_Y - 61.3, OPI_Y - 56.3       # Orange Pi header in frame space
     jx = (57.1 + 90.2) / 2
@@ -386,6 +392,34 @@ def cable_ends():
             d = np.array([-sign, 0, 0.0])
             offs = [np.array([0, t - mean, 0]) for t in turns]
         out[ref] = (centre, d, [(o, 0.45, c) for o, c in zip(offs, colours)])
+    return out
+
+
+def cable_starts():
+    """Where each cable leaves its plug on the case (the plug's back, before the stub), frame coordinates:
+    {name: (centre, direction, [(offset from centre, wire radius, material)])}."""
+    import numpy as np
+    out = {}
+    x1, x2, y1, y2, z1, z2, _ = opi_boxes()['Ethernet RJ45']
+    out['Ethernet'] = (np.array([x1 - 10.0, (y1 + y2) / 2, z1 + 5.8]), np.array([-1.0, 0, 0]), [(np.zeros(3), 3.0, 'blue')])
+    for ref in ('J1', 'J3'):
+        bx = xt30_box(ref)
+        yc = (bx[2] + bx[3]) / 2
+        if _carrier_edge_parts()[ref][6] == 'right':
+            out[ref] = (np.array([bx[1] + 16.0, yc, CARRIER_TOP + 4.3]), np.array([1.0, 0, 0]),
+                        [(np.array([0, -2.5, 0]), 1.45, 'red'), (np.array([0, 2.5, 0]), 1.45, 'black')])
+        else:
+            out[ref] = (np.array([bx[0] - 16.0, yc, CARRIER_TOP + 4.3]), np.array([-1.0, 0, 0]),
+                        [(np.array([0, 2.5, 0]), 1.45, 'red'), (np.array([0, -2.5, 0]), 1.45, 'black')])
+    for ref, n, bend in JST_BENDS:
+        x1, x2, y1, y2, z1, z2, edge, _ = _carrier_edge_parts()[ref]
+        ys = [-1.25 * (n - 1) / 2 + i * 1.25 for i in range(n)]
+        if edge == 'right':
+            out[ref] = (np.array([W + 4.3, (y1 + y2) / 2, CARRIER_TOP + 2.0]), np.array([1.0, 0, 0]),
+                        [(np.array([0, y, 0]), 0.45, 'black') for y in ys])
+        else:
+            out[ref] = (np.array([(x1 + x2) / 2, H + 4.3, CARRIER_TOP + 2.0]), np.array([0, 1.0, 0]),
+                        [(np.array([-y, 0, 0]), 0.45, 'black') for y in ys])
     return out
 
 
