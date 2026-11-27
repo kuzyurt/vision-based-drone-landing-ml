@@ -45,9 +45,11 @@ def stack_meshes(explode=0.0, groups=None, skip=()):
     return out
 
 
-def drone_meshes():
+def drone_meshes(propellers=True):
     out = []
     for pid, p, pieces in assembly.drone_parts(assembly.Collector()).items():
+        if not propellers and pid == 'drone-propellers':
+            continue
         for mesh, mat, tex in pieces:
             out.append((mesh, mat['color'], tex))
     return out
@@ -181,6 +183,11 @@ def main():
     target = (-110, 100, 60)
     render(drone + mounted, (-470, -230, -40), target, fr.MEDIA / 'frame_on_drone.png', fov=38, crop=False)
     render(drone + mounted, (-200, -80, -10), (-110, 100, 55), fr.MEDIA / 'frame_on_drone_close.png', fov=44, crop=False)
+    # the wiring: the top deck (flight controller, battery, charge socket, GPS) and the underside
+    # (case, GCU, camera); the propellers are left out so they do not hide the deck
+    no_props = drone_meshes(propellers=False) + mounted
+    render(no_props, (150, -170, 330), (-20, 100, 150), fr.MEDIA / 'drone_wiring_top.png', fov=40, crop=False)
+    render(no_props, (-300, -40, 10), (-80, 110, 90), fr.MEDIA / 'drone_wiring_below.png', fov=40, crop=False)
     print('written', sorted(p.name for p in fr.MEDIA.glob('frame_*.png')) + sorted(p.name for p in fr.MEDIA.glob('stack_*.png')))
 
 

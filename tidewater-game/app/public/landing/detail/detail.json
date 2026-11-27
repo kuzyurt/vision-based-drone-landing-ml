@@ -4015,12 +4015,969 @@
     "metalness": 0.9
    },
    "note": "battery cradle screwed to the top plate; see tools/battery_cradle.py"
+  },
+  {
+   "name": "fe_000",
+   "anchor": "drone_Body002",
+   "url": "/landing/detail/fe_000.bin",
+   "vertex_count": 1032,
+   "index_count": 6252,
+   "sha256": "e53bd5e3eee2bb2e39e5c06befa1f859ba542502eaa43b920d06e2eca10fc2dc",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_000",
+    "rgba": [
+     0.74,
+     0.75,
+     0.77,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.8
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_001",
+   "anchor": "drone_Body004",
+   "url": "/landing/detail/fe_001.bin",
+   "vertex_count": 943,
+   "index_count": 5646,
+   "sha256": "c9071c332e14cd56a12a72b81fafa82521b9af7e3ef201c429fde7cb2a44bec4",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_001",
+    "rgba": [
+     0.03,
+     0.05,
+     0.09,
+     1.0
+    ],
+    "roughness": 0.06,
+    "metalness": 0.5
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_002",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_002.bin",
+   "vertex_count": 5023,
+   "index_count": 8571,
+   "sha256": "50af0b0ee639ad7a231464bf48649cd0a9694756b3003c181b0c7caab2f45c03",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_002",
+    "rgba": [
+     0.04,
+     0.26,
+     0.13,
+     1.0
+    ],
+    "roughness": 0.42,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_003",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_003.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "452bb9564f27ddce514e6ae0671fbe4f928b55cb502fe3468979a6523e8a5807",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_003",
+    "rgba": [
+     0.04,
+     0.32,
+     0.18,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_004",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_004.bin",
+   "vertex_count": 1248,
+   "index_count": 3780,
+   "sha256": "82b8273d219f02156ea6c646e09ac42cd23b0e2d987549908fade01a725a1fc1",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_004",
+    "rgba": [
+     0.05,
+     0.22,
+     0.14,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_005",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_005.bin",
+   "vertex_count": 48,
+   "index_count": 72,
+   "sha256": "74772d860843c04c04c07b3c7405ef25dc6926351e7093ad3991671b807757b7",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_005",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_006",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_006.bin",
+   "vertex_count": 85237,
+   "index_count": 261786,
+   "sha256": "341318131a60debb62be7a7da4a3657c3419a4b2fde9d1cc04834b938f6d1009",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_006",
+    "rgba": [
+     0.07,
+     0.07,
+     0.08,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_007",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_007.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "257635e15dbea713ff9a40ab3719f6de9bb11578a0a59fe76e9959e2297c7865",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_007",
+    "rgba": [
+     0.08,
+     0.08,
+     0.09,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_008",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_008.bin",
+   "vertex_count": 192,
+   "index_count": 564,
+   "sha256": "d15b4a81d1eae2fdfb3c91b8b035a5ee243aac18a05524b08cd82e37b6498674",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_008",
+    "rgba": [
+     0.08,
+     0.08,
+     0.09,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "Flight controller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_009",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_009.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "5f8929d85e88b56d0f8d27ccdbca3abe9d0fa7f9327d902e93e8839c7452eb6b",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_009",
+    "rgba": [
+     0.08,
+     0.1,
+     0.12,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_010",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_010.bin",
+   "vertex_count": 12868,
+   "index_count": 39216,
+   "sha256": "917667bc1f403c5e4b39d98ed3e07cbb41af728cb0800be3da67d54f343b7e83",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_010",
+    "rgba": [
+     0.09,
+     0.3,
+     0.78,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_011",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_011.bin",
+   "vertex_count": 2464,
+   "index_count": 7380,
+   "sha256": "8f813c80bb4bff60ef81dc68ced518b3a347c846f05623b4a338dbf0b018a499",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_011",
+    "rgba": [
+     0.1,
+     0.1,
+     0.11,
+     1.0
+    ],
+    "roughness": 0.45,
+    "metalness": 0.6
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_012",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_012.bin",
+   "vertex_count": 768,
+   "index_count": 2256,
+   "sha256": "9b6eb63663c3a4a1f5248fa56beef0353ba5b5fc3f8332bdaf61b572ea3a2bf8",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_012",
+    "rgba": [
+     0.1,
+     0.3,
+     0.75,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.0
+   },
+   "note": "Power (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_013",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_013.bin",
+   "vertex_count": 420,
+   "index_count": 924,
+   "sha256": "2414cf42766301c539a4aeb6bfb70a10fe5d21382ac4bdb70c8351c62cca34a0",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_013",
+    "rgba": [
+     0.12,
+     0.12,
+     0.13,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_014",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_014.bin",
+   "vertex_count": 192,
+   "index_count": 564,
+   "sha256": "8b65c633952c7fa61eb2706917127c268ede2368cdad9145c746b5d8b9170877",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_014",
+    "rgba": [
+     0.12,
+     0.12,
+     0.13,
+     1.0
+    ],
+    "roughness": 0.4,
+    "metalness": 0.6
+   },
+   "note": "Camera interface (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_015",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_015.bin",
+   "vertex_count": 14780,
+   "index_count": 44580,
+   "sha256": "ca868e4fdb96ec358df1a6aba5b0a2d8159ebc86442e8b77687d0453c14cad87",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_015",
+    "rgba": [
+     0.15,
+     0.62,
+     0.25,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "Wiring (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_016",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_016.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "1f9a24ab409da1f3d93aec8fa9ec5b81c17517df26a24c3faa90a2b25901e8ab",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_016",
+    "rgba": [
+     0.16,
+     0.16,
+     0.17,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_017",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_017.bin",
+   "vertex_count": 5859,
+   "index_count": 20148,
+   "sha256": "916f8aa3b72d0c392bdd0b6662d9fe4a40439e63a7a98adcdea321b74206b722",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_017",
+    "rgba": [
+     0.16,
+     0.16,
+     0.17,
+     1.0
+    ],
+    "roughness": 0.4,
+    "metalness": 0.8
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_018",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_018.bin",
+   "vertex_count": 3590,
+   "index_count": 10428,
+   "sha256": "3ec29e5bb1684c3c73bacdde3128d41fabaae7eaaadfeb907843fec46be31938",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_018",
+    "rgba": [
+     0.2,
+     0.22,
+     0.25,
+     1.0
+    ],
+    "roughness": 0.7,
+    "metalness": 0.0
+   },
+   "note": "Flight controller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_019",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_019.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "ed9f50459370d754031ff9d89869186347531ab2b5a6880f06454368c321271d",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_019",
+    "rgba": [
+     0.25,
+     0.85,
+     0.35,
+     1.0
+    ],
+    "roughness": 0.3,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_020",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_020.bin",
+   "vertex_count": 672,
+   "index_count": 3732,
+   "sha256": "465e2d455a543ab4d290d28abea2cb9475e3361877a4c93a69082938c442ad6a",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_020",
+    "rgba": [
+     0.3,
+     0.31,
+     0.34,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.85
+   },
+   "note": "Flight controller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_021",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_021.bin",
+   "vertex_count": 6560,
+   "index_count": 23451,
+   "sha256": "cccf844dea05fc0591dc7c3498e4d62f1f87e3400ca4cb697f59539f4746490a",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_021",
+    "rgba": [
+     0.35,
+     0.36,
+     0.38,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_022",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_022.bin",
+   "vertex_count": 4321,
+   "index_count": 7242,
+   "sha256": "87c34498d0070645100849e6741bbb3b1b6b86d77c00bca5f50a71540d709f82",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_022",
+    "rgba": [
+     0.36,
+     0.33,
+     0.22,
+     1.0
+    ],
+    "roughness": 0.8,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_023",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_023.bin",
+   "vertex_count": 72,
+   "index_count": 108,
+   "sha256": "0883524ba538e91f34df5e609f7a7e1da6618e0d130e48d2661eacff87069098",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_023",
+    "rgba": [
+     0.45,
+     0.55,
+     0.75,
+     1.0
+    ],
+    "roughness": 0.8,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_024",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_024.bin",
+   "vertex_count": 26924,
+   "index_count": 66528,
+   "sha256": "e4b5183cfeba57005e5403ca21fdc2d8a6ce0890ded3bc5274442a9b95a8ee11",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_024",
+    "rgba": [
+     0.502,
+     0.502,
+     0.502,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_025",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_025.bin",
+   "vertex_count": 26524,
+   "index_count": 80580,
+   "sha256": "31693c1aa5a0ced8819ef449dbd5de9fbe7893ffcddfbdc6e350932c9be6315c",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_025",
+    "rgba": [
+     0.78,
+     0.1,
+     0.1,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_026",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_026.bin",
+   "vertex_count": 2907,
+   "index_count": 9465,
+   "sha256": "4b45d0a87f3059c61c076e1b3a00fabb44386e0c1b93e1ad495dedbf123dea61",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_026",
+    "rgba": [
+     0.78,
+     0.79,
+     0.81,
+     1.0
+    ],
+    "roughness": 0.32,
+    "metalness": 0.9
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_027",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_027.bin",
+   "vertex_count": 1920,
+   "index_count": 5376,
+   "sha256": "b45c0d7902d16f99c7f5824f6628ee903d4633d37215df0ce5557910757a48f1",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_027",
+    "rgba": [
+     0.85,
+     0.7,
+     0.3,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.9
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_028",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_028.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "a5483fc075aa45a3102576e674e7945c8910137d441f38304f83f8c763ff749c",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_028",
+    "rgba": [
+     0.85,
+     0.85,
+     0.85,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_029",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_029.bin",
+   "vertex_count": 5176,
+   "index_count": 9237,
+   "sha256": "81e48561da23069a129c0b2e36bd6327e8838bceb9f49aa1471e2d94ecc38591",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_029",
+    "rgba": [
+     0.85,
+     0.86,
+     0.88,
+     1.0
+    ],
+    "roughness": 0.7,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_030",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_030.bin",
+   "vertex_count": 48,
+   "index_count": 84,
+   "sha256": "fccde1ccb32b9423837b17d998079a815570705e17412fe9e9b73cdba8ddf5ed",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_030",
+    "rgba": [
+     0.85,
+     0.88,
+     0.92,
+     1.0
+    ],
+    "roughness": 0.15,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_031",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_031.bin",
+   "vertex_count": 6496,
+   "index_count": 19584,
+   "sha256": "2de87ee65240a63a4442b3e7fe20a6dcb8be4976c47d5ce6f8b248d5621cdf22",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_031",
+    "rgba": [
+     0.86,
+     0.42,
+     0.08,
+     1.0
+    ],
+    "roughness": 0.6,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_032",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_032.bin",
+   "vertex_count": 21564,
+   "index_count": 63132,
+   "sha256": "f68bbe89454c139cef0b9530e7c1897f6c80df350a7d3bc33611644f4365105a",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_032",
+    "rgba": [
+     0.92,
+     0.92,
+     0.92,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_033",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_033.bin",
+   "vertex_count": 6576,
+   "index_count": 13824,
+   "sha256": "4306f53d9fbe996bee8525b6a17304b830a5f0972908ee4f99cb5272ed06e243",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_033",
+    "rgba": [
+     0.93,
+     0.74,
+     0.32,
+     1.0
+    ],
+    "roughness": 0.25,
+    "metalness": 1.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_034",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_034.bin",
+   "vertex_count": 8832,
+   "index_count": 15972,
+   "sha256": "8e471656ef0d0915d74997bb740606dc6a697da609854ff3a08883d7ba1a3917",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_034",
+    "rgba": [
+     0.93,
+     0.93,
+     0.94,
+     1.0
+    ],
+    "roughness": 0.7,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_035",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_035.bin",
+   "vertex_count": 96,
+   "index_count": 144,
+   "sha256": "31ae949690580203a2659dda9a83187aed3450a9f0ee4c60cef15c50c6829243",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_035",
+    "rgba": [
+     0.95,
+     0.85,
+     0.25,
+     1.0
+    ],
+    "roughness": 0.9,
+    "metalness": 0.0
+   },
+   "note": "Flight controller (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_036",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_036.bin",
+   "vertex_count": 18774,
+   "index_count": 57276,
+   "sha256": "6048065e15e626d314a3e7f2c4f74341250f4512e6ea7da9aa754c4d18d0812e",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_036",
+    "rgba": [
+     0.97,
+     0.76,
+     0.12,
+     1.0
+    ],
+    "roughness": 0.55,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_037",
+   "anchor": "drone_Body005",
+   "url": "/landing/detail/fe_037.bin",
+   "vertex_count": 24,
+   "index_count": 36,
+   "sha256": "2234701ebbf264d8cd795bc54ee4e6fb3f8a6f470fff186d24c4ae955826c0de",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_037",
+    "rgba": [
+     0.98,
+     0.62,
+     0.15,
+     1.0
+    ],
+    "roughness": 0.3,
+    "metalness": 0.0
+   },
+   "note": "FE-1 case and stack (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_038",
+   "anchor": "drone_CombinedShell",
+   "url": "/landing/detail/fe_038.bin",
+   "vertex_count": 2203,
+   "index_count": 11460,
+   "sha256": "23586a15d0a3ebc88a47620eb8c110ba7e68f47974c14c487e762160a3db1ad9",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_038",
+    "rgba": [
+     0.06,
+     0.06,
+     0.07,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.2
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_039",
+   "anchor": "drone_CombinedShell",
+   "url": "/landing/detail/fe_039.bin",
+   "vertex_count": 6094,
+   "index_count": 30906,
+   "sha256": "a7962e39c45b63c084121d8e8ad5f8315aeeaca73532037ddd5e7aaebc0945e9",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_039",
+    "rgba": [
+     0.17,
+     0.18,
+     0.2,
+     1.0
+    ],
+    "roughness": 0.45,
+    "metalness": 0.3
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_040",
+   "anchor": "drone_LinkGroup006__Compound001",
+   "url": "/landing/detail/fe_040.bin",
+   "vertex_count": 2470,
+   "index_count": 14796,
+   "sha256": "fb3dc8cbfab26a611aa21857154963c9a47c65d431bc51ad21d995d924b3a868",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_040",
+    "rgba": [
+     0.07,
+     0.07,
+     0.08,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.2
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_041",
+   "anchor": "drone_LinkGroup006__Compound001",
+   "url": "/landing/detail/fe_041.bin",
+   "vertex_count": 771,
+   "index_count": 4938,
+   "sha256": "13add01c970be8183e47cbb8978e3e081ae418c9124b62a06a8a2b6d2babf7c6",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_041",
+    "rgba": [
+     0.1,
+     0.1,
+     0.11,
+     1.0
+    ],
+    "roughness": 0.5,
+    "metalness": 0.3
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_042",
+   "anchor": "drone_LinkGroup006__Compound001",
+   "url": "/landing/detail/fe_042.bin",
+   "vertex_count": 10666,
+   "index_count": 64308,
+   "sha256": "671e14b650ef43582aa788bebc387c8db76a95247349c875bc72a126fc50764f",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_042",
+    "rgba": [
+     0.16,
+     0.33,
+     0.62,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.6
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_043",
+   "anchor": "drone_LinkGroup006__Compound001",
+   "url": "/landing/detail/fe_043.bin",
+   "vertex_count": 2455,
+   "index_count": 14676,
+   "sha256": "71131a08ecbf450254dacb5f075ed3c0939ecbd8279753143c14bd1ad5316818",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_043",
+    "rgba": [
+     0.95,
+     0.45,
+     0.1,
+     1.0
+    ],
+    "roughness": 0.7,
+    "metalness": 0.0
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
+  },
+  {
+   "name": "fe_044",
+   "anchor": "drone_Shell003",
+   "url": "/landing/detail/fe_044.bin",
+   "vertex_count": 6402,
+   "index_count": 34932,
+   "sha256": "d50beb824c20e0bb155d49c8dbf8391e57208650d7f87a25e4d36b65efeb02c3",
+   "source": "flight_electronics",
+   "material": {
+    "name": "fe_044",
+    "rgba": [
+     0.86,
+     0.87,
+     0.88,
+     1.0
+    ],
+    "roughness": 0.35,
+    "metalness": 0.0
+   },
+   "note": "Gimbal camera in colour (flight_electronics/mechanical; operator view only)"
   }
  ],
  "operator_hidden": {
   "prefixes": [
-   "drone_LinkGroup015"
+   "drone_LinkGroup015",
+   "drone_xiao_esp32s3_v3_with_pins",
+   "drone_LinkGroup005__Link069",
+   "drone_LinkGroup005__Link070",
+   "drone_LinkGroup005__Solid037",
+   "drone_LinkGroup005__Solid038",
+   "drone_LinkGroup005__Solid039",
+   "drone_LinkGroup005__Solid041",
+   "drone_Body002",
+   "drone_Body004",
+   "drone_CombinedShell",
+   "drone_LinkGroup006__Compound001",
+   "drone_Shell003"
   ],
-  "note": "Khadas Edge2 on the top plate: no longer carried (replaced by the Orange Pi 5 in flight_electronics). Operator view only; the drone camera keeps the trained scene."
+  "note": "Operator view only; the drone camera keeps the trained scene. Hidden: the Khadas Edge2 and the old XIAO ESP32S3 + SX1262 (replaced by the FE-1 carrier and the Orange Pi 5), the Intel-camera bracket (removed for the case), and the grey gimbal meshes (shown as coloured pieces)."
  }
 }

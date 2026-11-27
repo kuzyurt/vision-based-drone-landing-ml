@@ -324,7 +324,7 @@ def merge(manifest):
     geoms = [entry for entry in manifest.get('geoms', []) if entry['name'] != BATTERY] + [battery_entry]
     geoms.sort(key=lambda entry: entry['id'])
     manifest['geoms'] = geoms
-    manifest['extras'] = extras
+    manifest['extras'] = [e for e in manifest.get('extras', []) if not e['name'].startswith('drone_Battery')] + extras
     return manifest
 
 

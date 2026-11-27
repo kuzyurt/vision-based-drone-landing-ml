@@ -23,6 +23,7 @@ MATERIALS = {
     'grey': dict(color=(0.35, 0.36, 0.38), metallic=0.0, roughness=0.6),
     'clear': dict(color=(0.85, 0.88, 0.92), metallic=0.0, roughness=0.15),
     'white': dict(color=(0.92, 0.92, 0.92), metallic=0.0, roughness=0.5),
+    'green': dict(color=(0.15, 0.62, 0.25), metallic=0.0, roughness=0.55),
 }
 
 
@@ -254,7 +255,8 @@ def jst_gh_plug(n, wire_len=25.0, bend=None):
         sign = 1 if side > 0 else -1
         x_turn = 4.3 + straight - sign * y          # outer wires turn later, so the bundle stays flat
         wire = cq.Workplane('YZ').circle(0.45).extrude(x_turn - 4.3).translate((4.3, y, 2.0))
-        leg = cq.Workplane('XY').add(cq.Solid.makeCylinder(0.45, abs(side), cq.Vector(x_turn, y, 2.0), cq.Vector(0, sign, 0)))
+        # all legs end at local y = side, so the bundle leaves the bend as one flat ribbon
+        leg = cq.Workplane('XY').add(cq.Solid.makeCylinder(0.45, abs(side - y), cq.Vector(x_turn, y, 2.0), cq.Vector(0, sign, 0)))
         joint = cq.Workplane('XY').sphere(0.45).translate((x_turn, y, 2.0))
         out.append(('wire', wire.union(leg).union(joint), colour))
     return out

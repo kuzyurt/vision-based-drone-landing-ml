@@ -302,6 +302,11 @@ def main():
     battery_cradle = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(battery_cradle)
     battery_cradle.merge(manifest)
+    # the flight electronics parts (tools/flight_electronics_parts.py), carried over without CAD
+    spec = importlib.util.spec_from_file_location('fe_parts', Path(__file__).with_name('flight_electronics_parts.py'))
+    fe_parts = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fe_parts)
+    fe_parts.merge(manifest, rebuild=False)
     (OUT / 'detail.json').write_text(json.dumps(manifest, indent=1) + '\n')
     print(len(manifest['geoms']), 'detail meshes;', len(skipped), 'skipped;', left, 'parts left (run again)')
     for name, note in skipped:

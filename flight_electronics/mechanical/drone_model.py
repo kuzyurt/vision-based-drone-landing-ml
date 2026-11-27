@@ -7,8 +7,10 @@ Each body's frame is matched to the drone CAD frame (px4-mujoco-drone-simulation
 position_inventory.json) by the bounding boxes of the parts both share; the shift is
 the median over those parts, so the case placement (frame.DRONE_FROM_FRAME) holds.
 
-Left out: the Khadas Edge2 on the top plate (the game's operator view hides it too:
-detail.json `operator_hidden`) and the Intel-camera bracket this build removes.
+Left out: the Khadas Edge2 on the top plate and the old XIAO ESP32S3 + SX1262 next to it
+(the FE-1 carrier carries both jobs now; the game's operator view hides them too), and the
+Intel-camera bracket this build removes. The gimbal camera, one grey mesh per moving body
+in the game, is split into its real pieces and coloured (CAMERA_COLOURS).
 """
 from __future__ import annotations
 
@@ -39,6 +41,61 @@ KINDS = [
 ]
 
 
+HIDDEN = ('drone_LinkGroup015', 'drone_xiao_esp32s3_v3_with_pins')   # Khadas Edge2, old XIAO + SX1262
+
+# Gimbal camera pieces by mesh: (rule, colour, metallic, roughness). The colours are an assumption
+# (no verified photographs of the D-80Pro were found): light satin ball, graphite yoke, black pan
+# motor and brackets, blue anodised damper plate, orange silicone dampers, glass lens window.
+CAMERA_COLOURS = {
+    'drone_LinkGroup006__Compound001': [('dampers', (0.95, 0.45, 0.10), 0.0, 0.7), ('brackets', (0.07, 0.07, 0.08), 0.2, 0.5),
+                                        ('plate', (0.16, 0.33, 0.62), 0.6, 0.35), ('small', (0.10, 0.10, 0.11), 0.3, 0.5)],
+    'drone_Body002': [('all', (0.74, 0.75, 0.77), 0.8, 0.35)],
+    'drone_CombinedShell': [('largest', (0.17, 0.18, 0.20), 0.3, 0.45), ('rest', (0.06, 0.06, 0.07), 0.2, 0.5)],
+    'drone_Shell003': [('all', (0.86, 0.87, 0.88), 0.0, 0.35)],
+    'drone_Body004': [('all', (0.03, 0.05, 0.09), 0.5, 0.06)],
+}
+
+
+def _camera_pieces(name, mesh):
+    """Split one camera mesh into connected pieces and colour them: [(suffix, mesh, material)]."""
+    import trimesh as tm
+    rules = CAMERA_COLOURS[name]
+    merged = tm.Trimesh(mesh.vertices, mesh.faces, process=False)
+    merged.merge_vertices()
+    labels = tm.graph.connected_component_labels(merged.face_adjacency, node_count=len(merged.faces))
+    groups = collections.defaultdict(list)
+    areas = np.bincount(labels, weights=merged.area_faces)
+    order = np.argsort(-areas)
+    for rank, comp in enumerate(order):
+        faces = np.nonzero(labels == comp)[0]
+        sub = merged.submesh([faces], append=True)
+        ext = sub.extents
+        if rules[0][0] == 'all':
+            key = 'all'
+        elif rules[0][0] == 'largest':
+            key = 'largest' if rank == 0 else 'rest'
+        elif len(faces) > 1000 and ext.max() < 8:                # the four silicone damper balls
+            key = 'dampers'
+        elif 1500 < areas[comp] < 3000:                         # the clamps on the rails
+            key = 'brackets'
+        else:
+            key = 'plate' if rank == 0 else 'small'
+        groups[key].append(faces)
+    out = []
+    for key, colour, metal, rough in rules:
+        if key not in groups:
+            continue
+        faces = np.concatenate(groups[key])
+        sub = tm.Trimesh(mesh.vertices, mesh.faces[faces], vertex_normals=mesh.vertex_normals, process=False)
+        sub.remove_unreferenced_vertices()
+        uv = getattr(mesh, '_uv', None)
+        if uv is not None:
+            used = np.unique(mesh.faces[faces])
+            sub._uv = uv[used]
+        out.append((key, sub, dict(color=colour, metallic=metal, roughness=rough)))
+    return out
+
+
 def _read_bin(path, n, k):
     data = path.read_bytes()
     pos = np.frombuffer(data, '<f4', n * 3, 0).reshape(n, 3).astype(np.float64)
@@ -56,29 +113,24 @@ def _textures(vehicles):
     return out
 
 
-def parts(hidden_prefixes=('drone_LinkGroup015',)):
-    """[(name, kind, trimesh in drone CAD mm with vertex normals and uv, material dict, texture image or None)]."""
+def frames():
+    """{geom name: (4x4 mesh->body matrix in metres, body, body->drone-CAD shift in mm)} for the drone."""
+    return _placement()[1]
+
+
+def _placement():
     vehicles = json.loads((LANDING / 'vehicles.json').read_text(encoding='utf-8'))
     layout = json.loads((LANDING / 'physics' / 'configuration.json').read_text(encoding='utf-8'))['visual_layout']
-    detail = json.loads((LANDING / 'detail' / 'detail.json').read_text(encoding='utf-8'))
-    hidden = tuple(hidden_prefixes) + tuple(detail.get('operator_hidden', {}).get('prefixes', []))
     inventory = json.loads(INVENTORY.read_text(encoding='utf-8'))['parts']
-    label_of = {'drone_' + q['part']: q['label'] for q in inventory}
     bbox_of = {'drone_' + q['part']: np.array(q['world_bbox_mm']).reshape(2, 3) for q in inventory if q.get('world_bbox_mm')}
-    removed = {n for n, l in label_of.items() if l.startswith(fr.REMOVED)}
     geoms = {g['name']: g for g in vehicles['geoms']}
-    detail_of = {g['name']: g for g in detail['geoms']}
-    textures = _textures(vehicles)
-
     placed = []
     for name, matrix, body in layout:
         if not body.startswith('drone') or name not in geoms:
             continue
         g = geoms[name]
-        pos, nor, uv, idx = _read_bin(LANDING / g['url'].split('/')[-1], g['vertex_count'], g['index_count'])
-        m = np.array(matrix, float).reshape(4, 4)
-        placed.append((name, body, m, g, (pos, nor, uv, idx)))
-    # body frame -> drone CAD frame: median shift over the parts with a CAD bounding box
+        arrays = _read_bin(LANDING / g['url'].split('/')[-1], g['vertex_count'], g['index_count'])
+        placed.append((name, body, np.array(matrix, float).reshape(4, 4), g, arrays))
     shifts = collections.defaultdict(list)
     for name, body, m, g, (pos, *_) in placed:
         if name in bbox_of:
@@ -86,6 +138,20 @@ def parts(hidden_prefixes=('drone_LinkGroup015',)):
             b = bbox_of[name]
             shifts[body].append((b[0] + b[1]) / 2 - (w.min(0) + w.max(0)) / 2)
     shift = {body: np.median(np.array(v), axis=0) for body, v in shifts.items()}
+    return placed, {name: (m, body, shift[body]) for name, body, m, g, a in placed if body in shift}, shift
+
+
+def parts(hidden_prefixes=HIDDEN):
+    """[(name, kind, trimesh in drone CAD mm with vertex normals and uv, material dict, texture image or None)]."""
+    vehicles = json.loads((LANDING / 'vehicles.json').read_text(encoding='utf-8'))
+    detail = json.loads((LANDING / 'detail' / 'detail.json').read_text(encoding='utf-8'))
+    hidden = tuple(hidden_prefixes)
+    inventory = json.loads(INVENTORY.read_text(encoding='utf-8'))['parts']
+    label_of = {'drone_' + q['part']: q['label'] for q in inventory}
+    removed = {n for n, l in label_of.items() if l.startswith(fr.REMOVED)}
+    detail_of = {g['name']: g for g in detail['geoms']}
+    textures = _textures(vehicles)
+    placed, _, shift = _placement()
 
     def kind(label):
         return next((k for k, rx in KINDS if re.search(rx, label)), 'Electronics and other')
@@ -104,11 +170,15 @@ def parts(hidden_prefixes=('drone_LinkGroup015',)):
         mat = g['material']
         label = label_of.get(name, 'prop' if body.startswith('drone_prop') else name)
         tex = textures.get(mat.get('texture', -1)) if mat.get('texture', -1) >= 0 else None
-        out.append((name, kind(label), mesh, dict(color=tuple(mat['rgba'][:3]), metallic=float(mat.get('metalness', 0.0) or 0.0),
-                                                   roughness=float(mat.get('roughness', 0.6))), tex))
+        if name in CAMERA_COLOURS:
+            for key, piece, colour in _camera_pieces(name, mesh):
+                out.append((f'{name}#{key}', 'Gimbal camera', piece, colour, None))
+        else:
+            out.append((name, kind(label), mesh, dict(color=tuple(mat['rgba'][:3]), metallic=float(mat.get('metalness', 0.0) or 0.0),
+                                                       roughness=float(mat.get('roughness', 0.6))), tex))
         # operator-view-only parts anchored to this mesh (battery cradle, straps, screws)
         for extra in detail.get('extras', []):
-            if extra['anchor'] != name:
+            if extra['anchor'] != name or extra.get('source') == 'flight_electronics':
                 continue
             p2, n2, u2, i2 = _read_bin(LANDING / 'detail' / extra['url'].split('/')[-1], extra['vertex_count'], extra['index_count'])
             em = trimesh.Trimesh(p2 @ m[:3, :3].T * 1000 + m[:3, 3] * 1000 + shift[body], i2,

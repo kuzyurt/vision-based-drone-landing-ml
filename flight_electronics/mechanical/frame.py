@@ -72,6 +72,9 @@ VENTS = [('front', (34.0, 68.0), (OPI_TOP + 3.0, OPI_TOP + 15.0)),      # across
          ('back', (34.0, 54.0), (OPI_TOP + 8.0, OPI_TOP + 15.0)),       # above the HDMI / USB-C cut-outs
          ('front', (49.0, 54.0), (CARRIER_TOP + 2.0, CARRIER_TOP + 10.0)),
          ('back', (26.0, 72.0), (CARRIER_TOP + 2.0, CARRIER_TOP + 10.0))]
+# cable stubs drawn with the case (the rest of each cable is drawn by wiring.py, on the drone)
+STUB = dict(rj45=12.0, xt30=10.0)
+JST_BENDS = (('J4', 6, (5.0, 20.0)), ('J5', 4, (5.0, -20.0)))     # (ref, pins, (straight, side))
 EDGE_OF_FACE = {'+x': 'left', '-x': 'right', '-y': 'back', '+y': 'front'}
 
 
@@ -300,11 +303,11 @@ def cables():
     boxes = opi_boxes()
     x1, x2, y1, y2, z1, z2, _ = boxes['Ethernet RJ45']
     out += [(f'Ethernet plug {n}', 'Ethernet cable', s.rotate((0, 0, 0), (0, 0, 1), 180).translate((x1, (y1 + y2) / 2, z1)), m)
-            for n, s, m in C.rj45_plug()]
+            for n, s, m in C.rj45_plug(cable_len=STUB['rj45'])]
     for ref, cols in (('J1', ('red', 'black')), ('J3', ('red', 'black'))):
         bx = xt30_box(ref)
         edge = _carrier_edge_parts()[ref][6]
-        plug = C.xt30_plug(colours=cols)
+        plug = C.xt30_plug(wire_len=STUB['xt30'], colours=cols)
         if edge == 'right':
             moved = [(n, s.translate((bx[1], (bx[2] + bx[3]) / 2, CARRIER_TOP)), m) for n, s, m in plug]
         else:
@@ -313,7 +316,7 @@ def cables():
         out += [(f'{ref} plug {n}', f'{ref} cable', s, m) for n, s, m in moved]
     # the JST-GH cables leave the plug, bend and run along the wall (the gimbal camera is 17 mm
     # behind the back wall in flight, so a straight cable would hit it)
-    for ref, n_pins, bend in (('J4', 6, (5.0, -20.0)), ('J5', 4, (5.0, 20.0))):
+    for ref, n_pins, bend in JST_BENDS:
         x1, x2, y1, y2, z1, z2, edge, _ = _carrier_edge_parts()[ref]
         plug = C.jst_gh_plug(n_pins, bend=bend)
         if edge == 'right':
@@ -347,6 +350,42 @@ def cables():
     # the antenna: points along frame +z, which is straight down in flight (vertical, like the boat's)
     out += [(f'Antenna {n}', 'Antenna lead', s.mirror('XY').rotate((0, 0, 0), (0, 0, 1), -90).translate((SMA['x'], outer, SMA['z'])), m)
             for n, s, m in C.sma_whip()]
+    return out
+
+
+def cable_ends():
+    """Where each cable stub drawn with the case ends, in frame coordinates:
+    {name: (centre, direction, [(offset from centre, wire radius, material)])}. wiring.py continues them."""
+    import numpy as np
+    out = {}
+    x1, x2, y1, y2, z1, z2, _ = opi_boxes()['Ethernet RJ45']
+    out['Ethernet'] = (np.array([x1 - 10.0 - STUB['rj45'], (y1 + y2) / 2, z1 + 5.8]), np.array([-1.0, 0, 0]),
+                       [(np.zeros(3), 3.0, 'blue')])
+    for ref in ('J1', 'J3'):
+        bx = xt30_box(ref)
+        yc = (bx[2] + bx[3]) / 2
+        if _carrier_edge_parts()[ref][6] == 'right':
+            out[ref] = (np.array([bx[1] + 16.0 + STUB['xt30'], yc, CARRIER_TOP + 4.3]), np.array([1.0, 0, 0]),
+                        [(np.array([0, -2.5, 0]), 1.45, 'red'), (np.array([0, 2.5, 0]), 1.45, 'black')])
+        else:
+            out[ref] = (np.array([bx[0] - 16.0 - STUB['xt30'], yc, CARRIER_TOP + 4.3]), np.array([-1.0, 0, 0]),
+                        [(np.array([0, 2.5, 0]), 1.45, 'red'), (np.array([0, -2.5, 0]), 1.45, 'black')])
+    for ref, n, (straight, side) in JST_BENDS:
+        x1, x2, y1, y2, z1, z2, edge, _ = _carrier_edge_parts()[ref]
+        sign = 1 if side > 0 else -1
+        ys = [-1.25 * (n - 1) / 2 + i * 1.25 for i in range(n)]
+        turns = [4.3 + straight - sign * y for y in ys]
+        mean = sum(turns) / n
+        colours = ['red'] + ['black'] * (n - 1)
+        if edge == 'right':                       # local x -> frame +x, local y -> frame +y
+            centre = np.array([W + mean, (y1 + y2) / 2 + side, CARRIER_TOP + 2.0])
+            d = np.array([0, sign, 0.0])
+            offs = [np.array([t - mean, 0, 0]) for t in turns]
+        else:                                     # back edge, turned 90 degrees: local x -> +y, local y -> -x
+            centre = np.array([(x1 + x2) / 2 - side, H + mean, CARRIER_TOP + 2.0])
+            d = np.array([-sign, 0, 0.0])
+            offs = [np.array([0, t - mean, 0]) for t in turns]
+        out[ref] = (centre, d, [(o, 0.45, c) for o, c in zip(offs, colours)])
     return out
 
 

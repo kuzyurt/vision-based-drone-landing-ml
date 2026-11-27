@@ -111,7 +111,7 @@ select { font: 12px var(--font); background: var(--panel); color: var(--fg); bor
   <aside id="side" aria-label="Parts">
     <div class="side-head">
       <h1>FE-1 stack on the X500</h1>
-      <p>Printed case, Orange Pi 5, FE-1 carrier, cables. Click a part to inspect it.</p>
+      <p>Printed case, Orange Pi 5, FE-1 carrier, flight controller and wiring. Click a part to inspect it.</p>
     </div>
     <div class="fac-head"><span></span><span>Part</span><span>Explode ×</span></div>
     <div class="tree" id="tree"></div>
@@ -166,7 +166,8 @@ const $ = (s) => document.querySelector(s);
 const EYE = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z"/><circle cx="8" cy="8" r="2.2"/></svg>';
 const EYE_OFF = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1 8s2.6-5 7-5 7 5 7 5-2.6 5-7 5-7-5-7-5z" opacity=".35"/><path d="M2 14 14 2"/></svg>';
 const CASE_IDS = (id) => id.startsWith('case-') || id.startsWith('clamp-');
-const MODE_GROUPS = { drone: null, case: (p) => p.group !== 'Drone', parts: (p) => p.group !== 'Drone' && p.group !== 'Case' };
+// everything in drone.glb (the drone, the flight controller, the power parts, the wiring) is placed on the drone
+const MODE_GROUPS = { drone: null, case: (p) => p.file !== 'drone.glb', parts: (p) => p.file !== 'drone.glb' && p.group !== 'Case' };
 
 let meta = null, parts = {}, nodes = {}, defaults = {};
 const state = { mode: 'case', explode: 0, factors: {}, vectors: {}, hidden: {}, xray: false, edges: true, cut: { axis: '', pos: 500 }, selected: null };

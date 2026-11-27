@@ -246,5 +246,21 @@ class Frame(unittest.TestCase):
         self.assertTrue(near)
         self.assertGreaterEqual(min(near.values()), 2.0)
 
+class Wiring(unittest.TestCase):
+    """Reads the report that flight_electronics.mechanical.wiring writes (CadQuery is not needed here)."""
+
+    def test_cables_and_parts_clear_the_drone_and_the_case(self):
+        import json
+        from pathlib import Path
+        report = json.loads((Path(__file__).resolve().parents[1] / 'mechanical/out/wiring_report.json').read_text())
+        for name, c in report['cables'].items():
+            self.assertGreaterEqual(c['drone_gap_mm'], 0.0, name)
+            self.assertGreaterEqual(c['case_gap_mm'], 0.0, name)
+            if c['propeller_disc_gap_mm'] is not None:
+                self.assertGreater(c['propeller_disc_gap_mm'], 10.0, name)
+        for name, p in report['parts'].items():
+            self.assertGreaterEqual(p['drone_gap_mm'], 0.3, name)
+
+
 if __name__ == '__main__':
     unittest.main()

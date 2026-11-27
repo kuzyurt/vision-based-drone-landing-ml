@@ -160,11 +160,11 @@ model is in `mechanical/frame.py` (CadQuery); print files are in `mechanical/out
 - **Drone model.** The renders, the viewer and the clearance check use the
   realistic game's detailed drone model (`tidewater-game/app/public/landing`,
   with propellers and the battery cradle), placed in the drone CAD frame by
-  `mechanical/drone_model.py`. The Khadas Edge2 that used to sit on the top
-  plate is gone: the Orange Pi 5 replaces it. The realistic game's operator view
-  hides it as well (`detail/detail.json`, `operator_hidden`); the drone camera
-  the policy sees still renders the scene it was trained on, and the physics
-  are unchanged.
+  `mechanical/drone_model.py`. The Khadas Edge2 and the old XIAO ESP32S3 +
+  SX1262 that used to sit on the top plate are gone: the Orange Pi 5 and the
+  FE-1 carrier replace them. The gimbal camera is shown in colour (light ball,
+  graphite yoke, blue damper plate, orange dampers, glass window; the colours
+  are an assumption, no verified photographs of the D-80Pro were found).
 
 | Print | Count | Notes |
 |---|---|---|
@@ -179,13 +179,67 @@ thermal pad, a 26-way ribbon cable of about 70 mm with two 2 × 13 IDC sockets,
 an SMA bulkhead with a 100 mm U.FL pigtail.
 
 **3D viewer.** `mechanical/viewer/` is a browser page (three.js) of the whole
-assembly: the case on the drone, the case with its parts, or the parts alone;
+assembly: the case on the drone (with the flight controller and the wiring),
+the case with its parts, or the parts alone;
 every part can be hidden, isolated, cut and exploded with its own factor and
 direction, edges can be drawn, and views can be saved. The drone is shown at
 full detail. `python -m flight_electronics.mechanical.assembly`
 writes its models (`stack.glb`, `drone.glb`, `parts.json`; meshopt-compressed
 when `gltfpack` is installed); serve the folder
 with `python -m http.server` and open `index.html`.
+
+## Flight controller, power and wiring
+
+| Top deck | Underside |
+|---|---|
+| ![Flight controller, battery and charge socket](media/drone_wiring_top.png) | ![Case, GCU and camera](media/drone_wiring_below.png) |
+
+The drone model had no flight controller, no ESCs and no wiring; the green
+board between the plates is the Holybro PM06 power board. `mechanical/wiring.py`
+adds them, in the drone's CAD frame:
+
+- **Flight controller.** A Holybro Pixhawk 6C (84.8 × 44 × 12.4 mm, arrow
+  forward) on a printed tray over the four free M3 holes on the top deck's
+  right side (x = −33 / −6 mm, y = 143 / 168 mm). The tray stands on 4 mm bosses,
+  so a hook-and-loop strap passes under it; the board sits on four
+  anti-vibration foam pads between locating corners. The tray keeps 0.5 mm off
+  the battery cradle's rail and has reliefs for the arm-clamp screw heads below
+  it. The 6C's port positions are approximate.
+- **ESCs and motors.** Four 20 A ESCs lie on the bottom plate in two pairs
+  beside the PM06, which feeds them (power and signal). Their phase wires run
+  inside the carbon arm tubes to the motors.
+- **Battery.** The pack keeps its BMS inside. A cable gland in the window of
+  the cradle's side rail carries four leads: discharge (2 × 12 AWG) to an XT60
+  plug on the frame's XT60 under the bottom plate, and charge (2 × 16 AWG) to an
+  XT60 panel socket with a dust cap in a printed bracket on the deck's four free
+  left-side holes, facing outwards. The pack charges in place.
+- **Camera interface.** The D-80Pro's GCU (a separate box in the set; its size
+  is assumed) sits on the rear face of the camera pylon, held by a
+  hook-and-loop strap through the pylon's two windows. Ethernet, 17 V (XT30) and
+  the control cable come from the FE-1 case; the gimbal lead goes over the
+  pylon to the damper head.
+- **Data.** TELEM2 from the carrier to the 6C, the GPS mast cable (tied to the
+  mast) to GPS1, the 6C's power from the PM06 and its PWM outputs to the PM06's
+  PWM input. The carrier's battery input comes from the PM06.
+- **Checked** (`mechanical/out/wiring_report.json`): every cable clears the
+  drone, the case and the spinning propeller discs, apart from the last
+  millimetres where it enters a connector, an arm tube or a motor mount; every
+  new part clears the drone except where it rests on it. Cable ties hold the
+  runs at the rails, the plates and the mast.
+- **Weight.** About 71 g of cable, 16.5 g tray and 7.4 g bracket in PETG.
+
+| Print | Count | Notes |
+|---|---|---|
+| `mechanical/out/fc_tray.stl` | 1 | plate down |
+| `mechanical/out/charge_bracket.stl` | 1 | base down |
+
+The realistic game's operator view shows all of this too: the case, the flight
+controller, the power parts, the cables and the camera in colour
+(`tidewater-game/app/tools/flight_electronics_parts.py` writes them into
+`detail/detail.json`), and it hides the Khadas Edge2, the old XIAO, the
+Intel-camera bracket and the grey camera meshes. The drone camera the policy
+sees still renders the scene it was trained on, and the physics are unchanged:
+none of these parts has mass in the simulation.
 
 ## Simulation
 
@@ -294,7 +348,9 @@ python -m flight_electronics.tools.make_figures         # all simulations and fi
 python3.12 -m flight_electronics.circuit.kicad.generate # schematic, PCB, ERC/DRC, renders (KiCad 9)
 python -m flight_electronics.mechanical.frame            # case, lid, clamps, fit and clearance report (CadQuery)
 python -m flight_electronics.mechanical.render           # case renders (trimesh, pyrender)
+python -m flight_electronics.mechanical.wiring           # flight controller, power parts, cables, clearance report
 python -m flight_electronics.mechanical.assembly         # models for the 3D viewer (mechanical/viewer/)
+python tidewater-game/app/tools/flight_electronics_parts.py  # the same parts in the realistic game's operator view
 ```
 
 Fly the realistic simulator through the simulated hardware (Windows, the same
@@ -322,7 +378,7 @@ It has not been compiled for the ESP32 in this repository's environment.
 | `hardware/design.py` | Every value, its source or its assumption |
 | `hardware/board.py` | Every part, footprint and connection of the carrier board |
 | `circuit/kicad/` | Generated KiCad 9 project, BOM, ERC/DRC reports, the generator and router |
-| `mechanical/` | Printed case, lid and rail clamps, Orange Pi 5 and connector models, fit checks, renders, 3D viewer |
+| `mechanical/` | Printed case, lid and rail clamps, Orange Pi 5 and connector models, flight controller and wiring, fit checks, renders, 3D viewer |
 | `firmware/esp32_radio_bridge/` | Radio bridge firmware: SX1262 driver, protocol, application, ESP-IDF entry, PC build |
 | `companion/` | Orange Pi 5 code: camera pipeline, MAVLink, GCU protocol, radio link, timing |
 | `simulation/` | ngspice binding and circuits, device models, `hil.py` (the hardware simulation) |

@@ -111,7 +111,7 @@ BOARD_LAYERS = {   # colour, metallic, roughness, lift (mm)
 }
 
 
-def _carrier_glb(col, explode):
+def _carrier_glb(col, explode, fine_copper=True):
     """KiCad's GLB of the carrier (metres, Y up): board layers merged, components grouped by reference."""
     scene = trimesh.load(fr.OUT / 'fe_carrier.glb')
     to_frame = np.array([[1000, 0, 0, 0], [0, 0, -1000, fr.H], [0, 1000, 0, fr.CARRIER_Z], [0, 0, 0, 1]], float)
@@ -142,6 +142,8 @@ def _carrier_glb(col, explode):
         # a lighter green as on a real board, pads gold. KiCad puts all layers on one surface; each
         # is lifted a hair so the upper one wins.
         layer = next((k for k in BOARD_LAYERS if gname.startswith('fe_carrier_' + k)), None)
+        if not fine_copper and layer in ('copper', 'via', 'pad', 'silkscreen'):
+            continue                          # the realistic game's operator view: board, mask and parts only
         if layer is not None:
             colour, metallic, rough, lift = BOARD_LAYERS[layer]
             colour = np.array(colour)
@@ -159,7 +161,7 @@ def _carrier_glb(col, explode):
                     explode)
 
 
-def stack_parts():
+def stack_parts(fine_copper=True):
     """Everything of the case, the boards, the hardware and the cables, in frame coordinates."""
     col = Collector()
     body = trimesh.load(fr.OUT / 'frame.stl')
@@ -190,7 +192,7 @@ def stack_parts():
             continue
         label = {'board': 'Orange Pi 5 PCB', 'chips': 'Chips and parts'}.get(group, group)
         col.add(f'opi-{_slug(label)}', label, 'Orange Pi 5', _mesh(solid, 0.03), mat, (0, 0, LIFT['opi']))
-    _carrier_glb(col, (0, 0, LIFT['carrier']))
+    _carrier_glb(col, (0, 0, LIFT['carrier']), fine_copper)
     for name, ref, solid, mat in fr.carrier_parts():
         label = {'J1': 'J1 battery XT30', 'J3': 'J3 camera XT30', 'U3': 'U3 XIAO ESP32S3 + Wio-SX1262'}[ref]
         col.add(f'carrier-{ref.lower()}', label, 'Carrier', _mesh(solid, 0.03), mat, (0, 0, LIFT['carrier']))
@@ -211,11 +213,16 @@ def stack_parts():
 
 
 # --------------------------------------------------------------------------- drone
-def drone_parts(col):
-    """The game's detailed drone (drone CAD mm), one viewer part per kind of part."""
+def drone_parts(col, wiring=True):
+    """The game's detailed drone (drone CAD mm), one viewer part per kind of part, and (wiring=True)
+    the flight controller, power parts and cables of wiring.py."""
     from . import drone_model
     for name, kind, mesh, mat, tex in drone_model.parts():
         col.add(f'drone-{_slug(kind)}', kind, 'Drone', mesh, mat, texture=tex)
+    if wiring:
+        from . import wiring as W
+        for pid, label, group, mesh, mat in W.parts():
+            col.add(pid, label, group, mesh, mat)
     return col
 
 
@@ -275,7 +282,8 @@ def export_viewer(out_dir=VIEWER, with_drone=True):
         dmeta, info['drone_bytes'] = _write_glb(drone_parts(Collector()), out_dir / 'drone.glb')
         meta += dmeta
     doc = dict(units='mm', up='+z', frame_to_drone=fr.DRONE_FROM_FRAME,
-               groups=['Case', 'Orange Pi 5', 'Cooling', 'Carrier', 'Hardware', 'Cables', 'Drone'],
+               groups=['Case', 'Orange Pi 5', 'Cooling', 'Carrier', 'Hardware', 'Cables', 'Flight controller', 'Power',
+                       'Camera interface', 'Wiring', 'Drone'],
                parts=meta, **info)
     (out_dir / 'parts.json').write_text(json.dumps(doc, indent=1), encoding='utf-8')
     return info, len(meta)

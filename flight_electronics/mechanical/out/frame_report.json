@@ -114,8 +114,8 @@
       "HUAN-GUIJIAO": 2.8
     },
     "antenna_and_cables_min_distance_mm": {
-      "camera-halte-platte-static-to-drone": 5.8,
-      "camera-x-axis": 41.1
+      "drone_Body002#all": 5.8,
+      "drone_CombinedShell#rest": 48.1
     },
     "not_checked": {
       "Khadas Edge2": "removed (no longer carried)",
