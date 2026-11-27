@@ -21,7 +21,7 @@ BLOCKS = {  # name: (x, y, w, h, title, subtitle, highlighted)
     'boat': (960, 200, 160, 80, 'Boat beacon', 'LoRa 868 MHz', False),
 }
 INNER = [(315, 80, 220, 34, 'protection: fuse, reverse FET, TVS'), (315, 125, 220, 34, '5 V / 5 A buck (TPS54560B)'),
-         (315, 170, 220, 34, '17 V boost (TPS61288)')]
+         (315, 170, 220, 34, '17 V boost (TPS55340)')]
 ARROWS = [  # (points, color, label, label_xy)
     ([(200, 95), (300, 95)], POWER, 'XT30', (230, 88)),
     ([(115, 130), (115, 200)], POWER, '', None),

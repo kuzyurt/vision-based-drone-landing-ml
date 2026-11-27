@@ -81,8 +81,15 @@ Cq q 0 2n
 
 
 def boost_switching(vin=12.0, i_low=1.0, i_high=2.0, t_step=7.0e-3, t_end=10.0e-3, p=D.BOOST_17V):
-    """TPS55340 non-synchronous boost: internal low-side switch, B560C rectifier, current mode."""
+    """TPS55340 non-synchronous boost: internal low-side switch, B560C rectifier, current mode.
+
+    Soft start as in the data sheet: a 6 uA source charges C_SS and the SS pin clamps COMP.
+    Time 0 is the moment SS reaches the COMP level of zero switch current; before that
+    (C_SS * comp_offset / I_SS, 7.8 ms with 47 nF) the converter does not switch and the
+    output sits at the input through the diode, which the initial condition reproduces."""
     period = 1 / p['fsw_hz']
+    ss_slope = p['i_ss'] / p['c_ss']                       # V/s
+    ss_end = (1.8 - p['comp_offset']) / ss_slope
     slope_a = 1.2 * 0.5 * (p['vout'] - vin) / p['L'] * period + 0.2
     ea_limit = p['ea_current_a'] / p['gm_ea']
     return f"""
@@ -103,7 +110,9 @@ Rmin out 0 2k
 Iload out 0 PWL(0 0 0.8m 0 0.9m {i_low} {t_step} {i_low} {t_step + 2e-6} {i_high})
 Rtop out fb {p['r_top']}
 Rbot fb 0 {p['r_bottom']}
-Vss ref 0 PWL(0 0 0.1m {p['vref'] * vin / p['vout']} 1.0m {p['vref']})
+Vref ref 0 {p['vref']}
+Vss ss 0 PWL(0 {p['comp_offset']} {ss_end} 1.8)
+Bclamp comp 0 I=max(V(comp)-V(ss),0)*1
 Bea 0 comp I={p['gm_ea']}*max(min(V(ref)-V(fb),{ea_limit}),-{ea_limit})
 Rea comp 0 {p['ea_ro']}
 Rc comp cz {p['rc']}
@@ -115,7 +124,7 @@ Br r 0 V=((i(Vsense)+{slope_a}*V(ramp) > {p['gcs']}*(V(comp)-{p['comp_offset']})
 Bq qr 0 V=(V(clk)>0.5) ? 1 : ((V(r)>0.5) ? 0 : ((V(q)>0.5) ? 1 : 0))
 Rq qr q 1
 Cq q 0 2n
-.ic V(q)=0 V(out)={vin * 0.95} V(comp)={p['comp_offset']}
+.ic V(q)=0 V(out)={vin * 0.95} V(comp)={p['comp_offset']} V(cz)={p['comp_offset']}
 .options method=gear reltol=1e-3 abstol=1e-6 vntol=1e-5
 .tran 20n {t_end} 0 20n uic
 .end
@@ -155,12 +164,12 @@ def power_system(variant='carrier', soc0=1.0, p=D):
     buck, boost = p.BUCK_5V, p.BOOST_17V
     cam_node = 'v17' if variant == 'carrier' else 'bus'
     boost_lines = '' if variant != 'carrier' else f"""
-* 17 V boost (TPS61288): regulates while 2.4 V < Vin < 17 V. It has no output
-* disconnect: disabled, the camera still sees the pack minus the body diode.
-Bv17 v17s 0 V=(V(cam_en)>0.5 && V(bus)>2.4) ? max({boost['vout']}, V(bus)-0.1) : max(V(bus)-0.4, 0)
+* 17 V boost (TPS55340): regulates while 2.9 V < Vin < 17 V. It has no output
+* disconnect: disabled, the camera still sees the pack minus the Schottky drop.
+Bv17 v17s 0 V=(V(cam_en)>0.5 && V(bus)>2.9) ? max({boost['vout']}, V(bus)-0.1) : max(V(bus)-0.4, 0)
 Rv17 v17s v17 0.02
 C17 v17 0 {boost['cout']}
-Bin17 bus 0 I=V(cam_en)>0.5 && V(bus)>2.4 ? (V(v17)*i(Vcam17))/({boost['efficiency']}*max(V(bus),2.4)) : 0
+Bin17 bus 0 I=V(cam_en)>0.5 && V(bus)>2.9 ? (V(v17)*i(Vcam17))/({boost['efficiency']}*max(V(bus),2.9)) : 0
 Vcam17 v17 camin 0
 """
     cam_feed = 'Vcam17' if variant == 'carrier' else 'Vcamb'

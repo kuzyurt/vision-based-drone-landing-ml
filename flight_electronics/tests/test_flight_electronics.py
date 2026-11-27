@@ -228,5 +228,21 @@ class Timing(unittest.TestCase):
         self.assertTrue(Rk3588Timing(native_marker_kernel=True).step('tracked').deadline_met)
 
 
+
+class Frame(unittest.TestCase):
+    """Reads the report that flight_electronics.mechanical.frame writes (CadQuery is not needed here)."""
+
+    def test_frame_fits_boards_connectors_and_drone(self):
+        import json
+        from pathlib import Path
+        report = json.loads((Path(__file__).resolve().parents[1] / 'mechanical/out/frame_report.json').read_text())
+        fit = dict(report['fit'])
+        gap = fit.pop('gap_opi_top_to_carrier_mm')
+        self.assertGreater(gap, 1.5)
+        self.assertEqual({k: v for k, v in fit.items() if v > 0}, {})       # no collision volume anywhere
+        near = report['drone']['min_distance_mm']
+        self.assertTrue(near)
+        self.assertGreaterEqual(min(near.values()), 2.0)
+
 if __name__ == '__main__':
     unittest.main()

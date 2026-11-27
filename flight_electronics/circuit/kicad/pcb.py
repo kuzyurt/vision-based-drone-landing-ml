@@ -191,9 +191,37 @@ def build(route=True, render=True):
     _zones(board)
     pcbnew.SaveBoard(str(HERE / f'{NAME}.kicad_pcb'), board)
     report = _drc()
+    export_mechanical(board)
     if render:
         _render()
     return report
+
+
+# Connectors the frame needs openings for, and how tall their bodies are (mm above the board).
+EDGE_PARTS = {'J1': ('battery XT30', 8.6), 'J3': ('camera XT30', 8.6), 'J4': ('GCU JST-GH', 4.3),
+              'J5': ('TELEM2 JST-GH', 4.3)}
+
+
+def export_mechanical(board=None):
+    """Write circuit/kicad/mechanical.json: outline, holes, notch and edge connectors (KiCad coordinates)."""
+    import json
+    board = board or pcbnew.LoadBoard(str(HERE / f'{NAME}.kicad_pcb'))
+    parts = {}
+    for fp in board.GetFootprints():
+        ref = fp.GetReference()
+        if ref not in EDGE_PARTS and ref not in ('U3', 'J2'):
+            continue
+        b = fp.GetCourtyard(pcbnew.F_CrtYd).BBox()
+        x1, y1 = pcbnew.ToMM(b.GetX()), pcbnew.ToMM(b.GetY())
+        x2, y2 = x1 + pcbnew.ToMM(b.GetWidth()), y1 + pcbnew.ToMM(b.GetHeight())
+        edge = min((('left', x1), ('right', W - x2), ('back', y1), ('front', H - y2)), key=lambda e: e[1])[0]
+        label, height = EDGE_PARTS.get(ref, (ref, 7.5 if ref == 'U3' else 8.5))
+        parts[ref] = dict(label=label, courtyard=[round(v, 3) for v in (x1, y1, x2, y2)], edge=edge, height=height)
+    data = dict(units='mm, KiCad board coordinates (x right, y down from the top-left corner)',
+                board=[W, H], thickness=1.6, holes=[list(h) for h in HOLES], hole_drill=2.7,
+                notch=list(NOTCH), parts=parts)
+    (HERE / 'mechanical.json').write_text(json.dumps(data, indent=2), encoding='utf-8')
+    return data
 
 
 def _inside_board(box, margin=0.35):

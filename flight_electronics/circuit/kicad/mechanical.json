@@ -1,0 +1,101 @@
+{
+  "units": "mm, KiCad board coordinates (x right, y down from the top-left corner)",
+  "board": [
+    100.0,
+    62.0
+  ],
+  "thickness": 1.6,
+  "holes": [
+    [
+      3.0,
+      3.0
+    ],
+    [
+      97.0,
+      3.0
+    ],
+    [
+      3.0,
+      59.0
+    ],
+    [
+      97.0,
+      59.0
+    ]
+  ],
+  "hole_drill": 2.7,
+  "notch": [
+    54.5,
+    52.5,
+    93.5,
+    62.0
+  ],
+  "parts": {
+    "J2": {
+      "label": "J2",
+      "courtyard": [
+        56.575,
+        45.535,
+        90.695,
+        51.715
+      ],
+      "edge": "right",
+      "height": 8.5
+    },
+    "J5": {
+      "label": "TELEM2 JST-GH",
+      "courtyard": [
+        76.475,
+        0.455,
+        88.525,
+        6.945
+      ],
+      "edge": "back",
+      "height": 4.3
+    },
+    "U3": {
+      "label": "U3",
+      "courtyard": [
+        9.455,
+        38.355,
+        31.545,
+        61.445
+      ],
+      "edge": "front",
+      "height": 7.5
+    },
+    "J3": {
+      "label": "camera XT30",
+      "courtyard": [
+        87.705,
+        17.305,
+        104.595,
+        31.695
+      ],
+      "edge": "right",
+      "height": 8.6
+    },
+    "J1": {
+      "label": "battery XT30",
+      "courtyard": [
+        -0.645,
+        21.305,
+        15.295,
+        35.695
+      ],
+      "edge": "left",
+      "height": 8.6
+    },
+    "J4": {
+      "label": "GCU JST-GH",
+      "courtyard": [
+        93.355,
+        41.725,
+        99.845,
+        51.275
+      ],
+      "edge": "right",
+      "height": 4.3
+    }
+  }
+}

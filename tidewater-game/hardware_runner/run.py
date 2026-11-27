@@ -66,17 +66,29 @@ def run(args):
     run_dir, jobs = tidewater_run.build(args.name, cases, args.device, args.workers)
     config = None if args.no_hardware else vars(_config(args))
     (run_dir / 'hardware_config.json').write_text(json.dumps(config, indent=2), encoding='utf-8')
-    code = 0
-    for job in jobs:
-        with open(job['log'], 'wb') as log:
-            proc = subprocess.run([sys.executable, '-B', '-u', str(Path(__file__).resolve()), '_trial',
-                                   '--job', job['job'], '--config', str(run_dir / 'hardware_config.json')],
-                                  cwd=str(REPO), stdout=log, stderr=subprocess.STDOUT)
-        result = Path(job['output']) / 'result.json'
-        row = json.loads(result.read_text(encoding='utf-8')) if result.exists() else {}
-        print('Finished', job['case_id'], row.get('outcome', 'no result'), flush=True)
-        code = code or proc.returncode
-        time.sleep(1)
+    script = str(Path(__file__).resolve())
+    pending, active, code = list(jobs), [], 0
+    while pending or active:
+        while pending and len(active) < max(1, args.workers):
+            job = pending.pop(0)
+            log = open(job['log'], 'wb')
+            proc = subprocess.Popen([sys.executable, '-B', '-u', script, '_trial', '--job', job['job'],
+                                     '--config', str(run_dir / 'hardware_config.json')],
+                                    cwd=str(REPO), stdin=subprocess.DEVNULL, stdout=log, stderr=subprocess.STDOUT)
+            active.append((job, log, proc))
+            print('Started', job['case_id'], flush=True)
+            time.sleep(1)
+        for item in list(active):
+            job, log, proc = item
+            if proc.poll() is None:
+                continue
+            log.close()
+            active.remove(item)
+            result = Path(job['output']) / 'result.json'
+            row = json.loads(result.read_text(encoding='utf-8')) if result.exists() else {}
+            print('Finished', job['case_id'], row.get('outcome', 'no result'), flush=True)
+            code = code or proc.returncode
+        time.sleep(2)
     return code
 
 
@@ -87,7 +99,7 @@ def main(argv=None):
     r.add_argument('--name', required=True)
     r.add_argument('--case', nargs='+')
     r.add_argument('--device', choices=['cpu', 'cuda'], default='cpu')
-    r.add_argument('--workers', type=int, default=1)
+    r.add_argument('--workers', type=int, default=1, help='flights at the same time')
     r.add_argument('--no-hardware', action='store_true', help='baseline: same flight path without the simulated hardware')
     for p in (r, sub.add_parser('smoke')):
         p.add_argument('--seed', type=int, default=0)

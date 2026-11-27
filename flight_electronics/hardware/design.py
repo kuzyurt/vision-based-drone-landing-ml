@@ -124,7 +124,7 @@ BUCK_5V = dict(
 BOOST_17V = dict(
     part='TPS55340PWPR', source='tps55340', vref=1.229, fsw_hz=577e3, ron_ls=0.06,
     L=6.8e-6, L_dcr=0.012, cout=50e-6, cout_esr=0.002, cin=2 * 22e-6,
-    r_top=130e3, r_bottom=10e3, r_freq=80.6e3, c_ss=47e-9, vin_max=32.0, vin_abs_max=34.0, vout=17.21,
+    r_top=130e3, r_bottom=10e3, r_freq=80.6e3, c_ss=47e-9, i_ss=6e-6, vin_max=32.0, vin_abs_max=34.0, vout=17.21,
     switch_limit_a=5.25, efficiency=0.90, diode='B560C',
     gm_ea=360e-6, ea_ro=10e6, ea_current_a=42e-6, gcs=1 / 0.015, comp_offset=1.0,
     rc=2.32e3, cc=82e-9, cp=100e-12,

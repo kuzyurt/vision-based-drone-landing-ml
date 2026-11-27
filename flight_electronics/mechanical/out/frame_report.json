@@ -1,0 +1,119 @@
+{
+  "frame_volume_cm3": 47.16,
+  "frame_mass_g_petg": 59.9,
+  "clamp_halves_mass_g_petg": 15.3,
+  "frame_outer_mm": [
+    106.0,
+    68.0,
+    34.0
+  ],
+  "clamp_bolts_frame_mm": [
+    [
+      11.0,
+      12.0
+    ],
+    [
+      29.0,
+      12.0
+    ],
+    [
+      11.0,
+      50.0
+    ],
+    [
+      29.0,
+      50.0
+    ],
+    [
+      71.0,
+      12.0
+    ],
+    [
+      89.0,
+      12.0
+    ],
+    [
+      71.0,
+      50.0
+    ],
+    [
+      89.0,
+      50.0
+    ]
+  ],
+  "frame_to_drone": {
+    "rotation": [
+      [
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        -1
+      ]
+    ],
+    "translation": [
+      -143.0,
+      50.0,
+      95.25
+    ]
+  },
+  "orange_pi_underside_z": 10.0,
+  "carrier_underside_z": 29.4,
+  "wall_top_z": 34.0,
+  "hardware": [
+    "8x M3x18 socket head screw + 8x M3 nut (4 rail clamps of 2 printed halves; remove the Intel-camera bracket first)",
+    "4x M2.5 heat-set insert, OD 3.5-4 mm, 4 mm long (in the Orange Pi bosses)",
+    "4x M2.5 male-female hex standoff, 18 mm body, 6 mm thread (clamps the Orange Pi, carries the carrier)",
+    "4x M2.5x5 screw (carrier on the standoffs)",
+    "26-pin IDC ribbon cable, about 60 mm, pin 1 to pin 1",
+    "SMA bulkhead (6.5 mm hole) with U.FL pigtail for the LoRa antenna"
+  ],
+  "fit": {
+    "opi_eth": 0.0,
+    "opi_usb3": 0.0,
+    "opi_usb2": 0.0,
+    "opi_usbc_power": 0.0,
+    "opi_audio": 0.0,
+    "opi_hdmi": 0.0,
+    "opi_usbc3": 0.0,
+    "opi_sd": 0.0,
+    "carrier_J5": 0.0,
+    "carrier_J3": 0.0,
+    "carrier_J1": 0.0,
+    "carrier_J4": 0.0,
+    "opi_board": 0.0,
+    "carrier_board": 0.0,
+    "gap_opi_top_to_carrier_mm": 2.4
+  },
+  "drone": {
+    "min_distance_mm": {
+      "GB70-M3-38": 6.83,
+      "GB70-M3-003": 7.97,
+      "ZSLM-M3-FALAN": 6.96,
+      "ZSLM-M3-FALAN001": 5.93,
+      "GB70-M3-001": 6.79,
+      "GB70-M3-002": 7.96,
+      "ZSLM-M3-FALAN002": 5.93,
+      "ZSLM-M3-FALAN003": 6.96,
+      "HUAN-GUIJIAO": 2.8
+    },
+    "not_checked": {
+      "CARBON-FIBER-TUBE300": "payload rail, held by the clamps",
+      "CARBON-FIBER-TUBE301": "payload rail, held by the clamps",
+      "ZHIJIA-CAMERA-INTEL": "removed (unused Intel-camera bracket)",
+      "GAI-GUANGLIU": "removed (unused Intel-camera bracket)",
+      "M3-16-CHEN-LIU": "removed (unused Intel-camera bracket)",
+      "M3-16-CHEN-LIU001": "removed (unused Intel-camera bracket)",
+      "LM-M3-NILONG": "removed (unused Intel-camera bracket)",
+      "LM-M3-NILONG001": "removed (unused Intel-camera bracket)"
+    }
+  }
+}

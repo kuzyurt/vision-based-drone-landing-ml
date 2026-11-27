@@ -36,7 +36,7 @@
 <rect x="315" y="125" width="220" height="34" rx="6" fill="white" stroke="#b8b8b8"/>
 <text x="325" y="147" font-size="13" fill="#191919">5 V / 5 A buck (TPS54560B)</text>
 <rect x="315" y="170" width="220" height="34" rx="6" fill="white" stroke="#b8b8b8"/>
-<text x="325" y="192" font-size="13" fill="#191919">17 V boost (TPS61288)</text>
+<text x="325" y="192" font-size="13" fill="#191919">17 V boost (TPS55340)</text>
 <path d="M 200 95 L 300 95" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>
 <text x="230" y="88" font-size="12" fill="#191919">XT30</text>
 <path d="M 115 130 L 115 200" fill="none" stroke="#dc3c3d" stroke-width="2.2" marker-end="url(#adc3c3d)"/>

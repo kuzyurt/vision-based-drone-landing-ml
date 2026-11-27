@@ -1,19 +1,19 @@
 {
   "buck": {
     "mean_v_before": 5.003733721349519,
-    "ripple_mv_before": 9.236216685279075,
+    "ripple_mv_before": 9.234529790803414,
     "mean_v_after": 5.003030767776542,
-    "ripple_mv_after": 3.7579796197819704,
+    "ripple_mv_after": 3.7559982921635537,
     "step_dip_mv": 135.99942917062168,
     "step_dip_percent": 2.7199885834124338
   },
   "boost": {
-    "mean_v_before": 17.023965703692987,
-    "ripple_mv_before": 21.157200144607202,
-    "mean_v_after": 17.019318035073425,
-    "ripple_mv_after": 40.421736143184006,
-    "step_dip_mv": 320.1713559549759,
-    "step_dip_percent": 1.8789398823648822
+    "mean_v_before": 17.200423273484024,
+    "ripple_mv_before": 22.12340370840593,
+    "mean_v_after": 17.20158242289913,
+    "ripple_mv_after": 29.17895019835015,
+    "step_dip_mv": 523.7121587891913,
+    "step_dip_percent": 3.043068906386934
   },
   "surge": {
     "without the LC filter": 28.45352728134362,
@@ -24,7 +24,7 @@
       "camera_first_off_s": null,
       "state_of_charge_at_off": null,
       "battery_v_at_off": null,
-      "camera_v_min": 17.030017626303724,
+      "camera_v_min": 17.20011634592575,
       "rail_5v_min": 4.975126259405769
     },
     "camera_on_battery": {
