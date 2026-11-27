@@ -920,7 +920,7 @@
    ],
    "note": "100 x 62 mm, 2 layers, KiCad export",
    "file": "stack.glb",
-   "triangles": 86960,
+   "triangles": 86912,
    "bbox_mm": [
     [
      -0.0,
@@ -2630,10 +2630,10 @@
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 544,
+   "triangles": 344,
    "bbox_mm": [
     [
-     -24.0,
+     -12.0,
      28.2,
      13.4
     ],
@@ -2644,9 +2644,39 @@
     ]
    ],
    "size_mm": [
-    36.0,
+    24.0,
     12.4,
     8.3
+   ]
+  },
+  {
+   "id": "cable-ethernet-cable-stub",
+   "label": "Ethernet cable stub",
+   "group": "Cables",
+   "explode": [
+    -30.0,
+    0.0,
+    45.0
+   ],
+   "note": "stub",
+   "file": "stack.glb",
+   "triangles": 200,
+   "bbox_mm": [
+    [
+     -24.0,
+     31.4,
+     14.0
+    ],
+    [
+     -12.0,
+     37.39,
+     20.0
+    ]
+   ],
+   "size_mm": [
+    12.0,
+    6.0,
+    6.0
    ]
   },
   {
@@ -2660,10 +2690,10 @@
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 444,
+   "triangles": 44,
    "bbox_mm": [
     [
-     -26.14,
+     -16.14,
      28.0,
      32.1
     ],
@@ -2674,9 +2704,39 @@
     ]
    ],
    "size_mm": [
-    26.0,
+    16.0,
     11.0,
     6.0
+   ]
+  },
+  {
+   "id": "cable-j1-cable-stub",
+   "label": "J1 cable stub",
+   "group": "Cables",
+   "explode": [
+    -30.0,
+    0.0,
+    80.0
+   ],
+   "note": "stub",
+   "file": "stack.glb",
+   "triangles": 400,
+   "bbox_mm": [
+    [
+     -26.14,
+     29.55,
+     33.65
+    ],
+    [
+     -16.14,
+     37.45,
+     36.55
+    ]
+   ],
+   "size_mm": [
+    10.0,
+    7.9,
+    2.9
    ]
   },
   {
@@ -2690,7 +2750,7 @@
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 444,
+   "triangles": 44,
    "bbox_mm": [
     [
      104.09,
@@ -2698,15 +2758,45 @@
      32.1
     ],
     [
-     130.09,
+     120.09,
      43.0,
      38.1
     ]
    ],
    "size_mm": [
-    26.0,
+    16.0,
     11.0,
     6.0
+   ]
+  },
+  {
+   "id": "cable-j3-cable-stub",
+   "label": "J3 cable stub",
+   "group": "Cables",
+   "explode": [
+    30.0,
+    0.0,
+    80.0
+   ],
+   "note": "stub",
+   "file": "stack.glb",
+   "triangles": 400,
+   "bbox_mm": [
+    [
+     120.09,
+     33.55,
+     33.65
+    ],
+    [
+     130.09,
+     41.45,
+     36.55
+    ]
+   ],
+   "size_mm": [
+    10.0,
+    7.9,
+    2.9
    ]
   },
   {
@@ -2720,7 +2810,7 @@
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 3964,
+   "triangles": 28,
    "bbox_mm": [
     [
      100.0,
@@ -2728,15 +2818,45 @@
      31.2
     ],
     [
-     112.88,
-     35.5,
+     104.3,
+     20.12,
      35.4
     ]
    ],
    "size_mm": [
-    12.9,
-    24.6,
+    4.3,
+    9.2,
     4.2
+   ]
+  },
+  {
+   "id": "cable-j4-cable-stub",
+   "label": "J4 cable stub",
+   "group": "Cables",
+   "explode": [
+    30.0,
+    0.0,
+    80.0
+   ],
+   "note": "stub",
+   "file": "stack.glb",
+   "triangles": 3936,
+   "bbox_mm": [
+    [
+     104.3,
+     11.93,
+     32.35
+    ],
+    [
+     112.88,
+     35.5,
+     33.25
+    ]
+   ],
+   "size_mm": [
+    8.6,
+    23.6,
+    0.9
    ]
   },
   {
@@ -2750,7 +2870,7 @@
    ],
    "note": "",
    "file": "stack.glb",
-   "triangles": 2652,
+   "triangles": 28,
    "bbox_mm": [
     [
      79.12,
@@ -2758,15 +2878,45 @@
      31.2
     ],
     [
-     102.5,
-     73.62,
+     85.88,
+     66.3,
      35.4
     ]
    ],
    "size_mm": [
-    23.4,
-    11.6,
+    6.8,
+    4.3,
     4.2
+   ]
+  },
+  {
+   "id": "cable-j5-cable-stub",
+   "label": "J5 cable stub",
+   "group": "Cables",
+   "explode": [
+    0.0,
+    30.0,
+    80.0
+   ],
+   "note": "stub",
+   "file": "stack.glb",
+   "triangles": 2624,
+   "bbox_mm": [
+    [
+     80.17,
+     66.3,
+     32.35
+    ],
+    [
+     102.5,
+     73.62,
+     33.25
+    ]
+   ],
+   "size_mm": [
+    22.3,
+    7.3,
+    0.9
    ]
   },
   {
@@ -3140,12 +3290,12 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 3500,
+   "triangles": 5356,
    "bbox_mm": [
     [
      -75.15,
      59.5,
-     146.92
+     140.6
     ],
     [
      35.05,
@@ -3156,7 +3306,7 @@
    "size_mm": [
     110.2,
     81.0,
-    45.9
+    52.2
    ]
   },
   {
@@ -3230,23 +3380,53 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 2064,
+   "triangles": 4268,
    "bbox_mm": [
     [
-     -64.4,
-     139.5,
+     -72.5,
+     139.61,
      147.0
     ],
     [
-     25.4,
+     31.89,
      190.0,
-     159.0
+     171.4
     ]
    ],
    "size_mm": [
-    89.8,
-    50.5,
-    12.0
+    104.4,
+    50.4,
+    24.4
+   ]
+  },
+  {
+   "id": "fc-lid",
+   "label": "Flight controller lid (printed)",
+   "group": "Flight controller",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 1504,
+   "bbox_mm": [
+    [
+     -72.0,
+     142.5,
+     171.4
+    ],
+    [
+     31.4,
+     189.5,
+     174.4
+    ]
+   ],
+   "size_mm": [
+    103.4,
+    47.0,
+    3.0
    ]
   },
   {
@@ -3260,28 +3440,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1588,
+   "triangles": 2544,
    "bbox_mm": [
     [
-     -62.2,
+     -61.9,
      143.5,
      154.0
     ],
     [
-     23.2,
-     187.8,
-     169.6
+     22.9,
+     187.5,
+     171.4
     ]
    ],
    "size_mm": [
-    85.4,
-    44.3,
-    15.6
+    84.8,
+    44.0,
+    17.4
    ]
   },
   {
-   "id": "mount-screws",
-   "label": "M3 screws of the printed mounts",
+   "id": "gps-module",
+   "label": "GPS / compass module",
    "group": "Flight controller",
    "explode": [
     0.0,
@@ -3290,23 +3470,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 2656,
+   "triangles": 1304,
    "bbox_mm": [
     [
-     -35.85,
-     29.16,
-     142.0
+     54.5,
+     75.07,
+     222.0
     ],
     [
-     -3.15,
-     170.84,
-     155.65
+     104.5,
+     124.93,
+     236.1
     ]
    ],
    "size_mm": [
-    32.7,
-    141.7,
-    13.7
+    50.0,
+    49.9,
+    14.1
    ]
   },
   {
@@ -3330,18 +3510,18 @@
     [
      -0.5,
      59.3,
-     171.0
+     170.0
     ]
    ],
    "size_mm": [
     38.0,
     32.8,
-    24.0
+    23.0
    ]
   },
   {
-   "id": "battery-connectors",
-   "label": "Battery gland, XT60 plug, charge socket",
+   "id": "esc-tray-rear",
+   "label": "ESC tray, rear (printed)",
    "group": "Power",
    "explode": [
     0.0,
@@ -3350,23 +3530,53 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1272,
+   "triangles": 1634,
    "bbox_mm": [
     [
-     -33.5,
-     21.0,
-     83.0
+     -57.0,
+     58.0,
+     117.0
     ],
     [
-     21.0,
-     64.5,
-     169.0
+     -38.5,
+     142.0,
+     121.5
     ]
    ],
    "size_mm": [
-    54.5,
-    43.5,
-    86.0
+    18.5,
+    84.0,
+    4.5
+   ]
+  },
+  {
+   "id": "esc-tray-front",
+   "label": "ESC tray, front (printed)",
+   "group": "Power",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 1476,
+   "bbox_mm": [
+    [
+     -0.5,
+     62.0,
+     117.0
+    ],
+    [
+     23.0,
+     138.0,
+     121.5
+    ]
+   ],
+   "size_mm": [
+    23.5,
+    76.0,
+    4.5
    ]
   },
   {
@@ -3380,23 +3590,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 188,
+   "triangles": 200,
    "bbox_mm": [
     [
-     -58.0,
-     71.0,
-     117.2
+     -55.0,
+     60.0,
+     119.5
     ],
     [
-     -45.0,
-     97.0,
-     122.2
+     -42.0,
+     86.0,
+     124.0
     ]
    ],
    "size_mm": [
     13.0,
     26.0,
-    5.0
+    4.5
    ]
   },
   {
@@ -3410,23 +3620,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 188,
+   "triangles": 200,
    "bbox_mm": [
     [
-     -58.0,
-     103.0,
-     117.2
+     -55.0,
+     114.0,
+     119.5
     ],
     [
-     -45.0,
-     129.0,
-     122.2
+     -42.0,
+     140.0,
+     124.0
     ]
    ],
    "size_mm": [
     13.0,
     26.0,
-    5.0
+    4.5
    ]
   },
   {
@@ -3440,23 +3650,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 188,
+   "triangles": 200,
    "bbox_mm": [
     [
-     36.5,
-     71.0,
-     117.2
+     8.0,
+     62.0,
+     119.5
     ],
     [
-     49.5,
-     97.0,
-     122.2
+     21.0,
+     88.0,
+     124.0
     ]
    ],
    "size_mm": [
     13.0,
     26.0,
-    5.0
+    4.5
    ]
   },
   {
@@ -3470,23 +3680,113 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 188,
+   "triangles": 200,
    "bbox_mm": [
     [
-     36.5,
-     103.0,
-     117.2
+     8.0,
+     112.0,
+     119.5
     ],
     [
-     49.5,
-     129.0,
-     122.2
+     21.0,
+     138.0,
+     124.0
     ]
    ],
    "size_mm": [
     13.0,
     26.0,
-    5.0
+    4.5
+   ]
+  },
+  {
+   "id": "esc-ties",
+   "label": "ESC cable ties",
+   "group": "Power",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 4608,
+   "bbox_mm": [
+    [
+     -58.64,
+     66.5,
+     115.36
+    ],
+    [
+     24.64,
+     133.5,
+     125.64
+    ]
+   ],
+   "size_mm": [
+    83.3,
+    67.0,
+    10.3
+   ]
+  },
+  {
+   "id": "battery-gland",
+   "label": "Battery cable gland",
+   "group": "Power",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 188,
+   "bbox_mm": [
+    [
+     13.0,
+     59.0,
+     160.5
+    ],
+    [
+     21.5,
+     64.5,
+     169.5
+    ]
+   ],
+   "size_mm": [
+    8.5,
+    5.5,
+    9.0
+   ]
+  },
+  {
+   "id": "pm06-pads",
+   "label": "PM06 pads (battery, ESCs, power out)",
+   "group": "Power",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 168,
+   "bbox_mm": [
+    [
+     -31.0,
+     83.5,
+     123.2
+    ],
+    [
+     -7.7,
+     116.5,
+     123.3
+    ]
+   ],
+   "size_mm": [
+    23.3,
+    33.0,
+    0.1
    ]
   },
   {
@@ -3500,23 +3800,83 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 320,
+   "triangles": 380,
    "bbox_mm": [
     [
      -75.0,
      78.4,
-     82.0
+     76.6
     ],
     [
      -48.6,
      121.6,
-     101.5
+     94.6
     ]
    ],
    "size_mm": [
     26.4,
     43.2,
-    19.5
+    18.0
+   ]
+  },
+  {
+   "id": "camera-connector",
+   "label": "Camera connector (on the damper head)",
+   "group": "Camera interface",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 188,
+   "bbox_mm": [
+    [
+     -25.0,
+     94.0,
+     85.0
+    ],
+    [
+     -17.0,
+     106.0,
+     91.0
+    ]
+   ],
+   "size_mm": [
+    8.0,
+    12.0,
+    6.0
+   ]
+  },
+  {
+   "id": "hardware",
+   "label": "Screws, nuts, washers, inserts",
+   "group": "Flight controller",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 28160,
+   "bbox_mm": [
+    [
+     -70.35,
+     23.0,
+     110.5
+    ],
+    [
+     29.75,
+     187.84,
+     174.55
+    ]
+   ],
+   "size_mm": [
+    100.1,
+    164.8,
+    64.1
    ]
   },
   {
@@ -3530,23 +3890,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 100,
+   "triangles": 128,
    "bbox_mm": [
     [
      -73.0,
-     92.62,
-     83.0
+     82.7,
+     78.4
     ],
     [
      -62.0,
      131.0,
-     105.8
+     92.47
     ]
    ],
    "size_mm": [
     11.0,
-    38.4,
-    22.8
+    48.3,
+    14.1
    ]
   },
   {
@@ -3560,23 +3920,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 168,
+   "triangles": 140,
    "bbox_mm": [
     [
      -66.2,
-     89.88,
-     125.7
+     92.88,
+     159.3
     ],
     [
-     27.2,
+     63.0,
      191.8,
-     166.6
+     222.0
     ]
    ],
    "size_mm": [
-    93.4,
-    101.9,
-    40.9
+    129.2,
+    98.9,
+    62.7
    ]
   },
   {
@@ -3590,23 +3950,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 12,
+   "triangles": 3400,
    "bbox_mm": [
     [
-     1.0,
-     112.5,
-     127.2
+     -41.3,
+     16.5,
+     72.4
     ],
     [
-     15.0,
-     117.5,
-     132.2
+     17.8,
+     109.62,
+     166.0
     ]
    ],
    "size_mm": [
-    14.0,
-    5.0,
-    5.0
+    59.1,
+    93.1,
+    93.6
    ]
   },
   {
@@ -3620,83 +3980,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 2908,
+   "triangles": 2208,
    "bbox_mm": [
     [
      -110.85,
-     6.08,
-     76.52
+     25.08,
+     76.0
     ],
     [
-     -67.31,
-     97.69,
-     111.34
+     -68.15,
+     82.7,
+     91.35
     ]
    ],
    "size_mm": [
-    43.5,
-    91.6,
-    34.8
-   ]
-  },
-  {
-   "id": "cable-camera-power",
-   "label": "17 V: carrier J3 -> GCU",
-   "group": "Wiring",
-   "explode": [
-    0.0,
-    0.0,
-    0.0
-   ],
-   "note": "",
-   "file": "drone.glb",
-   "triangles": 3648,
-   "bbox_mm": [
-    [
-     -108.51,
-     130.92,
-     58.34
-    ],
-    [
-     -65.18,
-     188.29,
-     88.7
-    ]
-   ],
-   "size_mm": [
-    43.3,
-    57.4,
-    30.4
-   ]
-  },
-  {
-   "id": "cable-gcu-control",
-   "label": "Control: carrier J4 -> GCU",
-   "group": "Wiring",
-   "explode": [
-    0.0,
-    0.0,
-    0.0
-   ],
-   "note": "",
-   "file": "drone.glb",
-   "triangles": 13644,
-   "bbox_mm": [
-    [
-     -107.59,
-     103.38,
-     61.06
-    ],
-    [
-     -67.82,
-     164.5,
-     111.0
-    ]
-   ],
-   "size_mm": [
-    39.8,
-    61.1,
-    49.9
+    42.7,
+    57.6,
+    15.3
    ]
   },
   {
@@ -3710,23 +4010,83 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1100,
+   "triangles": 1872,
    "bbox_mm": [
     [
-     -65.44,
-     97.8,
-     84.0
+     -67.05,
+     60.95,
+     83.15
     ],
     [
-     -24.39,
-     102.2,
-     113.84
+     -25.0,
+     102.45,
+     90.45
     ]
    ],
    "size_mm": [
-    41.0,
-    4.4,
-    29.8
+    42.1,
+    41.5,
+    7.3
+   ]
+  },
+  {
+   "id": "cable-gcu-control",
+   "label": "Control: carrier J4 -> GCU",
+   "group": "Wiring",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 3696,
+   "bbox_mm": [
+    [
+     -129.55,
+     117.3,
+     60.4
+    ],
+    [
+     -63.0,
+     193.92,
+     82.15
+    ]
+   ],
+   "size_mm": [
+    66.6,
+    76.6,
+    21.7
+   ]
+  },
+  {
+   "id": "cable-camera-power",
+   "label": "17 V: carrier J3 -> GCU",
+   "group": "Wiring",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 2688,
+   "bbox_mm": [
+    [
+     -109.45,
+     130.97,
+     57.99
+    ],
+    [
+     -63.66,
+     187.03,
+     91.1
+    ]
+   ],
+   "size_mm": [
+    45.8,
+    56.1,
+    33.1
    ]
   },
   {
@@ -3740,28 +4100,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 10568,
+   "triangles": 3336,
    "bbox_mm": [
     [
-     -76.76,
-     152.49,
-     61.93
+     -77.7,
+     130.55,
+     60.5
     ],
     [
-     -66.03,
-     182.77,
-     162.6
+     -55.3,
+     180.46,
+     162.95
     ]
    ],
    "size_mm": [
-    10.7,
-    30.3,
-    100.7
+    22.4,
+    49.9,
+    102.4
    ]
   },
   {
-   "id": "cable-carrier-power",
-   "label": "Battery: PM06 -> carrier J1",
+   "id": "cable-gps",
+   "label": "GPS: module -> Pixhawk GPS1",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -3770,23 +4130,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 8168,
+   "triangles": 3288,
    "bbox_mm": [
     [
-     -113.05,
-     8.06,
-     58.52
+     27.2,
+     97.75,
+     155.39
     ],
     [
-     -32.68,
-     110.56,
-     131.79
+     77.6,
+     164.25,
+     217.71
     ]
    ],
    "size_mm": [
-    80.4,
-    102.5,
-    73.3
+    50.4,
+    66.5,
+    62.3
    ]
   },
   {
@@ -3800,28 +4160,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 16248,
+   "triangles": 3048,
    "bbox_mm": [
     [
-     -47.52,
-     92.8,
-     124.18
+     -53.37,
+     92.45,
+     123.25
     ],
     [
-     -41.15,
-     198.16,
-     163.69
+     -41.3,
+     204.65,
+     163.05
     ]
    ],
    "size_mm": [
-    6.4,
-    105.4,
-    39.5
+    12.1,
+    112.2,
+    39.8
    ]
   },
   {
    "id": "cable-fc-pwm",
-   "label": "PWM: Pixhawk I/O PWM OUT -> PM06",
+   "label": "PWM: Pixhawk I/O PWM OUT -> PM06 PWM IN",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -3830,53 +4190,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 22568,
+   "triangles": 3192,
    "bbox_mm": [
     [
-     -28.29,
-     121.5,
-     128.77
+     -51.6,
+     102.85,
+     123.15
     ],
     [
-     10.91,
-     200.22,
-     163.22
+     -22.85,
+     204.89,
+     163.15
     ]
    ],
    "size_mm": [
-    39.2,
-    78.7,
-    34.4
-   ]
-  },
-  {
-   "id": "cable-gps",
-   "label": "GPS: mast -> Pixhawk GPS1",
-   "group": "Wiring",
-   "explode": [
-    0.0,
-    0.0,
-    0.0
-   ],
-   "note": "",
-   "file": "drone.glb",
-   "triangles": 27368,
-   "bbox_mm": [
-    [
-     27.07,
-     96.27,
-     151.89
-    ],
-    [
-     87.78,
-     161.75,
-     211.0
-    ]
-   ],
-   "size_mm": [
-    60.7,
-    65.5,
-    59.1
+    28.7,
+    102.0,
+    40.0
    ]
   },
   {
@@ -3890,23 +4220,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 5888,
+   "triangles": 4448,
    "bbox_mm": [
     [
-     6.33,
-     17.01,
-     75.04
+     3.7,
+     17.82,
+     58.53
     ],
     [
-     22.2,
-     59.61,
-     167.21
+     20.9,
+     59.02,
+     165.08
     ]
    ],
    "size_mm": [
-    15.9,
-    42.6,
-    92.2
+    17.2,
+    41.2,
+    106.5
    ]
   },
   {
@@ -3920,28 +4250,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1800,
+   "triangles": 1984,
    "bbox_mm": [
     [
-     -24.68,
-     38.64,
-     159.32
+     -24.98,
+     41.62,
+     159.73
     ],
     [
-     18.64,
-     61.52,
-     164.25
+     20.07,
+     59.02,
+     167.88
     ]
    ],
    "size_mm": [
-    43.3,
-    22.9,
-    4.9
+    45.0,
+    17.4,
+    8.2
    ]
   },
   {
-   "id": "cable-esc-rear-left",
-   "label": "ESC rear-left: power and signal from PM06",
+   "id": "cable-xt60-pm06",
+   "label": "Frame XT60 -> PM06 battery pads (14 AWG)",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -3950,23 +4280,83 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1980,
+   "triangles": 2368,
    "bbox_mm": [
     [
-     -53.88,
-     86.67,
-     118.49
+     -14.2,
+     51.2,
+     122.94
     ],
     [
-     -25.87,
-     100.87,
-     133.87
+     15.3,
+     105.9,
+     137.97
     ]
    ],
    "size_mm": [
-    28.0,
-    14.2,
-    15.4
+    29.5,
+    54.7,
+    15.0
+   ]
+  },
+  {
+   "id": "cable-carrier-power",
+   "label": "Battery: PM06 battery pads -> carrier J1",
+   "group": "Wiring",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 6208,
+   "bbox_mm": [
+    [
+     -113.13,
+     20.83,
+     58.3
+    ],
+    [
+     -14.78,
+     104.92,
+     139.81
+    ]
+   ],
+   "size_mm": [
+    98.4,
+    84.1,
+    81.5
+   ]
+  },
+  {
+   "id": "cable-esc-rear-left",
+   "label": "ESC rear-left: power and signal from the PM06",
+   "group": "Wiring",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 3024,
+   "bbox_mm": [
+    [
+     -52.77,
+     83.65,
+     120.29
+    ],
+    [
+     -22.85,
+     91.84,
+     132.49
+    ]
+   ],
+   "size_mm": [
+    29.9,
+    8.2,
+    12.2
    ]
   },
   {
@@ -3980,28 +4370,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 12900,
+   "triangles": 8208,
    "bbox_mm": [
     [
-     -198.89,
-     -79.04,
-     119.01
+     -192.86,
+     -73.86,
+     120.5
     ],
     [
-     -48.95,
-     71.29,
-     136.16
+     -43.55,
+     61.35,
+     140.68
     ]
    ],
    "size_mm": [
-    149.9,
-    150.3,
-    17.2
+    149.3,
+    135.2,
+    20.2
    ]
   },
   {
    "id": "cable-esc-rear-right",
-   "label": "ESC rear-right: power and signal from PM06",
+   "label": "ESC rear-right: power and signal from the PM06",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -4010,23 +4400,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 1980,
+   "triangles": 3024,
    "bbox_mm": [
     [
-     -53.88,
-     99.13,
-     118.49
+     -52.77,
+     108.16,
+     120.29
     ],
     [
-     -25.87,
-     113.33,
-     133.87
+     -22.85,
+     116.35,
+     132.49
     ]
    ],
    "size_mm": [
-    28.0,
-    14.2,
-    15.4
+    29.9,
+    8.2,
+    12.2
    ]
   },
   {
@@ -4040,28 +4430,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 12900,
+   "triangles": 8256,
    "bbox_mm": [
     [
-     -198.89,
-     128.71,
-     119.01
+     -192.83,
+     138.65,
+     120.5
     ],
     [
-     -48.95,
-     279.04,
-     136.16
+     -43.55,
+     273.87,
+     140.51
     ]
    ],
    "size_mm": [
-    149.9,
-    150.3,
-    17.2
+    149.3,
+    135.2,
+    20.0
    ]
   },
   {
    "id": "cable-esc-front-left",
-   "label": "ESC front-left: power and signal from PM06",
+   "label": "ESC front-left: power and signal from the PM06",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -4070,23 +4460,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 2460,
+   "triangles": 3456,
    "bbox_mm": [
     [
-     9.87,
-     86.72,
-     118.49
+     -15.75,
+     83.65,
+     120.15
     ],
     [
-     45.38,
-     100.87,
-     134.19
+     18.78,
+     94.01,
+     128.95
     ]
    ],
    "size_mm": [
-    35.5,
-    14.1,
-    15.7
+    34.5,
+    10.4,
+    8.8
    ]
   },
   {
@@ -4100,28 +4490,28 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 13620,
+   "triangles": 8016,
    "bbox_mm": [
     [
-     17.96,
-     -78.63,
-     119.01
+     9.55,
+     -73.37,
+     120.5
     ],
     [
-     159.88,
-     71.37,
-     136.15
+     153.85,
+     63.35,
+     140.68
     ]
    ],
    "size_mm": [
-    141.9,
-    150.0,
-    17.1
+    144.3,
+    136.7,
+    20.2
    ]
   },
   {
    "id": "cable-esc-front-right",
-   "label": "ESC front-right: power and signal from PM06",
+   "label": "ESC front-right: power and signal from the PM06",
    "group": "Wiring",
    "explode": [
     0.0,
@@ -4130,23 +4520,23 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 2460,
+   "triangles": 3456,
    "bbox_mm": [
     [
-     9.87,
-     99.13,
-     118.49
+     -15.75,
+     106.21,
+     120.15
     ],
     [
-     45.38,
-     113.28,
-     134.19
+     18.78,
+     116.35,
+     128.97
     ]
    ],
    "size_mm": [
-    35.5,
-    14.1,
-    15.7
+    34.5,
+    10.1,
+    8.8
    ]
   },
   {
@@ -4160,26 +4550,56 @@
    ],
    "note": "",
    "file": "drone.glb",
-   "triangles": 13680,
+   "triangles": 7968,
    "bbox_mm": [
     [
-     17.96,
-     128.63,
-     119.01
+     9.55,
+     136.65,
+     120.5
     ],
     [
-     159.89,
-     279.11,
-     136.15
+     153.86,
+     273.87,
+     140.48
     ]
    ],
    "size_mm": [
-    141.9,
-    150.5,
-    17.1
+    144.3,
+    137.2,
+    20.0
+   ]
+  },
+  {
+   "id": "cable-ties",
+   "label": "Cable ties and tie bases",
+   "group": "Wiring",
+   "explode": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "note": "",
+   "file": "drone.glb",
+   "triangles": 25296,
+   "bbox_mm": [
+    [
+     -76.02,
+     19.08,
+     81.89
+    ],
+    [
+     82.85,
+     159.64,
+     191.36
+    ]
+   ],
+   "size_mm": [
+    158.9,
+    140.6,
+    109.5
    ]
   }
  ],
- "stack_bytes": 885944,
- "drone_bytes": 5156340
+ "stack_bytes": 886500,
+ "drone_bytes": 5053768
 }
