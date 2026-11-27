@@ -1,0 +1,3 @@
+firmware/esp32_radio_bridge/build_host/
+firmware/esp32_radio_bridge/platform/esp32/build/
+__pycache__/
