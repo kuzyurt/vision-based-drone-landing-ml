@@ -93,6 +93,11 @@ def _camera_pieces(name, mesh):
         if uv is not None:
             used = np.unique(mesh.faces[faces])
             sub._uv = uv[used]
+        if name == 'drone_Body004':          # the lens window lies on the ball's front face: lift it off (no z-fighting)
+            n = (sub.face_normals * sub.area_faces[:, None]).sum(0)
+            n = n / (np.linalg.norm(n) + 1e-12)
+            sub.apply_translation(0.35 * n)
+            sub = tm.Trimesh(sub.vertices, sub.faces, vertex_normals=np.tile(n, (len(sub.vertices), 1)), process=False)   # flat glass
         out.append((key, sub, dict(color=colour, metallic=metal, roughness=rough)))
     return out
 

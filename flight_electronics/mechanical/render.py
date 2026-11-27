@@ -119,7 +119,7 @@ def render(items, eye, target, path, size=(1600, 1000), fov=28.0, up=(0, 0, 1), 
     import pyrender
     w, h = size[0] * SCALE, size[1] * SCALE
     pose = _look_at(eye, target, up)
-    camera = pyrender.PerspectiveCamera(yfov=np.radians(fov), aspectRatio=size[0] / size[1])
+    camera = pyrender.PerspectiveCamera(yfov=np.radians(fov), aspectRatio=size[0] / size[1], znear=20.0, zfar=8000.0)
     r = pyrender.OffscreenRenderer(w, h)
 
     scene = pyrender.Scene(bg_color=[1, 1, 1, 1], ambient_light=[0.36, 0.36, 0.38])
@@ -193,3 +193,59 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+def turntable(items, out_dir, frames=240, size=(1280, 800), centre=(-20.0, 100.0, 95.0), distance=1150.0,
+              elevation=18.0, fov=30.0, bg=(0.90, 0.925, 0.93), start_deg=200.0):
+    """One full turn round the items, as numbered PNG frames in out_dir (for a video). The scene is built
+    once and only the camera and the lights move, so a frame costs three renders."""
+    import pyrender
+    from pathlib import Path
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    w, h = size[0] * SCALE, size[1] * SCALE
+    r = pyrender.OffscreenRenderer(w, h)
+    camera = pyrender.PerspectiveCamera(yfov=np.radians(fov), aspectRatio=size[0] / size[1], znear=20.0, zfar=8000.0)
+    scene = pyrender.Scene(bg_color=[*bg, 1], ambient_light=[0.36, 0.36, 0.38])
+    ns, ids = pyrender.Scene(bg_color=[0, 0, 0, 0]), pyrender.Scene(bg_color=[0, 0, 0, 0])
+    rng = np.random.default_rng(7)
+    normal_nodes = []
+    for mesh, rgb, tex in items:
+        scene.add(_pyr(mesh, rgb, tex))
+        ids.add(_pyr(mesh, rgb, flat_colour=rng.random(3) * 0.9 + 0.05))
+    cams = [(sc, pyrender.Node(camera=camera)) for sc in (scene, ns, ids)]
+    for sc, node in cams:
+        sc.add_node(node)
+    lights = [pyrender.Node(light=pyrender.DirectionalLight(intensity=p)) for p in (3.0, 1.5, 1.0)]
+    for node in lights:
+        scene.add_node(node)
+    target = np.array(centre)
+    for k in range(frames):
+        if (out_dir / f'{k:04d}.png').exists():          # resume an interrupted run
+            continue
+        az = np.radians(start_deg + 360.0 * k / frames)
+        el = np.radians(elevation)
+        eye = target + distance * np.array([np.cos(az) * np.cos(el), np.sin(az) * np.cos(el), np.sin(el)])
+        pose = _look_at(eye, target)
+        for sc, node in cams:
+            sc.set_pose(node, pose)
+        view = np.linalg.inv(pose)[:3, :3]
+        # the lights turn with the camera, so every side is lit the same way
+        for node, d in zip(lights, ((-0.4, -0.6, -1.0), (0.8, 0.3, -0.4), (0.2, 0.9, 0.5))):
+            dw = pose[:3, :3] @ (np.array(d) / np.linalg.norm(d))
+            dw[2] = -abs(dw[2]) if d[2] < 0 else dw[2]
+            scene.set_pose(node, _look_at(target - dw * 100, target, up=(0, 0, 1) if abs(dw[2]) < 0.95 else (0, 1, 0)))
+        for node in list(ns.mesh_nodes):
+            ns.remove_node(node)
+        for mesh, rgb, tex in items:      # normals in camera space change with the view
+            ns.add(_pyr(mesh, rgb, flat_colour=(mesh.vertex_normals @ view.T) * 0.5 + 0.5))
+        colour, depth = r.render(scene)
+        nimg, _ = r.render(ns, flags=pyrender.RenderFlags.FLAT)
+        iimg, _ = r.render(ids, flags=pyrender.RenderFlags.FLAT)
+        normal = nimg.astype(np.float32) / 127.5 - 1.0
+        normal /= np.linalg.norm(normal, axis=-1, keepdims=True) + 1e-6
+        mask = _edges(depth, normal, iimg)
+        colour = colour.astype(np.float32) * (1 - 0.55 * mask)[..., None]
+        Image.fromarray(colour.clip(0, 255).astype(np.uint8)).resize(size, Image.LANCZOS).save(out_dir / f'{k:04d}.png')
+    r.delete()
+    return out_dir
